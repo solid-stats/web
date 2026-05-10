@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solid Stats Palette Options</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@90,500;90,700;100,500;100,700&family=Barlow+Condensed:wght@600;700&family=Barlow:wght@500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@500;600;700&family=Manrope:wght@500;600;700;800&family=Roboto+Condensed:wght@600;700&family=Saira+Condensed:wght@600;700&family=Sora:wght@500;600;700&family=Spline+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --page-bg: #08090c;
+      --page-text: #f3f5f8;
+      --page-muted: #9ca6b5;
+      --page-line: #242936;
+    }
+
+    html { background: var(--page-bg); }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 16% 0%, rgb(255 255 255 / 0.06), transparent 28rem),
+        linear-gradient(180deg, #10131a 0%, #050607 42rem);
+      color: var(--page-text);
+      font-family: Manrope, system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .page {
+      width: min(1500px, 100%);
+      margin: 0 auto;
+      padding: 40px 20px 64px;
+    }
+
+    header {
+      display: grid;
+      gap: 10px;
+      max-width: 920px;
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      color: var(--page-muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Barlow Condensed", Manrope, sans-serif;
+      font-size: clamp(40px, 7vw, 84px);
+      line-height: 0.92;
+      text-transform: uppercase;
+    }
+
+    .intro {
+      max-width: 780px;
+      margin: 0;
+      color: var(--page-muted);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .option {
+      --bg: #050506;
+      --surface: #111318;
+      --surface-2: #181d25;
+      --line: #2a303b;
+      --text: #f2f4f7;
+      --muted: #9aa4b2;
+      --primary: #d0d7e2;
+      --accent: #c99131;
+      --danger: #d85b66;
+      --success: #6fbf86;
+      --heading: Manrope, sans-serif;
+      --body: Manrope, sans-serif;
+      --numbers: "Roboto Condensed", monospace;
+
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+      min-height: 360px;
+      overflow: hidden;
+      border: 1px solid color-mix(in srgb, var(--line) 92%, white);
+      border-radius: 14px;
+      background: var(--bg);
+      box-shadow: 0 22px 70px rgb(0 0 0 / 0.34);
+    }
+
+    .meta {
+      display: grid;
+      align-content: start;
+      gap: 16px;
+      padding: 18px;
+      border-right: 1px solid var(--line);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 92%, white), var(--surface));
+    }
+
+    .number {
+      width: max-content;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      padding: 4px 10px;
+      font: 700 12px/1 var(--numbers);
+    }
+
+    .name {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--heading);
+      font-size: 30px;
+      line-height: 0.98;
+      text-transform: uppercase;
+    }
+
+    .desc {
+      margin: 0;
+      color: var(--muted);
+      font-family: var(--body);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .fonts {
+      display: grid;
+      gap: 5px;
+      color: var(--muted);
+      font: 700 12px/1.35 var(--body);
+    }
+
+    .fonts strong { color: var(--text); }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+
+    .swatch {
+      height: 34px;
+      border: 1px solid rgb(255 255 255 / 0.12);
+      border-radius: 7px;
+    }
+
+    .preview {
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 14px;
+      min-width: 0;
+      padding: 16px;
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--primary) 9%, transparent), transparent 260px),
+        var(--bg);
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .brand {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .mark {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--surface-2);
+      color: var(--primary);
+      font: 800 14px/1 var(--numbers);
+    }
+
+    .brand-title {
+      color: var(--text);
+      font-family: var(--heading);
+      font-size: 19px;
+      font-weight: 800;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .brand-sub {
+      margin-top: 3px;
+      color: var(--muted);
+      font: 700 11px/1 var(--body);
+    }
+
+    .button {
+      border: 1px solid var(--primary);
+      border-radius: 8px;
+      background: var(--primary);
+      color: var(--bg);
+      padding: 10px 12px;
+      font: 800 13px/1 var(--body);
+      white-space: nowrap;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .stat {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--surface);
+      padding: 10px;
+    }
+
+    .label {
+      color: var(--muted);
+      font: 800 10px/1 var(--body);
+      text-transform: uppercase;
+    }
+
+    .value {
+      margin-top: 8px;
+      color: var(--text);
+      font: 800 24px/1 var(--numbers);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .table {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--surface);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 48px 1.4fr 0.7fr 0.7fr 0.9fr;
+      gap: 10px;
+      align-items: center;
+      min-height: 48px;
+      padding: 0 12px;
+      border-bottom: 1px solid var(--line);
+      color: var(--text);
+      font: 700 13px/1.25 var(--body);
+    }
+
+    .row:last-child { border-bottom: 0; }
+
+    .row.head {
+      min-height: 36px;
+      color: var(--muted);
+      font: 800 10px/1 var(--body);
+      text-transform: uppercase;
+    }
+
+    .rank,
+    .num {
+      font-family: var(--numbers);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .player small {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .pill {
+      width: max-content;
+      max-width: 100%;
+      border: 1px solid color-mix(in srgb, var(--accent) 50%, var(--line));
+      border-radius: 999px;
+      color: var(--accent);
+      padding: 5px 8px;
+      font: 800 11px/1 var(--body);
+    }
+
+    .p01 {
+      --bg: #010101; --surface: #101217; --surface-2: #191e27; --line: #303642;
+      --text: #f4f4f0; --muted: #9ca3ad; --primary: #b8c0cd; --accent: #c9943c;
+      --heading: "Barlow Condensed", sans-serif; --body: "Barlow", sans-serif; --numbers: "Roboto Condensed", monospace;
+    }
+
+    .p02 {
+      --bg: #070705; --surface: #15140f; --surface-2: #211f18; --line: #403a2d;
+      --text: #f6f0df; --muted: #a59d8d; --primary: #d6c59c; --accent: #b77c2e;
+      --heading: "IBM Plex Sans Condensed", sans-serif; --body: "IBM Plex Sans", sans-serif; --numbers: "Roboto Condensed", monospace;
+    }
+
+    .p03 {
+      --bg: #05070a; --surface: #10151d; --surface-2: #18202d; --line: #29364a;
+      --text: #edf4ff; --muted: #91a2b8; --primary: #8da3c3; --accent: #c56b4f;
+      --heading: "Archivo", sans-serif; --body: "Manrope", sans-serif; --numbers: "Roboto Condensed", monospace;
+    }
+
+    .p04 {
+      --bg: #0a0a0b; --surface: #151518; --surface-2: #222127; --line: #36333d;
+      --text: #f3eff7; --muted: #a39dad; --primary: #c1bacd; --accent: #9f7fd0;
+      --heading: "Sora", sans-serif; --body: "Spline Sans", sans-serif; --numbers: "Roboto Condensed", monospace;
+    }
+
+    .p05 {
+      --bg: #050808; --surface: #101817; --surface-2: #182522; --line: #2b3b37;
+      --text: #edf7f1; --muted: #94aaa0; --primary: #9db8a9; --accent: #d0a84d;
+      --heading: "Saira Condensed", sans-serif; --body: "Manrope", sans-serif; --numbers: "Roboto Condensed", monospace;
+    }
+
+    .p06 {
+      --bg: #090805; --surface: #17130d; --surface-2: #241e14; --line: #413624;
+      --text: #fff3d6; --muted: #b29d75; --primary: #e0c878; --accent: #e06d32;
+      --heading: "Barlow Condensed", sans-serif; --body: "Manrope", sans-serif; --numbers: "Roboto Condensed", monospace;
+    }
+
+    .p07 {
+      --bg: #06070b; --surface: #11131c; --surface-2: #1b2030; --line: #30364b;
+      --text: #f1f4ff; --muted: #98a2bd; --primary: #aab5d4; --accent: #d14f68;
+      --heading: "Archivo", sans-serif; --body: "Spline Sans", sans-serif; --numbers: "Roboto Condensed", monospace;
+    }
+
+    .p08 {
+      --bg: #0b0b0a; --surface: #171714; --surface-2: #23231f; --line: #3a392f;
+      --text: #f4f2e9; --muted: #a9a596; --primary: #d3cdbb; --accent: #8fb36b;
+      --heading: "IBM Plex Sans Condensed", sans-serif; --body: "Manrope", sans-serif; --numbers: "Roboto Condensed", monospace;
+    }
+
+    .p09 {
+      --bg: #050407; --surface: #121016; --surface-2: #1d1924; --line: #342d3d;
+      --text: #f5f0fb; --muted: #aaa0b6; --primary: #c9bfd8; --accent: #d68b46;
+      --heading: "Sora", sans-serif; --body: "IBM Plex Sans", sans-serif; --numbers: "Roboto Condensed", monospace;
+    }
+
+    .p10 {
+      --bg: #f4f1e8; --surface: #fffdf7; --surface-2: #ece6da; --line: #cec4b4;
+      --text: #1d1c18; --muted: #6c665c; --primary: #30343b; --accent: #9a5b28;
+      --heading: "Archivo", sans-serif; --body: "Manrope", sans-serif; --numbers: "Roboto Condensed", monospace;
+    }
+
+    @media (max-width: 1100px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 740px) {
+      .page { padding: 24px 12px 40px; }
+      .option { grid-template-columns: 1fr; }
+      .meta { border-right: 0; border-bottom: 1px solid var(--line); }
+      .summary { grid-template-columns: 1fr; }
+      .row {
+        grid-template-columns: 42px 1fr 0.7fr;
+      }
+      .row > :nth-child(4),
+      .row > :nth-child(5) {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div class="eyebrow">Solid Stats / дизайн-направления</div>
+      <h1>10 палитр и шрифтов</h1>
+      <p class="intro">Это отдельный выбор визуальной системы. Смотри не на конкретный layout, а на ощущение: цвет фона, контраст, характер заголовков, читаемость чисел и насколько интерфейс похож на серьезную esports analytics платформу, а не на декоративный SaaS.</p>
+    </header>
+
+    <section class="grid">
+      <article class="option p01">
+        <aside class="meta">
+          <div class="number">01</div>
+          <h2 class="name">Obsidian League</h2>
+          <p class="desc">Почти черная база, стальные контролы, золотой акцент только для важных чисел. Ближе всего к темному esports betting референсу.</p>
+          <div class="fonts"><strong>Heading:</strong> Barlow Condensed <strong>UI:</strong> Barlow <strong>Numbers:</strong> Roboto Condensed</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#010101"></div><div class="swatch" style="background:#101217"></div><div class="swatch" style="background:#303642"></div><div class="swatch" style="background:#b8c0cd"></div><div class="swatch" style="background:#c9943c"></div>
+          </div>
+        </aside>
+        <div class="preview">
+          <div class="top"><div class="brand"><div class="mark">SS</div><div><div class="brand-title">Solid Stats</div><div class="brand-sub">Players / May rotation</div></div></div><button class="button">Open profile</button></div>
+          <div class="summary"><div class="stat"><div class="label">Players</div><div class="value">23 456</div></div><div class="stat"><div class="label">Replays</div><div class="value">23 473</div></div><div class="stat"><div class="label">Bounty</div><div class="value">98.4k</div></div></div>
+          <div class="table"><div class="row head"><span>#</span><span>Player</span><span>Kills</span><span>K/D</span><span>Status</span></div><div class="row"><span class="rank">#1</span><span class="player">KOT_BARS<small>Northwind</small></span><span class="num">1 284</span><span class="num">3.42</span><span class="pill">Top</span></div><div class="row"><span class="rank">#2</span><span class="player">Maks_Raptor<small>Steppe</small></span><span class="num">1 168</span><span class="num">2.91</span><span class="pill">Rising</span></div></div>
+        </div>
+      </article>
+
+      <article class="option p02">
+        <aside class="meta">
+          <div class="number">02</div>
+          <h2 class="name">Tactical Sand</h2>
+          <p class="desc">Теплый military/operations оттенок без грязного коричневого перегруза. Менее футуристично, более “полевой штаб”.</p>
+          <div class="fonts"><strong>Heading:</strong> IBM Plex Sans Condensed <strong>UI:</strong> IBM Plex Sans <strong>Numbers:</strong> Roboto Condensed</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#070705"></div><div class="swatch" style="background:#15140f"></div><div class="swatch" style="background:#403a2d"></div><div class="swatch" style="background:#d6c59c"></div><div class="swatch" style="background:#b77c2e"></div>
+          </div>
+        </aside>
+        <div class="preview"><div class="top"><div class="brand"><div class="mark">SS</div><div><div class="brand-title">Solid Stats</div><div class="brand-sub">Rotation leaderboard</div></div></div><button class="button">Filter</button></div><div class="summary"><div class="stat"><div class="label">Kills</div><div class="value">88k</div></div><div class="stat"><div class="label">Squads</div><div class="value">412</div></div><div class="stat"><div class="label">KD avg</div><div class="value">1.42</div></div></div><div class="table"><div class="row head"><span>#</span><span>Player</span><span>Kills</span><span>K/D</span><span>Status</span></div><div class="row"><span class="rank">#1</span><span class="player">KOT_BARS<small>Northwind</small></span><span class="num">1 284</span><span class="num">3.42</span><span class="pill">Top</span></div><div class="row"><span class="rank">#2</span><span class="player">FROST_line<small>Baikal</small></span><span class="num">924</span><span class="num">2.31</span><span class="pill">Stable</span></div></div></div>
+      </article>
+
+      <article class="option p03">
+        <aside class="meta">
+          <div class="number">03</div>
+          <h2 class="name">Cold Command</h2>
+          <p class="desc">Холодный сине-графитовый интерфейс. Подходит, если хочется максимально серьезно, чисто и без betting-агрессии.</p>
+          <div class="fonts"><strong>Heading:</strong> Archivo <strong>UI:</strong> Manrope <strong>Numbers:</strong> Roboto Condensed</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#05070a"></div><div class="swatch" style="background:#10151d"></div><div class="swatch" style="background:#29364a"></div><div class="swatch" style="background:#8da3c3"></div><div class="swatch" style="background:#c56b4f"></div>
+          </div>
+        </aside>
+        <div class="preview"><div class="top"><div class="brand"><div class="mark">SS</div><div><div class="brand-title">Solid Stats</div><div class="brand-sub">Public player stats</div></div></div><button class="button">Search</button></div><div class="summary"><div class="stat"><div class="label">Players</div><div class="value">23.4k</div></div><div class="stat"><div class="label">Active</div><div class="value">1 980</div></div><div class="stat"><div class="label">Games</div><div class="value">7 204</div></div></div><div class="table"><div class="row head"><span>#</span><span>Player</span><span>Kills</span><span>K/D</span><span>Status</span></div><div class="row"><span class="rank">#1</span><span class="player">OldManSVD<small>No squad</small></span><span class="num">1 007</span><span class="num">2.64</span><span class="pill">Focus</span></div><div class="row"><span class="rank">#2</span><span class="player">Pioneer<small>Northwind</small></span><span class="num">831</span><span class="num">1.98</span><span class="pill">New</span></div></div></div>
+      </article>
+
+      <article class="option p04">
+        <aside class="meta">
+          <div class="number">04</div>
+          <h2 class="name">Void Violet</h2>
+          <p class="desc">Темный фиолетовый нюанс, но без кислотных градиентов. Более premium/SaaS, меньше military.</p>
+          <div class="fonts"><strong>Heading:</strong> Sora <strong>UI:</strong> Spline Sans <strong>Numbers:</strong> Roboto Condensed</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#0a0a0b"></div><div class="swatch" style="background:#151518"></div><div class="swatch" style="background:#36333d"></div><div class="swatch" style="background:#c1bacd"></div><div class="swatch" style="background:#9f7fd0"></div>
+          </div>
+        </aside>
+        <div class="preview"><div class="top"><div class="brand"><div class="mark">SS</div><div><div class="brand-title">Solid Stats</div><div class="brand-sub">Commander side</div></div></div><button class="button">Details</button></div><div class="summary"><div class="stat"><div class="label">KS games</div><div class="value">418</div></div><div class="stat"><div class="label">Winrate</div><div class="value">57%</div></div><div class="stat"><div class="label">Unknown</div><div class="value">42</div></div></div><div class="table"><div class="row head"><span>#</span><span>Player</span><span>Kills</span><span>K/D</span><span>Status</span></div><div class="row"><span class="rank">#1</span><span class="player">Maks_Raptor<small>Steppe</small></span><span class="num">1 168</span><span class="num">2.91</span><span class="pill">Prime</span></div><div class="row"><span class="rank">#2</span><span class="player">sokol_22<small>Vector</small></span><span class="num">899</span><span class="num">2.14</span><span class="pill">Watch</span></div></div></div>
+      </article>
+
+      <article class="option p05">
+        <aside class="meta">
+          <div class="number">05</div>
+          <h2 class="name">Forest Ops</h2>
+          <p class="desc">Зеленовато-графитовая ops-система, приглушенная и практичная. Хорошо ложится на военную тематику без яркости.</p>
+          <div class="fonts"><strong>Heading:</strong> Saira Condensed <strong>UI:</strong> Manrope <strong>Numbers:</strong> Roboto Condensed</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#050808"></div><div class="swatch" style="background:#101817"></div><div class="swatch" style="background:#2b3b37"></div><div class="swatch" style="background:#9db8a9"></div><div class="swatch" style="background:#d0a84d"></div>
+          </div>
+        </aside>
+        <div class="preview"><div class="top"><div class="brand"><div class="mark">SS</div><div><div class="brand-title">Solid Stats</div><div class="brand-sub">Squad effectiveness</div></div></div><button class="button">Compare</button></div><div class="summary"><div class="stat"><div class="label">Squads</div><div class="value">412</div></div><div class="stat"><div class="label">Eff</div><div class="value">78.4</div></div><div class="stat"><div class="label">Games</div><div class="value">208</div></div></div><div class="table"><div class="row head"><span>#</span><span>Player</span><span>Kills</span><span>K/D</span><span>Status</span></div><div class="row"><span class="rank">#1</span><span class="player">KOT_BARS<small>Northwind</small></span><span class="num">1 284</span><span class="num">3.42</span><span class="pill">Lead</span></div><div class="row"><span class="rank">#2</span><span class="player">Pioneer<small>Northwind</small></span><span class="num">831</span><span class="num">1.98</span><span class="pill">Core</span></div></div></div>
+      </article>
+
+      <article class="option p06">
+        <aside class="meta">
+          <div class="number">06</div>
+          <h2 class="name">Amber Terminal</h2>
+          <p class="desc">Самое “ставочное” направление: черный терминал, янтарные акценты, высокий контраст. Риск: может стать слишком агрессивным.</p>
+          <div class="fonts"><strong>Heading:</strong> Barlow Condensed <strong>UI:</strong> Manrope <strong>Numbers:</strong> Roboto Condensed</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#090805"></div><div class="swatch" style="background:#17130d"></div><div class="swatch" style="background:#413624"></div><div class="swatch" style="background:#e0c878"></div><div class="swatch" style="background:#e06d32"></div>
+          </div>
+        </aside>
+        <div class="preview"><div class="top"><div class="brand"><div class="mark">SS</div><div><div class="brand-title">Solid Stats</div><div class="brand-sub">Bounty board</div></div></div><button class="button">Open</button></div><div class="summary"><div class="stat"><div class="label">Pool</div><div class="value">98.4k</div></div><div class="stat"><div class="label">Kills</div><div class="value">1 284</div></div><div class="stat"><div class="label">Coef</div><div class="value">3.42</div></div></div><div class="table"><div class="row head"><span>#</span><span>Player</span><span>Kills</span><span>K/D</span><span>Status</span></div><div class="row"><span class="rank">#1</span><span class="player">KOT_BARS<small>Northwind</small></span><span class="num">1 284</span><span class="num">3.42</span><span class="pill">Bounty</span></div><div class="row"><span class="rank">#2</span><span class="player">Maks_Raptor<small>Steppe</small></span><span class="num">1 168</span><span class="num">2.91</span><span class="pill">Hot</span></div></div></div>
+      </article>
+
+      <article class="option p07">
+        <aside class="meta">
+          <div class="number">07</div>
+          <h2 class="name">Night Broadcast</h2>
+          <p class="desc">Похоже на киберспортивный broadcast overlay: темно-синий, светлый steel, красный акцент для внимания.</p>
+          <div class="fonts"><strong>Heading:</strong> Archivo <strong>UI:</strong> Spline Sans <strong>Numbers:</strong> Roboto Condensed</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#06070b"></div><div class="swatch" style="background:#11131c"></div><div class="swatch" style="background:#30364b"></div><div class="swatch" style="background:#aab5d4"></div><div class="swatch" style="background:#d14f68"></div>
+          </div>
+        </aside>
+        <div class="preview"><div class="top"><div class="brand"><div class="mark">SS</div><div><div class="brand-title">Solid Stats</div><div class="brand-sub">Replay detail</div></div></div><button class="button">Watch</button></div><div class="summary"><div class="stat"><div class="label">Events</div><div class="value">7 841</div></div><div class="stat"><div class="label">Players</div><div class="value">126</div></div><div class="stat"><div class="label">Time</div><div class="value">64m</div></div></div><div class="table"><div class="row head"><span>#</span><span>Player</span><span>Kills</span><span>K/D</span><span>Status</span></div><div class="row"><span class="rank">#1</span><span class="player">FROST_line<small>Baikal</small></span><span class="num">924</span><span class="num">2.31</span><span class="pill">Clutch</span></div><div class="row"><span class="rank">#2</span><span class="player">sokol_22<small>Vector</small></span><span class="num">899</span><span class="num">2.14</span><span class="pill">Live</span></div></div></div>
+      </article>
+
+      <article class="option p08">
+        <aside class="meta">
+          <div class="number">08</div>
+          <h2 class="name">Olive Ledger</h2>
+          <p class="desc">Самый спокойный и “статистический” вариант. Меньше cyber, больше аккуратного реестра данных.</p>
+          <div class="fonts"><strong>Heading:</strong> IBM Plex Sans Condensed <strong>UI:</strong> Manrope <strong>Numbers:</strong> Roboto Condensed</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#0b0b0a"></div><div class="swatch" style="background:#171714"></div><div class="swatch" style="background:#3a392f"></div><div class="swatch" style="background:#d3cdbb"></div><div class="swatch" style="background:#8fb36b"></div>
+          </div>
+        </aside>
+        <div class="preview"><div class="top"><div class="brand"><div class="mark">SS</div><div><div class="brand-title">Solid Stats</div><div class="brand-sub">Stats ledger</div></div></div><button class="button">Export</button></div><div class="summary"><div class="stat"><div class="label">Rows</div><div class="value">100k</div></div><div class="stat"><div class="label">Cache</div><div class="value">24h</div></div><div class="stat"><div class="label">Links</div><div class="value">8 412</div></div></div><div class="table"><div class="row head"><span>#</span><span>Player</span><span>Kills</span><span>K/D</span><span>Status</span></div><div class="row"><span class="rank">#1</span><span class="player">OldManSVD<small>No squad</small></span><span class="num">1 007</span><span class="num">2.64</span><span class="pill">Seen</span></div><div class="row"><span class="rank">#2</span><span class="player">Pioneer<small>Northwind</small></span><span class="num">831</span><span class="num">1.98</span><span class="pill">Valid</span></div></div></div>
+      </article>
+
+      <article class="option p09">
+        <aside class="meta">
+          <div class="number">09</div>
+          <h2 class="name">Carbon Royal</h2>
+          <p class="desc">Темный premium вариант с мягким фиолетовым подтоном и медным акцентом. Дороже, но менее “военно”.</p>
+          <div class="fonts"><strong>Heading:</strong> Sora <strong>UI:</strong> IBM Plex Sans <strong>Numbers:</strong> Roboto Condensed</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#050407"></div><div class="swatch" style="background:#121016"></div><div class="swatch" style="background:#342d3d"></div><div class="swatch" style="background:#c9bfd8"></div><div class="swatch" style="background:#d68b46"></div>
+          </div>
+        </aside>
+        <div class="preview"><div class="top"><div class="brand"><div class="mark">SS</div><div><div class="brand-title">Solid Stats</div><div class="brand-sub">Profile analytics</div></div></div><button class="button">Follow</button></div><div class="summary"><div class="stat"><div class="label">Score</div><div class="value">91.2</div></div><div class="stat"><div class="label">Peak</div><div class="value">#4</div></div><div class="stat"><div class="label">Games</div><div class="value">522</div></div></div><div class="table"><div class="row head"><span>#</span><span>Player</span><span>Kills</span><span>K/D</span><span>Status</span></div><div class="row"><span class="rank">#1</span><span class="player">Maks_Raptor<small>Steppe</small></span><span class="num">1 168</span><span class="num">2.91</span><span class="pill">Elite</span></div><div class="row"><span class="rank">#2</span><span class="player">FROST_line<small>Baikal</small></span><span class="num">924</span><span class="num">2.31</span><span class="pill">Core</span></div></div></div>
+      </article>
+
+      <article class="option p10">
+        <aside class="meta">
+          <div class="number">10</div>
+          <h2 class="name">Paper Ops</h2>
+          <p class="desc">Светлая first-class тема. Не основной кандидат для default, но полезно понять, какой должна быть дневная версия продукта.</p>
+          <div class="fonts"><strong>Heading:</strong> Archivo <strong>UI:</strong> Manrope <strong>Numbers:</strong> Roboto Condensed</div>
+          <div class="swatches">
+            <div class="swatch" style="background:#f4f1e8"></div><div class="swatch" style="background:#fffdf7"></div><div class="swatch" style="background:#cec4b4"></div><div class="swatch" style="background:#30343b"></div><div class="swatch" style="background:#9a5b28"></div>
+          </div>
+        </aside>
+        <div class="preview"><div class="top"><div class="brand"><div class="mark">SS</div><div><div class="brand-title">Solid Stats</div><div class="brand-sub">Light theme baseline</div></div></div><button class="button">Open</button></div><div class="summary"><div class="stat"><div class="label">Players</div><div class="value">23k</div></div><div class="stat"><div class="label">Replays</div><div class="value">23k</div></div><div class="stat"><div class="label">Rank</div><div class="value">#1</div></div></div><div class="table"><div class="row head"><span>#</span><span>Player</span><span>Kills</span><span>K/D</span><span>Status</span></div><div class="row"><span class="rank">#1</span><span class="player">KOT_BARS<small>Northwind</small></span><span class="num">1 284</span><span class="num">3.42</span><span class="pill">Top</span></div><div class="row"><span class="rank">#2</span><span class="player">sokol_22<small>Vector</small></span><span class="num">899</span><span class="num">2.14</span><span class="pill">Active</span></div></div></div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
