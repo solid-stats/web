@@ -37,3 +37,17 @@ Read these planning files before planning or implementing:
 ## Documentation Language
 
 All project documentation must be written in English only.
+
+<!-- GSD:skills-start source:skills/ -->
+## Project Skills
+
+| Skill | When to Invoke |
+|-------|----------------|
+| `solidstats-frontend-react-conventions` | Любой компонент, роут, хук, слой FSD, server/client boundary, TanStack Query / Router, форма, стиль — архитектура и конвенции frontend (вобрал TanStack Start / React / TSX best practices). |
+| `solidstats-frontend-react-code-review` | Педантичное код-ревью frontend; ruleset делегируется в conventions, формат отчёта — в process-review-standards. |
+| `solidstats-frontend-react-tests` | Написание или ревью frontend-тестов (Vitest для hooks/logic, Playwright для E2E) поверх process-testing-standards. |
+| `solidstats-process-review-standards` | Общий фундамент формата код-ревью (severity-бакеты, формат отчёта, правила вердикта); подключается code-review skills, не используется самостоятельно. |
+| `solidstats-process-testing-standards` | Общая философия тестов (AAA, изоляция, детерминизм, test doubles, размещение файлов); подключается per-stack test skills. |
+| `tanstack-start` | Any routing, SSR, server functions, data loading, or TanStack Start config |
+| `openapi-to-typescript` | Generating or updating TypeScript types from `server-2` OpenAPI schema |
+<!-- GSD:skills-end -->
