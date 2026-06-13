@@ -11,43 +11,43 @@
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-frontend-react-code-review/SKILL.md",
-      "computedHash": "d5845f9da2970cdfebd3e061719ea6876c00e6c08bff3a7ed219485c2af49612"
+      "computedHash": "2933e438937cf595d7e595b5f69d227ea68f93a1390d69827188fa264cfd2e1c"
     },
     "solidstats-frontend-react-conventions": {
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-frontend-react-conventions/SKILL.md",
-      "computedHash": "8ade92d58deb14d27b52c3bdfbfb1ffa334bf8c2182af1704d34276117b7c706"
+      "computedHash": "231b1bd3c3367959a67fb09081142bd76b7899e249639c3d589983c7ebc4b9bd"
     },
     "solidstats-frontend-react-tests": {
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-frontend-react-tests/SKILL.md",
-      "computedHash": "5d5fd9b6b32a01f7e25bb8f52516091a474ba7aebd865ddc487250477b699eb7"
+      "computedHash": "abeb339d424cd4eb4e6b121e2783fc2b5b199be15460df2d06938ffd8fb44b28"
     },
-    "solidstats-process-project-standards": {
+    "solidstats-shared-project-standards": {
       "source": "solid-stats/skills",
       "sourceType": "github",
-      "skillPath": "solidstats-process-project-standards/SKILL.md",
-      "computedHash": "4333ac10b8f09bea8e3bfc79f3ad041de5b19a95eac4d14d8a810eae98bf33d6"
+      "skillPath": "solidstats-shared-project-standards/SKILL.md",
+      "computedHash": "6e66174415fd4b0c3f997119a6175fbd69765d2fdc8a8837b34081f5e84d34ba"
     },
-    "solidstats-process-review-standards": {
+    "solidstats-shared-review-standards": {
       "source": "solid-stats/skills",
       "sourceType": "github",
-      "skillPath": "solidstats-process-review-standards/SKILL.md",
-      "computedHash": "3c2b24d531ad63c3a0c934475492ad64f247cc8926e1b684e44ebc97bf9eb237"
+      "skillPath": "solidstats-shared-review-standards/SKILL.md",
+      "computedHash": "8cd5d06815a76a60d4625286b0a13d210d3d51be7fedf581ab607ed423262322"
     },
-    "solidstats-process-testing-standards": {
+    "solidstats-shared-testing-standards": {
       "source": "solid-stats/skills",
       "sourceType": "github",
-      "skillPath": "solidstats-process-testing-standards/SKILL.md",
-      "computedHash": "e569f9ed94b6e687d6034f46d2743209459e50befe88e60bdbe564dd1a26cbc6"
+      "skillPath": "solidstats-shared-testing-standards/SKILL.md",
+      "computedHash": "7f7d9cd5698c71380f34115619a4cb992a6eba0116f667493749df73d56b3a25"
     },
-    "solidstats-process-ts-standards": {
+    "solidstats-shared-ts-standards": {
       "source": "solid-stats/skills",
       "sourceType": "github",
-      "skillPath": "solidstats-process-ts-standards/SKILL.md",
-      "computedHash": "07f24e5006f9536281a3f2613b50594cbf49f57411eb3dd4c4a564c931ebe063"
+      "skillPath": "solidstats-shared-ts-standards/SKILL.md",
+      "computedHash": "1ee437ea86db43b7cf52458e46f53c03df015a58cb4009f58ca5a9dbc6d0467e"
     },
     "tanstack-start": {
       "source": "tanstack-skills/tanstack-skills",
