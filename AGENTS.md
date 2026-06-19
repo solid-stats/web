@@ -34,7 +34,7 @@ Solid Stats is a multi-project product composed of:
 
 Read these planning files before planning or implementing:
 
-- `gsd-briefs/web.md` — the authoritative project brief (scope, quality bar, design direction).
+- `plans/web/briefs/web.md` (in the `plans` repo) — the authoritative project brief (scope, quality bar, design direction).
 - `.planning/` — sketches and planning artifacts.
 
 ## Product-Wide Standards
