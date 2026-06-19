@@ -1,0 +1,50 @@
+/* hifi/squad-variants.css — row-layout exploration (canvas). Dark DS frame inside
+   each artboard + the two custom row compositions (B card-row, C score-forward).
+   Variant A reuses kit.css .tbl + players.css/squads.css classes verbatim. */
+
+.rv-frame { background: var(--bg-0); padding: 22px; height: 100%; box-sizing: border-box;
+  display: flex; flex-direction: column; gap: 14px; }
+.rv-head { display: flex; flex-direction: column; gap: 6px; }
+.rv-head h3 { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: -0.01em; color: var(--fg-1); }
+.rv-head p { font-size: 12.5px; color: var(--fg-2); line-height: 1.5; max-width: 62ch; }
+.rv-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+.rv-tag { font-size: 10px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  padding: 3px 7px; border-radius: var(--radius-xs); background: var(--surface-2);
+  border: 1px solid var(--border-1); color: var(--fg-3); }
+
+/* ---- Variant B: identity-led card row ---- */
+.rv-b-row { display: flex; align-items: center; gap: 12px; padding: 11px 14px 11px 11px;
+  border-bottom: 1px solid var(--border-1); border-left: 3px solid var(--side, var(--border-2)); cursor: pointer; }
+.rv-b-row:last-child { border-bottom: 0; }
+.rv-b-row:hover { background: var(--surface-3); }
+.rv-b-row .rank { flex: none; width: 22px; text-align: right; }
+.rv-b-id { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
+.rv-b-name { font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 8px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rv-b-name .sq-tag { font-family: var(--font-mono); font-size: 11px; color: var(--fg-2); flex: none; }
+.rv-b-sub { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--fg-3); white-space: nowrap; }
+.rv-b-sub svg { width: 12px; height: 12px; color: var(--fg-3); flex: none; }
+.rv-b-row .score-trend { width: 64px; flex: none; height: 26px; }
+.rv-b-metrics { display: flex; align-items: center; gap: 16px; flex: none; }
+.rv-b-m { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+
+/* ---- Variant C: score-forward ---- */
+.rv-c-row { display: flex; align-items: center; gap: 12px; padding: 11px 14px;
+  border-bottom: 1px solid var(--border-1); cursor: pointer; }
+.rv-c-row:last-child { border-bottom: 0; }
+.rv-c-row:hover { background: var(--surface-3); }
+.rv-c-row .rank { flex: none; width: 22px; text-align: right; }
+.rv-c-id { display: flex; flex-direction: column; gap: 2px; width: 168px; flex: none; min-width: 0; }
+.rv-c-name { font-weight: 600; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rv-c-sub { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--fg-3); white-space: nowrap; }
+.rv-c-sub .side-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.rv-c-sub .sq-tag { font-family: var(--font-mono); font-size: 11px; color: var(--fg-2); }
+.rv-c-bar-wrap { flex: 1; display: flex; align-items: center; gap: 12px; min-width: 0; }
+.rv-c-track { position: relative; flex: 1; height: 8px; background: var(--surface-2);
+  border-radius: var(--radius-xs); overflow: hidden; min-width: 60px; }
+.rv-c-bar { display: block; height: 8px; border-radius: var(--radius-xs); background: var(--tc); }
+.rv-c-score b { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 700;
+  font-size: 16px; color: var(--tc); min-width: 48px; display: inline-block; text-align: right; }
+.rv-c-kd { flex: none; font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 13px;
+  color: var(--fg-2); display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.rv-c-kd i { font-style: normal; font-size: 9px; font-weight: 600; letter-spacing: .08em; color: var(--fg-3); }

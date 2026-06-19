@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Solid Stats — Squads · row layouts</title>
+<link rel="stylesheet" href="colors_and_type.css" />
+<link rel="stylesheet" href="kit.css" />
+<link rel="stylesheet" href="overview.css" />
+<link rel="stylesheet" href="players.css" />
+<link rel="stylesheet" href="squads.css" />
+<link rel="stylesheet" href="squad-variants.css" />
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script src="tiers.js"></script>
+<script src="data-overview.js"></script>
+<script src="data-squads.js"></script>
+<script type="text/babel" src="ui.jsx"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="squad-row-variants.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+  function Frame({ title, desc, tags, children }) {
+    return (
+      <div className="rv-frame">
+        <div className="rv-head">
+          <h3>{title}</h3>
+          <p>{desc}</p>
+          <div className="rv-tags">{tags.map(t => <span className="rv-tag" key={t}>{t}</span>)}</div>
+        </div>
+        {children}
+      </div>
+    );
+  }
+
+  function App() {
+    React.useEffect(() => { document.documentElement.setAttribute('data-theme', 'dark'); }, []);
+    return (
+      <DesignCanvas>
+        <DCSection id="rows" title="Список отрядов · варианты строки"
+          subtitle="Одни и те же данные (Ротация 14, топ отрядов), три композиции строки. Стиль и токены общие — выбор только про компоновку.">
+          <DCArtboard id="a" label="A · Таблица (текущая)" width={772} height={548}>
+            <Frame
+              title="A · Таблица"
+              desc="Плотная сетка колонок. Максимум данных на экран, числа выровнены по столбцам — удобно сравнивать значения по вертикали и сортировать. Это то, что сейчас на странице."
+              tags={['Плотно', 'Сравнение колонок', 'Десктоп-продуктивно']}>
+              <RowsA />
+            </Frame>
+          </DCArtboard>
+
+          <DCArtboard id="b" label="B · Карточная строка" width={772} height={596}>
+            <Frame
+              title="B · Карточная строка"
+              desc="Идентичность во главе: цветная полоса стороны слева, крупное имя с тегом, второстепенные числа уходят в подстроку. Ниже плотность, выше сканируемость — хорошо для мобайла и беглого просмотра."
+              tags={['Идентичность', 'Сканируемость', 'Полоса стороны']}>
+              <RowsB />
+            </Frame>
+          </DCArtboard>
+
+          <DCArtboard id="c" label="C · Счёт-форвард" width={772} height={548}>
+            <Frame
+              title="C · Счёт-форвард"
+              desc="Счёт — горизонтальная тир-полоса, пропорциональная лидеру: рейтинг читается визуально с одного взгляда. Остальное свёрнуто до K/D и тега. Меньше всего чисел, сильнее всего акцент на ранге."
+              tags={['Визуальный рейтинг', 'Один акцент', 'Минимум чисел']}>
+              <RowsC />
+            </Frame>
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+<template id="__bundler_thumbnail" data-bg-color="#0A0D13">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect x="450" y="300" width="78" height="170" rx="14" fill="#5B6678"/>
+    <rect x="561" y="220" width="78" height="250" rx="14" fill="#36C5E0"/>
+    <rect x="672" y="140" width="78" height="330" rx="14" fill="#36C5E0"/>
+    <text x="600" y="560" text-anchor="middle" font-family="'Saira',sans-serif" font-weight="700" font-size="56" fill="#EAEEF6">Solid Stats</text>
+    <text x="600" y="616" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="28" fill="#616B80">Отряды · row layouts</text>
+  </svg>
+</template>
+</body>
+</html>

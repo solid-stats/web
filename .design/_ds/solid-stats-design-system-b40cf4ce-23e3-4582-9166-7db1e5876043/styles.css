@@ -1,0 +1,8 @@
+/* ============================================================================
+   SOLID STATS — Design System entry point
+   Link THIS file from any consumer; it pulls in the token source of truth.
+   (The UI-kit styles at ui_kits/web/kit.css and the DS-preview chrome at
+   preview/_preview.css are scoped and intentionally NOT imported here.)
+   ========================================================================== */
+
+@import url('colors_and_type.css');

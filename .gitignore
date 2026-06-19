@@ -1,0 +1,55 @@
+node_modules/
+dist/
+coverage/
+
+# GSD research web-fetch cache (transient; regenerated per research run)
+.planning/**/.cache/
+
+# === GSD (only GSD-owned paths ignored; never committed) ===
+# GSD installs into a REAL .claude/ (Claude Code native home). Ignore ONLY GSD's
+# own paths under BOTH .claude/ and .agents/ — the project-skill symlinks in
+# .claude/skills/ stay TRACKED, so a fresh clone needs no re-linking.
+# Reinstall GSD itself with: npx -y @opengsd/gsd-core@latest --claude --local
+.claude/agents/
+.claude/commands/
+.claude/gsd-core/
+.claude/hooks/
+.claude/scripts/
+.claude/gsd-migration-journal/
+.claude/gsd-user-files-backup/
+.claude/gsd-file-manifest.json
+.claude/gsd-install-state.json
+.claude/.gsd-profile
+.claude/VERSION
+.claude/package.json
+.claude/settings.json
+.claude/settings.local.json
+.claude/skills/gsd-*/
+
+.agents/agents/
+.agents/commands/
+.agents/gsd-core/
+.agents/hooks/
+.agents/scripts/
+.agents/gsd-migration-journal/
+.agents/gsd-user-files-backup/
+.agents/gsd-file-manifest.json
+.agents/gsd-install-state.json
+.agents/.gsd-profile
+.agents/VERSION
+.agents/package.json
+.agents/settings.json
+.agents/settings.local.json
+.agents/skills/gsd-*/
+
+# graphify working dir (build + cache); canonical graph lives in .planning/graphs/
+graphify-out/
+# heavy regenerable graph artifacts (keep GRAPH_COMMUNITIES.md + GRAPH_REPORT.md)
+.planning/graphs/graph.json
+.planning/graphs/graph.html
+
+# === .design (Claude Design workspace) ===
+# Commit the source (hi-fi JSX, _ds/, specs, support.js); ignore regenerable heavy artifacts.
+.design/screenshots/
+.design/export/
+.design/.thumbnail

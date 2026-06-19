@@ -1,0 +1,353 @@
+/* hifi/player.css — Player profile specifics. Layers on colors_and_type.css + kit.css.
+   Shared tier color carrier (.tierc/.tier-*), .pips, .cell-tier and .fresh-* live in
+   kit.css now (reused by Overview). This file keeps profile-only pieces. */
+
+/* ---- breadcrumb ---- */
+.crumb { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 14px; }
+.crumb a { color: var(--primary); cursor: pointer; }
+.crumb a:hover { text-decoration: underline; }
+.crumb .sep { color: var(--fg-3); }
+.crumb .cur { color: var(--fg-2); }
+
+/* ---- identity band ---- */
+.pf-band { display: flex; align-items: stretch; gap: 16px; margin-bottom: 18px; }
+.pf-id { flex: 1; min-width: 0; }
+.pf-actions { display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; gap: 9px; flex: none; }
+.pf-namerow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.pf-name { font-family: var(--font-display); font-weight: 700; font-size: 30px; letter-spacing: -0.02em; line-height: 1.05; }
+.pf-rank { font-family: var(--font-mono); font-size: 13px; color: var(--fg-3); white-space: nowrap; }
+/* squad reference — name + tight mono tag, matches the rail timeline format */
+.squad-ref { letter-spacing: 0; }
+.squad-ref .sq-tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0; color: var(--fg-3); margin-left: 5px; }
+.squad-ref .side-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; margin-right: 2px; }
+.pf-meta { display: flex; align-items: center; gap: 10px; margin-top: 9px; flex-wrap: wrap; color: var(--fg-3); font-size: 12px; }
+.pf-extlink { display: inline-flex; align-items: center; gap: 6px; color: var(--primary); font-family: var(--font-mono); font-size: 12px; cursor: pointer; min-width: 0; max-width: 100%; }
+.pf-extlink:hover { text-decoration: underline; }
+.pf-extlink svg { width: 13px; height: 13px; flex: none; }
+.pf-extlink span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pf-actbtns { display: flex; gap: 8px; }
+.avatar.xl { width: 60px; height: 60px; font-size: 24px; border-radius: var(--radius-md); }
+
+/* ---- C: freshness pill overrides live in kit.css (shared) ---- */
+
+/* ---- A: provenance line (how the headline aggregate was derived) ---- */
+.prov-line { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 13px; margin-top: 12px;
+  padding: 11px 14px; background: var(--bg-1); border: 1px solid var(--border-1); border-radius: var(--radius-md); }
+.prov-line .prov-item { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono);
+  font-size: 11.5px; color: var(--fg-3); text-decoration: none; }
+.prov-line .prov-item svg { width: 14px; height: 14px; color: var(--fg-3); flex: none; }
+.prov-line .prov-link { cursor: pointer; }
+.prov-line .prov-link:hover { color: var(--primary); }
+.prov-line .prov-link:hover svg { color: var(--primary); }
+.prov-line .prov-sep { width: 1px; height: 13px; background: var(--border-2); flex: none; }
+/* mobile: stack the provenance items vertically with horizontal dividers between them */
+.m-pf .prov-line { flex-direction: column; align-items: stretch; gap: 0; padding: 4px 14px; }
+.m-pf .prov-line .prov-item, .m-pf .prov-line .fresh-pill { padding: 10px 0; }
+.m-pf .prov-line .prov-sep { width: auto; height: 1px; align-self: stretch; background: var(--border-1); }
+/* freshness inside the provenance line sheds its chrome — reads as one more item */
+.prov-line .fresh-pill { background: none; border: none; padding: 0; font-family: var(--font-mono);
+  font-size: 11.5px; font-weight: 400; }
+.prov-line .fresh-ok { color: var(--fg-3); }
+.prov-line .fresh-ok .fresh-dot { background: var(--win); }
+.prov-line .fresh-meta { opacity: 1; }
+
+/* aka chips */
+.aka-chips { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.chip { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: var(--radius-xs);
+  background: var(--surface-2); border: 1px solid var(--border-1); font-family: var(--font-mono);
+  font-size: 11px; color: var(--fg-2); white-space: nowrap; }
+.chip.cur { background: var(--primary-weak); border-color: var(--primary-border); color: var(--primary); }
+.chip-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--fg-3); }
+
+/* ---- summary ---- */
+.pf-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.hero-tile { background: var(--surface-1); border: 1px solid var(--border-1); border-radius: var(--radius-lg);
+  padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; }
+.hero-tile::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--tc); opacity: .9; }
+.ht-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.ht-label { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--fg-2); white-space: nowrap; }
+.ht-label svg { width: 14px; height: 14px; color: var(--fg-3); }
+.ht-main { display: flex; align-items: baseline; gap: 10px; }
+.ht-val { font-family: var(--font-display); font-variant-numeric: tabular-nums; font-weight: 700; font-size: 46px;
+  line-height: 1; letter-spacing: -0.02em; color: var(--tc); }
+.ht-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.tier-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: var(--tc);
+  background: color-mix(in srgb, var(--tc) 14%, transparent); border: 1px solid color-mix(in srgb, var(--tc) 40%, transparent);
+  padding: 3px 8px; border-radius: var(--radius-xs); }
+.ht-scale { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); }
+.ht-formula { font-family: var(--font-mono); font-size: 10.5px; color: var(--fg-3); margin-top: 10px; padding-top: 9px;
+  border-top: 1px solid var(--border-1); line-height: 1.35; }
+.ht-note { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); margin-top: 8px; display: flex; align-items: center; gap: 5px; }
+.ht-note::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--fg-3); flex: none; }
+
+/* tier level scale inside hero tiles: bar (4 zones + marker) + a per-zone legend
+   where each cell carries its NAME and the value it starts at. Per-cell labels
+   never collide the way a single run of 4 words does. */
+.tscale { margin-top: 14px; }
+.tscale-track { position: relative; display: flex; gap: 3px; height: 8px; }
+.tscale-seg { flex: 1; border-radius: 2px; background: color-mix(in srgb, var(--tc) 18%, var(--surface-2)); }
+.tscale-seg.on { background: var(--tc); }
+.tscale-marker { position: absolute; top: -4px; width: 2px; height: 16px; background: var(--fg-1); border-radius: 1px;
+  transform: translateX(-1px); box-shadow: 0 0 0 2px var(--surface-1); }
+.tscale-legend { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 9px; }
+.tsl { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding-left: 7px; position: relative; }
+.tsl::before { content: ''; position: absolute; left: 0; top: 1px; bottom: 1px; width: 2px; border-radius: 1px;
+  background: color-mix(in srgb, var(--tc) 35%, transparent); }
+.tsl.on::before { background: var(--tc); }
+.tsl-num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 11px; font-weight: 600; color: var(--fg-3); }
+.tsl-name { font-size: 9px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--fg-3);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tsl.on .tsl-num { color: var(--tc); }
+.tsl.on .tsl-name { color: var(--tc); }
+
+/* weekly table: expand chevron column + per-game match rows */
+.wk-tbl.compact .col-sec { display: none; }
+.col-x { width: 30px; text-align: center !important; padding-left: 0 !important; padding-right: 8px !important; color: var(--fg-3); }
+.wk-row { cursor: pointer; }
+.wk-row .col-x svg { display: block; margin: 0 auto; }
+.wk-row.is-open > td { background: var(--surface-2); }
+.wk-row.is-open .col-x { color: var(--primary); }
+.match-wrap > td { padding: 0 !important; background: var(--bg-1); border-bottom: 1px solid var(--border-1); }
+.match-list { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.match-list-head { display: flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--fg-3); margin-bottom: 2px; }
+.match-list-head svg { width: 13px; height: 13px; }
+/* per-game row — grid so columns align. Layout depends on CONTEXT (parent), not
+   viewport, because the app previews inside device frames (viewport ≠ content width). */
+.match-row { display: grid; gap: 3px 8px; align-items: center; padding: 8px 10px; border: 1px solid var(--border-1);
+  border-radius: var(--radius-sm); background: var(--surface-1); cursor: pointer; text-decoration: none;
+  grid-template-columns: minmax(0, 1fr) auto 52px;
+  grid-template-areas: "rep res score" "map kd score"; }
+.match-row:hover { background: var(--surface-3); border-color: var(--border-2); }
+.mr-rep { grid-area: rep; display: inline-flex; align-items: center; gap: 5px; color: var(--primary); font-size: 12px; min-width: 0; }
+.mr-rep svg { width: 13px; height: 13px; flex: none; }
+.mr-map { grid-area: map; min-width: 0; font-size: 13px; color: var(--fg-1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mr-side { grid-area: side; display: none; font-size: 11px; color: var(--fg-2); }
+.mr-res { grid-area: res; justify-self: end; display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.mr-res svg { width: 12px; height: 12px; flex: none; }
+.mr-kd { grid-area: kd; justify-self: end; font-size: 12px; color: var(--fg-2); white-space: nowrap; }
+.mr-kd i { font-style: normal; color: var(--fg-3); font-size: 10px; margin-left: 1px; }
+.mr-kd em { font-style: normal; color: var(--warn); }
+.match-row .mr-score { grid-area: score; justify-self: end; align-self: center; }
+.wk-card .match-row .mr-score b { font-size: 15px; }
+/* desktop / tablet table expansion: single aligned row */
+.match-wrap .match-row { gap: 10px; grid-template-columns: 84px minmax(0, 1fr) 40px 106px 102px 52px;
+  grid-template-areas: "rep map side res kd score"; }
+.match-wrap .mr-side { display: block; text-align: center; }
+.match-wrap .mr-res { justify-self: start; }
+
+/* mini-stat grid: 6 across on desktop, 3 across (= 2 even rows) on the mobile layout */
+.pf-mini { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 10px; }
+.mini { background: var(--surface-1); border: 1px solid var(--border-1); border-radius: var(--radius-md); padding: 10px 12px; }
+.mini .mk { display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 600; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--fg-2); white-space: nowrap; }
+.mini .mk svg { width: 12px; height: 12px; color: var(--fg-3); }
+.mini .mv { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 600; font-size: 20px;
+  line-height: 1.1; margin-top: 6px; color: var(--fg-1); }
+.mini .mv.warn { color: var(--warn); }
+.mini .msub { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); margin-top: 2px; }
+
+/* ---- weekly performance chart ---- */
+.perf-head { display: flex; align-items: center; justify-content: space-between; gap: 10px 14px; padding: 13px 16px; border-bottom: 1px solid var(--border-1); flex-wrap: wrap; }
+.perf-head h3 { font-family: var(--font-display); font-weight: 600; font-size: 16px; margin: 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0; }
+.perf-head h3 svg { width: 17px; height: 17px; color: var(--fg-3); flex: none; }
+.perf-sub { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); }
+.perf-body { padding: 18px 16px 12px; }
+/* bars + x-axis share a left gutter that holds the zone names, so labels never
+   overlap bars (bars fill the plot; labels live outside it) */
+.perf-chart { position: relative; height: 156px; display: flex; gap: 7px; padding-left: 60px; }
+.perf-col { flex: 1; position: relative; z-index: 1; height: 100%; min-width: 0; }
+.perf-colval { position: absolute; left: 50%; transform: translateX(-50%); font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+  font-size: 11px; font-weight: 600; color: var(--fg-2); background: var(--surface-1); padding: 0 3px; border-radius: 2px; white-space: nowrap; }
+.perf-col.cur .perf-colval { color: var(--fg-1); }
+.barfill { position: absolute; left: 50%; transform: translateX(-50%); width: 70%; max-width: 30px; border-radius: 3px 3px 0 0;
+  transition: height var(--dur-base) var(--ease-out), bottom var(--dur-base) var(--ease-out); }
+.barfill.neg { border-radius: 0 0 3px 3px; }
+.perf-col.cur .barfill { outline: 2px solid var(--bg-1); box-shadow: 0 0 0 1px var(--tc); }
+.perf-xrow { display: flex; gap: 7px; margin-top: 7px; padding-left: 60px; }
+.perf-xrow .perf-x { flex: 1; min-width: 0; text-align: center; font-family: var(--font-mono); font-size: 9.5px; color: var(--fg-3); white-space: nowrap; overflow: hidden; }
+/* tier level zones behind the bars; names sit in the left gutter */
+.perf-zones { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.perf-zone { position: absolute; left: 60px; right: 0; background: color-mix(in srgb, var(--tc) 8%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--tc) 22%, transparent); }
+.perf-zone-neg { --tc: var(--loss); left: 60px; background: color-mix(in srgb, var(--loss) 14%, transparent); border-top: none; }
+.perf-zone-lbl { position: absolute; right: calc(100% + 7px); top: 1px; width: 50px; text-align: right; font-size: 9px; font-weight: 700;
+  letter-spacing: .03em; text-transform: uppercase; color: var(--tc); opacity: .9; white-space: nowrap; }
+.perf-zero { position: absolute; left: 60px; right: 0; border-top: 1.5px solid var(--fg-2); opacity: .6; }
+.perf-zero-num { position: absolute; right: calc(100% + 7px); top: -7px; font-family: var(--font-mono); font-size: 9px; color: var(--fg-2); }
+.perf-foot { display: flex; align-items: center; gap: 8px 14px; padding: 4px 16px 14px; flex-wrap: wrap; }
+.legend { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--fg-3); }
+.legend i { width: 10px; height: 10px; border-radius: 2px; }
+.perf-thr { margin-left: auto; }
+
+/* metric toggle (reuse .seg look) */
+.metric-seg { display: inline-flex; background: var(--surface-2); border: 1px solid var(--border-1); border-radius: var(--radius-sm); padding: 2px; }
+.metric-seg button { font-size: 12px; font-weight: 600; color: var(--fg-2); background: none; border: 0; padding: 5px 11px;
+  border-radius: 3px; cursor: pointer; font-family: var(--font-sans); white-space: nowrap; }
+.metric-seg button.on { background: var(--primary); color: var(--primary-fg); }
+
+/* ---- weekly table tier cells (.cell-tier shared in kit.css) ---- */
+.row-cur td { background: var(--primary-weak) !important; }
+.wk-name { display: flex; flex-direction: column; gap: 1px; }
+.wk-name .wk-t { font-weight: 600; color: var(--fg-1); font-size: 13px; }
+.wk-name .wk-sub { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); }
+
+/* ---- rail ---- */
+.rail-card { padding: 16px; }
+.rail-card .rc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 13px; }
+.rail-card .rc-head h3 { font-family: var(--font-display); font-weight: 600; font-size: 15px; margin: 0; display: flex; align-items: center; gap: 8px; }
+.rail-card .rc-head h3 svg { width: 16px; height: 16px; color: var(--fg-3); }
+.rail-sec + .rail-sec { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-1); }
+.rail-sec > .t-label { display: block; margin-bottom: 9px; }
+
+.steam-row { display: flex; align-items: center; gap: 9px; padding: 4px 0; }
+.steam-ic { width: 24px; height: 24px; border-radius: var(--radius-sm); background: var(--surface-2); border: 1px solid var(--border-1);
+  display: flex; align-items: center; justify-content: center; flex: none; }
+.steam-ic svg { width: 13px; height: 13px; color: var(--fg-3); }
+.steam-id { font-family: var(--font-mono); font-size: 13px; color: var(--fg-1); }
+.steam-since { margin-left: auto; font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); white-space: nowrap; }
+
+/* nickname history: name chip + the dates it was in use */
+.hist { display: flex; flex-direction: column; }
+.hist-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 4px 0; }
+.hist-when { font-family: var(--font-mono); font-size: 10.5px; color: var(--fg-3); white-space: nowrap; }
+
+/* provenance lists keep EVERY entry but cap the visible window and scroll the rest,
+   so a player with 15 nicknames / 200 weapons can't blow out the layout.
+   NOTE: scroll is desktop-only — on mobile these classes aren't applied (expander instead). */
+.hist-scroll { max-height: 170px; overflow-y: auto; overscroll-behavior: contain; }
+.steam-scroll { max-height: 156px; }
+.hist-scroll::-webkit-scrollbar, .brk-scroll::-webkit-scrollbar { width: 8px; }
+.hist-scroll::-webkit-scrollbar-thumb, .brk-scroll::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 4px; }
+/* "show all · N" / collapse expander (mobile, in place of nested scroll) */
+.more-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin-top: 8px;
+  padding: 9px; background: var(--surface-2); border: 1px solid var(--border-1); border-radius: var(--radius-sm);
+  color: var(--primary); font-family: var(--font-sans); font-size: 12px; font-weight: 600; cursor: pointer; }
+.more-btn:hover { background: var(--surface-3); border-color: var(--border-2); }
+.more-btn svg { width: 14px; height: 14px; }
+/* count chip in a section label (e.g. ИСТОРИЯ НИКОВ · 15) */
+.ref-label { display: inline-flex; align-items: center; }
+.ref-count { margin-left: 7px; font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--fg-2);
+  background: var(--surface-2); border: 1px solid var(--border-1); border-radius: var(--radius-xs); padding: 0 5px; line-height: 15px; }
+
+/* mobile arsenal: drop the secondary MAX-DIST column so the table fits the phone
+   column with NO horizontal scroll (kills is the essential stat) */
+.m-arsenal .tbl th:last-child, .m-arsenal .tbl td:last-child { display: none; }
+
+/* SteamID merge-under-review = PUBLIC data-trust notice, pinned below the list (never scrolls) */
+.steam-block { display: flex; flex-direction: column; }
+/* pending SteamID merge: a quiet inline row, not a banner. Amber state on the row itself. */
+.steam-row--pending { opacity: .92; }
+.steam-row--pending .steam-id { color: var(--fg-2); }
+.steam-row--pending .badge.b-warn { display: inline-flex; align-items: center; gap: 3px; }
+.steam-row--pending .badge.b-warn svg { width: 10px; height: 10px; }
+.steam-row--pending .req-link { color: var(--primary); font-family: var(--font-mono); font-size: 10px; text-decoration: underline; cursor: pointer; white-space: nowrap; }
+
+/* desktop reference columns stack name-over-date; the pending row keeps its inline shape */
+.ref-col .hist-row { flex-direction: column; align-items: flex-start; gap: 2px; padding: 5px 0; }
+.ref-col .steam-row { flex-wrap: wrap; }
+.ref-col .steam-since { margin-left: 0; flex-basis: 100%; padding-left: 33px; padding-top: 1px; }
+.ref-col .steam-row--pending .req-link { flex-basis: 100%; padding-left: 33px; padding-top: 1px; margin-left: 0; }
+
+/* arsenal: fixed ~6-row window; scroll the rest inside the card with a sticky header */
+.brk-scroll { max-height: 292px; overflow-y: auto; overscroll-behavior: contain; }
+.brk-scroll thead th { position: sticky; top: 0; z-index: 2; background: var(--surface-2); }
+.brk-scroll.is-scroll tbody tr:last-child td { border-bottom: none; }
+
+/* arsenal: faint reserved slots so both tables are always equal height */
+.row-empty td { color: var(--fg-3); opacity: .32; }
+.row-empty .rank { color: var(--fg-3); }
+
+.merge-warn { display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; padding: 9px 11px; border-radius: var(--radius-sm);
+  background: var(--warn-weak); border: 1px solid var(--warn-border); color: var(--warn); font-size: 12px; line-height: 1.4; }
+.merge-warn svg { width: 14px; height: 14px; flex: none; margin-top: 1px; }
+.merge-warn .req-link { color: var(--warn); font-family: var(--font-mono); text-decoration: underline; cursor: pointer; white-space: nowrap; }
+
+.ks-badges { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ks-games { display: flex; flex-direction: column; padding-right: 10px; margin-right: 4px; border-right: 1px solid var(--border-1); }
+.ks-games .v { font-family: var(--font-mono); font-weight: 700; font-size: 20px; }
+.ks-games .k { font-size: 9px; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-3); }
+.ks-note { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); margin-top: 10px; }
+/* in the desktop reference panel the KS column is narrow (~290px): games on its own
+   line, then the W/L/Unknown badges on the next line — never wraps mid-row */
+.ref-col .ks-badges { gap: 7px 8px; }
+.ref-col .ks-games { flex: 0 0 100%; flex-direction: row; align-items: baseline; gap: 6px;
+  border-right: none; padding-right: 0; margin-right: 0; margin-bottom: 3px; }
+.ref-col .ks-games .v { font-size: 18px; }
+
+.bounty-val { display: flex; align-items: baseline; gap: 8px; }
+.bounty-val b { font-family: var(--font-display); font-weight: 700; font-size: 30px; color: var(--warn); line-height: 1; }
+.bounty-form { font-family: var(--font-mono); font-size: 11px; color: var(--fg-2); margin-top: 8px; }
+
+/* ---- layout: full-width stacked sections. The ONLY side-by-side pairs are things
+   equal by nature (Score|K/D hero, the two arsenal tables). No big mismatched
+   columns forced to equal height — that was the source of the trailing-air bugs. */
+.two-up { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+.two-up > .card { min-width: 0; }
+/* desktop reference footer: 4 internal columns in one card.
+   Columns are equal height (grid stretch); each list body STRETCHES to fill its column
+   (flex) with a min-height floor — never a fixed-height box — so all four align. */
+.ref-panel { display: grid; grid-template-columns: 1.1fr 1fr 1fr 1.05fr; gap: 0; padding: 0; align-items: stretch; }
+.ref-col { padding: 16px; min-width: 0; min-height: 210px; display: flex; flex-direction: column; }
+.ref-col + .ref-col { border-left: 1px solid var(--border-1); }
+.ref-col > .t-label { display: block; margin-bottom: 11px; flex: none; }
+.ref-col .ref-body { min-width: 0; flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+.ref-col .timeline { gap: 0; }
+/* list bodies: min-height floor prevents collapse, flex-grow aligns them to the
+   tallest column, max-height only caps very long lists (scroll). No fixed height. */
+.ref-col .ref-body > .hist-scroll { flex: 1 1 auto; min-height: 150px; max-height: 280px; overflow-y: auto; }
+.ref-col .ref-body > .steam-block { flex: 1 1 auto; min-height: 0; }
+.ref-col .steam-block .steam-scroll { flex: 1 1 auto; min-height: 110px; max-height: 280px; overflow-y: auto; }
+.tbl-tight th, .tbl-tight td { padding-left: 10px; padding-right: 10px; }
+/* tables scroll inside their own card, never spill into a neighbour
+   (overview.css sets `.card > .tw { overflow-x: visible }`; override here) */
+.container .tw { overflow-x: auto; }
+
+/* ---- mobile ---- */
+.m-pf { display: flex; flex-direction: column; gap: 14px; }
+.m-pf-head { display: flex; flex-direction: column; gap: 8px; }
+.m-pf-head .pf-namerow { gap: 9px; }
+.m-meta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.m-rank { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: var(--fg-2); }
+.m-rank svg { width: 12px; height: 12px; color: var(--fg-3); }
+.m-pf-head .pf-extlink { display: inline-flex; }
+.m-headfoot { display: flex; flex-direction: column; align-items: flex-start; gap: 11px; }
+.m-headfoot .fresh-pill { align-self: flex-start; }
+/* hero tiles full-width on mobile so the tier scale + level names breathe */
+.m-pf .pf-hero { grid-template-columns: 1fr; gap: 11px; }
+.m-pf .pf-mini { grid-template-columns: repeat(3, 1fr); }
+.wk-card { display: flex; flex-direction: column; gap: 8px; padding: 12px 13px; cursor: pointer; }
+.wk-card .wc-top { display: flex; align-items: center; justify-content: space-between; }
+.wk-card .wc-top .cell-tier { gap: 7px; }
+.wk-card.is-open { border-color: var(--border-2); }
+.wk-card .wc-week { display: flex; align-items: center; gap: 7px; }
+.wk-card .wc-week b { font-weight: 600; }
+.wk-card .wc-stats { display: flex; gap: 14px; font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); flex-wrap: wrap; }
+.wk-card .wc-stats span { white-space: nowrap; }
+.m-arsenal .tbl td, .m-arsenal .tbl th { font-size: 12px; }
+
+@media (max-width: 880px) {
+  .pf-band .pf-actions { display: none; }
+}
+/* Responsive layout keys off the CONTENT width (container query), NOT the viewport —
+   the app previews inside fixed-width device frames, so viewport media queries lie
+   (a 834px tablet frame inside a wide iframe would otherwise never trigger). */
+.container { container-type: inline-size; }
+@container (max-width: 900px) {
+  .pf-mini { grid-template-columns: repeat(3, 1fr); }
+}
+@container (max-width: 880px) {
+  .ref-panel { grid-template-columns: 1fr 1fr; }
+  .ref-col:nth-child(2n) { border-left: 1px solid var(--border-1); }
+  .ref-col:nth-child(n+3) { border-top: 1px solid var(--border-1); }
+}
+@container (max-width: 760px) {
+  .two-up { grid-template-columns: 1fr; }
+}
+@container (max-width: 520px) {
+  .pf-mini { grid-template-columns: repeat(2, 1fr); }
+  .ref-panel { grid-template-columns: 1fr; }
+  .ref-col:nth-child(2n) { border-left: none; }
+  .ref-col + .ref-col { border-left: none; border-top: 1px solid var(--border-1); }
+}

@@ -1,0 +1,91 @@
+/* hifi/squads.css — Squads list page. Layers on kit.css + overview.css + players.css.
+   Reuses the players-list scaffolding wholesale (.pl-card / .pl-scroll / .pl-tbl /
+   .pl-id / .pl-avatar / .pl-m-row / .side-chips / .pl-tools / .pl-cap / .pl-m-more).
+   The squad avatar reuses the player .pl-avatar (neutral users glyph). This file
+   adds the [tag]·leader sub-line, the members cell, and the 4-week window toggle. */
+
+/* ---------- 4-week window toggle (sits beside the period selector) ---------- */
+.ph-rot .win4w { gap: 6px; white-space: nowrap; }
+.ph-rot .win4w.on { background: var(--primary-weak); border-color: var(--primary-border); color: var(--primary); }
+.ph-rot .win4w.on svg { color: var(--primary); }
+
+/* ---------- interactive score trend (hover highlights the week + value tooltip) ---------- */
+.score-trend.trend-iv { position: relative; overflow: visible; }
+.score-trend.trend-iv .stb-cell { display: flex; align-items: flex-end; height: 100%; flex: none;
+  padding: 0 1px; border-radius: 2px; cursor: pointer; transition: background var(--dur-fast); }
+.score-trend.trend-iv .stb-cell .stb { width: 6px; min-height: 2px; border-radius: 1.5px; background: var(--tc);
+  transition: filter var(--dur-fast), opacity var(--dur-fast), transform var(--dur-fast); transform-origin: bottom; }
+.score-trend.trend-iv .stb-cell.dim .stb { opacity: .32; }
+.score-trend.trend-iv .stb-cell.on { background: color-mix(in srgb, var(--tc) 16%, transparent); }
+.score-trend.trend-iv .stb-cell.on .stb { filter: brightness(1.35);
+  box-shadow: 0 0 7px color-mix(in srgb, var(--tc) 70%, transparent); transform: scaleY(1.05); }
+/* floating value tooltip above the hovered week */
+.stb-tip { position: absolute; bottom: calc(100% + 7px); transform: translateX(-50%); z-index: 20;
+  display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 5px 9px; white-space: nowrap;
+  background: var(--surface-1); border: 1px solid var(--border-2); border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md); pointer-events: none; }
+.stb-tip b { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 13px;
+  font-weight: 700; color: var(--tc); line-height: 1; }
+.stb-tip .stb-tip-cap { font-family: var(--font-sans); font-size: 9px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--fg-3); }
+.stb-tip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  border: 4px solid transparent; border-top-color: var(--surface-1); }
+@media (prefers-reduced-motion: reduce) {
+  .score-trend.trend-iv .stb-cell .stb { transition: none; }
+}
+
+/* ---------- identity cell: emblem + name + [tag] · leader ---------- */
+.sq-id .cell-id .nm { font-weight: 600; }
+.sq-sub { display: inline-flex; align-items: center; gap: 6px; min-width: 0; font-size: 12px; color: var(--fg-3); }
+.sq-sub .side-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.sq-sub .sq-tag { font-family: var(--font-mono); font-size: 11px; color: var(--fg-2);
+  letter-spacing: .01em; white-space: nowrap; flex: none; }
+.sq-sub .sq-lead { display: inline-flex; align-items: center; gap: 4px; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sq-sub .sq-lead svg { width: 12px; height: 12px; flex: none; color: var(--fg-3); }
+.sq-sub .sq-dot { color: var(--border-2); flex: none; }
+
+/* ---------- members cell ---------- */
+.sq-members { display: inline-flex; align-items: center; justify-content: flex-end;
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--fg-2); }
+
+/* ---------- mobile squad card (2 rows) ---------- identity + headline Счёт on top,
+   then a stat strip (K/D · Игры · Убийства) with the interactive trend pinned right,
+   under the Счёт. Squads carry more stats than players, so they get this denser card
+   rather than the single player row — long names ellipsis-truncate, nothing overflows. */
+.sq-mlist { padding: 6px 12px; display: flex; flex-direction: column; }
+.sq-mcard { display: flex; flex-direction: column; gap: 10px; padding: 13px 2px;
+  border-bottom: 1px solid var(--border-1); cursor: pointer; }
+.sq-mcard:last-of-type { border-bottom: 0; }
+.sq-mcard:active { background: var(--surface-3); }
+
+/* top row: rank · emblem · name/sub · headline Счёт */
+.sq-mtop { display: flex; align-items: center; gap: 10px; }
+.sq-mtop .rank { flex: none; width: 22px; text-align: right; }
+.sq-mtop .pl-avatar { width: 34px; height: 34px; flex: none; border-radius: var(--radius-sm); }
+.sq-mtop .pl-avatar svg { width: 18px; height: 18px; }
+.sq-mname { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.sq-mname > b { font-weight: 600; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sq-msub { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--fg-3);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sq-msub .side-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.sq-msub .sq-tag { font-family: var(--font-mono); font-size: 11px; color: var(--fg-2); flex: none; }
+.sq-mscore { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; flex: none; }
+.sq-mscore .lb-cap { font-size: 9px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--fg-3); }
+
+/* stat strip: labeled stats left, trend pinned right (under the Счёт), indented to
+   sit under the name (clear of rank + avatar) */
+.sq-mstats { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding-left: 44px; }
+.sq-mstatset { display: flex; align-items: flex-end; gap: 16px; }
+.sq-mstat { display: flex; flex-direction: column; gap: 1px; }
+.sq-mstat b { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 600;
+  font-size: 14px; color: var(--fg-1); line-height: 1.1; }
+.sq-mstat i { font-style: normal; font-size: 9px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--fg-3); }
+.sq-mtrend { flex: none; }
+.sq-mtrend .score-trend { width: 64px; height: 28px; gap: 2.5px; }
+.sq-mtrend .score-trend.trend-iv .stb-cell .stb { width: 6px; }
+.sq-mstats .sk-num { width: 36px; }
+.sq-mstats .sk-trend { height: 24px; }
+
+/* ---------- provenance line uses .pl-prov / .prov-line from players.css ---------- */

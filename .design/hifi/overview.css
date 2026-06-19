@@ -1,0 +1,276 @@
+/* hifi/overview.css — page-specific styles layered on kit.css.
+   Desktop digest grid + mobile segmented leaderboard list. */
+
+/* desktop 3-column digest */
+.ov-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  gap: 14px;
+  align-items: stretch;   /* equal-height cards — no ragged bottom */
+}
+.ov-grid > .card { display: flex; flex-direction: column; }
+.ov-grid > .card > .tw,
+.ov-grid > .card > .partlist,
+.ov-grid > .card > .bounty-body { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+/* distribute the 10 rows so content reaches the card bottom */
+.ov-grid > .card > .tw > table.tbl { width: 100%; height: 100%; }
+/* desktop digest fits without scroll — let tables lay out naturally */
+.ov-grid .tw, .card > .tw { overflow-x: visible; }
+/* tablet: players full-width on top; squads + bounty share an equal-height row below */
+.ov-grid.cols2 { grid-template-columns: 1fr 1fr; align-items: stretch; }
+.ov-grid.cols2 > .card:nth-child(1) { grid-column: 1 / -1; }
+@media (max-width: 1100px) {
+  .ov-grid:not(.cols2):not(.cols3) { grid-template-columns: 1fr 1fr; }
+  .ov-grid:not(.cols2):not(.cols3) > .card:first-child { grid-column: 1 / -1; }
+}
+
+/* leaderboard score cell */
+.score-cell b { color: var(--fg-1); }
+/* player's squad reference with side-color dot */
+.sq-ref { display: inline-flex; align-items: center; gap: 5px; }
+.sq-ref .side-dot { width: 6px; height: 6px; border-radius: 50%; flex: none; }
+/* 4-week trend sparkline column */
+.col-trend { width: 70px; }
+.score-trend { display: inline-flex; align-items: flex-end; justify-content: flex-end; gap: 3px; width: 100%; height: 24px; }
+.score-trend .stb { width: 7px; min-height: 2px; border-radius: 1.5px; background: var(--tc); }
+/* in the mobile leaderboard row the trend is a fixed-width inline cluster, not full-width */
+.lb-row .score-trend { width: auto; flex: none; margin-right: 4px; }
+.prov { white-space: nowrap; }
+.prov-warn { color: var(--warn); }
+.prov-warn .dot { background: var(--warn); box-shadow: 0 0 8px var(--warn); }
+/* page head: 2×2 grid — [title | rotation pill] on row 1, [freshness | dates]
+   on row 2. Guarantees title↔pill align AND freshness↔date align, in every
+   fresh/stale state. */
+.page-head { display: grid; grid-template-columns: 1fr auto; align-items: start;
+  column-gap: 16px; row-gap: 8px; }
+.page-title { grid-column: 1; grid-row: 1; margin: 0; }
+.ph-rot { grid-column: 2; grid-row: 1; justify-self: end; }
+.ph-fresh { grid-column: 1; grid-row: 2; align-self: center; }
+.ph-date { grid-column: 2; grid-row: 2; justify-self: end; align-self: center; }
+.ph-date .rotsel-range { padding-right: 2px; }
+
+/* squad name + tag chip inline inside a table identity cell */.sq-nm { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
+.sq-nm b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* bounty points badge sits right-aligned in its table cell */
+.lb-pts { font-family: var(--font-mono); }
+
+/* ---------- shared leaderboard rows (mobile lists) ---------- */
+.partlist, .m-list { display: flex; flex-direction: column; padding: 2px 14px; }
+.lb-row {
+  display: flex; align-items: center; gap: 10px; padding: 9px 0;
+  border-bottom: 1px solid var(--border-1); cursor: pointer;
+}
+.lb-row:last-child { border-bottom: 0; }
+.lb-row .rank { flex: none; width: 22px; }
+.lb-name { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.lb-name > b { font-weight: 600; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-title { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.lb-title b { font-weight: 600; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-sub { font-size: 11px; color: var(--fg-3); font-family: var(--font-sans);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-score { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; flex: none; }
+.lb-cap { font-family: var(--font-sans); font-size: 9px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--fg-3); }
+.lb-pts { flex: none; font-family: var(--font-mono); }
+
+/* squad side label (colored, under the squad name) */
+.side-label { display: inline-flex; align-items: center; gap: 5px; font-weight: 600; }
+.side-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+
+/* variable-width squad tag chip — handles 7th / inTeam / Wagner / SEAL */
+.tag-chip {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600; line-height: 1;
+  padding: 2px 5px; border-radius: var(--radius-xs); background: var(--surface-2);
+  border: 1px solid var(--border-1); color: var(--fg-2);
+  white-space: nowrap; flex: none; letter-spacing: .01em;
+}
+/* squad emblem placeholder (real emblem image drops in later) */
+.sq-emblem {
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border-2); border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+/* player avatar placeholder (real Steam avatar drops in later) */
+.pl-avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border-2); border-radius: var(--radius-sm);
+  background: var(--surface-2); color: var(--fg-3);
+}
+.lb-score { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.lb-cap { font-family: var(--font-sans); font-size: 9px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--fg-3); }
+
+/* ---------- mobile ---------- */
+.m-wrap { display: flex; flex-direction: column; gap: 13px; }
+.m-search { color: var(--fg-3); font-size: 14px; }
+.m-seg {
+  display: flex; background: var(--surface-2); border: 1px solid var(--border-1);
+  border-radius: var(--radius-sm); padding: 3px; gap: 3px;
+}
+.m-seg button {
+  flex: 1; padding: 9px 0; border: 0; border-radius: 3px; background: none;
+  font-family: var(--font-sans); font-size: 13px; font-weight: 600; color: var(--fg-2); cursor: pointer;
+}
+.m-seg button.on { background: var(--primary); color: var(--primary-fg); }
+.m-meta { display: flex; align-items: center; justify-content: space-between; }
+.m-meta .mono { font-size: 11px; color: var(--fg-3); }
+
+.m-list { padding: 4px 12px; }
+
+.m-section { display: flex; align-items: baseline; justify-content: space-between; margin-top: 4px; }
+.m-sec-title { font-family: var(--font-display); font-weight: 600; font-size: 18px; margin: 0; }
+
+.m-replay { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 11px 0; border-bottom: 1px solid var(--border-1); }
+.m-replay:last-child { border-bottom: 0; }
+.m-rep-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.m-rep-main b { font-weight: 600; font-size: 15px; }
+
+/* keep mobile from showing desktop nav links; tab bar handled by kit.css */
+
+/* ---------- search overlay (command palette) ---------- */
+.search-scrim {
+  position: fixed; inset: 0; z-index: 200; background: var(--overlay);
+  backdrop-filter: blur(2px);
+  display: flex; justify-content: center; align-items: flex-start;
+  padding: 64px 16px 16px;
+}
+.search-modal {
+  width: 100%; max-width: 560px; max-height: calc(100% - 80px);
+  display: flex; flex-direction: column;
+  background: var(--surface-1); border: 1px solid var(--border-2);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+}
+/* search field uses the kit's .control input pattern */
+.search-head { padding: 12px; border-bottom: 1px solid var(--border-1); flex: none; }
+.search-head .control { padding: 10px 12px; }
+.search-head .control input { font-size: 15px; }
+.search-head .control input:focus,
+.search-head .control input:focus-visible { outline: none; box-shadow: none; }
+.kbd {
+  font-family: var(--font-mono); font-size: 10px; line-height: 1; color: var(--fg-3);
+  padding: 3px 5px; border: 1px solid var(--border-2); border-radius: var(--radius-xs);
+  background: var(--surface-2); white-space: nowrap;
+}
+.search-results { overflow-y: auto; padding: 6px; flex: 1; min-height: 0; }
+/* close (X) button — works on touch where there's no keyboard */
+.search-close {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 28px; height: 28px; border-radius: var(--radius-sm); border: 0;
+  background: var(--surface-3); color: var(--fg-2); cursor: pointer;
+}
+.search-close:hover { background: var(--border-1); color: var(--fg-1); }
+.search-close svg { width: 16px; height: 16px; }
+.search-section-cap, .search-group-cap {
+  font-family: var(--font-sans); font-size: 10px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--fg-3); padding: 8px 10px 4px;
+  display: flex; align-items: center; gap: 6px;
+}
+.search-group-cap svg { width: 13px; height: 13px; color: var(--fg-3); }
+.search-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  width: 100%; text-align: left; padding: 9px 10px; border: 0; border-radius: var(--radius-sm);
+  background: none; color: var(--fg-1); cursor: pointer; transition: background var(--dur-fast);
+}
+.search-row:hover { background: var(--surface-3); }
+.search-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.search-main > b, .search-title b { font-weight: 600; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.search-title { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.search-sub { font-size: 11px; color: var(--fg-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.search-metric { display: flex; align-items: baseline; gap: 5px; flex: none; font-weight: 600; font-size: 14px; }
+.search-metric-cap { font-family: var(--font-sans); font-size: 8px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); }
+.search-empty { padding: 28px 12px; text-align: center; color: var(--fg-3); font-size: 13px; }
+.search-foot {
+  display: flex; gap: 16px; padding: 10px 16px; border-top: 1px solid var(--border-1);
+  flex: none; font-size: 11px; color: var(--fg-3);
+}
+.search-foot span { display: inline-flex; align-items: center; gap: 5px; }
+/* touch devices have no keyboard: drop the keyboard hint footer */
+.devframe[data-device="mobile"] .search-foot,
+.devframe[data-device="tablet"] .search-foot { display: none; }
+/* normalize height of all top-nav controls so the language pill, account/sign-in
+   button and search button line up regardless of which is shown */
+.nav-right > .btn, .nav-right > .selpill {
+  height: 32px; padding-top: 0; padding-bottom: 0; box-sizing: border-box;
+}
+.nav-account { gap: 7px; }
+.nav-avatar, .tab-avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-full); background: var(--surface-3);
+  border: 1px solid var(--border-2); color: var(--fg-2);
+}
+.nav-avatar { width: 20px; height: 20px; }
+.nav-avatar svg { width: 13px; height: 13px; }
+.tab-avatar { width: 22px; height: 22px; }
+.tab-avatar svg { width: 14px; height: 14px; }
+.nav-account-name { font-weight: 600; }
+
+/* ---------- rotation selector dropdown ---------- */
+.rotsel { position: relative; display: inline-flex; }
+.rotsel-range { font-size: 11px; color: var(--fg-3); }
+.rotsel-back { position: fixed; inset: 0; z-index: 55; }
+.rotsel-menu {
+  position: absolute; top: calc(100% + 6px); right: 0; z-index: 60;
+  min-width: 280px; background: var(--surface-1); border: 1px solid var(--border-2);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-md); padding: 4px;
+  display: flex; flex-direction: column; gap: 1px;
+}
+.rotsel-item {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 9px 10px; border: 0; border-radius: var(--radius-sm); background: none;
+  cursor: pointer; color: var(--fg-1); font-family: var(--font-sans); text-align: left;
+}
+.rotsel-item:hover { background: var(--surface-3); }
+.rotsel-item.on { background: var(--primary-weak); color: var(--primary); }
+.rotsel-item svg { width: 15px; height: 15px; flex: none; color: var(--fg-3); }
+.rotsel-item.on svg { color: var(--primary); }
+.rotsel-item .rs-main { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; flex: 1; white-space: nowrap; }
+.rotsel-item .rs-range { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); white-space: nowrap; flex: none; }
+.rotsel-item .rs-check { width: 14px; flex: none; display: inline-flex; align-items: center; justify-content: center; }
+.rotsel-item.on .rs-check svg { color: var(--primary); }
+.rotsel-item.on .rs-range { color: var(--primary); }
+
+/* ---------- device preview frame (driven by Tweaks) ---------- */
+.stage { min-height: 100vh; background: var(--bg-0); }
+.stage.framed {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 26px 16px; gap: 12px; background: #05070a;
+}
+.dev-label {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--fg-3);
+}
+.devframe {
+  position: relative; overflow: hidden; flex: none;
+  border: 1px solid var(--border-2); border-radius: 22px;
+  box-shadow: var(--shadow-lg); background: var(--bg-0);
+  transform: translateZ(0);   /* contain position:fixed (search overlay) to the frame */
+}
+.devframe .devscroll { width: 100%; height: 100%; overflow-y: auto; overflow-x: hidden; background: var(--bg-0); }
+.devframe .nav { position: sticky; }
+.devframe .tabbar { position: absolute; }
+
+/* mobile device: force the mobile chrome regardless of window width */
+.devframe[data-device="mobile"] .nav-links { display: none; }
+.devframe[data-device="mobile"] .tabbar { display: block; }
+.devframe[data-device="mobile"] .page-title { font-size: 24px; }
+/* mobile: collapse page head to a single left-aligned column:
+   title → rotation pill → dates → freshness */
+.devframe[data-device="mobile"] .page-head { grid-template-columns: 1fr; row-gap: 8px; }
+.devframe[data-device="mobile"] .page-title { grid-row: 1; }
+.devframe[data-device="mobile"] .ph-rot { grid-column: 1; grid-row: 2; justify-self: start; }
+.devframe[data-device="mobile"] .ph-date { grid-column: 1; grid-row: 3; justify-self: start; align-self: start; }
+.devframe[data-device="mobile"] .ph-fresh { grid-column: 1; grid-row: 4; align-self: start; }
+.devframe[data-device="mobile"] .rotsel-menu { left: 0; right: auto; }
+.devframe[data-device="mobile"] .main { padding-bottom: 84px; }
+/* declutter mobile top nav — auth + search live in the bottom tab bar */
+.devframe[data-device="mobile"] .nav-right > .btn-ghost:first-child { display: none; }
+.devframe[data-device="mobile"] .nav-right > .steam,
+.devframe[data-device="mobile"] .nav-account { display: none; }
+/* tablet: mobile-style chrome — primary nav lives in the bottom tab bar,
+   top bar keeps brand + search + language + theme (auth goes to the tab bar) */
+.devframe[data-device="tablet"] .nav-links { display: none; }
+.devframe[data-device="tablet"] .tabbar { display: block; }
+.devframe[data-device="tablet"] .main { padding-bottom: 88px; }
+.devframe[data-device="tablet"] .nav-right > .steam,
+.devframe[data-device="tablet"] .nav-account { display: none; }

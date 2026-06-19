@@ -1,0 +1,149 @@
+/* hifi/players.css — Players list page. Layers on kit.css + overview.css.
+   Desktop: filter toolbar + a single full-width table that scrolls inside a
+   capped window with a sticky header (DS overflow pattern; total in the caption).
+   Mobile: top-N list + "show all" expander, no nested scroll. */
+
+/* ---------- period segment + rotation (page head, beside title) ---------- */
+.ph-rot { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.per-seg { display: inline-flex; background: var(--surface-2); border: 1px solid var(--border-1);
+  border-radius: var(--radius-sm); padding: 2px; }
+.per-seg button { font-size: 12px; font-weight: 600; color: var(--fg-2); background: none; border: 0;
+  padding: 6px 11px; border-radius: 3px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.per-seg button svg { width: 14px; height: 14px; }
+.per-seg button.on { background: var(--primary); color: var(--primary-fg); }
+.ph-rot .selpill { white-space: nowrap; }
+
+/* ---------- filter toolbar ---------- */
+.pl-tools { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.pl-search { flex: 1 1 240px; max-width: 320px; padding: 8px 11px; }
+.pl-search input { font-size: 14px; }
+.pl-search .clr { display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 20px; height: 20px; border: 0; border-radius: var(--radius-xs); background: var(--surface-3);
+  color: var(--fg-2); cursor: pointer; }
+.pl-search .clr:hover { background: var(--border-1); color: var(--fg-1); }
+
+.side-chips { display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.side-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 11px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border-1); background: var(--surface-2); color: var(--fg-2); font-size: 12px;
+  font-weight: 600; cursor: pointer; white-space: nowrap; transition: border-color var(--dur-fast), color var(--dur-fast), background var(--dur-fast); }
+.side-chip:hover { border-color: var(--border-2); color: var(--fg-1); }
+.side-chip .side-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.side-chip.on { border-color: var(--primary-border); background: var(--primary-weak); color: var(--primary); }
+
+/* ---------- count caption strip ---------- */
+.pl-cap { display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  margin: 14px 2px 8px; flex-wrap: wrap; }
+.pl-cap .pl-n { font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--fg-1); white-space: nowrap; }
+.pl-cap .pl-n b { color: var(--primary); }
+.pl-cap .pl-sort { font-size: 12px; color: var(--fg-3); display: inline-flex; align-items: center; gap: 6px; }
+.pl-cap .pl-sort svg { width: 13px; height: 13px; }
+
+/* ---------- desktop table: capped scroll window + sticky header ---------- */
+.pl-card { overflow: hidden; }
+.pl-scroll { max-height: 612px; overflow-y: auto; overflow-x: auto; }
+.pl-tbl { width: 100%; border-collapse: separate; border-spacing: 0; }
+.pl-tbl th { position: sticky; top: 0; z-index: 3; }
+.pl-tbl thead th { box-shadow: inset 0 -1px 0 var(--border-1); border-bottom: 0; }
+/* sortable headers */
+.pl-tbl th.sortable { cursor: pointer; user-select: none; transition: color var(--dur-fast); }
+.pl-tbl th.sortable:hover { color: var(--fg-1); }
+.pl-tbl th .th-in { display: inline-flex; align-items: center; gap: 5px; }
+.pl-tbl th.l .th-in { justify-content: flex-start; }
+.pl-tbl th:not(.l) .th-in { justify-content: flex-end; }
+.pl-tbl th .sort-ic { display: inline-flex; opacity: 0; color: var(--primary); }
+.pl-tbl th.sortable:hover .sort-ic { opacity: .5; }
+.pl-tbl th.sorted { color: var(--primary); }
+.pl-tbl th.sorted .sort-ic { opacity: 1; }
+.pl-tbl td { border-bottom: 1px solid var(--border-1); }
+.pl-tbl tbody tr:last-child td { border-bottom: 0; }
+/* fixed layout: colgroup widths distribute space across ALL columns evenly,
+   so the nick column no longer hogs the slack */
+.pl-tbl { table-layout: fixed; }
+.pl-tbl .col-trend { text-align: right; }
+.pl-tbl .score-trend { width: 100%; gap: 2.5px; }
+.pl-tbl .score-trend .stb { width: 6px; }
+
+/* virtualization needs an EXACT, pinned row height so the spacer math is correct.
+   The avatar (30px) drives it: comfortable ≈52, compact ≈44. */
+.pl-tbl.virt tbody tr:not(.spacer) { height: 52px; }
+.pl-tbl.virt.compact tbody tr:not(.spacer) { height: 44px; }
+.pl-tbl.virt tbody tr.spacer td { padding: 0; border: 0; height: auto; }
+
+/* ---------- loading skeleton (all-time aggregation) ---------- */
+.pl-loading { display: inline-flex; align-items: center; gap: 8px; color: var(--fg-2); }
+.pl-loading svg { animation: pl-spin 0.9s linear infinite; color: var(--primary); }
+@keyframes pl-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .pl-loading svg { animation: none; } }
+.sk { display: inline-block; border-radius: var(--radius-xs); background: var(--surface-3); position: relative; overflow: hidden; vertical-align: middle; }
+.sk::after { content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--fg-3) 16%, transparent), transparent);
+  animation: sk-sweep 1.25s ease-in-out infinite; }
+@keyframes sk-sweep { 100% { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .sk::after { animation: none; } }
+.sk-rank { width: 18px; height: 12px; }
+.sk-av { width: 30px; height: 30px; border-radius: var(--radius-sm); }
+.sk-nm { width: 60%; min-width: 80px; height: 13px; }
+.sk-sub { width: 42%; min-width: 60px; height: 10px; margin-top: 5px; }
+.sk-num { width: 38px; height: 13px; }
+.sk-trend { width: 90%; height: 22px; }
+.pl-tbl .sk-row td .sk-nm, .pl-tbl .sk-row td .sk-sub { display: block; }
+.pl-tbl .sk-row .pl-id { width: 100%; }
+/* player identity cell: avatar + nick + squad */
+.pl-id { display: flex; align-items: center; gap: 10px; width: 100%; min-width: 0; }
+.pl-id .pl-avatar { width: 30px; height: 30px; flex: none; border-radius: var(--radius-sm); }
+.pl-id .pl-avatar svg { width: 16px; height: 16px; }
+.pl-id .cell-id { flex: 1 1 auto; min-width: 0; }
+.pl-id .cell-id .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pl-id .cell-id .sub { display: inline-flex; }
+
+/* ---------- empty state ---------- */
+.pl-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  padding: 56px 20px; text-align: center; color: var(--fg-3); }
+.pl-empty .pe-ic { width: 46px; height: 46px; border-radius: var(--radius-md); display: inline-flex;
+  align-items: center; justify-content: center; background: var(--surface-2); border: 1px solid var(--border-1); color: var(--fg-3); }
+.pl-empty .pe-ic svg { width: 22px; height: 22px; }
+.pl-empty .pe-t { font-size: 14px; color: var(--fg-2); }
+
+/* ---------- mobile list ---------- */
+.pl-m { display: flex; flex-direction: column; gap: 12px; }
+.pl-m .pl-msearch { padding: 9px 11px; }
+.pl-m .pl-msearch input { font-size: 15px; }
+.pl-m .side-chips { gap: 5px; }
+.pl-m-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border-1); cursor: pointer; }
+.pl-m-row:last-child { border-bottom: 0; }
+.pl-m-row .rank { flex: none; width: 24px; text-align: right; }
+.pl-m-row .pl-avatar { width: 34px; height: 34px; flex: none; border-radius: var(--radius-sm); }
+.pl-m-row .pl-avatar svg { width: 18px; height: 18px; }
+.pl-m-name { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.pl-m-name > b { font-weight: 600; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pl-m-name .lb-sub { display: flex; align-items: center; gap: 6px; }
+.pl-m-metrics { display: flex; align-items: center; gap: 14px; flex: none; }
+.pl-m-kd { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.pl-m-kd .lb-cap { color: var(--fg-3); }
+.pl-m-score { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.pl-m-score .lb-cap { color: var(--fg-3); }
+.pl-m-metrics .lb-cap { white-space: nowrap; }
+.pl-m-more { display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%;
+  padding: 12px; margin-top: 2px; background: var(--surface-2); border: 1px solid var(--border-1);
+  border-radius: var(--radius-md); color: var(--fg-2); font-size: 13px; font-weight: 600; cursor: pointer; }
+.pl-m-more:hover { background: var(--surface-3); color: var(--fg-1); }
+.pl-m-more svg { width: 15px; height: 15px; }
+
+/* provenance line spacing on this page */
+.pl-prov { margin-top: 14px; }
+
+/* ---------- provenance line (self-contained; player.css isn't loaded here) ---------- */
+.prov-line { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 13px;
+  padding: 11px 14px; background: var(--bg-1); border: 1px solid var(--border-1); border-radius: var(--radius-md); }
+.prov-line .prov-item { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono);
+  font-size: 11.5px; color: var(--fg-3); text-decoration: none; }
+.prov-line .prov-item svg { width: 14px; height: 14px; color: var(--fg-3); flex: none; }
+.prov-line .prov-link { cursor: pointer; }
+.prov-line .prov-link:hover { color: var(--primary); }
+.prov-line .prov-link:hover svg { color: var(--primary); }
+.prov-line .prov-sep { width: 1px; height: 13px; background: var(--border-2); flex: none; }
+/* mobile frame: stack the provenance items vertically (mirrors the profile) */
+.devframe[data-device="mobile"] .prov-line { flex-direction: column; align-items: stretch; gap: 0; padding: 4px 14px; }
+.devframe[data-device="mobile"] .prov-line .prov-item { padding: 10px 0; }
+.devframe[data-device="mobile"] .prov-line .prov-sep { width: auto; height: 1px; align-self: stretch; background: var(--border-1); }
+.rotsel-range { white-space: nowrap; }

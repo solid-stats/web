@@ -1,0 +1,16 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Solid Stats">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#161C28"></stop>
+      <stop offset="1" stop-color="#0C1019"></stop>
+    </linearGradient>
+    <linearGradient id="barC" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#27A8C2"></stop>
+      <stop offset="1" stop-color="#54D3EC"></stop>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="512" height="512" fill="url(#tile)"></rect>
+  <rect x="118" y="300" width="64" height="94" rx="12" fill="#5B6678"></rect>
+  <rect x="224" y="216" width="64" height="178" rx="12" fill="url(#barC)"></rect>
+  <rect x="330" y="132" width="64" height="262" rx="12" fill="url(#barC)"></rect>
+</svg>
