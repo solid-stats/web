@@ -1,3 +1,18 @@
+> **What this repo is.** `web` is the SolidStats browser UI — a React / TanStack Start
+> frontend (public stats, Steam sign-in, authenticated-action UX, moderator/admin screens)
+> for the Solid Games community.
+>
+> **Boundary — what it owns / must NOT cross.** Owns: the frontend, UI state, and the typed
+> API client generated from the `server-2` OpenAPI schema. Must NOT: access the database or
+> S3 directly, or bypass the typed client with raw `fetch`. The platform source of truth and
+> HTTP API are `server-2`'s; raw replay discovery is `replays-fetcher`'s; OCAP parsing is
+> `replay-parser-2`'s. See the cross-app boundary map (§D) in the standards below.
+>
+> **Shared standards.** Universal SolidStats project standards live in the `solid-stats/skills`
+> repo (`solidstats-shared-project-standards`); read them alongside this file.
+
+---
+
 # AGENTS instructions
 
 ## Skills First
