@@ -1,0 +1,18 @@
+/*
+ * The single Tailwind root for the Ladle build.
+ *
+ * Why this file exists: Ladle sets the Vite `root` to its own bundled app dir
+ * inside node_modules, so @tailwindcss/vite's automatic content detection scans
+ * there and never sees this package's `src`. @source must live in the SAME CSS
+ * root that imports Tailwind (a sourceless sibling CSS is ignored), and the
+ * generated theme.css must not carry a Ladle-specific @source. So this Ladle entry
+ * re-exports the generated theme.css (which brings `@import "tailwindcss"` + the
+ * @theme tokens — theme.css stays the single token source, imported once here) and
+ * adds the @source that points Tailwind at the design package source. Without it,
+ * the story's custom-token utilities (bg-surface-1, font-display, the freshness
+ * pills) are tree-shaken and the @theme colors never reach the build.
+ *
+ * theme.css is generated from DESIGN.md — do NOT hand-edit it.
+ */
+@import "../src/styles/theme.css";
+@source "../src";

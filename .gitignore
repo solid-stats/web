@@ -2,6 +2,9 @@ node_modules/
 dist/
 coverage/
 
+# Ladle production build output (regenerable; `ladle build` per design package)
+packages/*/build/
+
 # GSD research web-fetch cache (transient; regenerated per research run)
 .planning/**/.cache/
 
