@@ -59,6 +59,11 @@ export const STRINGS = {
   tierLevels: { ru: "ниже / норма / хорошо / отлично", en: "below / normal / good / excellent" },
   outcomeWin: { ru: "П", en: "W" },
   outcomeLoss: { ru: "пор.", en: "L" },
+  // Moderation request status vocabulary (KIT-07 badge-status-*). The fixed set the
+  // design-review Pillar 6 asserts; RU primary / EN mirror at parity.
+  statusPending: { ru: "На рассмотрении", en: "Pending" },
+  statusApproved: { ru: "Одобрено", en: "Approved" },
+  statusRejected: { ru: "Отклонено", en: "Rejected" },
 } as const satisfies Readonly<Record<string, Bilingual>>;
 
 /** The set of copy-element keys (derived — never hand-maintained in parallel). */
