@@ -45,7 +45,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Success Criteria** (what must be TRUE):
 
   1. `pnpm-workspace.yaml` resolves `packages/design` (importable as `@solid-stats/design`) and a `packages/app` skeleton on pnpm 11 + Node 25; a fresh `pnpm install` succeeds.
-  2. `scripts/gen-theme.mjs` regenerates `packages/design` `theme.css` (the `@theme` block + `--*: initial` reset) from the root `DESIGN.md` alone — `theme.css` is never hand-edited, and the dark-only gunmetal palette / one cyan accent / Saira+IBM Plex type / tabular-mono numerals / Lucide are encoded as token recipes with no arbitrary token values.
+  2. `scripts/gen-theme.mjs` regenerates `packages/design` `theme.css` (the `@theme` block + `--*: initial` reset) from the root `DESIGN.md` alone — `theme.css` is never hand-edited, and the dark-only gunmetal palette / one cyan accent / Exo 2+IBM Plex type / tabular-mono numerals / Lucide are encoded as token recipes with no arbitrary token values.
   3. The data-trust vocabulary (freshness Актуально / Данные устаревают / Связь потеряна / Переподключение, provenance line, Known/Unknown/Conflict) exists as first-class tokens.
   4. Ladle is wired to the real stack (dark-only, the generated `@theme`) with the colocated `*.stories.tsx` convention, and a smoke story proves tokens render.
   5. `design.md lint` passes on `DESIGN.md` (contrast + token references) and the lint/format/type-check toolchain per `solidstats-frontend-react-conventions` runs green across the workspace.
