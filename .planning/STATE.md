@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 01
 current_phase_name: Workspace & Design-System Foundation
 status: executing
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-06-20T09:40:46.395Z"
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-06-20T09:48:51.369Z"
 last_activity: 2026-06-20
 last_activity_desc: Phase 01 execution started
 progress:
   total_phases: 9
   completed_phases: 0
   total_plans: 5
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 ## Current Position
 
 Phase: 01 (Workspace & Design-System Foundation) — EXECUTING
-Plan: 2 of 5
+Plan: 3 of 5
 Status: Ready to execute
 Last activity: 2026-06-20 — Phase 01 execution started
 
@@ -56,6 +56,7 @@ Progress: [░░░░░░░░░░] 0%
 
 *Updated after each plan completion*
 | Phase 01 P01 | 4min | 3 tasks | 11 files |
+| Phase 01 P02 | 8 | 3 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,8 @@ Recent decisions affecting current work:
 - [Phase 01]: tsconfig.base.json uses moduleResolution: bundler + verbatimModuleSyntax + DOM lib (web-frontend override of NodeNext) for the Vite/Ladle stack
 - [Phase 01]: Transitive build scripts (@swc/core, esbuild, msw) set allowBuilds=false in pnpm-workspace.yaml — pnpm 11.6 needs explicit booleans there for install to exit 0 (T-1-02 accept); the pnpm field in package.json is no longer read by pnpm 11.6
 - [Phase 01]: Plan 01-01 Task 2 blocking checkpoint pre-resolved this session: Node 25.9.0 active via nvm, four dev-deps confirmed legitimate
+- [Phase 01]: WS-05 gate resolved to Vite+ `vp check` (primary D-03 path); vite-plus@^0.2.1 confirmed legit, runs at root, no allowBuilds flip
+- [Phase 01]: Display font is Exo 2 (not Saira) — Saira lacks Cyrillic; self-hosted woff2 + fonts.css @font-face shipped
 
 ### Pending Todos
 
@@ -94,7 +97,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-20T09:40:29.492Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-06-20T09:48:51.366Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
 </content>
