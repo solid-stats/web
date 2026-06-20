@@ -64,6 +64,24 @@ export const STRINGS = {
   statusPending: { ru: "На рассмотрении", en: "Pending" },
   statusApproved: { ru: "Одобрено", en: "Approved" },
   statusRejected: { ru: "Отклонено", en: "Rejected" },
+  // KIT-01 nav-shell copy (skip link + role-aware nav sections). The public
+  // sections mirror the hi-fi shell semantics; the role slots (login / my-requests
+  // / queue / admin) are the visual-only role additions (NO RBAC — v1.0). RU
+  // primary / EN mirror at parity (QUAL-05).
+  skipToContent: { ru: "Перейти к содержимому", en: "Skip to content" },
+  navOverview: { ru: "Обзор", en: "Overview" },
+  navPlayers: { ru: "Игроки", en: "Players" },
+  navSquads: { ru: "Отряды", en: "Squads" },
+  navBounty: { ru: "Награды", en: "Bounty" },
+  navCommanders: { ru: "Командиры", en: "Commanders" },
+  navReplays: { ru: "Реплеи", en: "Replays" },
+  navSignIn: { ru: "Войти", en: "Sign in" },
+  navMyRequests: { ru: "Мои заявки", en: "My requests" },
+  navQueue: { ru: "Очередь", en: "Queue" },
+  navAdmin: { ru: "Админка", en: "Admin" },
+  // Landmark aria-labels for the two nav regions (distinguished for SR users).
+  navPrimaryAria: { ru: "Основная навигация", en: "Primary" },
+  navMobileAria: { ru: "Мобильная навигация", en: "Mobile" },
 } as const satisfies Readonly<Record<string, Bilingual>>;
 
 /** The set of copy-element keys (derived — never hand-maintained in parallel). */
