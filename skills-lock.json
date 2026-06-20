@@ -37,6 +37,18 @@
       "skillPath": "solidstats-frontend-react-conventions/SKILL.md",
       "computedHash": "231b1bd3c3367959a67fb09081142bd76b7899e249639c3d589983c7ebc4b9bd"
     },
+    "solidstats-frontend-react-design": {
+      "source": "solid-stats/skills",
+      "sourceType": "github",
+      "skillPath": "solidstats-frontend-react-design/SKILL.md",
+      "computedHash": "30063e82fd0d0b0128e4fbdf29beab6c8e345de9356ad61a8b6534dd31eaa6fc"
+    },
+    "solidstats-frontend-react-design-review": {
+      "source": "solid-stats/skills",
+      "sourceType": "github",
+      "skillPath": "solidstats-frontend-react-design-review/SKILL.md",
+      "computedHash": "92abd1e4e5963022ffd39aa073a2364112c203503001934ff49197a70993a959"
+    },
     "solidstats-frontend-react-tests": {
       "source": "solid-stats/skills",
       "sourceType": "github",

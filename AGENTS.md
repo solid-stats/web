@@ -53,6 +53,28 @@ Read these planning files before planning or implementing:
 
 All project documentation must be written in English only.
 
+## GSD UI Phase & Review
+
+The SolidStats design pipeline is two installed project skills; wire them into the GSD UI flow.
+
+- **UI phase / design** — when GSD runs the UI phase (`/gsd-ui-phase`, the `gsd-ui-researcher` /
+  `gsd-ui-checker` agents), `solidstats-frontend-react-design` is the project's design-creation
+  overlay. It owns the two-layer model (the root `DESIGN.md` token system → Tailwind v4 `@theme`, and
+  the per-surface spec) and the brief → spec → Ladle prototype → graduate pipeline. Author surface
+  specs into the GSD `UI-SPEC.md` / phase `CONTEXT` + `VALIDATION` docs; do not invent a parallel
+  spec format.
+- **UI review** — when GSD runs UI review (`/gsd-ui-review`, the `gsd-ui-auditor` agent, or re-review
+  inside fix loops), `solidstats-frontend-react-design-review` is the mandatory project UI-review
+  overlay. Follow its seven pillars, rubric, and checklist before reporting design findings; route
+  code-level defects to `solidstats-frontend-react-code-review`. If GSD requires its own `UI-REVIEW.md`
+  frontmatter or severity sections, preserve the GSD artifact format and map the design-review
+  findings into it.
+
+The design-system source of truth is the repo-root `DESIGN.md` (exported to `src/styles/theme.css`);
+the running per-surface companion notes live in `.design/CLAUDE.md`; components are catalogued as
+colocated Ladle stories in `src/shared/uikit/`. The `.design/` hi-fi is frozen visual reference (see
+`.design/MIGRATION.md`), not portable code.
+
 <!-- GSD:skills-start source:skills/ -->
 ## Project Skills
 
