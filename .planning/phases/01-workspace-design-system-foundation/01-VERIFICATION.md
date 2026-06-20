@@ -1,7 +1,8 @@
 ---
 phase: 01-workspace-design-system-foundation
 verified: 2026-06-20T00:00:00Z
-status: human_needed
+status: passed
+human_verification_resolved: 2026-06-20T11:57:46Z
 score: 5/5
 behavior_unverified: 0
 overrides_applied: 0
@@ -9,13 +10,13 @@ human_verification:
   - test: "Open Ladle dev server (`pnpm --filter @solid-stats/design ladle`), navigate to the Smoke story, and visually confirm: (1) gunmetal dark palette renders — no white/light background bleed, (2) Exo 2 display font and IBM Plex Sans body font render with Cyrillic glyphs (check «Solid Stats — статистика» and «IBM Plex Sans — корпус»), (3) IBM Plex Mono tabular numerals align correctly («1 234 567 · 89.50% · 00:42:17»), (4) four freshness pills render with distinct colors — green/Актуально, yellow/Данные устаревают, red/Связь потеряна, blue/Переподключение, (5) cyan primary accent visible."
     expected: "All five visual checks pass — tokens are not unstyled, fonts load from self-hosted woff2 assets, Cyrillic renders, and the four-state freshness vocabulary is color-distinct and legible."
     why_human: "Visual render correctness (font loading, Cyrillic glyph rendering, color fidelity, data-trust token appearance) is not assertable by the headless `ladle build`; it requires the browser rendering pipeline. The headless build confirms CSS is emitted but cannot confirm fonts load or Cyrillic glyphs render. Documented as the sole Manual-Only item in 01-VALIDATION.md."
----
+    resolved: "PASSED — verified via browser automation (Playwright MCP) against the live `ladle dev` stack during /gsd-verify-work (01-UAT.md). All 5 sub-checks confirmed by DOM introspection: fonts loaded (document.fonts.check true for Exo 2 / IBM Plex Sans / IBM Plex Mono, Cyrillic rendered), tabular-nums active, 4 distinct freshness colors, cyan accent #36C5E0. Sub-check 1 (gunmetal base, no white bleed) surfaced a latent defect — the bg-0 backdrop token was tree-shaken from the Ladle build — fixed in quick task 260620-q5q (commit d9b307a: gen-theme.mjs emits `@layer base { html { background-color: var(--color-bg-0) } }`); re-verified html computed background = rgb(10,13,19) painted by the token."
 
 # Phase 1: Workspace & Design-System Foundation — Verification Report
 
 **Phase Goal:** The buildable base every later phase imports — a pnpm workspace whose `packages/design` package exports a Tailwind v4 `@theme` generated from the root `DESIGN.md`, with Ladle rendering on the real stack and the toolchain green.
 **Verified:** 2026-06-20
-**Status:** human_needed
+**Status:** passed — sole human-verification item (Smoke story visual render) resolved via browser automation during UAT; bg-0 backdrop defect fixed (quick task 260620-q5q, commit d9b307a)
 **Re-verification:** No — initial verification
 
 ---

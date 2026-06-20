@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
-current_phase: 01
-current_phase_name: Workspace & Design-System Foundation
-status: verifying
-stopped_at: Phase 01 — 5/5 plans done, automated verification 5/5, review WR-01..04 resolved, awaiting UAT (1 visual item)
-last_updated: "2026-06-20T18:10:00.000Z"
+current_phase: 2
+current_phase_name: UIKIT — Structural & Data-Display Primitives
+status: ready_to_plan
+stopped_at: Phase 01 complete — ready to plan Phase 2
+last_updated: "2026-06-20T12:04:14.658Z"
 last_activity: 2026-06-20
-last_activity_desc: Phase 01 verified (5/5 automated); code-review WR-01..04 hardened in gen-theme.mjs + package.json; UAT visual check pending
+last_activity_desc: Phase 01 complete, transitioned to Phase 2
 progress:
   total_phases: 9
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 5
   completed_plans: 5
-  percent: 0
+  percent: 11
 ---
 
 # Project State
@@ -24,22 +24,22 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-20)
 
 **Core value:** Make SolidGames statistics easy to inspect, filter, trust, and correct through a fast public website and clear request/moderation flows.
-**Current focus:** Phase 01 — Workspace & Design-System Foundation
+**Current focus:** Phase 2 — UIKIT — Structural & Data-Display Primitives
 
 ## Current Position
 
-Phase: 01 (Workspace & Design-System Foundation) — AWAITING UAT
-Plan: 5 of 5 complete
-Status: All 5 plans done; automated verification 5/5; 1 visual UAT item pending (`/gsd-verify-work 1`)
-Last activity: 2026-06-20 — Phase 01 executed + verified (automated); UAT pending
+Phase: 2 — UIKIT — Structural & Data-Display Primitives
+Plan: Not started
+Status: Ready to plan — Phase 01 complete (UAT 1/1 pass, verification passed, security 10/10 closed)
+Last activity: 2026-06-20 — Phase 01 complete, transitioned to Phase 2
 
-Plans: [██████████] 5/5 · Phase verification: awaiting UAT
+Plans: [████████████████████] Phase 01: 5/5 · verified + UAT-passed · ready to plan Phase 2
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 0
+- Total plans completed: 5
 - Average duration: — min
 - Total execution time: 0.0 hours
 
@@ -47,7 +47,7 @@ Plans: [██████████] 5/5 · Phase verification: awaiting UAT
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01 | 5 | - | - |
 
 **Recent Trend:**
 
@@ -82,6 +82,7 @@ Recent decisions affecting current work:
 - [Phase ?]: 01-04: Ladle requires explicit Tailwind source registration; design package keeps no direct vite dep; allowBuilds untouched
 - [Phase ?]: 01-04: smoke story is the only catalog artifact (D-07 zero components); shared/ FSD segment preserved per architecture.md; freshness pills read --color-freshness-* via inline style (sanctioned escape hatch for the compound border token)
 - [Phase 01]: Code-review hardening (01-REVIEW WR-01..04): gen-theme.mjs resolvers throw on unknown {colors.*}/{rounded.*} refs (was a silent "undefined" leak into theme.css); buildTheme asserts the required DESIGN.md sections/recipes by name; the two focus-ring resolvers consolidated into one guarded resolveRefs (DRY); drift gate compares against HEAD so an untracked theme.css trips it. Output byte-identical, vp check green.
+- [Phase 01]: UAT/verify fix (quick 260620-q5q, d9b307a) — dark base backdrop now painted from `--color-bg-0` via a generated `@layer base { html { … } }` rule. The prior `bg-bg-0` utility lived only on the Ladle GlobalProvider (outside `@source "../src"`), so Tailwind v4 tree-shook the token and the dark base was incidental (browser canvas). Base-paint emitted by gen-theme.mjs forces token emission + paints html — dark-only base is now token-driven, not luck. Verified live in-browser (Playwright).
 
 ### Pending Todos
 
@@ -111,7 +112,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-20T10:19:22.132Z
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-06-20T12:04:14Z
+Stopped at: Phase 01 complete — ready to plan Phase 2
 Resume file: None
 </content>

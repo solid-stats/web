@@ -24,7 +24,7 @@ stack.
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Workspace & Design-System Foundation** - pnpm workspace, `DESIGN.md` → `@theme`, Ladle wired, toolchain green (awaiting UAT — automated verification 5/5, 1 visual item pending)
+- [x] **Phase 1: Workspace & Design-System Foundation** - pnpm workspace, `DESIGN.md` → `@theme`, Ladle wired, toolchain green (verified — automated 5/5, UAT 1/1 pass, security 10/10 closed) (completed 2026-06-20)
 - [ ] **Phase 2: UIKIT — Structural & Data-Display Primitives** - nav shell, data tables, stat primitives, data-trust, feedback
 - [ ] **Phase 3: UIKIT — Interactive, i18n & Global-State Patterns** - Ark UI forms/overlays, RU/EN harness, reusable loading/empty/error/offline patterns
 - [ ] **Phase 4: Public Stats — Overview, Players & Player Profile** - the hi-fi-anchored core stats trio (loading model, tiers, provenance)
@@ -207,7 +207,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Workspace & Design-System Foundation | 5/5 | Awaiting UAT | -         |
+| 1. Workspace & Design-System Foundation | 5/5 | Complete    | 2026-06-20 |
 | 2. UIKIT — Structural & Data-Display Primitives | 0/TBD | Not started | - |
 | 3. UIKIT — Interactive, i18n & Global-State Patterns | 0/TBD | Not started | - |
 | 4. Public Stats — Overview, Players & Player Profile | 0/TBD | Not started | - |
