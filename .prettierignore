@@ -1,0 +1,24 @@
+# Oxfmt / Prettier ignore — scopes `vp check` (and `vp fmt`) to PROJECT source only.
+# Oxfmt reads this file by default (its --ignore-path default is .gitignore + .prettierignore).
+# Per solidstats-shared-ts-standards §C: at minimum dist/, coverage/, node_modules/, .agents/, .planning/.
+
+# Build / dependency output
+node_modules/
+dist/
+coverage/
+packages/*/build/
+
+# Vendored / third-party trees — not our source
+.agents/
+.claude/
+
+# Planning + design artifacts (docs/markdown, not formatted source)
+.planning/
+.design/
+
+# Generated build output — single-sourced from DESIGN.md via scripts/gen-theme.mjs,
+# never hand-edited, so never format-gated.
+packages/design/src/styles/theme.css
+
+# Lockfiles
+pnpm-lock.yaml

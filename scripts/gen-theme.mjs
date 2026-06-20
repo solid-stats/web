@@ -102,7 +102,10 @@ function parseYaml(text) {
     if (colon === -1) {
       throw new Error(`Unparseable front-matter line: ${JSON.stringify(rawLine)}`);
     }
-    const key = content.slice(0, colon).trim().replace(/^['"]|['"]$/g, "");
+    const key = content
+      .slice(0, colon)
+      .trim()
+      .replace(/^['"]|['"]$/g, "");
     const rest = content.slice(colon + 1);
 
     // pop stack to the correct parent for this indent
