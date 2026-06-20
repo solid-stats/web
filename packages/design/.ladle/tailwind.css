@@ -16,3 +16,23 @@
  */
 @import "../src/styles/theme.css";
 @source "../src";
+
+/*
+ * Accessible-but-visually-hidden utility for the Sparkline's `<figcaption>`
+ * summary and other screen-reader-only text (KIT-03, Plan 05). theme.css carries
+ * no `sr-only` (it is generated from DESIGN.md tokens, not utilities), so it is
+ * declared here in the base layer — the standard visually-hidden recipe.
+ */
+@layer base {
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}

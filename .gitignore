@@ -5,6 +5,11 @@ coverage/
 # Ladle production build output (regenerable; `ladle build` per design package)
 packages/*/build/
 
+# Playwright catalog-harness output (regenerable per `playwright test` run)
+packages/*/test-results/
+packages/*/playwright-report/
+packages/*/.last-run.json
+
 # GSD research web-fetch cache (transient; regenerated per research run)
 .planning/**/.cache/
 

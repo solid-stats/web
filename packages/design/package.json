@@ -12,15 +12,22 @@
   },
   "scripts": {
     "ladle": "ladle dev",
-    "ladle:build": "ladle build"
+    "ladle:build": "ladle build",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
+    "lucide-react": "1.21.0",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "tailwind-variants": "3.2.2"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.11.3",
     "@ladle/react": "5.1.1",
+    "@playwright/test": "1.61.0",
     "@tailwindcss/vite": "4.3.1",
-    "tailwindcss": "4.3.1"
+    "tailwindcss": "4.3.1",
+    "vitest": "4.1.9"
   }
 }
