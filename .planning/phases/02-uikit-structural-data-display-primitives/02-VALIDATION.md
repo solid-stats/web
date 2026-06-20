@@ -47,13 +47,13 @@ created: 2026-06-20
 |----------|----------|-----------|----------------------------|---------------|--------|
 | QUAL-06 / SC#5 | Score/K-D formulas + tiers internally consistent; Vasiliy #1 everywhere; no generated player outranks a real leader | unit | Vitest: assert `score = (kills−TK)/(games+dftk)`, `kd = (kills−TK)/(deaths+dftk)`, roster head == 10 Overview players, Vasiliy index 0 | `src/shared/uikit/_fixtures/_fixtures.test.ts` | ⬜ pending |
 | QUAL-06 / D-04 | Tier level population-derived from `SS_BASELINE[period]`, not hardcoded; `baseline` passed explicitly; no global mutation | unit | Vitest: known baseline → assert level + entry threshold (`≥2.4 ХОРОШО`) | `_fixtures/tiers.test.ts` | ⬜ pending |
-| QUAL-03 / SC#4 | axe-clean (serious/critical) per primitive | component | iterate `meta.json`; `AxeBuilder.withTags(wcag2a,wcag2aa,wcag22aa).analyze()`; block serious/critical | `tests/a11y.spec.ts` | ⬜ pending |
-| QUAL-03 / SC#4 | 44×44 targets on every interactive control | component | Playwright `boundingBox()` ≥ 44×44 on `a,button,[role=button],input` per story | `tests/a11y.spec.ts` | ⬜ pending |
-| QUAL-03 / SC#4 | Keyboard-operable (Tab order, Enter/Space, arrows for Th/tabs); focus visible, not obscured | component | Playwright `keyboard.press` + `:focus-visible` assertion on interactive stories | `tests/keyboard.spec.ts` | ⬜ pending |
-| QUAL-04 / SC#3 | CLS = 0 — skeleton matches final colgroup+header+row dims; banners/tiles reserve height | component | Playwright: loading story vs data story → assert equal `boundingBox` height | `tests/cls.spec.ts` | ⬜ pending |
-| QUAL-01 / SC#1-3 | ×5 scenario endings + ×4 data-volume states present per list/table/field | component (presence) | Playwright asserts named `StateCell` cells exist per story state-matrix | `tests/states.spec.ts` (or folded) | ⬜ pending |
-| QUAL-02 | Responsive, container-keyed, 360px floor; mobile no h-scroll, CompactRow drops cols | component | Playwright at 360px on Table/CompactRow/AppShell; assert `scrollWidth <= clientWidth` | `tests/responsive.spec.ts` | ⬜ pending |
-| QUAL-05 | RU + EN present; RU sanity (no clip at 360px) | component + review | Playwright asserts RU and EN strings render; manual RU clip check at 360px | `responsive.spec.ts` + design-review | ⬜ pending |
+| QUAL-03 / SC#4 | axe-clean (serious/critical) per primitive | component | iterate `meta.json`; `AxeBuilder.withTags(wcag2a,wcag2aa,wcag22aa).analyze()`; block serious/critical | `tests/catalog.spec.ts` | ⬜ pending |
+| QUAL-03 / SC#4 | 44×44 targets on every interactive control | component | Playwright `boundingBox()` ≥ 44×44 on `a,button,[role=button],input` per story | `tests/catalog.spec.ts` | ⬜ pending |
+| QUAL-03 / SC#4 | Keyboard-operable (Tab order, Enter/Space, arrows for Th/tabs); focus visible, not obscured | component | Playwright `keyboard.press` + `:focus-visible` assertion on interactive stories | `tests/catalog.spec.ts` | ⬜ pending |
+| QUAL-04 / SC#3 | CLS = 0 — skeleton matches final colgroup+header+row dims; banners/tiles reserve height | component | Playwright: loading story vs data story → assert equal `boundingBox` height | `tests/catalog.spec.ts` | ⬜ pending |
+| QUAL-01 / SC#1-3 | ×5 scenario endings + ×4 data-volume states present per list/table/field | component (presence) | Playwright asserts named `StateCell` cells exist per story state-matrix | `tests/catalog.spec.ts` | ⬜ pending |
+| QUAL-02 | Responsive, container-keyed, 360px floor; mobile no h-scroll, CompactRow drops cols | component | Playwright at 360px on Table/CompactRow/AppShell; assert `scrollWidth <= clientWidth` | `tests/catalog.spec.ts` | ⬜ pending |
+| QUAL-05 | RU + EN present; RU sanity (no clip at 360px) | component + review | Playwright asserts RU and EN strings render; manual RU clip check at 360px | `tests/catalog.spec.ts` + design-review | ⬜ pending |
 | SC#1-3 | Each family passes design-review (`design.md lint`, axe, real-width screenshots, CLS) | review gate | `solidstats-frontend-react-design-review` per family | manual gate per family | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
@@ -67,7 +67,7 @@ created: 2026-06-20
 - [ ] Install dev-deps: `@playwright/test`, `@axe-core/playwright`, `vitest`, `tailwind-variants`, `lucide-react` + `pnpm exec playwright install` browsers
 - [ ] `src/shared/uikit/_fixtures/` — single fixture module (SS_BASELINE, canonical roster, Score/K-D formulas, RU+EN string map) + `_fixtures.test.ts`, `tiers.test.ts`
 - [ ] `src/shared/uikit/_state-matrix/` — shared `StateMatrix` / `StateCell` story helper (the ×7 states + ×4 data-volume grid)
-- [ ] `tests/` Playwright specs (a11y/44px, keyboard, cls, responsive) or one consolidated `catalog.spec.ts` iterating `meta.json`
+- [ ] `tests/catalog.spec.ts` — the single consolidated Playwright spec iterating `meta.json` (axe/44px + keyboard + CLS + responsive + state-presence; the plans consolidate the per-concern checks here rather than separate spec files)
 - [ ] Confirm `.ladle/config.mjs` `addons.a11y.enabled = true` (dev aid, non-blocking)
 
 *Phase 1 explicitly deferred Vitest/Playwright to "the first component phase" — that is this phase. All of the above is genuine Wave 0 setup, not pre-existing infrastructure.*
