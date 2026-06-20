@@ -84,8 +84,35 @@ After authoring `DESIGN.md` and validating the toolchain, two decisions firmed u
   wrong export flag (`--tailwind-v4`) and claims the CLI path works — correct it to the above (interim
   generator + the migration trigger).
 
+## Direction change — pnpm workspace + v0.1 design milestone (2026-06-20, user decision)
+
+Supersedes the single-repo structure (D1's `src/`, the post-validation "scaffold = first
+gsd-new-project phase" note) and the no-workspace assumption. The user confirmed:
+
+- **`web` is a pnpm workspace** (pnpm 11 + Node 25 — SolidStats canon; siblings already use pnpm):
+  - `packages/design/` — the importable design system: generated `@theme` / `theme.css`, the durable
+    Ladle UIKIT component catalog, and every key surface as a Ladle story. (`@solid-stats/design`.)
+  - `packages/app/` — the TanStack Start application; consumes `@solid-stats/design`. Skeleton in
+    v0.1, built in v1.0.
+  - **`DESIGN.md` stays at the repo ROOT** (shared token SoT across packages). `scripts/gen-theme.mjs`
+    reads root `DESIGN.md` → `packages/design` `theme.css` (DRY single-source unchanged); the existing
+    `src/styles/theme.css` relocates into `packages/design`.
+- **Milestones:**
+  - **v0.1 = the design milestone** (this `/gsd-new-project` roadmaps it) — build `packages/design`:
+    tokens → `@theme`, the UIKIT component library, and **ALL key surfaces as Ladle stories**, each via
+    design → design-review. No routes, no data wiring, no SSR app.
+  - **v1.0 = the app milestone** (later `/gsd-new-milestone`) — `packages/app` on the finished design
+    system. The app-focused research (STACK/FEATURES/ARCHITECTURE/PITFALLS) is parked at
+    `.planning/research-app-v1.0/` for it.
+- **Hi-fi is reference ONLY (reaffirms D2).** `.design/hifi/*` (Overview, Players, Player, Squads) is
+  fake-stack visual reference — we build every page ourselves natively (spec → Ladle), never port the
+  jsx. Hi-fi presence does NOT make a surface "already designed"; all surfaces are fresh work.
+- **What carries over from the foundation above:** `DESIGN.md` authored + lint-clean, `gen-theme.mjs`
+  (+ the migration-back-to-CLI obligation), `theme.css` as pure build output, `.design/` frozen
+  reference, the design skills wired into GSD. They relocate into the workspace; the decisions hold.
+
 ## Next step
 
-Execute the foundation task — it is pre-GSD plumbing. `DESIGN.md` is authored and lint-clean (0
-errors); next is `theme.css` via `scripts/gen-theme.mjs`, then the DRY audit, then logical-chunk
-commits. The scaffold is deferred to the first `gsd-new-project` phase.
+`/gsd-new-project` is mid-flight, re-scoped to the v0.1 design milestone: `PROJECT.md` +
+`REQUIREMENTS.md` authored, roadmapper next (design phases: workspace + design-package foundation →
+UIKIT → surfaces, each via design → design-review).
