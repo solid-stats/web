@@ -131,4 +131,29 @@
   /* Content containers */
   --container: 1760px;
   --container-prose: 720px;
+
+  /* Data-trust state tokens (freshness · known/unknown/conflict · provenance) */
+  --color-freshness-up-to-date-fill: rgba(63, 207, 142, 0.14);
+  --color-freshness-up-to-date-text: #3FCF8E;
+  --color-freshness-up-to-date-border: 1px solid rgba(63, 207, 142, 0.38);
+  --color-freshness-stale-fill: rgba(242, 179, 61, 0.15);
+  --color-freshness-stale-text: #F2B33D;
+  --color-freshness-stale-border: 1px solid rgba(242, 179, 61, 0.40);
+  --color-freshness-offline-fill: rgba(255, 92, 108, 0.14);
+  --color-freshness-offline-text: #FF5C6C;
+  --color-freshness-offline-border: 1px solid rgba(255, 92, 108, 0.38);
+  --color-freshness-reconnecting-fill: rgba(91, 157, 255, 0.14);
+  --color-freshness-reconnecting-text: #5B9DFF;
+  --color-freshness-reconnecting-border: 1px solid rgba(91, 157, 255, 0.38);
+  --color-known-fill: #1B212F;
+  --color-known-text: #98A2B6;
+  --color-known-border: 1px solid #262E3D;
+  --color-unknown-fill: rgba(242, 179, 61, 0.15);
+  --color-unknown-text: #F2B33D;
+  --color-unknown-border: 1px solid rgba(242, 179, 61, 0.40);
+  --color-conflict-fill: rgba(242, 179, 61, 0.15);
+  --color-conflict-text: #F2B33D;
+  --color-conflict-border: 1px solid rgba(242, 179, 61, 0.40);
+  --color-provenance-fg: #98A2B6;
+  --color-provenance-link: #36C5E0;
 }
