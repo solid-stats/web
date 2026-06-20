@@ -5,8 +5,8 @@ milestone_name: milestone
 current_phase: 2
 current_phase_name: UIKIT — Structural & Data-Display Primitives
 status: ready_to_plan
-stopped_at: Phase 2 context gathered (assumptions mode)
-last_updated: "2026-06-20T12:38:16.288Z"
+stopped_at: Phase 2 UI-SPEC approved
+last_updated: "2026-06-20T13:11:29.454Z"
 last_activity: 2026-06-20
 last_activity_desc: Phase 01 complete, transitioned to Phase 2
 progress:
@@ -112,7 +112,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-20T12:38:16.285Z
-Stopped at: Phase 2 context gathered (assumptions mode)
-Resume file: .planning/phases/02-uikit-structural-data-display-primitives/02-CONTEXT.md
+Last session: 2026-06-20T13:11:29.450Z
+Stopped at: Phase 2 UI-SPEC approved
+Resume file: .planning/phases/02-uikit-structural-data-display-primitives/02-UI-SPEC.md
 </content>
