@@ -1,10 +1,11 @@
 ---
 phase: 2
 slug: uikit-structural-data-display-primitives
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-06-20
+reviewed_at: 2026-06-20
 ---
 
 # Phase 2 — UI Design Contract
@@ -61,7 +62,7 @@ Documented FROM `DESIGN.md typography` (full 11-step scale `2xs`→`5xl`, 4 weig
 
 | Role | Family | Size | Weight | Line-height | Tracking | Used by |
 |------|--------|------|--------|-------------|----------|---------|
-| `overline` | mono (Exo? no → mono) | 11px (`2xs`) | 500 medium | 1.5 | caps 0.12em, uppercase | provenance meta, micro labels |
+| `overline` | mono | 11px (`2xs`) | 500 medium | 1.5 | caps 0.12em, uppercase | provenance meta, micro labels |
 | `label` | body | 12px (`xs`) | 600 semibold | 1.5 | label 0.06em, uppercase | table headers, stat-tile labels, nav labels |
 | `body` | body | 14px (`base`) | 400 regular | 1.5 | normal | default UI text, empty/error body |
 | `body-sm` | body | 13px (`sm`) | (regular) | 1.35 dense | normal | dense table body, mobile compact rows |
@@ -242,13 +243,23 @@ This catalog is the durable seam Phases 4–9 compose surfaces from. Every later
 
 ---
 
+## Checker Recommendations (non-blocking → planner)
+
+From `gsd-ui-checker` + `solidstats-frontend-react-design-review` (2026-06-20). All non-blocking — fold into the plan, do not re-litigate the contract.
+
+1. **[a11y] Full-row click → keyboard/SR row-navigation strategy is unspecified.** `TableRow`/`CompactRow` declare "whole row is the click target" but not which cell carries focus or how a screen reader traverses rows. Planner decides against `a11y.md` + WCAG 2.1.3: a native `<table>` with a focusable `<a>`/`<button>` in the player-name cell (Tab-navigable), or a grid-role table (`role="row"` + `aria-rowindex`). The contract gap is that neither is named.
+2. **[states] Long-value overflow contract missing for text cells.** Spec-template §5 mandates "long values truncate+tooltip or wrap — never clip", but KIT-02 doesn't carry it for long nicknames / squad names. Planner adds: player-name cell `overflow: hidden; text-overflow: ellipsis` + `title`/Ark UI `Tooltip` on truncation; confirm the label-over-value stack works in `CompactRow` at the 360px floor.
+3. **[ru-copy] Verify `FreshnessPill` "Данные устаревают" at 360px.** Grammatically fine but long for a pill in the narrowest column. Verify in the Ladle story; if it clips, consider "Устаревает" or graceful wrap (never mid-word). The spec already mandates the RU sanity-check — this is the tracking note.
+
+---
+
 ## Checker Sign-Off
 
-- [ ] Dimension 1 Copywriting: PASS
-- [ ] Dimension 2 Visuals: PASS
-- [ ] Dimension 3 Color: PASS
-- [ ] Dimension 4 Typography: PASS
-- [ ] Dimension 5 Spacing: PASS
-- [ ] Dimension 6 Registry Safety: PASS
+- [x] Dimension 1 Copywriting: PASS
+- [x] Dimension 2 Visuals: PASS
+- [x] Dimension 3 Color: PASS
+- [x] Dimension 4 Typography: PASS
+- [x] Dimension 5 Spacing: PASS
+- [x] Dimension 6 Registry Safety: PASS
 
-**Approval:** pending
+**Approval:** approved 2026-06-20 — 6/6 dimensions PASS; 3 non-blocking recommendations (above).
