@@ -35,13 +35,13 @@
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-frontend-react-conventions/SKILL.md",
-      "computedHash": "231b1bd3c3367959a67fb09081142bd76b7899e249639c3d589983c7ebc4b9bd"
+      "computedHash": "d933098c296afda32a8b48089a9fbe1c87855b7bf6e50cff111a8127ca3353a9"
     },
     "solidstats-frontend-react-design": {
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-frontend-react-design/SKILL.md",
-      "computedHash": "30063e82fd0d0b0128e4fbdf29beab6c8e345de9356ad61a8b6534dd31eaa6fc"
+      "computedHash": "0778066aeb01aef53c95e98a9f257e4a2dbc5819def121c3ea580223fb3373d2"
     },
     "solidstats-frontend-react-design-review": {
       "source": "solid-stats/skills",
@@ -53,31 +53,31 @@
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-frontend-react-tests/SKILL.md",
-      "computedHash": "abeb339d424cd4eb4e6b121e2783fc2b5b199be15460df2d06938ffd8fb44b28"
+      "computedHash": "3bf48b118217d4d4482e2307934752ff9a5d538f8547017b63fd1baf813bcff1"
     },
     "solidstats-shared-project-standards": {
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-shared-project-standards/SKILL.md",
-      "computedHash": "467a2ed93687fd453f34c347ac93c61f76197b44b9d2dc586801a47565ad38af"
+      "computedHash": "453188586c883b9ef84b89c248f6bc61a95a6043e91300c8d378071b06fa1781"
     },
     "solidstats-shared-review-standards": {
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-shared-review-standards/SKILL.md",
-      "computedHash": "8cd5d06815a76a60d4625286b0a13d210d3d51be7fedf581ab607ed423262322"
+      "computedHash": "a7b31ba038c50ee86fb2f6525ff09e182411cb7f10976131c563df749e1953fc"
     },
     "solidstats-shared-testing-standards": {
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-shared-testing-standards/SKILL.md",
-      "computedHash": "7f7d9cd5698c71380f34115619a4cb992a6eba0116f667493749df73d56b3a25"
+      "computedHash": "85e4def5ceb1cc084bce99861b2f13385199812b92a778d0cbd7cd81746cd698"
     },
     "solidstats-shared-ts-standards": {
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-shared-ts-standards/SKILL.md",
-      "computedHash": "62ba21636f874f5c474d19a2f0f18d42a396f21cdaa273bc727e4b626f8fe1e8"
+      "computedHash": "1b4ced90b7febab5b2cb73b17130b630a910ff42809075797e1e3f47c8702716"
     },
     "tanstack-start": {
       "source": "tanstack-skills/tanstack-skills",
@@ -95,7 +95,7 @@
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/composition-patterns/SKILL.md",
-      "computedHash": "f98931159fa9c7fed043bcd18a891a46dcf89ababa38df13a4c5b7b30dc0ce07"
+      "computedHash": "575757e3e25761c8c562d6e395d29f0b76c98b1273c0bd72d88e6ab1bc9c7d42"
     },
     "vercel-react-best-practices": {
       "source": "vercel-labs/agent-skills",
@@ -107,7 +107,7 @@
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/web-design-guidelines/SKILL.md",
-      "computedHash": "a6a44d5498f7e8f68289902f3dedfc6f38ae0cee1e96527c80724cf27f727c2a"
+      "computedHash": "f3bc47f890f42a44db1007ab390709ec368e4b8c089baee6b0007182236ac474"
     }
   }
 }
