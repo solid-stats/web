@@ -46,7 +46,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. The data-trust vocabulary (freshness Актуально / Данные устаревают / Связь потеряна / Переподключение, provenance line, Known/Unknown/Conflict) exists as first-class tokens.
   4. Ladle is wired to the real stack (dark-only, the generated `@theme`) with the colocated `*.stories.tsx` convention, and a smoke story proves tokens render.
   5. `design.md lint` passes on `DESIGN.md` (contrast + token references) and the lint/format/type-check toolchain per `solidstats-frontend-react-conventions` runs green across the workspace.
-**Plans**: TBD
+**Plans**: 5 plans
+- [ ] 01-01-PLAN.md — Workspace scaffold + Node/pnpm pins + both package skeletons (WS-01, WS-02)
+- [ ] 01-02-PLAN.md — Resolve Vite+ `vp check` toolchain + self-hosted font assets (WS-05, QUAL-04)
+- [ ] 01-03-PLAN.md — Token pipeline: relocate OUT_PATH + data-trust `@theme` emit, drift gate (WS-03, DS-01, DS-02, DS-03)
+- [ ] 01-04-PLAN.md — Ladle wired to the real stack + the one smoke story (WS-02, WS-04)
+- [ ] 01-05-PLAN.md — Workspace green gate + `.design/` freeze (WS-05)
 
 ### Phase 2: UIKIT — Structural & Data-Display Primitives
 **Goal**: The durable, reviewed component catalog for everything that *displays* stats — the nav shell, the data-table family, stat primitives, the data-trust components, and feedback primitives — each as a colocated Ladle story.
@@ -163,7 +168,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Workspace & Design-System Foundation | 0/TBD | Not started | - |
+| 1. Workspace & Design-System Foundation | 0/5 | Not started | - |
 | 2. UIKIT — Structural & Data-Display Primitives | 0/TBD | Not started | - |
 | 3. UIKIT — Interactive, i18n & Global-State Patterns | 0/TBD | Not started | - |
 | 4. Public Stats — Overview, Players & Player Profile | 0/TBD | Not started | - |
