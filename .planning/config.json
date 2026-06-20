@@ -244,6 +244,10 @@
     "enabled": true
   },
   "mempalace": {
-    "enabled": true
+    "enabled": true,
+    "capture_artifacts": true,
+    "mirror_kg": true,
+    "cross_project_tunnels": true,
+    "auto_capture_hooks": true
   }
 }
