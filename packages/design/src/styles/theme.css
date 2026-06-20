@@ -157,3 +157,10 @@
   --color-provenance-fg: #98A2B6;
   --color-provenance-link: #36C5E0;
 }
+
+@layer base {
+  html {
+    background-color: var(--color-bg-0);
+    color: var(--color-text-primary);
+  }
+}

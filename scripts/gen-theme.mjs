@@ -395,7 +395,18 @@ function buildTheme(design) {
   }
 
   const body = sections.filter(Boolean).join("\n");
-  return `${HEADER}\n\n@import "tailwindcss";\n\n@theme {\n${body}}\n`;
+  // Paint the base backdrop from the design tokens via a real CSS rule. This both
+  // (a) forces Tailwind v4 to retain --color-bg-0 / --color-text-primary (the
+  // var() references defeat @theme tree-shaking) and (b) guarantees the dark
+  // foundation independent of utility scanning.
+  const base =
+    `@layer base {\n` +
+    `  html {\n` +
+    `    background-color: var(--color-bg-0);\n` +
+    `    color: var(--color-text-primary);\n` +
+    `  }\n` +
+    `}\n`;
+  return `${HEADER}\n\n@import "tailwindcss";\n\n@theme {\n${body}}\n\n${base}`;
 }
 
 // ---------------------------------------------------------------------------
