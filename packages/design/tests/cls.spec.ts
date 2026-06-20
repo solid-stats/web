@@ -31,3 +31,31 @@ test.describe("DataTrustBanner CLS = 0", () => {
     expect(reservedBox?.height).toBe(filledBox?.height);
   });
 });
+
+// Skeleton (KIT-07 / QUAL-04): a table skeleton must reserve the EXACT final-table
+// dimensions so the skeleton→data swap shifts nothing. The Proof story renders the
+// table skeleton (`[data-cls-skeleton]`) above a real table (`[data-cls-final]`)
+// built from the identical colgroup + density ROW_H — their box heights must match.
+const SKELETON_STORY = "kit-07-feedback--skeleton--proof";
+
+test.describe("Skeleton CLS = 0", () => {
+  test("table skeleton reserves the same height as the final table", async ({ page }) => {
+    await page.goto(`/?story=${SKELETON_STORY}&mode=preview`);
+    await page.waitForSelector("[data-storyloaded]");
+
+    const skeleton = page.locator('[data-cls-skeleton] [data-skeleton="table"]');
+    const final = page.locator("[data-cls-final] > div");
+
+    await expect(skeleton).toBeVisible();
+    await expect(final).toBeVisible();
+
+    const skeletonBox = await skeleton.boundingBox();
+    const finalBox = await final.boundingBox();
+
+    expect(skeletonBox, "skeleton table has a box").not.toBeNull();
+    expect(finalBox, "final table has a box").not.toBeNull();
+    // Heights and widths must match exactly — the skeleton holds the layout (CLS = 0).
+    expect(skeletonBox?.height).toBe(finalBox?.height);
+    expect(skeletonBox?.width).toBe(finalBox?.width);
+  });
+});
