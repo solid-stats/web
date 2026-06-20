@@ -28,3 +28,13 @@ export type { ErrorKind } from "./shared/uikit/ErrorState";
 export { ErrorState } from "./shared/uikit/ErrorState";
 export type { ToastVariant } from "./shared/uikit/Toast";
 export { Toast } from "./shared/uikit/Toast";
+
+// ---- KIT-01 Nav-shell family (Wave 4 / Plan 02-04) ----
+// The durable prop contract is `NavItem` (the role-aware item list — denied items
+// simply absent; NO RBAC, v1.0); the `navItemsFor`/`NAV_ROLES` story fixtures stay
+// internal to the slice and are intentionally NOT graduated.
+export { SkipLink } from "./shared/uikit/SkipLink";
+export type { NavItem, NavItemState } from "./shared/uikit/NavBar/NavBar";
+export { NavBar } from "./shared/uikit/NavBar/NavBar";
+export { MobileTabBar } from "./shared/uikit/MobileTabBar";
+export { AppShell } from "./shared/uikit/AppShell";
