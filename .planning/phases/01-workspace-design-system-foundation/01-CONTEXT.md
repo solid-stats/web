@@ -76,6 +76,21 @@ tokens render, and a `packages/app` skeleton that does nothing but resolve.
   "Связь потеряна" / "Переподключение", the provenance line, Known / Unknown / Conflict) — DS-02,
   DS-03, ROADMAP criterion #3. `gen-theme.mjs` already emits breakpoints + containers (L291-315).
   `design.md lint` (contrast + token references) gates `DESIGN.md` (WS-05).
+- **D-12 (research-resolved 2026-06-20, user-confirmed — amends D-09, refines D-10):** DS-03 /
+  ROADMAP criterion #3 ("data-trust vocabulary as first-class tokens") is NOT achievable by D-09's
+  "only `OUT_PATH` changes". `gen-theme.mjs` destructures only `colors, typography, rounded,
+  elevation, motion, layout` (L173) and never reads the `components.*` section — where `DESIGN.md`
+  already authors the data-trust recipes: `badge-freshness` (4-state), `provenance-line`,
+  `badge-known` / `badge-unknown` / `badge-conflict` (`DESIGN.md` L243 / L405-426). Confirmed by
+  grep: the current `theme.css` carries none of it. **Resolution (Option 1):** extend
+  `gen-theme.mjs` to emit the `components.*` data-trust recipes as first-class `@theme`
+  **state/color tokens**, resolving `{colors.*}` / `{rounded.*}` references the same way the
+  elevation section already does (L262-264). The Russian **display strings** («Актуально» / «Данные
+  устаревают» / «Связь потеряна» / «Переподключение», and the Known/Unknown/Conflict labels) are
+  i18n copy — **deferred to the Phase 3 i18n harness**; they stay as `DESIGN.md` annotations and do
+  NOT become CSS token values (the app is RU+EN — translatable copy must not live in the token
+  layer). Net: the Phase 1 `gen-theme.mjs` change is `OUT_PATH` **plus** a bounded `components.*`
+  → `@theme` data-trust emit. `theme.css` stays generated, never hand-edited.
 
 ### `.design/` Freeze Boundary
 - **D-11:** Phase 1 freezes `.design/` into a reference archive **except `.design/CLAUDE.md` and
