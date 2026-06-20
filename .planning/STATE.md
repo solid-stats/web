@@ -95,6 +95,12 @@ None yet.
 
 - Migration obligation (tracked): retire `gen-theme.mjs` for the official `design.md export --format css-tailwind` once its line-height drop is fixed; re-validate paired `--text-*--line-height` output before switching.
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260620-q5q | paint dark base backdrop from bg-0 token via gen-theme.mjs | 2026-06-20 | d9b307a | [260620-q5q-paint-dark-base-backdrop-from-bg-0-token](./quick/260620-q5q-paint-dark-base-backdrop-from-bg-0-token/) |
+
 ## Deferred Items
 
 Items acknowledged and carried forward from previous milestone close:
