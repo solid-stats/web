@@ -12,15 +12,15 @@ Design-milestone scope. Each maps to roadmap phases. **"Designed"** = spec (×5 
 
 - [x] **WS-01**: Repo is a pnpm workspace (pnpm 11 + Node 25) with `packages/design` and a `packages/app` skeleton, resolved by `pnpm-workspace.yaml`.
 - [x] **WS-02**: `packages/design` is an importable package (`@solid-stats/design`) exporting the `@theme` and the UIKIT.
-- [ ] **WS-03**: Root `DESIGN.md` → `packages/design` `theme.css` via `scripts/gen-theme.mjs` (single-source; `theme.css` never hand-edited). The existing `src/styles/theme.css` is relocated.
+- [x] **WS-03**: Root `DESIGN.md` → `packages/design` `theme.css` via `scripts/gen-theme.mjs` (single-source; `theme.css` never hand-edited). The existing `src/styles/theme.css` is relocated.
 - [ ] **WS-04**: Ladle is wired to the real stack (dark-only, the generated `@theme`), with the colocated `*.stories.tsx` convention in `packages/design`.
 - [x] **WS-05**: The lint/format/type-check toolchain per `solidstats-frontend-react-conventions` runs green across the workspace; `design.md lint` gates `DESIGN.md`.
 
 ### Design System
 
-- [ ] **DS-01**: Tailwind v4 `@theme` is generated from `DESIGN.md` tokens (colors, typography incl. line-height, spacing, radii); no arbitrary token values anywhere.
-- [ ] **DS-02**: Dark-only gunmetal palette, one cyan interactive accent, Exo 2/IBM Plex type, tabular mono numerals, Lucide icons — encoded as token recipes.
-- [ ] **DS-03**: The data-trust vocabulary is a first-class token/component set: freshness states (Актуально / Данные устаревают / Связь потеряна / Переподключение), provenance line, Known/Unknown/Conflict.
+- [x] **DS-01**: Tailwind v4 `@theme` is generated from `DESIGN.md` tokens (colors, typography incl. line-height, spacing, radii); no arbitrary token values anywhere.
+- [x] **DS-02**: Dark-only gunmetal palette, one cyan interactive accent, Exo 2/IBM Plex type, tabular mono numerals, Lucide icons — encoded as token recipes.
+- [x] **DS-03**: The data-trust vocabulary is a first-class token/component set: freshness states (Актуально / Данные устаревают / Связь потеряна / Переподключение), provenance line, Known/Unknown/Conflict.
 
 ### Component Library (UIKIT)
 
@@ -104,12 +104,12 @@ listed as "Phases 2–9 (gate)".
 |-------------|-------|--------|
 | WS-01 | Phase 1 | Complete |
 | WS-02 | Phase 1 | Complete |
-| WS-03 | Phase 1 | Pending |
+| WS-03 | Phase 1 | Complete |
 | WS-04 | Phase 1 | Pending |
 | WS-05 | Phase 1 | Complete |
-| DS-01 | Phase 1 | Pending |
-| DS-02 | Phase 1 | Pending |
-| DS-03 | Phase 1 | Pending |
+| DS-01 | Phase 1 | Complete |
+| DS-02 | Phase 1 | Complete |
+| DS-03 | Phase 1 | Complete |
 | KIT-01 | Phase 2 | Pending |
 | KIT-02 | Phase 2 | Pending |
 | KIT-03 | Phase 2 | Pending |

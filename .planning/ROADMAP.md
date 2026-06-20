@@ -50,7 +50,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Ladle is wired to the real stack (dark-only, the generated `@theme`) with the colocated `*.stories.tsx` convention, and a smoke story proves tokens render.
   5. `design.md lint` passes on `DESIGN.md` (contrast + token references) and the lint/format/type-check toolchain per `solidstats-frontend-react-conventions` runs green across the workspace.
 
-**Plans**: 2/5 plans executed
+**Plans**: 3/5 plans executed
 **Wave 1**
 
 - [x] 01-01-PLAN.md — Workspace scaffold + Node/pnpm pins + both package skeletons (WS-01, WS-02)
@@ -58,7 +58,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Wave 2** *(blocked on Wave 1 completion)*
 
 - [x] 01-02-PLAN.md — Resolve Vite+ `vp check` toolchain + self-hosted font assets (WS-05, QUAL-04)
-- [ ] 01-03-PLAN.md — Token pipeline: relocate OUT_PATH + data-trust `@theme` emit, drift gate (WS-03, DS-01, DS-02, DS-03)
+- [x] 01-03-PLAN.md — Token pipeline: relocate OUT_PATH + data-trust `@theme` emit, drift gate (WS-03, DS-01, DS-02, DS-03)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
@@ -207,7 +207,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Workspace & Design-System Foundation | 2/5 | In Progress|  |
+| 1. Workspace & Design-System Foundation | 3/5 | In Progress|  |
 | 2. UIKIT — Structural & Data-Display Primitives | 0/TBD | Not started | - |
 | 3. UIKIT — Interactive, i18n & Global-State Patterns | 0/TBD | Not started | - |
 | 4. Public Stats — Overview, Players & Player Profile | 0/TBD | Not started | - |
