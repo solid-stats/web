@@ -82,7 +82,32 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Every primitive demonstrates its component states (enabled / hover / pressed / focused / selected / disabled / loading) and a defined click zone (whole row beats text), and is axe-clean, keyboard-operable, 44px targets, RU+EN sanity-checked.
   5. Tier/stat mock fixtures are internally consistent with the Score / K/D formulas and population tiers (`SS_BASELINE`).
 
-**Plans**: TBD
+**Plans**: 6 plans
+
+**Wave 1** *(enabler)*
+
+- [ ] 02-01-PLAN.md — Wave 0 harness: dev-deps + Vitest/Playwright-against-Ladle + the single `_fixtures` module + the `_state-matrix` helper (QUAL-03, QUAL-04, QUAL-05, QUAL-06)
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 02-02-PLAN.md — KIT-04 data-trust family (FreshnessPill, ProvenanceLine, TrustBadge, DataTrustBanner, InlineReviewRow) — proves the harness end-to-end (KIT-04)
+
+**Wave 3** *(blocked on Wave 2 — shared barrel)*
+
+- [ ] 02-03-PLAN.md — KIT-07 feedback family (Skeleton, EmptyState, ErrorState, Toast, Badge, Pill) (KIT-07)
+
+**Wave 4** *(blocked on Wave 3 — shared barrel)*
+
+- [ ] 02-04-PLAN.md — KIT-01 nav-shell family (AppShell, NavBar, MobileTabBar, SkipLink) (KIT-01)
+
+**Wave 5** *(blocked on Wave 4 — shared barrel)*
+
+- [ ] 02-05-PLAN.md — KIT-03 stat primitives + Sparkline (StatTile, MiniStatGrid, TierChip, TierScale, Pips, Sparkline) (KIT-03)
+
+**Wave 6** *(blocked on Wave 5 — shared barrel)*
+
+- [ ] 02-06-PLAN.md — KIT-02 data-table family (Table, Th, TableRow, DensityToggle, CompactRow, Pagination) — completes the catalog (KIT-02)
+
 **UI hint**: yes
 
 ### Phase 3: UIKIT — Interactive, i18n & Global-State Patterns
@@ -208,7 +233,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Workspace & Design-System Foundation | 5/5 | Complete    | 2026-06-20 |
-| 2. UIKIT — Structural & Data-Display Primitives | 0/TBD | Not started | - |
+| 2. UIKIT — Structural & Data-Display Primitives | 0/6 | Not started | - |
 | 3. UIKIT — Interactive, i18n & Global-State Patterns | 0/TBD | Not started | - |
 | 4. Public Stats — Overview, Players & Player Profile | 0/TBD | Not started | - |
 | 5. Public Stats — Squads | 0/TBD | Not started | - |
