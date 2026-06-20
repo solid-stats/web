@@ -10,8 +10,8 @@ Design-milestone scope. Each maps to roadmap phases. **"Designed"** = spec (×5 
 
 ### Workspace & Build
 
-- [ ] **WS-01**: Repo is a pnpm workspace (pnpm 11 + Node 25) with `packages/design` and a `packages/app` skeleton, resolved by `pnpm-workspace.yaml`.
-- [ ] **WS-02**: `packages/design` is an importable package (`@solid-stats/design`) exporting the `@theme` and the UIKIT.
+- [x] **WS-01**: Repo is a pnpm workspace (pnpm 11 + Node 25) with `packages/design` and a `packages/app` skeleton, resolved by `pnpm-workspace.yaml`.
+- [x] **WS-02**: `packages/design` is an importable package (`@solid-stats/design`) exporting the `@theme` and the UIKIT.
 - [ ] **WS-03**: Root `DESIGN.md` → `packages/design` `theme.css` via `scripts/gen-theme.mjs` (single-source; `theme.css` never hand-edited). The existing `src/styles/theme.css` is relocated.
 - [ ] **WS-04**: Ladle is wired to the real stack (dark-only, the generated `@theme`), with the colocated `*.stories.tsx` convention in `packages/design`.
 - [ ] **WS-05**: The lint/format/type-check toolchain per `solidstats-frontend-react-conventions` runs green across the workspace; `design.md lint` gates `DESIGN.md`.
@@ -102,8 +102,8 @@ listed as "Phases 2–9 (gate)".
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| WS-01 | Phase 1 | Pending |
-| WS-02 | Phase 1 | Pending |
+| WS-01 | Phase 1 | Complete |
+| WS-02 | Phase 1 | Complete |
 | WS-03 | Phase 1 | Pending |
 | WS-04 | Phase 1 | Pending |
 | WS-05 | Phase 1 | Pending |
@@ -144,6 +144,7 @@ listed as "Phases 2–9 (gate)".
 | QUAL-06 | Phases 2–9 (gate) | Pending |
 
 **Coverage:**
+
 - v1 requirements: 40 total (WS ×5, DS ×3, KIT ×8, SURF ×18, QUAL ×6)
 - Mapped to phases: 40/40 ✓ (34 WS/DS/KIT/SURF to a single home phase; 6 QUAL gates applied across Phases 2–9)
 - Unmapped: 0 ✓
