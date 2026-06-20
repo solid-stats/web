@@ -366,14 +366,16 @@ export const Tokens = () => (
 | A3 | React 19 is the version to pair with Ladle (peer is only `>=18`) | Standard Stack | If a later phase needs React 18 for a specific lib, pin differently; low risk in v0.1 (no app). |
 | A4 | `gen-theme.mjs` extension for A2 keeps the file dependency-free and within the existing YAML parser's capabilities (no arrays/anchors needed for the `components.badge-freshness.states.*` maps) | Pitfall 2 | The parser already handles nested maps (it parses `components.*` today, just doesn't emit them) — low risk, but verify the `states:` sub-map parses when wiring emission. |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Does DS-03 want Russian strings as token *values* in `theme.css`, or named state tokens + strings-in-i18n?**
    - What we know: the vocabulary is fully specified in DESIGN.md `components.badge-freshness.states` and `.design/CLAUDE.md`; the *colors* are already generic tokens.
    - What's unclear: whether "first-class token" means a CSS custom property carrying the Russian string, or a named color/recipe token with the string in i18n.
    - Recommendation: named semantic tokens in `@theme` (A2); confirm in discuss/plan. CSS is the wrong home for translatable copy.
+   - **RESOLVED: CONTEXT D-12 (user-confirmed 2026-06-20):** named semantic state tokens are emitted (freshness×4 + known/unknown/conflict + provenance-line); Russian display strings are deferred to the Phase 3 i18n harness, never CSS token values.
 
 2. **Exact `vp` / Vite+ package + `vp check` command (A1).** Resolve via `checkpoint:human-verify` before the gate is wired.
+   - **RESOLVED:** handled via `checkpoint:human-verify` in plan 01-02 Task 1, with the oxlint+oxfmt+tsgo primitive contingency.
 
 3. **`packages/app` skeleton minimum:** `package.json` + a workspace `dependencies: { "@solid-stats/design": "workspace:*" }` is enough to "resolve" (D-04). No `src`, no `tsconfig` needed unless `vp check` requires every package to type-check (then a trivial `tsconfig.json` extending base + an empty `src/index.ts`). Recommendation: add the trivial `tsconfig.json` + `src/index.ts` so `vp check` is uniform across packages.
 
