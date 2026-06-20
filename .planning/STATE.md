@@ -6,14 +6,14 @@ current_phase: 01
 current_phase_name: Workspace & Design-System Foundation
 status: executing
 stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-06-20T09:54:54.097Z"
+last_updated: "2026-06-20T10:10:13.019Z"
 last_activity: 2026-06-20
 last_activity_desc: Phase 01 execution started
 progress:
   total_phases: 9
   completed_phases: 0
   total_plans: 5
-  completed_plans: 3
+  completed_plans: 4
   percent: 0
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 ## Current Position
 
 Phase: 01 (Workspace & Design-System Foundation) — EXECUTING
-Plan: 4 of 5
+Plan: 5 of 5
 Status: Ready to execute
 Last activity: 2026-06-20 — Phase 01 execution started
 
@@ -58,6 +58,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P01 | 4min | 3 tasks | 11 files |
 | Phase 01 P02 | 8 | 3 tasks | 11 files |
 | Phase 01 P03 | 3min | 2 tasks | 3 files |
+| Phase 01 P04 | 12min | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,8 @@ Recent decisions affecting current work:
 - [Phase 01]: Display font is Exo 2 (not Saira) — Saira lacks Cyrillic; self-hosted woff2 + fonts.css @font-face shipped
 - [Phase ?]: DS-03 first-class token satisfied by named semantic state tokens (freshness/known/unknown/conflict/provenance); Russian display copy stays in i18n, never a @theme value (D-12).
 - [Phase ?]: Data-trust *-border tokens emit the full '1px solid <color>' shorthand from the DESIGN.md recipe, consistent with the elevation --shadow-ring full-value pattern.
+- [Phase ?]: 01-04: Ladle requires explicit Tailwind source registration; design package keeps no direct vite dep; allowBuilds untouched
+- [Phase ?]: 01-04: smoke story is the only catalog artifact (D-07 zero components); shared/ FSD segment preserved per architecture.md; freshness pills read --color-freshness-* via inline style (sanctioned escape hatch for the compound border token)
 
 ### Pending Todos
 
@@ -100,7 +103,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-20T09:54:20.556Z
+Last session: 2026-06-20T10:09:14.554Z
 Stopped at: Completed 01-02-PLAN.md
 Resume file: None
 </content>

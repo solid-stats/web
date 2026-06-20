@@ -13,7 +13,7 @@ Design-milestone scope. Each maps to roadmap phases. **"Designed"** = spec (×5 
 - [x] **WS-01**: Repo is a pnpm workspace (pnpm 11 + Node 25) with `packages/design` and a `packages/app` skeleton, resolved by `pnpm-workspace.yaml`.
 - [x] **WS-02**: `packages/design` is an importable package (`@solid-stats/design`) exporting the `@theme` and the UIKIT.
 - [x] **WS-03**: Root `DESIGN.md` → `packages/design` `theme.css` via `scripts/gen-theme.mjs` (single-source; `theme.css` never hand-edited). The existing `src/styles/theme.css` is relocated.
-- [ ] **WS-04**: Ladle is wired to the real stack (dark-only, the generated `@theme`), with the colocated `*.stories.tsx` convention in `packages/design`.
+- [x] **WS-04**: Ladle is wired to the real stack (dark-only, the generated `@theme`), with the colocated `*.stories.tsx` convention in `packages/design`.
 - [x] **WS-05**: The lint/format/type-check toolchain per `solidstats-frontend-react-conventions` runs green across the workspace; `design.md lint` gates `DESIGN.md`.
 
 ### Design System
@@ -105,7 +105,7 @@ listed as "Phases 2–9 (gate)".
 | WS-01 | Phase 1 | Complete |
 | WS-02 | Phase 1 | Complete |
 | WS-03 | Phase 1 | Complete |
-| WS-04 | Phase 1 | Pending |
+| WS-04 | Phase 1 | Complete |
 | WS-05 | Phase 1 | Complete |
 | DS-01 | Phase 1 | Complete |
 | DS-02 | Phase 1 | Complete |
