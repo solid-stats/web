@@ -5,10 +5,10 @@ milestone_name: milestone
 current_phase: 01
 current_phase_name: Workspace & Design-System Foundation
 status: verifying
-stopped_at: Phase 01 — 5/5 plans done, automated verification 5/5, awaiting UAT (1 visual item)
-last_updated: "2026-06-20T17:00:00.000Z"
+stopped_at: Phase 01 — 5/5 plans done, automated verification 5/5, review WR-01..04 resolved, awaiting UAT (1 visual item)
+last_updated: "2026-06-20T18:10:00.000Z"
 last_activity: 2026-06-20
-last_activity_desc: Phase 01 executed + verified (5/5 automated); UAT visual check pending
+last_activity_desc: Phase 01 verified (5/5 automated); code-review WR-01..04 hardened in gen-theme.mjs + package.json; UAT visual check pending
 progress:
   total_phases: 9
   completed_phases: 0
@@ -81,6 +81,7 @@ Recent decisions affecting current work:
 - [Phase ?]: Data-trust *-border tokens emit the full '1px solid <color>' shorthand from the DESIGN.md recipe, consistent with the elevation --shadow-ring full-value pattern.
 - [Phase ?]: 01-04: Ladle requires explicit Tailwind source registration; design package keeps no direct vite dep; allowBuilds untouched
 - [Phase ?]: 01-04: smoke story is the only catalog artifact (D-07 zero components); shared/ FSD segment preserved per architecture.md; freshness pills read --color-freshness-* via inline style (sanctioned escape hatch for the compound border token)
+- [Phase 01]: Code-review hardening (01-REVIEW WR-01..04): gen-theme.mjs resolvers throw on unknown {colors.*}/{rounded.*} refs (was a silent "undefined" leak into theme.css); buildTheme asserts the required DESIGN.md sections/recipes by name; the two focus-ring resolvers consolidated into one guarded resolveRefs (DRY); drift gate compares against HEAD so an untracked theme.css trips it. Output byte-identical, vp check green.
 
 ### Pending Todos
 

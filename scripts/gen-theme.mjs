@@ -41,7 +41,7 @@ const HEADER = `/*
 /** Extract the text between the first two `---` fences. */
 function extractFrontMatter(src) {
   const lines = src.split(/\r?\n/);
-  if (lines[0].trim() !== "---") {
+  if ((lines[0] ?? "").trim() !== "---") {
     throw new Error("DESIGN.md does not start with a `---` front-matter fence");
   }
   const end = lines.indexOf("---", 1);
@@ -174,15 +174,52 @@ function block(title, lines) {
 }
 
 function buildTheme(design) {
+  // Fail with the *named* missing section instead of a downstream
+  // `Cannot read properties of undefined` far from the cause (WR-02).
+  for (const key of [
+    "colors",
+    "typography",
+    "rounded",
+    "elevation",
+    "motion",
+    "layout",
+    "components",
+  ]) {
+    if (!design[key]) {
+      throw new Error(`DESIGN.md front-matter missing required section: ${key}`);
+    }
+  }
+
   const { colors, typography, rounded, elevation, motion, layout, components } = design;
 
-  // Generic `{colors.NAME}` / `{rounded.NAME}` reference resolver. Mirrors the
-  // elevation focus-ring resolve (below) but works for any token name, so the
-  // data-trust recipes can be resolved to literal hex/rgba values.
+  // The data-trust block (D-12) reaches several levels into `components.*`; assert the
+  // recipes exist up front so a rename surfaces here, not as a bare TypeError (WR-02).
+  for (const recipe of [
+    "badge-freshness",
+    "badge-known",
+    "badge-unknown",
+    "badge-conflict",
+    "provenance-line",
+  ]) {
+    if (!components[recipe]) {
+      throw new Error(`DESIGN.md components.${recipe} missing (data-trust tokens)`);
+    }
+  }
+
+  // The single `{colors.NAME}` / `{rounded.NAME}` reference resolver — used for both
+  // the data-trust recipes AND the elevation focus-ring values. Throws on an unknown
+  // token so a typo'd / renamed ref fails the run loudly instead of silently writing
+  // the literal string `undefined` into theme.css (WR-01).
   const resolveRefs = (v) =>
     String(v)
-      .replace(/\{colors\.([a-z0-9-]+)\}/g, (_, n) => colors[n])
-      .replace(/\{rounded\.([a-z0-9-]+)\}/g, (_, n) => rounded[n]);
+      .replace(/\{colors\.([a-z0-9-]+)\}/g, (_, n) => {
+        if (!(n in colors)) throw new Error(`Unknown {colors.${n}} reference in DESIGN.md`);
+        return colors[n];
+      })
+      .replace(/\{rounded\.([a-z0-9-]+)\}/g, (_, n) => {
+        if (!(n in rounded)) throw new Error(`Unknown {rounded.${n}} reference in DESIGN.md`);
+        return rounded[n];
+      });
 
   const sections = [];
 
@@ -266,22 +303,17 @@ function buildTheme(design) {
   }
 
   // ---- Shadows + focus rings ----
-  // `sm/md/lg` are shadow utilities; `ring`/`ring-glow` carry {token} refs that we
-  // resolve to the literal CSS the design system intends (focus-ring custom props).
+  // `sm/md/lg` are shadow utilities; `ring`/`ring-glow` carry {colors.*} refs resolved
+  // through the shared, WR-01-guarded `resolveRefs` (no second hand-rolled resolver).
   {
-    const resolve = (v) =>
-      v
-        .replace(/\{colors\.bg-0\}/g, colors["bg-0"])
-        .replace(/\{colors\.primary-border\}/g, colors["primary-border"])
-        .replace(/\{colors\.primary\}/g, colors.primary);
     const lines = [];
     for (const name of ["sm", "md", "lg"]) {
       lines.push(`--shadow-${name}: ${elevation[name]};`);
       bump("shadow");
     }
     // Focus-ring vars (consumed via box-shadow in component CSS, not a Tailwind shadow utility).
-    lines.push(`--shadow-ring: ${resolve(elevation.ring)};`);
-    lines.push(`--shadow-ring-glow: ${resolve(elevation["ring-glow"])};`);
+    lines.push(`--shadow-ring: ${resolveRefs(elevation.ring)};`);
+    lines.push(`--shadow-ring-glow: ${resolveRefs(elevation["ring-glow"])};`);
     bump("shadow", 2);
     sections.push(block("Shadows (floating UI) + focus-ring custom props", lines));
   }

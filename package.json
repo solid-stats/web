@@ -10,7 +10,7 @@
   "scripts": {
     "gen-theme": "node scripts/gen-theme.mjs",
     "lint:design": "design.md lint DESIGN.md",
-    "check": "pnpm gen-theme && git diff --exit-code packages/design/src/styles/theme.css && pnpm lint:design && vp check packages scripts"
+    "check": "pnpm gen-theme && git diff --exit-code HEAD -- packages/design/src/styles/theme.css && pnpm lint:design && vp check packages scripts"
   },
   "devDependencies": {
     "@google/design.md": "0.3.0",

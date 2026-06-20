@@ -33,7 +33,12 @@ findings:
   warning: 4
   info: 5
   total: 9
-status: issues_found
+resolved:
+  warning: 4
+  info: 0
+status: resolved
+resolved_at: 2026-06-20T18:10:00Z
+resolution_note: WR-01..WR-04 hardened in scripts/gen-theme.mjs + package.json; guards verified by negative runs, zero theme.css drift, vp check green. Info IN-01..05 left advisory.
 ---
 
 # Phase 01: Code Review Report
@@ -115,6 +120,34 @@ for (const recipe of ["badge-freshness", "badge-known", "badge-unknown", "badge-
 if ((lines[0] ?? "").trim() !== "---") throw new Error("DESIGN.md does not start with a `---` front-matter fence");
 ```
 Lower priority than WR-01/WR-02 — group it with the same hardening pass.
+
+## Resolution
+
+All four warnings hardened in a single pass on 2026-06-20. The token source of truth is
+unchanged; the generator stays byte-identical on valid input and now fails loudly (named
+error, exit 1) on a malformed `DESIGN.md` instead of emitting broken CSS or a cryptic
+native stack trace.
+
+**Files:** `scripts/gen-theme.mjs`, `package.json`
+
+| ID | Resolution | Evidence |
+|----|------------|----------|
+| WR-01 | `resolveRefs` now throws `Unknown {colors.X}` / `{rounded.X} reference in DESIGN.md` instead of coercing a missing token to the string `"undefined"`. The duplicate hand-rolled focus-ring `resolve` (`bg-0` / `primary` / `primary-border`) was folded into the single guarded `resolveRefs` — one resolver for both the data-trust recipes and `--shadow-ring*`, so the guard covers both call sites (DRY; addresses the IN-03 mirror note in passing). | Negative run with an injected `{colors.nope}` exits 1 with `Unknown {colors.nope} reference in DESIGN.md`. |
+| WR-02 | `buildTheme` asserts the seven required front-matter sections and the five `components.*` data-trust recipes up front, naming the missing key. | Negative run with `motion:` renamed exits 1 with `DESIGN.md front-matter missing required section: motion`. |
+| WR-03 | Drift gate changed to `git diff --exit-code HEAD -- …theme.css`, so an untracked / staged-only `theme.css` also trips the gate (not just a tracked-file edit). | `package.json` `check` script. |
+| WR-04 | `extractFrontMatter` fence check guarded with `(lines[0] ?? "").trim()`. The `parseYaml` stack pop already cannot underflow (`stack.length > 1` guard keeps the root), so no further change there. | `scripts/gen-theme.mjs`. |
+
+**Verification:** `node scripts/gen-theme.mjs` → `git diff --exit-code` on `theme.css`
+clean (output byte-identical, token counts unchanged); both negative paths exit 1 with
+the named errors above; `vp check packages scripts` green (oxfmt reflowed the new guard
+arrays to multi-line — formatting only, no logic or output change).
+
+**Info findings (IN-01..05):** left advisory, no action this pass — IN-01 (react peer-dep)
+and IN-02 (vite-plus exact pin) are pre-component cleanups; IN-03/04/05 are documentation
+nits. IN-03's concern (the `-border` shorthand contract) is partially mitigated by the
+WR-01 resolver consolidation.
+
+**Status:** applied to the working tree (commit pending).
 
 ## Info
 
