@@ -1,2 +1,10 @@
 packages:
   - "packages/*"
+
+# Transitive build scripts are intentionally NOT run (threat model T-1-02 accept:
+# postinstall surface kept off for the Phase 1 skeleton — no Ladle/native build runs
+# here). Re-audit and flip to true per-tool when a phase actually needs the artifact.
+allowBuilds:
+  "@swc/core": false
+  esbuild: false
+  msw: false
