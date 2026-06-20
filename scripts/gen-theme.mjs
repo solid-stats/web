@@ -6,7 +6,8 @@
 // promises `--leading-*`).
 //
 // This is the SolidStats INTERIM token pipeline. It reads the YAML front matter of the
-// canonical root DESIGN.md and emits the Tailwind v4 `@theme` block to src/styles/theme.css.
+// canonical root DESIGN.md and emits the Tailwind v4 `@theme` block to
+// packages/design/src/styles/theme.css (the @solid-stats/design ./theme.css export).
 // It deliberately does NOT shell out to `design.md export` — that exporter is currently
 // lossy (silently drops typography `lineHeight`), which is exactly the paired
 // `--text-<name>--line-height` form Tailwind v4 needs.
