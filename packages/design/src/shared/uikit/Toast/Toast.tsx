@@ -14,13 +14,7 @@
 // utilities held literal in `tv()` (styling.md — no arbitrary values); `/lite` is the
 // tailwind-merge-free build (FreshnessPill precedent).
 import type { ReactNode } from "react";
-import {
-  CircleAlert,
-  CircleCheck,
-  Info,
-  TriangleAlert,
-  type LucideIcon,
-} from "lucide-react";
+import { CircleAlert, CircleCheck, Info, TriangleAlert, type LucideIcon } from "lucide-react";
 import { tv } from "tailwind-variants/lite";
 
 /** The four semantic toast variants. Frontend-owned finite union. */

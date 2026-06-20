@@ -15,3 +15,16 @@ export { TrustBadge } from "./shared/uikit/TrustBadge";
 export type { BannerKind } from "./shared/uikit/DataTrustBanner";
 export { DataTrustBanner } from "./shared/uikit/DataTrustBanner";
 export { InlineReviewRow } from "./shared/uikit/InlineReviewRow";
+
+// ---- KIT-07 Feedback family (Wave 3 / Plan 02-03) ----
+export type { BadgeVariant } from "./shared/uikit/Badge";
+export { Badge } from "./shared/uikit/Badge";
+export type { PillTone } from "./shared/uikit/Pill";
+export { Pill } from "./shared/uikit/Pill";
+export type { SkeletonDensity } from "./shared/uikit/Skeleton";
+export { ROW_H, Skeleton } from "./shared/uikit/Skeleton";
+export { EmptyState } from "./shared/uikit/EmptyState";
+export type { ErrorKind } from "./shared/uikit/ErrorState";
+export { ErrorState } from "./shared/uikit/ErrorState";
+export type { ToastVariant } from "./shared/uikit/Toast";
+export { Toast } from "./shared/uikit/Toast";
