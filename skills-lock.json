@@ -55,6 +55,12 @@
       "skillPath": "solidstats-frontend-react-tests/SKILL.md",
       "computedHash": "3bf48b118217d4d4482e2307934752ff9a5d538f8547017b63fd1baf813bcff1"
     },
+    "solidstats-shared-planning-standards": {
+      "source": "solid-stats/skills",
+      "sourceType": "github",
+      "skillPath": "solidstats-shared-planning-standards/SKILL.md",
+      "computedHash": "2121d0699785739111039bdd1cab94b56a4bd09fdeaa089c57a351f1f77a768e"
+    },
     "solidstats-shared-project-standards": {
       "source": "solid-stats/skills",
       "sourceType": "github",
