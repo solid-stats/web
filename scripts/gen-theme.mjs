@@ -23,7 +23,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const DESIGN_PATH = join(ROOT, "DESIGN.md");
-const OUT_PATH = join(ROOT, "src", "styles", "theme.css");
+const OUT_PATH = join(ROOT, "packages", "design", "src", "styles", "theme.css");
 
 const HEADER = `/*
  * Generated from DESIGN.md by scripts/gen-theme.mjs — do NOT hand-edit theme.css
@@ -170,7 +170,15 @@ function block(title, lines) {
 }
 
 function buildTheme(design) {
-  const { colors, typography, rounded, elevation, motion, layout } = design;
+  const { colors, typography, rounded, elevation, motion, layout, components } = design;
+
+  // Generic `{colors.NAME}` / `{rounded.NAME}` reference resolver. Mirrors the
+  // elevation focus-ring resolve (below) but works for any token name, so the
+  // data-trust recipes can be resolved to literal hex/rgba values.
+  const resolveRefs = (v) =>
+    String(v)
+      .replace(/\{colors\.([a-z0-9-]+)\}/g, (_, n) => colors[n])
+      .replace(/\{rounded\.([a-z0-9-]+)\}/g, (_, n) => rounded[n]);
 
   const sections = [];
 
@@ -312,6 +320,42 @@ function buildTheme(design) {
     ];
     bump("container", lines.length);
     sections.push(block("Content containers", lines));
+  }
+
+  // ---- Data-trust state tokens (freshness · known/unknown/conflict · provenance) ----
+  // First-class @theme tokens for the data-trust vocabulary (DS-03). The Russian
+  // display copy («Актуально» etc.) is product i18n, NOT a token value — only the
+  // named semantic state tokens (fill/text/border) live here, resolved from the
+  // win/warn/loss/info recipes in DESIGN.md components.*. (D-12)
+  {
+    const lines = [];
+
+    // Emit fill/text/border for one named recipe under a token namespace.
+    const emitRecipe = (ns, recipe) => {
+      lines.push(`--color-${ns}-fill: ${resolveRefs(recipe.backgroundColor)};`);
+      lines.push(`--color-${ns}-text: ${resolveRefs(recipe.textColor)};`);
+      lines.push(`--color-${ns}-border: ${resolveRefs(recipe.border)};`);
+      bump("data-trust", 3);
+    };
+
+    // Freshness ×4 (live connection state) — win/warn/loss/info recipes.
+    for (const [state, recipe] of Object.entries(components["badge-freshness"].states)) {
+      emitRecipe(`freshness-${state}`, recipe);
+    }
+
+    // Known / Unknown / Conflict data-trust badges.
+    emitRecipe("known", components["badge-known"]);
+    emitRecipe("unknown", components["badge-unknown"]);
+    emitRecipe("conflict", components["badge-conflict"]);
+
+    // Provenance line — foreground (text-muted) + link (primary).
+    lines.push(`--color-provenance-fg: ${resolveRefs(components["provenance-line"].textColor)};`);
+    lines.push(`--color-provenance-link: ${resolveRefs(components["provenance-line"].linkColor)};`);
+    bump("data-trust", 2);
+
+    sections.push(
+      block("Data-trust state tokens (freshness · known/unknown/conflict · provenance)", lines),
+    );
   }
 
   const body = sections.filter(Boolean).join("\n");
