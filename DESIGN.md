@@ -54,7 +54,7 @@ colors:
 
 typography:
   fontFamilies:
-    display: "'Saira', system-ui, sans-serif"
+    display: "'Exo 2', system-ui, sans-serif"
     body: "'IBM Plex Sans', system-ui, sans-serif"
     mono: "'IBM Plex Mono', ui-monospace, monospace"
   fontWeights:
@@ -502,7 +502,7 @@ SolidStats dark palette exists.
 - **One** cyan signal accent, used sparingly so it stays meaningful.
 - **Four** semantics (win / loss / unknown·conflict / info), each with `-weak` + `-border`, **never
   color-alone** (always icon and/or label).
-- **Saira** display + **IBM Plex Sans** body + **IBM Plex Mono** tabular numerals (all carry Cyrillic).
+- **Exo 2** display + **IBM Plex Sans** body + **IBM Plex Mono** tabular numerals (all carry Cyrillic).
 - Sharp technical radii (2–12px), hairline borders as the primary separator, restrained shadows for
   floating UI only, fast functional motion.
 
@@ -582,7 +582,7 @@ a hard border.
 
 Three families, all carrying full Cyrillic for the RU/EN interface:
 
-- **Display — Saira** (aerospace/HUD grotesk): headings and big stat readouts, 600/700, tight tracking.
+- **Display — Exo 2** (aerospace/HUD grotesk): headings and big stat readouts, 600/700, tight tracking.
 - **Body — IBM Plex Sans**: engineered, highly legible UI text.
 - **Mono — IBM Plex Mono** with **tabular figures**: *all* stats, ranks, IDs, slugs, timers,
   checksums — anywhere numbers must align.
@@ -593,7 +593,7 @@ tables) / 1.5 (body). Uppercase labels get `letterSpacing.label` (0.06em); brand
 `letterSpacing.caps` (0.12em).
 
 **Semantic roles** (`typography.roles.*`) are the named recipes to apply — `overline`, `label`, `h1`–`h4`,
-`body`, `body-sm`, `caption`, `stat`, `stat-xl`, `mono`. Headings (`h1`–`h3`) are Saira; `h4`, body,
+`body`, `body-sm`, `caption`, `stat`, `stat-xl`, `mono`. Headings (`h1`–`h3`) are Exo 2; `h4`, body,
 and captions are IBM Plex Sans; `stat`/`stat-xl`/`mono` are tabular. Numbers are right-aligned in
 tables, signed for deltas (`+12`, `−3`), with explicit units.
 

@@ -19,7 +19,7 @@ Design-milestone scope. Each maps to roadmap phases. **"Designed"** = spec (×5 
 ### Design System
 
 - [ ] **DS-01**: Tailwind v4 `@theme` is generated from `DESIGN.md` tokens (colors, typography incl. line-height, spacing, radii); no arbitrary token values anywhere.
-- [ ] **DS-02**: Dark-only gunmetal palette, one cyan interactive accent, Saira/IBM Plex type, tabular mono numerals, Lucide icons — encoded as token recipes.
+- [ ] **DS-02**: Dark-only gunmetal palette, one cyan interactive accent, Exo 2/IBM Plex type, tabular mono numerals, Lucide icons — encoded as token recipes.
 - [ ] **DS-03**: The data-trust vocabulary is a first-class token/component set: freshness states (Актуально / Данные устаревают / Связь потеряна / Переподключение), provenance line, Known/Unknown/Conflict.
 
 ### Component Library (UIKIT)
