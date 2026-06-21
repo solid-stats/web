@@ -50,3 +50,26 @@ export { MiniStatGrid } from "./shared/uikit/MiniStatGrid";
 export { TierChip } from "./shared/uikit/TierChip";
 export { Pips, TierScale } from "./shared/uikit/TierScale";
 export { Sparkline } from "./shared/uikit/Sparkline";
+
+// ---- KIT-02 Data-table family (Wave 6 / Plan 02-06) ----
+// The presentational-only data table (D-01: NO @tanstack/react-table, NO
+// @tanstack/react-virtual) — a CLS-0 sticky-header scroll-in-card with a colgroup +
+// reserved height + virtualization-ready fixed-ROW_H + spacer rows. `Th` and
+// `TableRow` are the nested leaf components (architecture.md leaf-granularity) and
+// graduate with `Table`. Sort / density / selection / pagination are CONTROLLED
+// props — the durable interface the v1.0 engine swaps into. `CompactList` is the
+// mobile (< md) reflow; `Pagination` is the inert cursor affordance. The `_fixtures`
+// roster + `_state-matrix` stay internal helpers (NOT graduated). This block
+// completes the full Phase-2 structural & data-display catalog.
+export type {
+  SortDirection,
+  SortState,
+  TableColumn,
+  TableDensity,
+  TierCell,
+} from "./shared/uikit/Table";
+export { Table, Th, TableRow } from "./shared/uikit/Table";
+export { DensityToggle } from "./shared/uikit/DensityToggle";
+export type { CompactRowData } from "./shared/uikit/CompactRow";
+export { CompactList, CompactRow } from "./shared/uikit/CompactRow";
+export { Pagination } from "./shared/uikit/Pagination";

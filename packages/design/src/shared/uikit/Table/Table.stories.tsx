@@ -128,36 +128,43 @@ const ROW_STATES: readonly RowState[] = [
 
 export const RowStates: Story = () => {
   const vasiliy = ROSTER[0]!;
+  // Each state is a FULL-WIDTH labelled row (not a narrow StateMatrix cell): the
+  // row's fixed colgroup is 640px wide, so a cramped 3-col grid would clip the
+  // Счёт/K-D columns. The `data-state-cell` hook stays so the catalog spec asserts
+  // each named state, exactly like the prior-wave MiniStatGrid full-width fix.
   return (
-    <div className="flex flex-col gap-4 bg-bg-1 p-4">
-      <StateMatrix title="TableRow — состояния (×7)">
-        {ROW_STATES.map((state) => (
-          <StateCell key={state} label={state}>
-            <div className="w-full overflow-hidden rounded-md border border-border-1">
-              <table className="w-full table-fixed border-collapse">
-                <colgroup>
-                  {COLUMNS.map((c) => (
-                    <col key={c.key} style={{ width: `${c.width}px` }} />
-                  ))}
-                </colgroup>
-                <tbody>
-                  <TableRow
-                    rowHeight={52}
-                    {...rowProps(vasiliy, 1)}
-                    selected={state === "selected"}
-                    disabled={state === "disabled"}
-                    forcedState={state}
-                  />
-                </tbody>
-              </table>
-            </div>
-          </StateCell>
-        ))}
-        {/* The 7th state — loading — is the Skeleton table variant the Table swaps in. */}
-        <StateCell label="loading">
-          {dataTable(ROSTER.slice(0, 1), COMFORTABLE, SORT_SCORE_DESC, "ru", 1)}
-        </StateCell>
-      </StateMatrix>
+    <div className="flex max-w-3xl flex-col gap-4 bg-bg-1 p-4">
+      <h2 className="font-display text-lg font-semibold tracking-tight text-text-primary">
+        TableRow — состояния (×7)
+      </h2>
+      {ROW_STATES.map((state) => (
+        <div key={state} className="flex flex-col gap-1" data-state-cell={state}>
+          <span className="font-body text-xs font-semibold uppercase text-text-muted">{state}</span>
+          <div className="overflow-hidden rounded-md border border-border-1">
+            <table className="w-full table-fixed border-collapse">
+              <colgroup>
+                {COLUMNS.map((c) => (
+                  <col key={c.key} style={{ width: `${c.width}px` }} />
+                ))}
+              </colgroup>
+              <tbody>
+                <TableRow
+                  rowHeight={52}
+                  {...rowProps(vasiliy, 1)}
+                  selected={state === "selected"}
+                  disabled={state === "disabled"}
+                  forcedState={state}
+                />
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
+      {/* The 7th state — loading — is the Skeleton table variant the Table swaps in. */}
+      <div className="flex flex-col gap-1" data-state-cell="loading">
+        <span className="font-body text-xs font-semibold uppercase text-text-muted">loading</span>
+        {dataTable(ROSTER.slice(0, 1), COMFORTABLE, SORT_SCORE_DESC, "ru", 1)}
+      </div>
     </div>
   );
 };
@@ -165,15 +172,18 @@ export const RowStates: Story = () => {
 // ---- ×4 data-volume states ----
 export const DataVolumes: Story = () => (
   <div className="flex flex-col gap-6 bg-bg-1 p-4">
-    {/* empty → EmptyState with the actionable copy + total count (0). */}
-    <section className="flex flex-col gap-2" data-state-cell="empty">
-      <span className="font-body text-xs font-semibold uppercase text-text-muted">empty</span>
-      <EmptyState
-        heading={STRINGS.emptyTableHeading.ru}
-        body={STRINGS.emptyTableBody.ru}
-        totalCount="Всего: 0"
-      />
-    </section>
+    {/* empty → EmptyState with the actionable copy + total count (0). The narrow-safe
+        empty cell rides the shared StateMatrix; the wide table volumes below are
+        full-width labelled rows (the colgroup is 640px — a cramped cell would clip). */}
+    <StateMatrix title="Объёмы данных — пусто">
+      <StateCell label="empty">
+        <EmptyState
+          heading={STRINGS.emptyTableHeading.ru}
+          body={STRINGS.emptyTableBody.ru}
+          totalCount="Всего: 0"
+        />
+      </StateCell>
+    </StateMatrix>
     {/* few — the table holds, no orphan layout. */}
     <section className="flex flex-col gap-2" data-state-cell="few">
       <span className="font-body text-xs font-semibold uppercase text-text-muted">few</span>
