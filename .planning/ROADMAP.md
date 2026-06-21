@@ -25,7 +25,7 @@ stack.
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Workspace & Design-System Foundation** - pnpm workspace, `DESIGN.md` → `@theme`, Ladle wired, toolchain green (verified — automated 5/5, UAT 1/1 pass, security 10/10 closed) (completed 2026-06-20)
-- [ ] **Phase 2: UIKIT — Structural & Data-Display Primitives** - nav shell, data tables, stat primitives, data-trust, feedback
+- [x] **Phase 2: UIKIT — Structural & Data-Display Primitives** - nav shell, data tables, stat primitives, data-trust, feedback (completed 2026-06-21)
 - [ ] **Phase 3: UIKIT — Interactive, i18n & Global-State Patterns** - Ark UI forms/overlays, RU/EN harness, reusable loading/empty/error/offline patterns
 - [ ] **Phase 4: Public Stats — Overview, Players & Player Profile** - the hi-fi-anchored core stats trio (loading model, tiers, provenance)
 - [ ] **Phase 5: Public Stats — Squads** - squads list + squad profile (membership timeline, explainable effectiveness)
@@ -82,7 +82,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Every primitive demonstrates its component states (enabled / hover / pressed / focused / selected / disabled / loading) and a defined click zone (whole row beats text), and is axe-clean, keyboard-operable, 44px targets, RU+EN sanity-checked.
   5. Tier/stat mock fixtures are internally consistent with the Score / K/D formulas and population tiers (`SS_BASELINE`).
 
-**Plans**: 5/6 plans executed
+**Plans**: 6/6 plans complete
 
 **Wave 1** *(enabler)*
 
@@ -106,7 +106,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 6** *(blocked on Wave 5 — shared barrel)*
 
-- [ ] 02-06-PLAN.md — KIT-02 data-table family (Table, Th, TableRow, DensityToggle, CompactRow, Pagination) — completes the catalog (KIT-02)
+- [x] 02-06-PLAN.md — KIT-02 data-table family (Table, Th, TableRow, DensityToggle, CompactRow, Pagination) — completes the catalog (KIT-02)
 
 **UI hint**: yes
 
@@ -233,7 +233,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Workspace & Design-System Foundation | 5/5 | Complete    | 2026-06-20 |
-| 2. UIKIT — Structural & Data-Display Primitives | 5/6 | In Progress|  |
+| 2. UIKIT — Structural & Data-Display Primitives | 6/6 | Complete   | 2026-06-21 |
 | 3. UIKIT — Interactive, i18n & Global-State Patterns | 0/TBD | Not started | - |
 | 4. Public Stats — Overview, Players & Player Profile | 0/TBD | Not started | - |
 | 5. Public Stats — Squads | 0/TBD | Not started | - |
