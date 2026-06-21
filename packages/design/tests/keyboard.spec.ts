@@ -59,3 +59,37 @@ test.describe("NavBar keyboard + active-section semantics", () => {
     expect(onNavItem, "Tab lands on a nav item").toBe(true);
   });
 });
+
+// KIT-02 table full-row click zone (QUAL-03, Pitfall 5). The whole row is the
+// pointer target, but a keyboard/SR user must reach and understand the row: the
+// focusable affordance is the `<a data-name-anchor>` in the player-name cell, and
+// the selected row carries `aria-selected` (never fill-only).
+const TABLE_SUCCESS_STORY = "kit-02-data-table--table--success";
+const TABLE_ROWSTATES_STORY = "kit-02-data-table--table--row-states";
+
+test.describe("Table full-row keyboard traversal", () => {
+  test("Tab reaches the player-name anchor in a row", async ({ page }) => {
+    await page.goto(`/?story=${TABLE_SUCCESS_STORY}&mode=preview`);
+    await page.waitForSelector("[data-name-anchor]");
+
+    // The sortable header buttons are earlier tab stops; Tab forward until focus
+    // lands on the first row's name anchor (a keyboard user reaches the row — no
+    // trap, bounded so a regression fails instead of hanging).
+    let onNameAnchor = false;
+    for (let i = 0; i < 12 && !onNameAnchor; i++) {
+      await page.keyboard.press("Tab");
+      onNameAnchor = await page.evaluate(
+        () => document.activeElement?.hasAttribute("data-name-anchor") ?? false,
+      );
+    }
+    expect(onNameAnchor, "Tab reaches a row name anchor").toBe(true);
+  });
+
+  test("the selected row carries aria-selected (not fill-only)", async ({ page }) => {
+    await page.goto(`/?story=${TABLE_ROWSTATES_STORY}&mode=preview`);
+    await page.waitForSelector("[data-table-row]");
+
+    const selected = page.locator('tr[aria-selected="true"]');
+    expect(await selected.count(), "a selected row is marked aria-selected").toBeGreaterThan(0);
+  });
+});

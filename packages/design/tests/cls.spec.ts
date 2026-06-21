@@ -60,6 +60,36 @@ test.describe("Skeleton CLS = 0", () => {
   });
 });
 
+// Table (KIT-02 / QUAL-04): the data-table loading state swaps in the Skeleton
+// table variant reproducing the EXACT colgroup + header + N×ROW_H, so the
+// skeleton→data swap shifts nothing. The Cls story renders the loading table
+// (`[data-cls-table-skeleton]`) above the data table (`[data-cls-table-final]`)
+// built from the identical columns + density + visibleRows — their card box
+// heights and widths must match exactly (CLS = 0).
+const TABLE_STORY = "kit-02-data-table--table--cls";
+
+test.describe("Table CLS = 0", () => {
+  test("loading table reserves the same box as the data table", async ({ page }) => {
+    await page.goto(`/?story=${TABLE_STORY}&mode=preview`);
+    await page.waitForSelector("[data-storyloaded]");
+
+    const skeleton = page.locator("[data-cls-table-skeleton] [data-table-card]");
+    const final = page.locator("[data-cls-table-final] [data-table-card]");
+
+    await expect(skeleton).toBeVisible();
+    await expect(final).toBeVisible();
+
+    const skeletonBox = await skeleton.boundingBox();
+    const finalBox = await final.boundingBox();
+
+    expect(skeletonBox, "loading table has a box").not.toBeNull();
+    expect(finalBox, "data table has a box").not.toBeNull();
+    // The reserved-viewport card holds the layout — heights and widths match (CLS = 0).
+    expect(skeletonBox?.height).toBe(finalBox?.height);
+    expect(skeletonBox?.width).toBe(finalBox?.width);
+  });
+});
+
 // Sparkline (KIT-03 / D-03 / QUAL-04): the dependency-free DOM-bar chart reserves a
 // FIXED height regardless of the value count, so changing the data volume shifts
 // nothing. The Cls story renders an empty (flat-baseline) sparkline above a 10-week
