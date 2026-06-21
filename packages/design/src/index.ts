@@ -38,3 +38,15 @@ export type { NavItem, NavItemState } from "./shared/uikit/NavBar/NavBar";
 export { NavBar } from "./shared/uikit/NavBar/NavBar";
 export { MobileTabBar } from "./shared/uikit/MobileTabBar";
 export { AppShell } from "./shared/uikit/AppShell";
+
+// ---- KIT-03 Stat-primitive family (Wave 5 / Plan 02-05) ----
+// Population-derived tiers (baseline passed explicitly, never a hardcoded cutoff),
+// tabular-mono numerals, and a dependency-free CLS-0 Sparkline. `Pips` lives inside
+// the `TierScale` slice (architecture.md leaf-granularity) and graduates with it; the
+// `_fixtures` roster/baseline + `tierFor` stay internal helpers (NOT graduated).
+export { StatTile } from "./shared/uikit/StatTile";
+export type { MiniStat } from "./shared/uikit/MiniStatGrid";
+export { MiniStatGrid } from "./shared/uikit/MiniStatGrid";
+export { TierChip } from "./shared/uikit/TierChip";
+export { Pips, TierScale } from "./shared/uikit/TierScale";
+export { Sparkline } from "./shared/uikit/Sparkline";

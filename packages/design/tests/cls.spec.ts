@@ -59,3 +59,30 @@ test.describe("Skeleton CLS = 0", () => {
     expect(skeletonBox?.width).toBe(finalBox?.width);
   });
 });
+
+// Sparkline (KIT-03 / D-03 / QUAL-04): the dependency-free DOM-bar chart reserves a
+// FIXED height regardless of the value count, so changing the data volume shifts
+// nothing. The Cls story renders an empty (flat-baseline) sparkline above a 10-week
+// "many" sparkline of the same width — their figure box heights must match exactly.
+const SPARKLINE_STORY = "kit-03-stat--sparkline--cls";
+
+test.describe("Sparkline CLS = 0", () => {
+  test("empty and many sparklines reserve the same height", async ({ page }) => {
+    await page.goto(`/?story=${SPARKLINE_STORY}&mode=preview`);
+    await page.waitForSelector("[data-storyloaded]");
+
+    const empty = page.locator("[data-cls-spark-empty] [data-sparkline]");
+    const many = page.locator("[data-cls-spark-many] [data-sparkline]");
+
+    await expect(empty).toBeVisible();
+    await expect(many).toBeVisible();
+
+    const emptyBox = await empty.boundingBox();
+    const manyBox = await many.boundingBox();
+
+    expect(emptyBox, "empty sparkline has a box").not.toBeNull();
+    expect(manyBox, "many sparkline has a box").not.toBeNull();
+    // Heights must match exactly — the fixed h-10 row holds the layout (CLS = 0).
+    expect(emptyBox?.height).toBe(manyBox?.height);
+  });
+});
