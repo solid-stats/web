@@ -82,6 +82,25 @@ export const STRINGS = {
   // Landmark aria-labels for the two nav regions (distinguished for SR users).
   navPrimaryAria: { ru: "Основная навигация", en: "Primary" },
   navMobileAria: { ru: "Мобильная навигация", en: "Mobile" },
+  // KIT-03 stat-primitive copy. The headline metric labels (hero tiles + the even
+  // mini-stat grid) in metric-priority order, and the tier-chip threshold template
+  // («≥2.4 ХОРОШО»). RU primary / EN mirror at parity (QUAL-05).
+  statScore: { ru: "Счёт", en: "Score" },
+  statKd: { ru: "K/D", en: "K/D" },
+  statGames: { ru: "Игры", en: "Games" },
+  statKills: { ru: "Убийства", en: "Kills" },
+  statTk: { ru: "ТК", en: "TK" },
+  statDeaths: { ru: "Смерти", en: "Deaths" },
+  statBounty: { ru: "Награда", en: "Bounty" },
+  statDeathsTk: { ru: "Смерти от ТК", en: "Deaths from TK" },
+  statEmpty: { ru: "Нет статистики", en: "No stats yet" },
+  // Tier threshold chip: «≥{t} {level}» (e.g. «≥2.4 ХОРОШО»). The level word is the
+  // UPPERCASED tier name; the chip pairs the tier color with this word + pips.
+  tierThreshold: { ru: "≥{t} {level}", en: "≥{t} {level}" },
+  tierScaleAria: { ru: "Уровень: {level}", en: "Tier: {level}" },
+  // Sparkline accessible summary: the chart is aria-hidden, this figcaption carries
+  // the value series for screen readers (never color-alone).
+  sparklineSummary: { ru: "Недельный счёт: {values}", en: "Weekly score: {values}" },
 } as const satisfies Readonly<Record<string, Bilingual>>;
 
 /** The set of copy-element keys (derived — never hand-maintained in parallel). */
