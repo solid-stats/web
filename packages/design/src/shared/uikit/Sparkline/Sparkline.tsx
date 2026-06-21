@@ -52,7 +52,13 @@ type Props = {
 /** Minimum visible bar height (%) so a near-zero week is still a visible nub. */
 const MIN_BAR_PCT = 8;
 
-export function Sparkline({ className, values, baseline, period = "rotation", summary }: Props): ReactNode {
+export function Sparkline({
+  className,
+  values,
+  baseline,
+  period = "rotation",
+  summary,
+}: Props): ReactNode {
   // One-shot mount grow: render at scaleY 0 on first paint, flip to 1 after mount
   // so the bars grow up. SSR-safe (server emits grown=false; client grows once).
   const [grown, setGrown] = useState(false);
@@ -79,7 +85,9 @@ export function Sparkline({ className, values, baseline, period = "rotation", su
             // Inline style is the sanctioned computed-dimension escape (height %),
             // NOT a themable token; the fill stays a token class via `bar({ level })`.
             const style: CSSProperties = { height: `${pct.toFixed(2)}%` };
-            return <span key={i} className={bar({ level, grown })} style={style} data-bar={level} />;
+            return (
+              <span key={i} className={bar({ level, grown })} style={style} data-bar={level} />
+            );
           })
         )}
       </div>

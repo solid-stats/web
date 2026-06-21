@@ -5,10 +5,10 @@
 // placeholder) plus the EN parity row. Numbers come from the canonical roster, so
 // the mini-grid is internally consistent with the hero tiles. Display-only — no
 // interactive states.
+import type { ReactNode } from "react";
 import type { Story, StoryDefault } from "@ladle/react";
 import { ROSTER, STRINGS } from "../_fixtures";
 import { MiniStatGrid, type MiniStat } from "./MiniStatGrid";
-import { StateCell, StateMatrix } from "../_state-matrix";
 
 export default {
   title: "KIT-03 Stat / MiniStatGrid",
@@ -34,30 +34,49 @@ const many = (lang: Lang): readonly MiniStat[] => [
   { key: "deathsTk", label: STRINGS.statDeathsTk[lang], value: int(VASILIY.deathsTk) },
 ];
 
+// MiniStatGrid is a full-width multi-column block: each data-volume state renders
+// in a realistically-wide row (NOT crammed into a narrow StateMatrix cell, which
+// would collapse the @container reflow and overlap the tiles). The labelled row
+// is the same `data-state-cell` hook the catalog spec asserts against.
+function VolumeRow({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="flex flex-col gap-2" data-state-cell={label}>
+      <span className="font-body text-xs font-semibold uppercase text-text-muted">{label}</span>
+      {children}
+    </div>
+  );
+}
+
 export const Matrix: Story = () => (
   <div className="flex flex-col gap-6 bg-bg-1 p-4">
-    <StateMatrix title="MiniStatGrid — объём данных (RU)">
-      <StateCell label="few">
-        <MiniStatGrid stats={few("ru")} />
-      </StateCell>
-      <StateCell label="many">
-        <MiniStatGrid stats={many("ru")} />
-      </StateCell>
-      <StateCell label="empty">
+    <h2 className="font-display text-lg font-semibold tracking-tight text-text-primary">
+      MiniStatGrid — объём данных (RU)
+    </h2>
+    <VolumeRow label="few">
+      <MiniStatGrid stats={few("ru")} />
+    </VolumeRow>
+    <VolumeRow label="many">
+      <MiniStatGrid stats={many("ru")} />
+    </VolumeRow>
+    <VolumeRow label="empty">
+      <div className="max-w-sm">
         <MiniStatGrid stats={[]} emptyLabel={STRINGS.statEmpty.ru} />
-      </StateCell>
-    </StateMatrix>
-    <StateMatrix title="MiniStatGrid — data volume (EN)">
-      <StateCell label="few-en">
-        <MiniStatGrid stats={few("en")} />
-      </StateCell>
-      <StateCell label="many-en">
-        <MiniStatGrid stats={many("en")} />
-      </StateCell>
-      <StateCell label="empty-en">
+      </div>
+    </VolumeRow>
+    <h2 className="font-display text-lg font-semibold tracking-tight text-text-primary">
+      MiniStatGrid — data volume (EN)
+    </h2>
+    <VolumeRow label="few-en">
+      <MiniStatGrid stats={few("en")} />
+    </VolumeRow>
+    <VolumeRow label="many-en">
+      <MiniStatGrid stats={many("en")} />
+    </VolumeRow>
+    <VolumeRow label="empty-en">
+      <div className="max-w-sm">
         <MiniStatGrid stats={[]} emptyLabel={STRINGS.statEmpty.en} />
-      </StateCell>
-    </StateMatrix>
+      </div>
+    </VolumeRow>
   </div>
 );
 

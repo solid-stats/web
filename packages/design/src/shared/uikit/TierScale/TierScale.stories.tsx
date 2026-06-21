@@ -31,7 +31,11 @@ const vasiliyTier = tierFor("score", VASILIY.score, SS_BASELINE).level;
 export const Heroes: Story = () => (
   <div className="flex max-w-md flex-col gap-3 bg-bg-1 p-4" data-tier-scale-heroes>
     {/* Vasiliy #1 Score 4.13 → отлично is the active zone. */}
-    <TierScale active={vasiliyTier} names={TIER_NAMES} activeAriaLabel={ariaFor(vasiliyTier, TIER_NAMES)} />
+    <TierScale
+      active={vasiliyTier}
+      names={TIER_NAMES}
+      activeAriaLabel={ariaFor(vasiliyTier, TIER_NAMES)}
+    />
   </div>
 );
 
@@ -40,7 +44,11 @@ export const Matrix: Story = () => (
     <StateMatrix title="TierScale — активная зона (RU)">
       {LEVELS.map((level) => (
         <StateCell key={level} label={level}>
-          <TierScale active={level} names={TIER_NAMES} activeAriaLabel={ariaFor(level, TIER_NAMES)} />
+          <TierScale
+            active={level}
+            names={TIER_NAMES}
+            activeAriaLabel={ariaFor(level, TIER_NAMES)}
+          />
         </StateCell>
       ))}
     </StateMatrix>

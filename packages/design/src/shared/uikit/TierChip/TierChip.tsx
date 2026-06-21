@@ -12,7 +12,13 @@
 // The color is redundant with the pip count + the level word (never color-alone).
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants/lite";
-import { type Baseline, type TierLevel, type TierMetric, type TierPeriod, tierFor } from "../_fixtures";
+import {
+  type Baseline,
+  type TierLevel,
+  type TierMetric,
+  type TierPeriod,
+  tierFor,
+} from "../_fixtures";
 import { Pips } from "../TierScale";
 
 type Props = {
@@ -52,16 +58,12 @@ export function TierChip({
   value,
   baseline,
   period = "rotation",
-  levelLabel,
   thresholdLabel,
 }: Props): ReactNode {
   const tier = tierFor(metric, value, baseline, period);
 
   return (
-    <span
-      className={chip({ level: tier.level, className })}
-      data-tier-chip={tier.level}
-    >
+    <span className={chip({ level: tier.level, className })} data-tier-chip={tier.level}>
       <Pips level={tier.level} />
       {thresholdLabel}
     </span>

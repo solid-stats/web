@@ -27,24 +27,54 @@ export const Matrix: Story = () => (
   <div className="flex flex-col gap-6 bg-bg-1 p-4">
     <StateMatrix title="Sparkline — объём данных (RU)">
       <StateCell label="empty">
-        <Sparkline values={EMPTY} baseline={SS_BASELINE} summary={summary(EMPTY, "ru")} className="w-32" />
+        <Sparkline
+          values={EMPTY}
+          baseline={SS_BASELINE}
+          summary={summary(EMPTY, "ru")}
+          className="w-32"
+        />
       </StateCell>
       <StateCell label="few">
-        <Sparkline values={FEW} baseline={SS_BASELINE} summary={summary(FEW, "ru")} className="w-32" />
+        <Sparkline
+          values={FEW}
+          baseline={SS_BASELINE}
+          summary={summary(FEW, "ru")}
+          className="w-32"
+        />
       </StateCell>
       <StateCell label="many">
-        <Sparkline values={MANY} baseline={SS_BASELINE} summary={summary(MANY, "ru")} className="w-40" />
+        <Sparkline
+          values={MANY}
+          baseline={SS_BASELINE}
+          summary={summary(MANY, "ru")}
+          className="w-40"
+        />
       </StateCell>
       <StateCell label="clamped">
-        <Sparkline values={CLAMPED} baseline={SS_BASELINE} summary={summary(CLAMPED, "ru")} className="w-32" />
+        <Sparkline
+          values={CLAMPED}
+          baseline={SS_BASELINE}
+          summary={summary(CLAMPED, "ru")}
+          className="w-32"
+        />
       </StateCell>
     </StateMatrix>
     <StateMatrix title="Sparkline — data volume (EN)">
       <StateCell label="few-en">
-        <Sparkline values={FEW} baseline={SS_BASELINE} summary={summary(FEW, "en")} className="w-32" />
+        <Sparkline
+          values={FEW}
+          baseline={SS_BASELINE}
+          summary={summary(FEW, "en")}
+          className="w-32"
+        />
       </StateCell>
       <StateCell label="many-en">
-        <Sparkline values={MANY} baseline={SS_BASELINE} summary={summary(MANY, "en")} className="w-40" />
+        <Sparkline
+          values={MANY}
+          baseline={SS_BASELINE}
+          summary={summary(MANY, "en")}
+          className="w-40"
+        />
       </StateCell>
     </StateMatrix>
   </div>
@@ -55,10 +85,20 @@ export const Matrix: Story = () => (
 export const Cls: Story = () => (
   <div className="flex flex-col gap-4 bg-bg-1 p-4">
     <div data-cls-spark-empty>
-      <Sparkline values={EMPTY} baseline={SS_BASELINE} summary={summary(EMPTY, "ru")} className="w-40" />
+      <Sparkline
+        values={EMPTY}
+        baseline={SS_BASELINE}
+        summary={summary(EMPTY, "ru")}
+        className="w-40"
+      />
     </div>
     <div data-cls-spark-many>
-      <Sparkline values={MANY} baseline={SS_BASELINE} summary={summary(MANY, "ru")} className="w-40" />
+      <Sparkline
+        values={MANY}
+        baseline={SS_BASELINE}
+        summary={summary(MANY, "ru")}
+        className="w-40"
+      />
     </div>
   </div>
 );

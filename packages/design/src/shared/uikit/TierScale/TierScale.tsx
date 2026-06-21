@@ -18,20 +18,30 @@ const SCALE: readonly TierLevel[] = ["low", "base", "good", "elite"];
 
 // ---- Pips: the discrete 4-level indicator (filled pips out of 4) ----
 
+// The tier color applies ONLY to "on" pips (compoundVariants) — an "off" pip is
+// `bg-border-2` alone. With `/lite` (no tailwind-merge) a level color + a muted
+// override would BOTH emit and source order would decide, leaking the color onto
+// off pips; gating the color behind `on=true` keeps each pip a single fill.
 const pip = tv({
   base: "size-1.5 rounded-full",
   variants: {
     level: {
-      low: "bg-loss",
-      base: "bg-warn",
-      good: "bg-info",
-      elite: "bg-win",
+      low: "",
+      base: "",
+      good: "",
+      elite: "",
     } satisfies Record<TierLevel, string>,
     on: {
       true: "",
       false: "bg-border-2",
     },
   },
+  compoundVariants: [
+    { level: "low", on: true, class: "bg-loss" },
+    { level: "base", on: true, class: "bg-warn" },
+    { level: "good", on: true, class: "bg-info" },
+    { level: "elite", on: true, class: "bg-win" },
+  ],
 });
 
 type PipsProps = {
@@ -48,7 +58,11 @@ type PipsProps = {
 export function Pips({ className, level }: PipsProps): ReactNode {
   const filled = TIER_PIPS[level];
   return (
-    <span className={`inline-flex items-center gap-0.5 ${className ?? ""}`} aria-hidden data-pips={level}>
+    <span
+      className={`inline-flex items-center gap-0.5 ${className ?? ""}`}
+      aria-hidden
+      data-pips={level}
+    >
       {[1, 2, 3, 4].map((i) => {
         const on = i <= filled;
         return <span key={i} className={pip({ level, on })} />;
@@ -91,7 +105,12 @@ type TierScaleProps = {
   activeAriaLabel: string;
 };
 
-export function TierScale({ className, active, names, activeAriaLabel }: TierScaleProps): ReactNode {
+export function TierScale({
+  className,
+  active,
+  names,
+  activeAriaLabel,
+}: TierScaleProps): ReactNode {
   return (
     <div
       className={`flex items-stretch gap-1 ${className ?? ""}`}

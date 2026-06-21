@@ -24,8 +24,16 @@ const HERO_KD = { ru: "K/D", en: "K/D" };
 export const Heroes: Story = () => (
   <div className="flex flex-col gap-6 bg-bg-1 p-4">
     <div className="grid max-w-md grid-cols-2 gap-3" data-hero-pair>
-      <StatTile label={HERO_SCORE.ru} value={fmt(VASILIY.score)} delta={{ sign: "up", text: "+0.31" }} />
-      <StatTile label={HERO_KD.ru} value={fmt(VASILIY.kd)} delta={{ sign: "down", text: "−0.12" }} />
+      <StatTile
+        label={HERO_SCORE.ru}
+        value={fmt(VASILIY.score)}
+        delta={{ sign: "up", text: "+0.31" }}
+      />
+      <StatTile
+        label={HERO_KD.ru}
+        value={fmt(VASILIY.kd)}
+        delta={{ sign: "down", text: "−0.12" }}
+      />
     </div>
   </div>
 );
@@ -37,10 +45,18 @@ export const Matrix: Story = () => (
         <StatTile label={HERO_SCORE.ru} value={fmt(VASILIY.score)} />
       </StateCell>
       <StateCell label="delta-up">
-        <StatTile label={HERO_SCORE.ru} value={fmt(VASILIY.score)} delta={{ sign: "up", text: "+0.31" }} />
+        <StatTile
+          label={HERO_SCORE.ru}
+          value={fmt(VASILIY.score)}
+          delta={{ sign: "up", text: "+0.31" }}
+        />
       </StateCell>
       <StateCell label="delta-down">
-        <StatTile label={HERO_KD.ru} value={fmt(VASILIY.kd)} delta={{ sign: "down", text: "−0.12" }} />
+        <StatTile
+          label={HERO_KD.ru}
+          value={fmt(VASILIY.kd)}
+          delta={{ sign: "down", text: "−0.12" }}
+        />
       </StateCell>
       <StateCell label="loading">
         <Skeleton variant="tile" />
@@ -51,10 +67,18 @@ export const Matrix: Story = () => (
         <StatTile label={HERO_SCORE.en} value={fmt(VASILIY.score)} />
       </StateCell>
       <StateCell label="delta-up-en">
-        <StatTile label={HERO_SCORE.en} value={fmt(VASILIY.score)} delta={{ sign: "up", text: "+0.31" }} />
+        <StatTile
+          label={HERO_SCORE.en}
+          value={fmt(VASILIY.score)}
+          delta={{ sign: "up", text: "+0.31" }}
+        />
       </StateCell>
       <StateCell label="delta-down-en">
-        <StatTile label={HERO_KD.en} value={fmt(VASILIY.kd)} delta={{ sign: "down", text: "−0.12" }} />
+        <StatTile
+          label={HERO_KD.en}
+          value={fmt(VASILIY.kd)}
+          delta={{ sign: "down", text: "−0.12" }}
+        />
       </StateCell>
     </StateMatrix>
     {/* The tier-level vocabulary the headline tiles sit within (RU+EN parity proof). */}

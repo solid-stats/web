@@ -71,8 +71,8 @@ test.describe("Sparkline CLS = 0", () => {
     await page.goto(`/?story=${SPARKLINE_STORY}&mode=preview`);
     await page.waitForSelector("[data-storyloaded]");
 
-    const empty = page.locator('[data-cls-spark-empty] [data-sparkline]');
-    const many = page.locator('[data-cls-spark-many] [data-sparkline]');
+    const empty = page.locator("[data-cls-spark-empty] [data-sparkline]");
+    const many = page.locator("[data-cls-spark-many] [data-sparkline]");
 
     await expect(empty).toBeVisible();
     await expect(many).toBeVisible();

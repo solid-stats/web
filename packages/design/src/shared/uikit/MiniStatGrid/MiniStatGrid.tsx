@@ -43,10 +43,7 @@ export function MiniStatGrid({ className, stats, emptyLabel }: Props): ReactNode
   }
 
   return (
-    <div
-      className={`@container ${className ?? ""}`}
-      data-mini-stat-grid={String(stats.length)}
-    >
+    <div className={`@container ${className ?? ""}`} data-mini-stat-grid={String(stats.length)}>
       {/* Container-keyed reflow: 2 → 3 → 4 columns by container width. The caller keeps
           the stat count even so the trailing row is never a single orphan tile. */}
       <dl className="grid grid-cols-2 gap-3 @md:grid-cols-3 @xl:grid-cols-4">

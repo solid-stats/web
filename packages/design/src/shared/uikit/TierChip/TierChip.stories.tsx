@@ -6,7 +6,14 @@
 // threshold («≥2.4 ХОРОШО») with the tier color paired with the word + pips (never
 // color-alone). `Heroes` shows Vasiliy #1's real Score (отлично) + K/D (норма).
 import type { Story, StoryDefault } from "@ladle/react";
-import { ROSTER, SS_BASELINE, type TierLevel, type TierMetric, TIER_NAMES, tierFor } from "../_fixtures";
+import {
+  ROSTER,
+  SS_BASELINE,
+  type TierLevel,
+  type TierMetric,
+  TIER_NAMES,
+  tierFor,
+} from "../_fixtures";
 import { StateCell, StateMatrix } from "../_state-matrix";
 import { TierChip } from "./TierChip";
 
