@@ -53,9 +53,18 @@ export const STRINGS = {
     ru: "Плотность: Обычная / Компактная",
     en: "Density: Comfortable / Compact",
   },
+  // The DensityToggle group label + the two per-option labels (the `densityToggle`
+  // string above is the combined Copywriting-Contract phrase; the toggle control
+  // needs them split into the group name + each option word).
+  densityGroup: { ru: "Плотность", en: "Density" },
+  densityComfortable: { ru: "Обычная", en: "Comfortable" },
+  densityCompact: { ru: "Компактная", en: "Compact" },
   sortHeaderAria: { ru: "сортировать по {col}", en: "sort by {col}" },
   paginationPrev: { ru: "Назад", en: "Prev" },
   paginationNext: { ru: "Дальше", en: "Next" },
+  // The Pagination/CursorAffordance end-of-list marker (no more pages this phase —
+  // inert, no server). RU primary / EN mirror at parity.
+  paginationEnd: { ru: "Это всё", en: "End of list" },
   tierLevels: { ru: "ниже / норма / хорошо / отлично", en: "below / normal / good / excellent" },
   outcomeWin: { ru: "П", en: "W" },
   outcomeLoss: { ru: "пор.", en: "L" },

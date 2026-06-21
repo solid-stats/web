@@ -101,3 +101,40 @@ test.describe("MobileTabBar at the 360px floor", () => {
     }
   });
 });
+
+// KIT-02 CompactRow mobile layout at the 360px floor (QUAL-02). The mobile list is
+// the `< md` reflow of the desktop scroll-in-card: top-N + «показать ещё · N»,
+// secondary columns dropped, label-over-value — with NO horizontal scroll and NO
+// nested scroll (the page scrolls). The `responsive.spec` asserts the floor.
+const COMPACTROW_STORY = "kit-02-data-table--compactrow--mobile";
+
+test.describe("CompactRow at the 360px floor", () => {
+  test.use({ viewport: MOBILE });
+
+  test("no horizontal scroll and no nested scroll in the mobile list", async ({ page }) => {
+    await page.goto(`/?story=${COMPACTROW_STORY}&mode=preview`);
+    await page.waitForSelector("[data-compact-list]");
+
+    // The list itself never overflows horizontally at 360px.
+    const list = page.locator("[data-compact-list]");
+    await noHorizontalScroll(list);
+
+    // No nested scroll: neither the list nor any row clips its own scroll area —
+    // the page (document) scrolls, not an inner element (no scrollHeight overflow).
+    const nested = await list.evaluate((el) => {
+      const all = [el, ...Array.from(el.querySelectorAll("*"))];
+      return all.some((node) => {
+        const e = node as HTMLElement;
+        const oy = getComputedStyle(e).overflowY;
+        return (oy === "auto" || oy === "scroll") && e.scrollHeight > e.clientHeight + 1;
+      });
+    });
+    expect(nested, "no nested vertical scroll container (the page scrolls)").toBe(false);
+  });
+
+  test("the show-more expander is present (top-N, not a full dump)", async ({ page }) => {
+    await page.goto(`/?story=${COMPACTROW_STORY}&mode=preview`);
+    await page.waitForSelector("[data-compact-list]");
+    await expect(page.locator("[data-show-more]")).toBeVisible();
+  });
+});
