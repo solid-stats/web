@@ -249,5 +249,13 @@
     "mirror_kg": true,
     "cross_project_tunnels": true,
     "auto_capture_hooks": true
+  },
+  "code_quality": {
+    "fallow": {
+      "enabled": true,
+      "scope": "repo",
+      "profile": "strict",
+      "mcp": false
+    }
   }
 }
