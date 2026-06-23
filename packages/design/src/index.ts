@@ -6,6 +6,15 @@
 // Later family plans append their own export blocks to distinct regions (barrel
 // writes are serialized by wave).
 
+// ---- Base primitives (Wave 1 / Plan 02-07, GAP-19) ----
+// The shared interactive base: `Button` (`<button type="button">`) and `Link` (the
+// `<a>` affordance) share ONE `control` recipe owning the ≥44px hit area + the ONE
+// canonical focus ring + the variant/size token recipes (sourced from the DESIGN.md
+// `button-*` recipes). The ~7 hand-rolled catalog controls render through these; the
+// internal `control` recipe is NOT graduated.
+export type { ButtonVariant, ButtonSize } from "./shared/uikit/Button";
+export { Button, Link } from "./shared/uikit/Button";
+
 // ---- KIT-04 Data-trust family (Wave 2 / Plan 02-02) ----
 export type { FreshnessState } from "./shared/uikit/FreshnessPill";
 export { FreshnessPill } from "./shared/uikit/FreshnessPill";
