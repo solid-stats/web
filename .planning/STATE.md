@@ -6,14 +6,14 @@ current_phase: 02
 current_phase_name: uikit-structural-data-display-primitives
 status: executing
 stopped_at: Phase 2 planned — 6 plans, plan-checker PASSED
-last_updated: "2026-06-23T17:27:33.520Z"
+last_updated: "2026-06-23T18:00:00.237Z"
 last_activity: 2026-06-23
-last_activity_desc: Phase 02 execution started
+last_activity_desc: Completed 02-08 (KIT-01 nav-shell rework, GAP-01…05)
 progress:
   total_phases: 9
   completed_phases: 1
   total_plans: 16
-  completed_plans: 13
+  completed_plans: 14
   percent: 11
 ---
 
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 ## Current Position
 
 Phase: 02 (uikit-structural-data-display-primitives) — EXECUTING
-Plan: 8 of 11 complete
-Status: Executing gap-closure plans (02-09…02-11 remaining)
-Last activity: 2026-06-23 — Completed 02-08 (KIT-01 nav-shell rework, GAP-01…05)
+Plan: 9 of 11 complete
+Status: Executing gap-closure plans (02-10…02-11 remaining)
+Last activity: 2026-06-24 — Completed 02-09 (KIT-02 data-table geometry + controls, GAP-06/07/08/11/14)
 
-Plans: [██████████████░░░░░░] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 8/11 complete (gap-closure 02-08 done)
+Plans: [█████████████████░░░] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 9/11 complete (gap-closure 02-09 done)
 
 ## Performance Metrics
 
@@ -62,6 +62,7 @@ Plans: [██████████████░░░░░░] Phase 01: 
 | Phase 01 P05 | 12min | 2 tasks | 5 files |
 | Phase 02 P07 | 13min | 3 tasks | 15 files |
 | Phase 02 P08 | 14min | 3 tasks | 14 files |
+| Phase 02 P09 | 38min | 3 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -88,6 +89,7 @@ Recent decisions affecting current work:
 - [Phase 02 / 02-07 GAP-19]: Shared Button/Link base primitive — one `control` tv() owns the ≥44px hit area + the ONE canonical `focus-visible:shadow-(--shadow-ring)` ring + the DESIGN.md `button-primary/secondary/ghost` + `segment` recipes; the 7 hand-rolled controls (NavBar/MobileTabBar→Link ghost, Th→Button segment, Pagination/CompactList show-more→Button secondary, Toast→Button ghost, EmptyState/ErrorState story actions) refactored onto it; the Toast/ErrorState `focus-visible:outline-*` drift ring removed. Graduated into the barrel with `ButtonVariant`/`ButtonSize`/`ButtonJustify`.
 - [Phase 02 / 02-07]: `cursor-pointer` is a project-wide product decision single-sourced on the `control` base (all interactive controls show the hand cursor, overriding native button default-arrow); disabled keeps `pointer-events-none` (no `cursor-not-allowed`). A `justify` variant on `control` (center default; start/end) keeps the merge-free `tailwind-variants/lite` build from emitting conflicting `justify-*` utilities. Minor token shifts (rounded-md→rounded-sm, gap-2→gap-1.5, tab text-2xs→text-xs) accepted as the intended de-duplication onto the canonical recipe.
 - [Phase ?]: KIT-01 nav-shell reworked vs binding hi-fi: three-zone NavBar + universal account per signed-in role + raised @5xl breakpoint + 5-tab MobileTabBar + reveal-safe SkipLink (GAP-01…05)
+- [Phase 02 / 02-09]: KIT-02 data-table reworked vs hi-fi — border-box viewport math (border-separate + box-internal cell hairlines, no stray scroll on table OR skeleton), a real N–M-of-total Pagination pager (disabled Next at end, GAP-07 = UAT user decision option B, a justified divergence from the hi-fi no-pager model), loading cell shows the skeleton, distinct few/limit cues, and DensityToggle replaced by the AutoTable @container auto-density resolver (comfortable at @5xl, compact below; ROW_H + controlled density prop kept). Shared geometry: tableViewportHeight + the Skeleton framed prop (GAP-06/07/08/11/14)
 
 ### Pending Todos
 
@@ -117,7 +119,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-23T17:27:23.308Z
+Last session: 2026-06-23T18:00:00.234Z
 Stopped at: Phase 2 planned (6 plans, verified)
 Resume file: .planning/phases/02-uikit-structural-data-display-primitives/02-01-PLAN.md
 </content>

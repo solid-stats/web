@@ -82,7 +82,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Every primitive demonstrates its component states (enabled / hover / pressed / focused / selected / disabled / loading) and a defined click zone (whole row beats text), and is axe-clean, keyboard-operable, 44px targets, RU+EN sanity-checked.
   5. Tier/stat mock fixtures are internally consistent with the Score / K/D formulas and population tiers (`SS_BASELINE`).
 
-**Plans**: 8/11 plans executed
+**Plans**: 9/11 plans executed
 
 **Wave 1** *(enabler)*
 
@@ -120,7 +120,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3 (gap — blocked on 02-07)**
 
-- [ ] 02-09-PLAN.md — GAP-06/07/08/11/14: KIT-02 table geometry/controls (auto density, real pager, border-box no-scroll, loading skeleton) (KIT-02, QUAL-02, QUAL-04)
+- [x] 02-09-PLAN.md — GAP-06/07/08/11/14: KIT-02 table geometry/controls (auto density, real pager, border-box no-scroll, loading skeleton) (KIT-02, QUAL-02, QUAL-04)
 
 **Wave 4 (gap — blocked on 02-09)**
 
@@ -255,7 +255,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Workspace & Design-System Foundation | 5/5 | Complete    | 2026-06-20 |
-| 2. UIKIT — Structural & Data-Display Primitives | 8/11 | In Progress|  |
+| 2. UIKIT — Structural & Data-Display Primitives | 9/11 | In Progress|  |
 | 3. UIKIT — Interactive, i18n & Global-State Patterns | 0/TBD | Not started | - |
 | 4. Public Stats — Overview, Players & Player Profile | 0/TBD | Not started | - |
 | 5. Public Stats — Squads | 0/TBD | Not started | - |
