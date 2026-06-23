@@ -57,6 +57,11 @@ test.describe("Skeleton CLS = 0", () => {
     // Heights and widths must match exactly — the skeleton holds the layout (CLS = 0).
     expect(skeletonBox?.height).toBe(finalBox?.height);
     expect(skeletonBox?.width).toBe(finalBox?.width);
+
+    // GAP-08: the table skeleton must NEVER scroll — its reserved box fits header + N
+    // rows exactly (border-box hairlines), so scrollHeight does not exceed clientHeight.
+    const skeletonOverflow = await skeleton.evaluate((el) => el.scrollHeight - el.clientHeight);
+    expect(skeletonOverflow, "skeleton table does not scroll (scrollHeight <= clientHeight)").toBeLessThanOrEqual(0);
   });
 });
 
@@ -87,6 +92,16 @@ test.describe("Table CLS = 0", () => {
     // The reserved-viewport card holds the layout — heights and widths match (CLS = 0).
     expect(skeletonBox?.height).toBe(finalBox?.height);
     expect(skeletonBox?.width).toBe(finalBox?.width);
+
+    // GAP-08: NEITHER the data-table viewport NOR the loading skeleton viewport may show
+    // a stray scrollbar — the border-box hairline math fits header + N rows exactly, so
+    // scrollHeight never exceeds clientHeight on either viewport.
+    const dataViewport = page.locator("[data-cls-table-final] [data-table-viewport]");
+    const loadingViewport = page.locator("[data-cls-table-skeleton] [data-table-viewport]");
+    const dataOverflow = await dataViewport.evaluate((el) => el.scrollHeight - el.clientHeight);
+    const loadingOverflow = await loadingViewport.evaluate((el) => el.scrollHeight - el.clientHeight);
+    expect(dataOverflow, "data table viewport does not scroll (scrollHeight <= clientHeight)").toBeLessThanOrEqual(0);
+    expect(loadingOverflow, "loading skeleton viewport does not scroll (scrollHeight <= clientHeight)").toBeLessThanOrEqual(0);
   });
 });
 

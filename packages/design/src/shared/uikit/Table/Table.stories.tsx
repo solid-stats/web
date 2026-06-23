@@ -160,10 +160,22 @@ export const RowStates: Story = () => {
           </div>
         </div>
       ))}
-      {/* The 7th state — loading — is the Skeleton table variant the Table swaps in. */}
+      {/* The 7th state — loading — is the Skeleton table variant the Table swaps in
+          (GAP-11: pass `loading` so the cell shows the shimmer placeholder, NOT a
+          real Vasiliy data row). */}
       <div className="flex flex-col gap-1" data-state-cell="loading">
         <span className="font-body text-xs font-semibold uppercase text-text-muted">loading</span>
-        {dataTable(ROSTER.slice(0, 1), COMFORTABLE, SORT_SCORE_DESC, "ru", 1)}
+        <Table
+          columns={COLUMNS}
+          caption={caption("ru", 0)}
+          density={COMFORTABLE}
+          sort={SORT_SCORE_DESC}
+          sortLabels={sortLabels("ru")}
+          visibleRows={1}
+          loading
+        >
+          {null}
+        </Table>
       </div>
     </div>
   );

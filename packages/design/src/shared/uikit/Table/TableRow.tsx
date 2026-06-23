@@ -61,8 +61,12 @@ type Props = {
 // focused — the ring is on the anchor, not hidden under the sticky header, WCAG
 // 2.4.12). The `state` variant is the catalog override; `selected` adds the
 // primary-weak fill + the inset cyan left-edge `before:` bar (never fill-only).
+// GAP-08: under the table's `border-separate` model a `<tr>` border does not paint, so
+// the hairline lives on the row's CELLS (`[&>td]:border-b`). With Tailwind's global
+// `box-border` the border sits INSIDE each cell box → zero added row height (no stray
+// scroll), and the last row drops it (`last:[&>td]:border-b-0`).
 const row = tv({
-  base: "group relative border-b border-border-1 bg-surface-1 text-text-primary transition-colors last:border-b-0 hover:bg-surface-3",
+  base: "group relative bg-surface-1 text-text-primary transition-colors [&>td]:border-b [&>td]:border-border-1 last:[&>td]:border-b-0 hover:bg-surface-3",
   variants: {
     state: {
       enabled: "",

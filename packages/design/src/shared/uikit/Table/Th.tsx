@@ -79,7 +79,7 @@ export function Th({
       scope="col"
       aria-sort={sort}
       data-th={label}
-      className={`h-11 bg-surface-2 p-0 ${className ?? ""}`}
+      className={`h-11 border-b border-border-1 bg-surface-2 p-0 ${className ?? ""}`}
     >
       <Button
         variant="segment"

@@ -21,7 +21,7 @@
 // sanctioned escape, like the Skeleton's reserved colgroup). The header/row visual
 // classes stay literal token utilities so the `@source` scan emits them.
 import type { CSSProperties, ReactNode } from "react";
-import { ROW_H, type SkeletonDensity, Skeleton } from "../Skeleton";
+import { ROW_H, type SkeletonDensity, Skeleton, tableViewportHeight } from "../Skeleton";
 import { Th, type SortDirection } from "./Th";
 
 /** Re-export the density type so consumers (DensityToggle, stories) share one source. */
@@ -73,8 +73,6 @@ type Props = {
   onSort?: (key: string) => void;
 };
 
-const HEADER_H = 44; // the sticky header row height (`h-11`, mirrors the Skeleton header).
-
 export function Table({
   className,
   columns,
@@ -90,9 +88,12 @@ export function Table({
   onSort,
 }: Props): ReactNode {
   const rowHeight = ROW_H[density];
-  // The reserved viewport height holds the layout regardless of row count or
-  // loading — header + N visible rows (computed geometry, not a themable token).
-  const viewportStyle: CSSProperties = { height: `${HEADER_H + visibleRows * rowHeight}px` };
+  // The reserved viewport height holds the layout regardless of row count or loading —
+  // header + N visible rows + the hairline borders (GAP-08: border-box math, no stray
+  // scroll). Computed geometry, not a themable token.
+  const viewportStyle: CSSProperties = {
+    height: `${tableViewportHeight(visibleRows, rowHeight)}px`,
+  };
   const widths = columns.map((c) => c.width);
 
   return (
@@ -103,10 +104,22 @@ export function Table({
       <div className="overflow-y-auto" style={viewportStyle} data-table-viewport>
         {loading ? (
           // The loading state IS the Skeleton table variant (Plan 03) — identical
-          // colgroup + header + N×ROW_H, so the skeleton→data swap shifts nothing.
-          <Skeleton variant="table" columns={widths} rows={visibleRows} density={density} />
+          // colgroup + header + N×ROW_H, so the skeleton→data swap shifts nothing. `framed
+          // ={false}`: the Table's own card + viewport already frame it, so the skeleton
+          // renders just the band (no inner card border to overflow → never scrolls, GAP-08).
+          <Skeleton
+            variant="table"
+            columns={widths}
+            rows={visibleRows}
+            density={density}
+            framed={false}
+          />
         ) : (
-          <table className="w-full table-fixed border-collapse" data-table>
+          // GAP-08: `border-separate` keeps the hairlines on the CELLS (border-box →
+          // inside each row box, zero added height), unlike `border-collapse` which
+          // added them outside and caused the stray ~1–2px scroll. The header cells
+          // carry the bottom hairline; the rows carry theirs (TableRow).
+          <table className="w-full table-fixed border-separate border-spacing-0" data-table>
             <caption className="sr-only">{caption}</caption>
             <colgroup>
               {columns.map((c) => (
@@ -114,7 +127,7 @@ export function Table({
               ))}
             </colgroup>
             <thead className="sticky top-0 z-10">
-              <tr className="border-b border-border-1">
+              <tr>
                 {columns.map((c) =>
                   c.sortable === true ? (
                     <Th
@@ -131,7 +144,7 @@ export function Table({
                       key={c.key}
                       scope="col"
                       data-th={c.label}
-                      className={`h-11 bg-surface-2 px-3 font-body text-xs font-semibold uppercase tracking-label text-text-muted ${
+                      className={`h-11 border-b border-border-1 bg-surface-2 px-3 font-body text-xs font-semibold uppercase tracking-label text-text-muted ${
                         c.numeric === true ? "text-right" : "text-left"
                       }`}
                     >

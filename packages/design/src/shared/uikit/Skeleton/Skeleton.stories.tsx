@@ -5,7 +5,7 @@
 // `Playground` exposes the variant via Ladle args. The skeleton shimmer animates
 // opacity only and is static under reduced-motion (the catalog runs `reducedMotion`).
 import type { Story, StoryDefault } from "@ladle/react";
-import { ROW_H, Skeleton } from "./Skeleton";
+import { ROW_H, Skeleton, tableViewportHeight } from "./Skeleton";
 
 export default {
   title: "KIT-07 Feedback / Skeleton",
@@ -60,31 +60,37 @@ export const Matrix: Story = () => (
 function FinalTable(): ReturnType<Story> {
   const rowHeight = ROW_H[DENSITY];
   const gridStyle = { gridTemplateColumns: COLUMNS.map((w) => `${w}px`).join(" ") };
+  // Reserve the band at the EXACT shared `tableViewportHeight` (header + N rows + the
+  // single header hairline) — the same geometry the skeleton reserves — so the
+  // skeleton-vs-final box equality holds (CLS = 0, GAP-08).
+  const bandStyle = { height: `${tableViewportHeight(ROWS, rowHeight)}px` };
   return (
     <div className="overflow-hidden rounded-md border border-border-1 bg-surface-1">
-      <div
-        className="grid h-11 items-center border-b border-border-1 bg-surface-2"
-        style={gridStyle}
-      >
-        {COLUMNS.map((_, i) => (
-          <div key={i} className="px-3 font-body text-xs font-semibold uppercase text-text-muted">
-            COL
-          </div>
-        ))}
-      </div>
-      {Array.from({ length: ROWS }, (_, r) => (
+      <div className="overflow-hidden" style={bandStyle}>
         <div
-          key={r}
-          className="grid items-center border-b border-border-1 last:border-b-0"
-          style={{ ...gridStyle, height: `${rowHeight}px` }}
+          className="grid h-11 items-center border-b border-border-1 bg-surface-2"
+          style={gridStyle}
         >
-          {COLUMNS.map((_, c) => (
-            <div key={c} className="px-3 font-mono text-sm text-text-primary">
-              data
+          {COLUMNS.map((_, i) => (
+            <div key={i} className="px-3 font-body text-xs font-semibold uppercase text-text-muted">
+              COL
             </div>
           ))}
         </div>
-      ))}
+        {Array.from({ length: ROWS }, (_, r) => (
+          <div
+            key={r}
+            className="grid items-center border-b border-border-1 last:border-b-0"
+            style={{ ...gridStyle, height: `${rowHeight}px` }}
+          >
+            {COLUMNS.map((_, c) => (
+              <div key={c} className="px-3 font-mono text-sm text-text-primary">
+                data
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
