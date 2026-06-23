@@ -298,10 +298,11 @@ fix: |
   height == final delta-tile box height.
 
 ### GAP-17 — Sparkline has no hover tooltip on the value bars
-status: failed
+status: deferred
 severity: medium
 requirements: [KIT-03]
-depends_on: KIT-06 tooltip primitive (Phase 3) — or a native-title interim
+decision: DEFER to Phase 3 — implemented there with the KIT-06 tooltip primitive (user decision). NOT in the Phase-2 gap cycle.
+depends_on: KIT-06 tooltip primitive (Phase 3)
 evidence: |
   `Sparkline.tsx` bars are decorative `aria-hidden` DOM bars with no per-bar hover affordance; the value only
   reaches a screen reader via the sr-only figcaption. A sighted user hovering a bar sees nothing (user
@@ -328,7 +329,7 @@ fix: |
 status: failed
 severity: medium
 requirements: [KIT-01, KIT-02, KIT-07]
-scope_note: may warrant a new KIT requirement / a scope decision (introduce now vs plan separately)
+decision: INTRODUCE NOW in this Phase-2 gap cycle (user decision) — build the Button/Link base + refactor the hand-rolled controls onto it. (Typography showcase story: delivered inline outside the gap cycle on user request.)
 evidence: |
   There is NO base `Button`/`Link` primitive. Interactive controls are hand-rolled with duplicated class
   strings across the catalog: NavBar/MobileTabBar items, `Th` sort button, DensityToggle segments, Pagination
