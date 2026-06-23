@@ -369,3 +369,30 @@ fix: |
   now render through `Button`/`Link` (02-07), so their states may already route through the fixed `control`
   recipe — confirm whether a separate forced map is still needed or the stale local override can just be
   deleted.
+
+### GAP-21 — responsive.spec asserts only 3 widths (360 / 800 / 1280); the canonical 6-width review matrix + the large-screen container ceiling are untested
+status: open
+severity: medium
+requirements: [QUAL-02, KIT-01, KIT-02]
+decision: AUDIT + WIDEN AFTER the gap-closure wave (user decision, 2026-06-24). `responsive.spec.ts` is actively rewritten by 02-08 (and touched again by 02-09/02-11) in this wave, so widening it now would conflict with the running executor; deferred to a dedicated follow-up test pass — same handling as GAP-20.
+evidence: |
+  `packages/design/tests/responsive.spec.ts` pins exactly three viewport widths: `MOBILE = 360`
+  (the QUAL-02 floor), `MID = 800` (a deliberate below-`@5xl` dead-zone probe for the nav-collapse
+  reflow, GAP-03) and `DESKTOP = 1280` (above `@5xl`). The design-system canonical design/review
+  widths are **360 · 768 · 1024 · 1280 · 1920 · 2560** + 390/414 mobile spot-checks + a 3440 ultrawide
+  cap-check (`solidstats-frontend-react-design/references/design-system.md` §"Breakpoints / design +
+  test widths"). So 768, 1024, **1920 (the modal default desktop, ~54% of users)**, 2560, the 3440
+  ultrawide cap, and the 390/414 spot-checks have NO automated coverage. Critically, the design-system
+  invariant that the data container caps at 1760 and centers (must NOT stretch into the gutter) on
+  ≥1920 has no test at all. The divergence became visible after the Ladle width-picker fix (commit
+  d57f2f2): the catalog now offers 8 review widths while the Playwright gate asserts at 3.
+fix: |
+  Through `solidstats-frontend-react-tests` (Playwright tier): widen the responsive matrix to the
+  canonical tiers (360 / 768 / 1024 / 1280 / 1920 / 2560, plus 390/414 mobile spot-checks where a
+  reflow boundary warrants it) — parametrize rather than hand-copying `test.describe` blocks. Add an
+  explicit container-ceiling assertion for the data surfaces (Table/AppShell main): at ≥1920 the
+  content container width caps at ~1760 and is centered (gutters grow, content does not), and at 3440
+  it does not stretch past the ceiling. Keep the existing 800 dead-zone probe — it guards the `@5xl`
+  nav switch and is not redundant with the canonical tiers. Note: container-query components key off
+  `@5xl`, so most per-component reflow is already exercised by 360/800/1280; the new widths primarily
+  guard the large-screen ceiling and the tablet (768/1024) band.
