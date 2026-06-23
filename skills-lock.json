@@ -35,7 +35,7 @@
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-frontend-react-conventions/SKILL.md",
-      "computedHash": "d933098c296afda32a8b48089a9fbe1c87855b7bf6e50cff111a8127ca3353a9"
+      "computedHash": "4a3b1b9c71e4fbf963ea360c9fee2ccd7ff09dcaafb4e977398b4d220d35a03d"
     },
     "solidstats-frontend-react-design": {
       "source": "solid-stats/skills",
@@ -47,13 +47,13 @@
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-frontend-react-design-review/SKILL.md",
-      "computedHash": "92abd1e4e5963022ffd39aa073a2364112c203503001934ff49197a70993a959"
+      "computedHash": "934933c910141887d94ca5f495412144b5cbb10cca9ced52c89ae6c449d03083"
     },
     "solidstats-frontend-react-tests": {
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-frontend-react-tests/SKILL.md",
-      "computedHash": "3bf48b118217d4d4482e2307934752ff9a5d538f8547017b63fd1baf813bcff1"
+      "computedHash": "675328047492eb233dbc4c0adc0a504add1279cf7f35f307ff8e693df1412e48"
     },
     "solidstats-process-skill-feedback": {
       "source": "solid-stats/skills",
