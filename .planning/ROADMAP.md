@@ -108,6 +108,28 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] 02-06-PLAN.md — KIT-02 data-table family (Table, Th, TableRow, DensityToggle, CompactRow, Pagination) — completes the catalog (KIT-02)
 
+**Gap closure** *(visual UAT vs binding hi-fi — 18 gaps GAP-01..16/18/19; GAP-17 deferred to Phase 3)*
+
+**Wave 1 (gap enabler)**
+
+- [ ] 02-07-PLAN.md — GAP-19: Button/Link base primitive + refactor the ~7 hand-rolled controls onto it (KIT-01, KIT-02, KIT-07)
+
+**Wave 2 (gap — blocked on 02-07)**
+
+- [ ] 02-08-PLAN.md — GAP-01..05: KIT-01 nav-shell rework (three-zone NavBar, universal account, raised breakpoint, 5-tab mobile, reveal-safe SkipLink) (KIT-01, QUAL-02, QUAL-03)
+
+**Wave 3 (gap — blocked on 02-07)**
+
+- [ ] 02-09-PLAN.md — GAP-06/07/08/11/14: KIT-02 table geometry/controls (auto density, real pager, border-box no-scroll, loading skeleton) (KIT-02, QUAL-02, QUAL-04)
+
+**Wave 4 (gap — blocked on 02-09)**
+
+- [ ] 02-10-PLAN.md — GAP-09/10/12/13: KIT-02 row + compact visuals (selected inset shadow, focus-within, full-width compact, tight stack) (KIT-02, QUAL-02, QUAL-03)
+
+**Wave 5 (gap — blocked on 02-09)**
+
+- [ ] 02-11-PLAN.md — GAP-15/16/18: skeleton sweep-shimmer, StatTile delta reserve, Badge W/L copy (KIT-03, KIT-07, QUAL-04, QUAL-05)
+
 **UI hint**: yes
 
 ### Phase 3: UIKIT — Interactive, i18n & Global-State Patterns
