@@ -5,7 +5,7 @@
 // drift (a re-introduced `focus-visible:outline-*` ring, a dropped `min-h-11`, or a
 // wrong variant token) fails here instead of shipping.
 import { describe, expect, test } from "vitest";
-import { control } from "./control";
+import { control, FORCED_STATE } from "./control";
 
 describe("control recipe — the shared Button/Link base", () => {
   test("every variant carries min-h-11 (the non-negotiable ≥44px floor, a11y 2.5.5)", () => {
@@ -38,7 +38,6 @@ describe("control recipe — the shared Button/Link base", () => {
     expect(cls).toContain("text-fg-on-accent");
     expect(cls).toContain("hover:bg-primary-hover");
     expect(cls).toContain("active:bg-primary-active");
-    expect(cls).toContain("active:translate-y-px");
   });
 
   test("secondary resolves the DESIGN.md button-secondary recipe tokens", () => {
@@ -80,5 +79,37 @@ describe("control recipe — the shared Button/Link base", () => {
     expect(cls).toContain("inline-flex");
     expect(cls).toContain("rounded-sm");
     expect(cls).toContain("font-semibold");
+  });
+
+  test("no variant applies a press translate (the 1px depress was removed for consistency)", () => {
+    for (const variant of ["primary", "secondary", "ghost", "segment"] as const) {
+      expect(control({ variant })).not.toContain("translate-y");
+    }
+  });
+
+  // The catalog StateMatrix forces states via FORCED_STATE; it must equal the live
+  // recipe's hover:/active:/focus-visible: utilities, or the catalog cells lie (the
+  // GAP-19 follow-up bug: a variant-agnostic forced map showed primary "hover" as grey).
+  test("FORCED_STATE mirrors the live recipe per variant (catalog cells can't drift)", () => {
+    const pseudo = (cls: string, prefix: string): string[] =>
+      cls
+        .split(/\s+/)
+        .filter((c) => c.startsWith(`${prefix}:`))
+        .map((c) => c.slice(prefix.length + 1))
+        .sort();
+    const forced = (s: string): string[] =>
+      s
+        .split(/\s+/)
+        .filter(Boolean)
+        .map((c) => c.replace(/!$/, ""))
+        .sort();
+
+    for (const variant of ["primary", "secondary", "ghost", "segment"] as const) {
+      const cls = control({ variant });
+      const f = FORCED_STATE[variant];
+      expect(forced(f.hover)).toEqual(pseudo(cls, "hover"));
+      expect(forced(f.pressed)).toEqual(pseudo(cls, "active"));
+      expect(forced(f.focused)).toEqual(pseudo(cls, "focus-visible"));
+    }
   });
 });

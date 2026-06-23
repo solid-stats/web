@@ -251,7 +251,6 @@ components:
       backgroundColor: "{colors.primary-hover}"
     active:
       backgroundColor: "{colors.primary-active}"
-      transform: "translateY(1px)"
     focusVisible:
       boxShadow: "{elevation.ring}"
     disabled:
@@ -269,7 +268,6 @@ components:
       border: "1px solid {colors.border-2}"
     active:
       backgroundColor: "{colors.surface-2}"
-      transform: "translateY(1px)"
     focusVisible:
       boxShadow: "{elevation.ring}"
     disabled:
@@ -642,8 +640,8 @@ All recipes live under `components.*` and reference base tokens via `{colors.*}`
 `{typography.*}` / `{elevation.*}`.
 
 - **Buttons** — `button-primary` (cyan fill, `fg-on-accent` text), `button-secondary` (surface +
-  hairline), `button-ghost` (transparent). All carry hover / active (press = `translateY(1px)`) /
-  focus-visible (ring) / disabled (`text-subtle` + 0.6 opacity). Every interactive control
+  hairline), `button-ghost` (transparent). All carry hover / active (press = background shift, no
+  positional translate) / focus-visible (ring) / disabled (`text-subtle` + 0.6 opacity). Every interactive control
   (button, link, icon-button, segmented / sort member, pager, tab) shows **`cursor-pointer`** — a
   deliberate product choice over the native `<button>` default-arrow; `disabled` keeps
   `pointer-events-none`, so a disabled control shows no pointer. The shared `Button` / `Link`

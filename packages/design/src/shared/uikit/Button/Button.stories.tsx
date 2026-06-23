@@ -9,6 +9,7 @@
 import type { Story, StoryDefault } from "@ladle/react";
 import { StateCell, StateMatrix } from "../_state-matrix";
 import { Button } from "./Button";
+import { FORCED_STATE as FORCED } from "./control";
 import type { ButtonSize, ButtonVariant } from "./control";
 import { Link } from "./Link";
 
@@ -18,16 +19,12 @@ export default {
 
 const VARIANTS: readonly ButtonVariant[] = ["primary", "secondary", "ghost", "segment"];
 
-// The forced interaction states. Each maps to the SAME token utilities the live
-// pseudo-classes apply — the catalog override the `data-state` cell renders (no real
-// pointer). `enabled` is the resting recipe; `disabled` flows through the recipe's own
-// `disabled` variant (and the real `disabled` attr).
+// The forced interaction states. Each cell renders the variant's REAL `:hover` /
+// `:active` / `:focus-visible` tokens via `FORCED_STATE` (the recipe's mirror in
+// control.ts, asserted in sync by control.test.ts) — so a forced cell can't drift from
+// the live recipe. (The old map was variant-agnostic: primary "hover" rendered grey,
+// never the real cyan — which is how the per-variant behaviour went unreviewed.)
 type ForcedState = "enabled" | "hover" | "pressed" | "focused" | "disabled";
-const FORCED: Record<Exclude<ForcedState, "enabled" | "disabled">, string> = {
-  hover: "bg-surface-3 text-text-primary",
-  pressed: "translate-y-px bg-surface-2 text-text-primary",
-  focused: "shadow-(--shadow-ring) outline-none",
-};
 const STATES: readonly ForcedState[] = ["enabled", "hover", "pressed", "focused", "disabled"];
 
 function ForcedButton({
@@ -43,7 +40,7 @@ function ForcedButton({
       variant={variant}
       disabled={state === "disabled"}
       data-state={state}
-      className={forced ? FORCED[state] : undefined}
+      className={forced ? FORCED[variant][state] : undefined}
     >
       Button
     </Button>

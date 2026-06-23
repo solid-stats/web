@@ -28,9 +28,10 @@ export type ButtonSize = "sm" | "md";
 export type ButtonJustify = "center" | "start" | "end";
 
 export const control = tv({
-  // The shared shape + the ONE canonical focus ring + the ≥44px floor. Press =
-  // translateY(1px) per the DESIGN.md `active` recipe row (applied per-variant where
-  // the variant also shifts background).
+  // The shared shape + the ONE canonical focus ring + the ≥44px floor. Press feedback
+  // is the per-variant `active:` BACKGROUND shift only — NO positional translate (the
+  // 1px depress was dropped: it fought the stable/dense bar and was applied
+  // inconsistently across variants). DESIGN.md `active` rows carry no `transform`.
   // `cursor-pointer` on the base is a deliberate product decision (Plan 02-07): every
   // interactive control shows the hand cursor, overriding the native button default-arrow
   // convention. It lands once here so all variants + all refactored controls inherit it;
@@ -40,18 +41,17 @@ export const control = tv({
   variants: {
     variant: {
       // per DESIGN.md button-primary
-      primary:
-        "bg-primary text-fg-on-accent hover:bg-primary-hover active:translate-y-px active:bg-primary-active",
+      primary: "bg-primary text-fg-on-accent hover:bg-primary-hover active:bg-primary-active",
       // per DESIGN.md button-secondary
       secondary:
-        "border border-border-1 bg-surface-1 text-text-primary hover:border-border-2 hover:bg-surface-3 active:translate-y-px active:bg-surface-2",
+        "border border-border-1 bg-surface-1 text-text-primary hover:border-border-2 hover:bg-surface-3 active:bg-surface-2",
       // per DESIGN.md button-ghost
       ghost:
         "bg-transparent text-text-muted hover:bg-surface-1 hover:text-text-primary active:bg-surface-2",
       // The segmented-control / sortable-header member (the Th precedent): muted by
       // default, the active member goes cyan (paired with aria-sort / the arrow —
-      // never color-alone). Press nudges down to match the family.
-      segment: "text-text-muted hover:text-text-primary active:translate-y-px",
+      // never color-alone). No press translate (consistent with the family).
+      segment: "text-text-muted hover:text-text-primary",
     },
     size: {
       // `md` is the default control padding; `sm` is tighter horizontally but holds
@@ -87,3 +87,40 @@ export const control = tv({
     disabled: false,
   },
 });
+
+/**
+ * Forced-state mirror for the catalog `StateMatrix` story. Each entry MUST equal the live
+ * `:hover` / `:active` / `:focus-visible` utilities the recipe above applies for that
+ * variant — pseudo-prefix dropped, `!` (important) added so the forced cell
+ * deterministically overrides the variant's resting background in the merge-free `/lite`
+ * build (a plain utility loses to the base by stylesheet order, which is how the old
+ * variant-agnostic map rendered primary "hover" as grey, never the real cyan). It is a
+ * literal map because Tailwind's static `@source` scan can't see runtime-derived classes.
+ * `control.test.ts` asserts this stays in sync with the recipe. CATALOG-ONLY — never put
+ * an `!`-important state utility on a shipped control.
+ */
+export const FORCED_STATE: Record<
+  ButtonVariant,
+  Record<"hover" | "pressed" | "focused", string>
+> = {
+  primary: {
+    hover: "bg-primary-hover!",
+    pressed: "bg-primary-active!",
+    focused: "shadow-(--shadow-ring)! outline-none!",
+  },
+  secondary: {
+    hover: "border-border-2! bg-surface-3!",
+    pressed: "bg-surface-2!",
+    focused: "shadow-(--shadow-ring)! outline-none!",
+  },
+  ghost: {
+    hover: "bg-surface-1! text-text-primary!",
+    pressed: "bg-surface-2!",
+    focused: "shadow-(--shadow-ring)! outline-none!",
+  },
+  segment: {
+    hover: "text-text-primary!",
+    pressed: "",
+    focused: "shadow-(--shadow-ring)! outline-none!",
+  },
+};
