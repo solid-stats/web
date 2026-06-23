@@ -25,7 +25,7 @@ colors:
 
   # ---- Primary — single signal cyan (interactive / active / brand) ----
   primary: "#36C5E0"
-  primary-hover: "#54D3EC"
+  primary-hover: "#2FB9D4"
   primary-active: "#27A8C2"
   primary-weak: "rgba(54, 197, 224, 0.13)"   # tint background (selected row, badge fill)
   primary-border: "rgba(54, 197, 224, 0.40)"
@@ -556,7 +556,7 @@ clears AA on every surface (7.8–9.5:1).
 | Token | Value | Role |
 |-------|-------|------|
 | `primary` | `#36C5E0` | default interactive |
-| `primary-hover` | `#54D3EC` | hover |
+| `primary-hover` | `#2FB9D4` | hover |
 | `primary-active` | `#27A8C2` | press |
 | `primary-weak` | `rgba(54,197,224,.13)` | selected-row / badge tint |
 | `primary-border` | `rgba(54,197,224,.40)` | tinted frame / input focus |
@@ -643,7 +643,11 @@ All recipes live under `components.*` and reference base tokens via `{colors.*}`
 
 - **Buttons** — `button-primary` (cyan fill, `fg-on-accent` text), `button-secondary` (surface +
   hairline), `button-ghost` (transparent). All carry hover / active (press = `translateY(1px)`) /
-  focus-visible (ring) / disabled (`text-subtle` + 0.6 opacity).
+  focus-visible (ring) / disabled (`text-subtle` + 0.6 opacity). Every interactive control
+  (button, link, icon-button, segmented / sort member, pager, tab) shows **`cursor-pointer`** — a
+  deliberate product choice over the native `<button>` default-arrow; `disabled` keeps
+  `pointer-events-none`, so a disabled control shows no pointer. The shared `Button` / `Link`
+  `control` recipe is the single owner — cursor is never set per call-site.
 - **Badges** — `badge-outcome-*` (win/loss with trending icon + W/L), `badge-status-*`
   (pending/approved/rejected), and `badge-freshness` with the four-state vocabulary
   **Актуально / Данные устаревают / Связь потеряна / Переподключение**. Every badge pairs color with
@@ -676,6 +680,8 @@ All recipes live under `components.*` and reference base tokens via `{colors.*}`
 - Build depth from **surface steps + hairline borders**; reserve shadow for floating UI.
 - Keep cyan **rare** — links, active state, primary action, focus, selected. If everything is cyan,
   nothing is.
+- Show **`cursor-pointer`** on every interactive element (deliberate, over the native button
+  default-arrow); a `disabled` control suppresses it via `pointer-events-none`.
 - Pair **every** semantic color with a Lucide icon and/or label. Color is never the sole signal.
 - Use **tabular mono** for every number that aligns (stats, ranks, IDs, timers); right-align numeric
   columns.
