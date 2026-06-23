@@ -19,8 +19,14 @@ async function noHorizontalScroll(handle: import("@playwright/test").Locator) {
 // The real 360px mobile floor (QUAL-02) — set explicitly so the reflow assertions
 // are deterministic regardless of the always-on `chromium` project's viewport.
 const MOBILE = { width: 360, height: 780 } as const;
-// A desktop width comfortably above the @md (768px) container breakpoint.
+// A desktop width comfortably above the RAISED @5xl (~1024px container) breakpoint
+// (GAP-03) — at this width the brand + 6 section links + right cluster fit, so the
+// desktop top nav appears.
 const DESKTOP = { width: 1280, height: 900 } as const;
+// A MID width between the mobile floor and the @5xl desktop breakpoint — the desktop
+// nav is still collapsed here, and nothing the shell renders may overflow (GAP-03:
+// no cramped/overflowing bar at any intermediate width).
+const MID = { width: 800, height: 900 } as const;
 
 test.describe("AppShell at the 360px floor", () => {
   test.use({ viewport: MOBILE });
@@ -63,18 +69,18 @@ test.describe("AppShell at the 360px floor", () => {
     expect(h1OutsideMain, "shell chrome emits no <h1>").toBe(0);
   });
 
-  test("container-keyed reflow: mobile tabbar primary below @md", async ({ page }) => {
+  test("container-keyed reflow: mobile tabbar primary below @5xl", async ({ page }) => {
     await page.goto(`/?story=${APPSHELL_STORY}&mode=preview`);
     await page.waitForSelector("[data-app-shell]");
 
-    // Below @md the mobile tab bar is the visible primary nav.
+    // Below the raised @5xl breakpoint the mobile tab bar is the visible primary nav.
     await expect(page.locator("[data-mobile-nav] [data-tabbar]")).toBeVisible();
     // The desktop top nav (its <header>) is collapsed at the 360px floor.
     await expect(page.locator("[data-app-shell] header")).toBeHidden();
   });
 });
 
-test.describe("AppShell at desktop width (>= @md)", () => {
+test.describe("AppShell at desktop width (>= @5xl)", () => {
   test.use({ viewport: DESKTOP });
 
   test("container-keyed reflow: desktop top nav primary, mobile tabbar collapsed", async ({
@@ -83,10 +89,31 @@ test.describe("AppShell at desktop width (>= @md)", () => {
     await page.goto(`/?story=${APPSHELL_STORY}&mode=preview`);
     await page.waitForSelector("[data-app-shell]");
 
-    // At/above @md the desktop top nav (its <header>) is the visible primary nav.
+    // At/above the raised @5xl breakpoint the desktop top nav is the visible primary.
     await expect(page.locator("[data-app-shell] header")).toBeVisible();
     // The mobile tab bar is collapsed.
     await expect(page.locator("[data-mobile-nav] [data-tabbar]")).toBeHidden();
+  });
+});
+
+test.describe("AppShell at a mid width (below @5xl)", () => {
+  test.use({ viewport: MID });
+
+  test("desktop nav still collapsed, mobile tabbar primary (GAP-03)", async ({ page }) => {
+    await page.goto(`/?story=${APPSHELL_STORY}&mode=preview`);
+    await page.waitForSelector("[data-app-shell]");
+    // Between the mobile floor and the raised @5xl breakpoint the desktop top nav
+    // stays collapsed — there is no intermediate width that shows a cramped bar.
+    await expect(page.locator("[data-app-shell] header")).toBeHidden();
+    await expect(page.locator("[data-mobile-nav] [data-tabbar]")).toBeVisible();
+  });
+
+  test("nothing overflows horizontally at the mid width (GAP-03)", async ({ page }) => {
+    await page.goto(`/?story=${APPSHELL_STORY}&mode=preview`);
+    await page.waitForSelector("[data-app-shell]");
+    await noHorizontalScroll(page.locator("[data-app-shell]"));
+    await noHorizontalScroll(page.locator("[data-main]"));
+    await noHorizontalScroll(page.locator("[data-mobile-nav] [data-tabbar]"));
   });
 });
 
@@ -98,6 +125,31 @@ test.describe("MobileTabBar at the 360px floor", () => {
     await page.waitForSelector("[data-tabbar]");
     for (const bar of await page.locator("[data-tabbar]").all()) {
       await noHorizontalScroll(bar);
+    }
+  });
+
+  test("has exactly 5 tabs incl. the dedicated account/sign-in tab (GAP-04)", async ({ page }) => {
+    await page.goto(`/?story=${MOBILETABBAR_STORY}&mode=preview`);
+    await page.waitForSelector("[data-tabbar]");
+
+    // The roles ×4 (RU/EN) matrix renders the full 4-section bars; the forced-state /
+    // selected / disabled cells render 1-section bars. Filter to the full role bars by
+    // the presence of the LAST section tab (`replays`), which only the 4-section bars
+    // carry — each then = 4 sections + the dedicated account/sign-in tab.
+    const fiveTabBars = await page
+      .locator("[data-tabbar]")
+      .filter({ has: page.locator('[data-tab="replays"]') })
+      .all();
+    expect(fiveTabBars.length, "the roles matrix renders multi-tab bars").toBeGreaterThan(0);
+
+    for (const bar of fiveTabBars) {
+      const tabCount = await bar.locator("[data-tab]").count();
+      expect(tabCount, "exactly 4 section tabs + 1 account/sign-in tab").toBe(5);
+      // The dedicated 5th tab is present — either the account entry or the sign-in.
+      const accountOrSignIn = await bar
+        .locator('[data-tab="account"], [data-tab="signin"]')
+        .count();
+      expect(accountOrSignIn, "the dedicated account/sign-in tab exists").toBe(1);
     }
   });
 });
