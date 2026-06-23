@@ -155,18 +155,15 @@ fix: |
 status: failed
 severity: high
 requirements: [KIT-02]
-decision_pending: pagination target model (see question to user)
+decision: KEEP the pager, make it real (user decision — option B, not the hi-fi no-pager model)
 evidence: |
-  hi-fi `players.jsx` has NO Prev/Next pager: desktop = one capped-window virtualized scroll with the TOTAL
-  in the caption (`plist_count {n: total}` / `plist_filtered {n, total}`); mobile = top-N + «показать ещё ·
-  remaining» (already in CompactList). The implemented `Pagination` (Назад/Дальше + a «Это всё» end marker)
-  shows neither page numbers nor total, and renders a bare «Это всё» text instead of a disabled control
-  (user finding 4).
+  hi-fi `players.jsx` has NO Prev/Next pager (desktop = capped virtualized scroll + total in caption; mobile =
+  show-more). The implemented `Pagination` (Назад/Дальше + a «Это всё» end marker) shows neither page numbers
+  nor total, and renders a bare «Это всё» text instead of a disabled control (user finding 4).
 fix: |
-  Target model pending user decision — either (A) hi-fi-faithful: remove the Pagination pager; surface the
-  total in the table caption ("Показано N из M") + keep the mobile show-more; OR (B) keep a pager but make it
-  real: a "N–M из total" / page indicator with the end state as a DISABLED Next button (never a bare «Это всё»
-  text). Apply once chosen.
+  Keep a Pagination pager but make it real: show a "N–M из total" range / page indicator, and render the
+  end-of-list state as a DISABLED Next button (never a bare «Это всё» text marker). Prev disabled at the
+  start. Controlled props (no engine, D-01). Surface the total here AND/OR in the table caption.
 
 ### GAP-08 — every table (and the skeleton) has a stray ~1–2px scroll; the skeleton must never scroll
 status: failed
@@ -268,3 +265,80 @@ fix: |
   Make the data-volume states read differently: `few` = a few of a larger set (caption shows N of total);
   `limit-reached` = the end is reached / all shown (an explicit end cue). Fold into the total-in-caption work
   (GAP-07) and the show-more / end-of-list affordance.
+
+---
+
+## Gaps — KIT-03 / KIT-04 / KIT-07 + base primitives (visual UAT)
+
+### GAP-15 — Skeleton has no sweep shimmer; it only pulses opacity (hi-fi divergence)
+status: failed
+severity: medium
+requirements: [KIT-07, QUAL-04]
+evidence: |
+  `Skeleton.tsx` uses `motion-safe:animate-pulse` (an opacity fade). On the dark gunmetal (`surface-2` on
+  `surface-1`) the change is barely perceptible (user: "невнятный … просто фон меняет цвет, нет бегущей
+  строки"). hi-fi `players.css` uses a SWEEP shimmer: `.sk::after { animation: sk-sweep 1.25s ... }
+  @keyframes sk-sweep { 100% { transform: translateX(100%) } }` + reduced-motion off — a moving shine bar.
+fix: |
+  Replace the opacity pulse with a sweeping shine: a gradient `::after`/overlay translated via
+  `transform: translateX(...)` (transform-only → performance.md compliant), `motion-reduce:` → static. Apply
+  to all Skeleton variants (text/tile/table); this also fixes the dull loading look on Table + StatTile.
+
+### GAP-16 — StatTile loading skeleton does not reserve the delta row → CLS when delta tiles load
+status: failed
+severity: medium
+requirements: [KIT-03, QUAL-04]
+evidence: |
+  A `StatTile` WITH a `delta` renders label + value + a delta line. Its loading placeholder is the Skeleton
+  "tile" variant (`label line + value block` only — no delta row), so a delta-bearing tile is TALLER than its
+  skeleton → layout shift on load (user finding). CLS = 0 requires the skeleton to match the specific tile.
+fix: |
+  Reserve the delta row in the tile skeleton when the tile has a delta (a `withDelta` skeleton prop/variant),
+  or have StatTile always reserve the delta line height. Add a `cls.spec` assertion: delta-tile skeleton box
+  height == final delta-tile box height.
+
+### GAP-17 — Sparkline has no hover tooltip on the value bars
+status: failed
+severity: medium
+requirements: [KIT-03]
+depends_on: KIT-06 tooltip primitive (Phase 3) — or a native-title interim
+evidence: |
+  `Sparkline.tsx` bars are decorative `aria-hidden` DOM bars with no per-bar hover affordance; the value only
+  reaches a screen reader via the sr-only figcaption. A sighted user hovering a bar sees nothing (user
+  finding). Note: tooltip/popover is a KIT-06 Phase-3 overlay primitive (REQUIREMENTS KIT-06) — no real
+  tooltip primitive exists yet.
+fix: |
+  Interim (this phase): a native `title` per bar (week + value) for a basic hover. Full: wire each bar to the
+  Phase-3 KIT-06 tooltip when it lands (per-point week/value). Decide interim-now vs defer to Phase 3.
+
+### GAP-18 — Badge outcome copy: RU is asymmetric («П» vs «пор.»); user wants W/L unified
+status: failed
+severity: low
+requirements: [KIT-07, QUAL-05]
+evidence: |
+  `_fixtures/strings.ts`: `outcomeWin = { ru: "П", en: "W" }`, `outcomeLoss = { ru: "пор.", en: "L" }`. The RU
+  pair is inconsistent in form (a bare letter "П" vs an abbreviation "пор." with a period). User asks for
+  "W/L для обоих языков" — i.e. the English W/L shorthand in both locales.
+fix: |
+  Copy decision (user): unify outcome labels to "W" / "L" for BOTH ru and en (gaming shorthand), OR fix the RU
+  pair to a symmetric form ("П"/"П" style). Apply the chosen copy in `_fixtures/strings.ts`; keep QUAL-05
+  parity intent documented (shorthand is intentional non-translation).
+
+### GAP-19 — No shared Button / Link base primitive; ~7 components hand-roll inline buttons/anchors (DRY)
+status: failed
+severity: medium
+requirements: [KIT-01, KIT-02, KIT-07]
+scope_note: may warrant a new KIT requirement / a scope decision (introduce now vs plan separately)
+evidence: |
+  There is NO base `Button`/`Link` primitive. Interactive controls are hand-rolled with duplicated class
+  strings across the catalog: NavBar/MobileTabBar items, `Th` sort button, DensityToggle segments, Pagination
+  pagers, Toast action, EmptyState/ErrorState action anchors, CompactList show-more. Each re-implements the
+  ≥44px hit area + the `focus-visible:shadow-(--shadow-ring)` ring + surface/hover tokens. Drift already
+  visible (Toast action uses `outline` ring; others use `shadow-(--shadow-ring)`). User P.S.: "почему нет
+  базовых элементов? кнопки, ссылки…".
+fix: |
+  Introduce a shared interactive base — `Button` (variants: primary/secondary/ghost/segment, sizes, ≥44px,
+  one canonical focus ring) + `Link`/anchor — and refactor the hand-rolled controls onto it. This is a larger
+  refactor; needs a scope decision (do it in the gap cycle vs a dedicated base-primitives plan). Typography
+  stays token recipes (DS-01) — optionally add a Typography showcase story. Tooltip/forms are Phase 3
+  (KIT-05/06), not this gap.
