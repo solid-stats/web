@@ -11,6 +11,7 @@ import { ROSTER, SS_BASELINE, STRINGS, type TierMetric, tierFor, type Player } f
 import { EmptyState } from "../EmptyState";
 import { ErrorState } from "../ErrorState";
 import { StateCell, StateMatrix } from "../_state-matrix";
+import { Pagination } from "../Pagination";
 import { Table, type SortState, type TableColumn, type TableDensity } from "./Table";
 import { TableRow, type RowState, type TierCell } from "./TableRow";
 
@@ -101,6 +102,58 @@ function dataTable(
 }
 
 const SORT_SCORE_DESC: SortState = { key: "score", direction: "descending" };
+
+// GAP-14: the few/many sections show N of a LARGER result set (the «N из total» cue);
+// limit-reached shows ALL N + an end-of-list cue — the two read differently.
+const LARGER_TOTAL = 200;
+
+// The visible data-volume caption (GAP-14): `few` reads «N из total» (a few of a larger
+// set); `limit` reads «Все N · конец списка» (all shown / the end is reached). The
+// `data-volume-cue` hook lets the catalog assert the two render distinctly.
+function VolumeCaption({
+  variant,
+  shown,
+  total,
+}: {
+  variant: "few" | "limit";
+  shown: number;
+  total: number;
+}): ReturnType<Story> {
+  const text =
+    variant === "few"
+      ? STRINGS.paginationRange.ru
+          .replace("{from}", "1")
+          .replace("{to}", String(shown))
+          .replace("{total}", String(total))
+      : `Все ${shown} · конец списка`;
+  return (
+    <span
+      className="font-body text-sm tabular-nums text-text-muted"
+      data-volume-cue={variant}
+    >
+      {text}
+    </span>
+  );
+}
+
+// The end-of-list Pagination for the limit-reached section (GAP-07 + GAP-14): Next is
+// disabled, the range shows the full span «N–total из total».
+function endOfListPager(lang: Lang, total: number) {
+  const tpl = lang === "ru" ? STRINGS.paginationRange.ru : STRINGS.paginationRange.en;
+  return {
+    prevLabel: lang === "ru" ? STRINGS.paginationPrev.ru : STRINGS.paginationPrev.en,
+    nextLabel: lang === "ru" ? STRINGS.paginationNext.ru : STRINGS.paginationNext.en,
+    rangeLabel: tpl
+      .replace("{from}", "1")
+      .replace("{to}", String(total))
+      .replace("{total}", String(total)),
+    from: 1,
+    to: total,
+    total,
+    hasPrev: false,
+    hasNext: false,
+  };
+}
 
 // ---- Success (the headline story): the synced top of the roster, Vasiliy #1 ----
 export const Success: Story = () => (
@@ -196,20 +249,27 @@ export const DataVolumes: Story = () => (
         />
       </StateCell>
     </StateMatrix>
-    {/* few — the table holds, no orphan layout. */}
+    {/* few — GAP-14: a FEW of a LARGER set. The visible total cue reads «3 из 200» (N of
+        a bigger total) so it is distinct from limit-reached; the table itself holds. */}
     <section className="flex flex-col gap-2" data-state-cell="few">
       <span className="font-body text-xs font-semibold uppercase text-text-muted">few</span>
+      <VolumeCaption variant="few" shown={3} total={LARGER_TOTAL} />
       {dataTable(ROSTER.slice(0, 3), COMFORTABLE, SORT_SCORE_DESC, "ru", 3)}
     </section>
     {/* many — capped window (sticky scroll), total in the caption. */}
     <section className="flex flex-col gap-2" data-state-cell="many">
       <span className="font-body text-xs font-semibold uppercase text-text-muted">many</span>
+      <VolumeCaption variant="few" shown={8} total={LARGER_TOTAL} />
       {dataTable(ROSTER, COMFORTABLE, SORT_SCORE_DESC, "ru", 8)}
     </section>
-    {/* limit-reached — the full roster scrolled to the end (cursor affordance lives in Pagination). */}
+    {/* limit-reached — GAP-14: the END is reached / ALL shown. An explicit «Все N · конец
+        списка» cue + the real Pagination at end-of-list (Next disabled, GAP-07) read
+        DIFFERENTLY from "few of many" above. */}
     <section className="flex flex-col gap-2" data-state-cell="limit">
       <span className="font-body text-xs font-semibold uppercase text-text-muted">limit</span>
+      <VolumeCaption variant="limit" shown={4} total={4} />
       {dataTable(ROSTER.slice(-4), COMFORTABLE, SORT_SCORE_DESC, "ru", 4)}
+      <Pagination {...endOfListPager("ru", 4)} />
     </section>
   </div>
 );

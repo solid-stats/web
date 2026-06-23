@@ -62,9 +62,10 @@ export const STRINGS = {
   sortHeaderAria: { ru: "сортировать по {col}", en: "sort by {col}" },
   paginationPrev: { ru: "Назад", en: "Prev" },
   paginationNext: { ru: "Дальше", en: "Next" },
-  // The Pagination/CursorAffordance end-of-list marker (no more pages this phase —
-  // inert, no server). RU primary / EN mirror at parity.
-  paginationEnd: { ru: "Это всё", en: "End of list" },
+  // GAP-07: the real-pager range/page indicator — «N–M из total» (e.g. «1–8 из 200»).
+  // The end-of-list is now a DISABLED Next button (the bare «Это всё» text marker is
+  // dropped). RU primary / EN mirror at parity. Interpolated at render by the story.
+  paginationRange: { ru: "{from}–{to} из {total}", en: "{from}–{to} of {total}" },
   tierLevels: { ru: "ниже / норма / хорошо / отлично", en: "below / normal / good / excellent" },
   outcomeWin: { ru: "П", en: "W" },
   outcomeLoss: { ru: "пор.", en: "L" },
