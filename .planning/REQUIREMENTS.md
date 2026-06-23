@@ -26,13 +26,13 @@ Design-milestone scope. Each maps to roadmap phases. **"Designed"** = spec (×5 
 
 Each as a colocated Ladle story with component states (enabled / hover / pressed / focused / selected / disabled / loading) and the click zone defined (whole row beats text).
 
-- [ ] **KIT-01**: Layout & nav shell — top nav (desktop) + mobile tabs, role-aware slots, skip links, landmarks.
-- [ ] **KIT-02**: Data-table primitives — sticky-header scroll-in-card, density toggle, sortable headers, cursor/pagination affordances, virtualization-ready row model, mobile compact-row layout (no horizontal scroll).
+- [x] **KIT-01**: Layout & nav shell — top nav (desktop) + mobile tabs, role-aware slots, skip links, landmarks.
+- [x] **KIT-02**: Data-table primitives — sticky-header scroll-in-card, density toggle, sortable headers, cursor/pagination affordances, virtualization-ready row model, mobile compact-row layout (no horizontal scroll).
 - [ ] **KIT-03**: Stat primitives — hero stat tiles (Score, K/D), even mini-stat grid, tier chips/pips with population-derived levels, sparkline microchart.
 - [ ] **KIT-04**: Data-trust components — freshness pill, provenance line, Unknown/Conflict badges, stale/offline/reconnecting banners (space reserved, never color-alone).
 - [ ] **KIT-05**: Form primitives (Ark UI) — inputs, selects, steppers, file/evidence upload, inline validation with visible labels/errors and live-region behavior.
 - [ ] **KIT-06**: Overlay primitives (Ark UI) — dialog, menu, tabs, tooltip, popover; keyboard-accessible, focus-managed, no traps.
-- [ ] **KIT-07**: Feedback primitives — skeletons (exact final dimensions, CLS = 0), empty states, error states, toasts, badges/pills.
+- [x] **KIT-07**: Feedback primitives — skeletons (exact final dimensions, CLS = 0), empty states, error states, toasts, badges/pills.
 - [ ] **KIT-08**: Language switcher + RU/EN i18n harness (typed keys; RU sanity-checked).
 
 ### Surfaces — Public (designed in Ladle)
@@ -69,7 +69,7 @@ Each as a colocated Ladle story with component states (enabled / hover / pressed
 
 - [ ] **QUAL-01**: Scenario endings ×5 (success / error system-vs-user / loading / onboarding / empty) and data-volume states ×4 (empty / few / many / limit-reached) per list, table, and field.
 - [ ] **QUAL-02**: Responsiveness explicit at every breakpoint, keyed off the container (no device-frame trap); verified at the real mobile-floor width.
-- [ ] **QUAL-03**: WCAG 2.2 AA (axe clean; visible focus; keyboard; 44px targets; never color-alone; logical headings) — targeted AAA where practical.
+- [x] **QUAL-03**: WCAG 2.2 AA (axe clean; visible focus; keyboard; 44px targets; never color-alone; logical headings) — targeted AAA where practical.
 - [ ] **QUAL-04**: CLS = 0 — space reserved for media / tables / skeletons / SSE; tabular numerals; self-hosted fonts.
 - [ ] **QUAL-05**: RU + EN, every string i18n-keyed, RU sanity-checked (no clipped or awkward wording).
 - [ ] **QUAL-06**: Mock data internally consistent with the domain formulas (Score / K/D, population tiers) and the data-trust model.
@@ -110,11 +110,11 @@ listed as "Phases 2–9 (gate)".
 | DS-01 | Phase 1 | Complete |
 | DS-02 | Phase 1 | Complete |
 | DS-03 | Phase 1 | Complete |
-| KIT-01 | Phase 2 | Pending |
-| KIT-02 | Phase 2 | Pending |
+| KIT-01 | Phase 2 | Complete |
+| KIT-02 | Phase 2 | Complete |
 | KIT-03 | Phase 2 | Pending |
 | KIT-04 | Phase 2 | Pending |
-| KIT-07 | Phase 2 | Pending |
+| KIT-07 | Phase 2 | Complete |
 | KIT-05 | Phase 3 | Pending |
 | KIT-06 | Phase 3 | Pending |
 | KIT-08 | Phase 3 | Pending |
@@ -138,7 +138,7 @@ listed as "Phases 2–9 (gate)".
 | SURF-17 | Phase 9 | Pending |
 | QUAL-01 | Phases 2–9 (gate) | Pending |
 | QUAL-02 | Phases 2–9 (gate) | Pending |
-| QUAL-03 | Phases 2–9 (gate) | Pending |
+| QUAL-03 | Phases 2–9 (gate) | Complete |
 | QUAL-04 | Phases 2–9 (gate) | Pending |
 | QUAL-05 | Phases 2–9 (gate) | Pending |
 | QUAL-06 | Phases 2–9 (gate) | Pending |

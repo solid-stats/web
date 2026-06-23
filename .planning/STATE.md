@@ -6,15 +6,15 @@ current_phase: 02
 current_phase_name: uikit-structural-data-display-primitives
 status: executing
 stopped_at: Phase 2 planned — 6 plans, plan-checker PASSED
-last_updated: "2026-06-23T15:17:53.550Z"
+last_updated: "2026-06-23T15:48:39.065Z"
 last_activity: 2026-06-21
 last_activity_desc: Phase 02 execution resumed (wave continue)
 progress:
   total_phases: 9
   completed_phases: 1
-  total_plans: 11
-  completed_plans: 9
-  percent: 11
+  total_plans: 16
+  completed_plans: 12
+  percent: 75
 ---
 
 # Project State
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 ## Current Position
 
 Phase: 02 (uikit-structural-data-display-primitives) — EXECUTING
-Plan: 1 of 6
-Status: Ready to execute
-Last activity: 2026-06-21 — Phase 02 execution resumed (wave continue)
+Plan: 7 of 11 complete (02-07 done — Button/Link base, GAP-19)
+Status: Executing — gap-closure wave 1 (02-07) complete; next 02-08
+Last activity: 2026-06-23 — 02-07 Button/Link base primitive (GAP-19) executed + verified
 
-Plans: [████████████████████] Phase 01: 5/5 · verified + UAT-passed · Phase 2: 6 plans ready to execute
+Plans: [████████████░░░░░░░░] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 7/11 complete (gap-closure 02-07 done)
 
 ## Performance Metrics
 
@@ -60,6 +60,7 @@ Plans: [████████████████████] Phase 01: 
 | Phase 01 P03 | 3min | 2 tasks | 3 files |
 | Phase 01 P04 | 12min | 2 tasks | 9 files |
 | Phase 01 P05 | 12min | 2 tasks | 5 files |
+| Phase 02 P07 | 13min | 3 tasks | 15 files |
 
 ## Accumulated Context
 
@@ -83,6 +84,8 @@ Recent decisions affecting current work:
 - [Phase ?]: 01-04: smoke story is the only catalog artifact (D-07 zero components); shared/ FSD segment preserved per architecture.md; freshness pills read --color-freshness-* via inline style (sanctioned escape hatch for the compound border token)
 - [Phase 01]: Code-review hardening (01-REVIEW WR-01..04): gen-theme.mjs resolvers throw on unknown {colors.*}/{rounded.*} refs (was a silent "undefined" leak into theme.css); buildTheme asserts the required DESIGN.md sections/recipes by name; the two focus-ring resolvers consolidated into one guarded resolveRefs (DRY); drift gate compares against HEAD so an untracked theme.css trips it. Output byte-identical, vp check green.
 - [Phase 01]: UAT/verify fix (quick 260620-q5q, d9b307a) — dark base backdrop now painted from `--color-bg-0` via a generated `@layer base { html { … } }` rule. The prior `bg-bg-0` utility lived only on the Ladle GlobalProvider (outside `@source "../src"`), so Tailwind v4 tree-shook the token and the dark base was incidental (browser canvas). Base-paint emitted by gen-theme.mjs forces token emission + paints html — dark-only base is now token-driven, not luck. Verified live in-browser (Playwright).
+- [Phase 02 / 02-07 GAP-19]: Shared Button/Link base primitive — one `control` tv() owns the ≥44px hit area + the ONE canonical `focus-visible:shadow-(--shadow-ring)` ring + the DESIGN.md `button-primary/secondary/ghost` + `segment` recipes; the 7 hand-rolled controls (NavBar/MobileTabBar→Link ghost, Th→Button segment, Pagination/CompactList show-more→Button secondary, Toast→Button ghost, EmptyState/ErrorState story actions) refactored onto it; the Toast/ErrorState `focus-visible:outline-*` drift ring removed. Graduated into the barrel with `ButtonVariant`/`ButtonSize`/`ButtonJustify`.
+- [Phase 02 / 02-07]: `cursor-pointer` is a project-wide product decision single-sourced on the `control` base (all interactive controls show the hand cursor, overriding native button default-arrow); disabled keeps `pointer-events-none` (no `cursor-not-allowed`). A `justify` variant on `control` (center default; start/end) keeps the merge-free `tailwind-variants/lite` build from emitting conflicting `justify-*` utilities. Minor token shifts (rounded-md→rounded-sm, gap-2→gap-1.5, tab text-2xs→text-xs) accepted as the intended de-duplication onto the canonical recipe.
 
 ### Pending Todos
 
@@ -112,7 +115,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-20T13:11:29.450Z
+Last session: 2026-06-23T15:48:26.992Z
 Stopped at: Phase 2 planned (6 plans, verified)
 Resume file: .planning/phases/02-uikit-structural-data-display-primitives/02-01-PLAN.md
 </content>
