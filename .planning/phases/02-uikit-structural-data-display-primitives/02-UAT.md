@@ -11,7 +11,7 @@ updated: 2026-06-21T14:30:00Z
 number: 2
 name: Visual inspection of the merged component catalog at representative breakpoints
 expected: |
-  Open Ladle (cd packages/design && pnpm exec ladle) and review at least NavBar,
+  Open Ladle (cd packages/design && pnpm ladle) and review at least NavBar,
   MobileTabBar, AppShell (360px mobile / 1280px desktop), Table (row states + the
   CLS skeleton-match), TierChip (tier levels), Sparkline (data volumes), and
   FreshnessPill (4 states). Confirm: dark-only gunmetal palette with cyan only on
