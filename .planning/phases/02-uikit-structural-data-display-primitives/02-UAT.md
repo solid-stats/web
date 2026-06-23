@@ -30,7 +30,7 @@ note: Discharged by the orchestrator after the wave-6 merge — `cd packages/des
 ### 2. Visual inspection of the component catalog at representative breakpoints
 expected: Dark-only gunmetal palette; cyan only on active/focus; tier level name + entry threshold visible; all interactive targets perceivably distinct in hover/pressed/focused/selected states; no clipped RU text at 360px; tabular-mono numerals.
 result: issues
-note: KIT-04/07/03/02 visually OK. KIT-01 nav-shell diverged from the binding hi-fi reference `.design/hifi/shell.jsx` (D-11) — 5 gaps logged below. Target model decided with the user: keep the 4-role model (signed-out/player/moderator/admin) but fix it (universal account/profile per signed-in role, right cluster, Brand, mobile account tab, corrected breakpoint).
+note: KIT-04/07/03 visually OK. KIT-01 nav-shell (5 gaps) AND KIT-02 data-table (9 gaps) both diverged from the binding hi-fi references `.design/hifi/shell.jsx` / `players.jsx` (D-11) — logged below. KIT-01 target: keep the 4-role model but fix it (universal account per signed-in role, right cluster, Brand, mobile account tab, breakpoint). KIT-02: density auto (drop DensityToggle) + Pagination model pending decision + real table bugs (selected-breaks-layout, focused==enabled, loading-shows-data, compact DataVolumes broken, nick↔squad gap, border-overflow scroll).
 
 ## Summary
 
@@ -126,3 +126,145 @@ fix: |
   TEST — strengthen `keyboard.spec.ts` so it CANNOT pass while clipped: assert the computed `clip` is `auto`
   (and/or `clip-path` is `none`) on focus, or add a real paint/visibility check (`toBeInViewport` + non-empty
   render). boundingBox-height alone is what hid this bug.
+
+---
+
+## Gaps — KIT-02 data-table (visual UAT)
+
+> Source: visual UAT of KIT-02 against `.design/hifi/players.jsx` (binding table semantics, D-11), with
+> live Playwright screenshots of Table/RowStates, Table/DataVolumes, CompactRow/Mobile, CompactRow/DataVolumes.
+> Same root pattern as KIT-01: the family diverged from the hi-fi, and the per-family design-review missed it
+> (it did not diff against `players.jsx`).
+> Close via `/gsd-plan-phase 2 --gaps` → `/gsd-execute-phase 2 --gaps-only` with a re-run design-review vs the hi-fi.
+
+### GAP-06 — DensityToggle removed; density is automatic by screen/container (hi-fi divergence)
+status: failed
+severity: high
+requirements: [KIT-02]
+evidence: |
+  hi-fi `players.jsx` L318: `const density = (device === 'desktop' && !winMobile) ? 'comfortable' : 'compact'`
+  — density is DERIVED from device/screen; there is NO density toggle. The implemented `DensityToggle`
+  (controlled segmented control) is an invented component. User decision: drop it; density auto.
+fix: |
+  Remove the `DensityToggle` component, its story, and its barrel export. Make the table density derive
+  automatically from the container/screen (comfortable at desktop width ≥ `@md`-class, compact below) — keyed
+  off `@container` per styling.md, the same way AppShell reflows. Keep `ROW_H` 52/44 and the controlled
+  `density` prop on `Table` (the auto-resolver feeds it), but no user-facing toggle.
+
+### GAP-07 — Pagination diverges from hi-fi: no pages, no total, a stray «Это всё» text marker
+status: failed
+severity: high
+requirements: [KIT-02]
+decision_pending: pagination target model (see question to user)
+evidence: |
+  hi-fi `players.jsx` has NO Prev/Next pager: desktop = one capped-window virtualized scroll with the TOTAL
+  in the caption (`plist_count {n: total}` / `plist_filtered {n, total}`); mobile = top-N + «показать ещё ·
+  remaining» (already in CompactList). The implemented `Pagination` (Назад/Дальше + a «Это всё» end marker)
+  shows neither page numbers nor total, and renders a bare «Это всё» text instead of a disabled control
+  (user finding 4).
+fix: |
+  Target model pending user decision — either (A) hi-fi-faithful: remove the Pagination pager; surface the
+  total in the table caption ("Показано N из M") + keep the mobile show-more; OR (B) keep a pager but make it
+  real: a "N–M из total" / page indicator with the end state as a DISABLED Next button (never a bare «Это всё»
+  text). Apply once chosen.
+
+### GAP-08 — every table (and the skeleton) has a stray ~1–2px scroll; the skeleton must never scroll
+status: failed
+severity: medium
+requirements: [KIT-02, QUAL-04]
+evidence: |
+  `Table.tsx` reserves the viewport at `height = HEADER_H(44) + visibleRows*ROW_H` but the rendered content is
+  header + rows + per-row/`thead` `border-b` (1px each) under `border-collapse`, so the content exceeds the
+  reserved height by the border total → a permanent tiny scrollbar (user finding 5). The `Skeleton` table
+  variant (its own bordered rows inside the same viewport) overflows the same way — the skeleton should NEVER
+  scroll.
+fix: |
+  Make the reserved viewport height account for borders (border-box math / add the header+row border total, or
+  drop the inner borders from the height-bearing boxes) so header + N rows fit EXACTLY with no overflow, for
+  both the data table and the `Skeleton` table variant. Re-confirm `cls.spec` still holds (skeleton box ==
+  data box) AND assert no scrollbar (scrollHeight <= clientHeight) on both.
+
+### GAP-09 — SELECTED row breaks the table-fixed column layout
+status: failed
+severity: high
+requirements: [KIT-02, QUAL-03]
+evidence: |
+  Screenshot (Table/RowStates): only the SELECTED row is broken — its cells shift right, columns stop
+  following the `<colgroup>`, Счёт/K-D get clipped at the edge. Root cause: `TableRow` row recipe gives the
+  selected row a `position: relative` `<tr>` with an absolutely-positioned `before:` cyan bar; a `<tr>` that
+  actually contains an abspos child gets promoted in a way that breaks `table-fixed` cell widths (only the
+  selected row has the `::before`, so only it breaks). NavBar/MobileTabBar use the same `before:` bar safely
+  because they are flex, not table rows.
+fix: |
+  Render the selected left-edge marker WITHOUT positioning the `<tr>`: use an inset box-shadow
+  (`box-shadow: inset 2px 0 0 var(--color-primary)`) on the row (or first cell), and drop `relative` +
+  `before:` from the `<tr>`. Keep the three redundant signals (primary-weak fill + edge marker +
+  aria-selected). Verify columns stay aligned with the colgroup.
+
+### GAP-10 — FOCUSED row state is identical to ENABLED; no visible row focus
+status: failed
+severity: high
+requirements: [KIT-02, QUAL-03]
+evidence: |
+  Screenshot (Table/RowStates): the FOCUSED cell is pixel-identical to ENABLED. `TableRow` row recipe maps
+  `focused: ""` (empty), and the base carries NO `focus-within:` styling (the code comment claims a
+  focus-within lift, but no such utility is present). So neither the catalog forced-state nor real keyboard
+  focus changes the row — only the inner anchor gets a ring (user finding 8).
+fix: |
+  Give the row a real focus treatment: add `focus-within:` row styling (surface lift + the focus ring not
+  obscured by the sticky header, WCAG 2.4.12) so live keyboard focus is visible on the row, and map the
+  forced `focused` catalog state to the SAME utilities so the matrix cell shows it. Remove the misleading
+  comment.
+
+### GAP-11 — Table/RowStates "loading" cell shows real data, not the Skeleton
+status: failed
+severity: medium
+requirements: [KIT-02, QUAL-04]
+evidence: |
+  Screenshot (Table/RowStates): the LOADING cell renders a real header + Vasiliy data row. In the story the
+  loading cell calls `dataTable(ROSTER.slice(0,1), …)` WITHOUT the `loading` flag, so the Table never swaps in
+  the `Skeleton` variant (user finding 9). (The DataVolumes/Endings/Cls stories DO render the skeleton — only
+  RowStates is wrong.)
+fix: |
+  Render the 7th row-state with the actual loading skeleton — pass `loading` to the Table (or render
+  `<Skeleton variant="table">` directly) so the catalog shows the shimmer placeholder, not data.
+
+### GAP-12 — CompactRow/DataVolumes is broken: no rows render (narrow StateMatrix cells)
+status: failed
+severity: high
+requirements: [KIT-02, QUAL-02]
+evidence: |
+  Screenshot (CompactRow/DataVolumes): every cell (few/many/limit/single) is an empty tall box — no rows
+  render, the «Игроки · 3» caption wraps onto three lines (user finding 1 "нет таблицы, сломана"). Cause: the
+  `CompactList` is placed inside narrow `StateMatrix`/`StateCell` grid cells; the wide row content cannot lay
+  out there. This is the SAME class the Table stories already fixed by switching to full-width labelled
+  sections — CompactRow/DataVolumes was left in the shared grid.
+fix: |
+  Render the CompactRow data-volume states as full-width labelled sections at a real mobile width (≤ 384px
+  column), not inside the shared `StateMatrix` grid — mirror the Table DataVolumes/RowStates full-width
+  pattern.
+
+### GAP-13 — CompactRow/Mobile: huge vertical gap between nickname and squad
+status: failed
+severity: medium
+requirements: [KIT-02, QUAL-02]
+evidence: |
+  Screenshot (CompactRow/Mobile): a large empty gap sits between the player name and the squad line. The name
+  anchor carries `min-h-11` (44px) for the touch target, which inflates the name block and pushes the squad
+  ~44px down (user finding 2). The hit area should come from the row, not by inflating the inline name.
+fix: |
+  Keep the ≥44px hit area on the ROW (the anchor already stretches via `after:inset-0`), and drop `min-h-11`
+  from the inline name so name + squad stack tightly. Tighten the row's vertical rhythm.
+
+### GAP-14 — few vs limit-reached are visually indistinguishable
+status: failed
+severity: low
+requirements: [KIT-02, QUAL-02]
+evidence: |
+  Table/DataVolumes (and CompactRow): the `few` and `limit` cells both render a small row count with no
+  distinguishing affordance (user finding 6). "limit-reached" carries no "all N shown / end of list" cue vs
+  "few of many".
+fix: |
+  Make the data-volume states read differently: `few` = a few of a larger set (caption shows N of total);
+  `limit-reached` = the end is reached / all shown (an explicit end cue). Fold into the total-in-caption work
+  (GAP-07) and the show-more / end-of-list affordance.
