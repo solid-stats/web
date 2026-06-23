@@ -3,6 +3,7 @@
 // vs `user` (action error naming the fix). Both carry an inert recovery action button
 // (≥44px, keyboard-operable) — never a blank screen. Copy comes from `_fixtures/STRINGS`.
 import type { Story, StoryDefault } from "@ladle/react";
+import { Button } from "../Button";
 import { STRINGS } from "../_fixtures";
 import { StateCell, StateMatrix } from "../_state-matrix";
 import { ErrorState, type ErrorKind } from "./ErrorState";
@@ -15,15 +16,9 @@ const REF_ID = "E-7F3A";
 
 const interpolate = (s: string, id: string): string => s.replace("{id}", id);
 
-// An inert recovery action — a real focusable button (≥44px) the catalog gate checks.
-const RetryButton = ({ label }: { label: string }) => (
-  <button
-    type="button"
-    className="inline-flex min-h-11 items-center rounded-sm border border-border-1 bg-surface-2 px-4 font-body text-sm font-semibold text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-  >
-    {label}
-  </button>
-);
+// GAP-19: the inert recovery action is the shared secondary Button (the canonical ring
+// + ≥44px) — replacing the previous hand-rolled `focus-visible:outline-*` drift button.
+const RetryButton = ({ label }: { label: string }) => <Button variant="secondary">{label}</Button>;
 
 const CONTACT = { ru: "Написать в поддержку", en: "Contact support" } as const;
 const RETRY = { ru: "Повторить", en: "Retry" } as const;

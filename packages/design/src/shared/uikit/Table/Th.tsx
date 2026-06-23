@@ -13,6 +13,7 @@
 import type { ReactNode } from "react";
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import { tv } from "tailwind-variants/lite";
+import { Button } from "../Button";
 
 /** The controlled sort direction for a column (`none` = unsorted). */
 export type SortDirection = "ascending" | "descending" | "none";
@@ -36,26 +37,20 @@ type Props = {
   forcedState?: ThState;
 };
 
-// The header button. `base` carries the real interaction utilities so a live header
-// works; the `state` variant is the catalog override applied via `data-state`. The
-// `min-h-11` keeps the 44px hit area on the control itself (Pitfall 3).
-const thButton = tv({
-  base: "flex min-h-11 w-full items-center gap-1.5 rounded-sm px-3 font-body text-xs font-semibold uppercase tracking-label text-text-muted transition-colors hover:text-text-primary active:translate-y-px focus-visible:outline-none focus-visible:shadow-(--shadow-ring)",
+// GAP-19: the sort button is now `<Button variant="segment" active={isActive}>` — the
+// segment recipe owns the muted→primary tokens + active=cyan + the canonical ring +
+// the ≥44px hit area. This `thHeader` recipe carries ONLY the header-specific surface
+// the base does not: full-width, uppercase label rhythm, the numeric justify, and the
+// `data-state` forced-matrix overrides (RESEARCH Pattern 2). `font-normal` is left to
+// the base (`font-semibold`); `uppercase tracking-label` is the header treatment.
+const thHeader = tv({
+  base: "w-full uppercase tracking-label",
   variants: {
     state: {
       enabled: "",
       hover: "text-text-primary",
       pressed: "translate-y-px text-text-primary",
       focused: "shadow-(--shadow-ring) outline-none",
-    },
-    numeric: {
-      true: "justify-end",
-      false: "justify-start",
-    },
-    /** A sorted column's label is cyan — paired with the directional arrow + aria-sort (never color-alone). */
-    active: {
-      true: "text-primary",
-      false: "",
     },
   },
 });
@@ -86,19 +81,22 @@ export function Th({
       data-th={label}
       className={`h-11 bg-surface-2 p-0 ${className ?? ""}`}
     >
-      <button
-        type="button"
+      <Button
+        variant="segment"
+        size="sm"
+        justify={numeric ? "end" : "start"}
+        active={isActive}
         aria-label={sortLabel}
         data-state={forcedState}
         onClick={onSort}
-        className={thButton({ state: forcedState, numeric, active: isActive })}
+        className={thHeader({ state: forcedState })}
       >
         {/* Numeric headers put the arrow on the left of a right-aligned label so the
             arrow sits between the label and the column edge; text headers trail it. */}
         {numeric ? <SortArrow sort={sort} /> : null}
         <span className="truncate">{label}</span>
         {numeric ? null : <SortArrow sort={sort} />}
-      </button>
+      </Button>
     </th>
   );
 }

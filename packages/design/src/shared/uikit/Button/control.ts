@@ -23,11 +23,20 @@ export type ButtonVariant = "primary" | "secondary" | "ghost" | "segment";
  *  only in horizontal padding / font size, never dropping below the 44px hit area. */
 export type ButtonSize = "sm" | "md";
 
+/** Content justification — `center` for the button affordance, `start`/`end` for the
+ *  segment / sort-header member whose label aligns with the column edge. */
+export type ButtonJustify = "center" | "start" | "end";
+
 export const control = tv({
   // The shared shape + the ONE canonical focus ring + the ≥44px floor. Press =
   // translateY(1px) per the DESIGN.md `active` recipe row (applied per-variant where
   // the variant also shifts background).
-  base: "inline-flex min-h-11 items-center justify-center gap-1.5 rounded-sm font-body font-semibold transition-colors focus-visible:outline-none focus-visible:shadow-(--shadow-ring)",
+  // `cursor-pointer` on the base is a deliberate product decision (Plan 02-07): every
+  // interactive control shows the hand cursor, overriding the native button default-arrow
+  // convention. It lands once here so all variants + all refactored controls inherit it;
+  // the `disabled` variant's `pointer-events-none` already suppresses the cursor (no
+  // `cursor-not-allowed` — a disabled control takes no pointer at all).
+  base: "inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-sm font-body font-semibold transition-colors focus-visible:outline-none focus-visible:shadow-(--shadow-ring)",
   variants: {
     variant: {
       // per DESIGN.md button-primary
@@ -50,6 +59,15 @@ export const control = tv({
       md: "px-4 text-sm",
       sm: "px-3 text-xs",
     },
+    // Content justification. Default-centered (the button affordance); the segment /
+    // sort-header member overrides to `start`/`end` (the label sits with the numeric
+    // column edge). Held as a variant so the merge-free `/lite` build never emits two
+    // conflicting `justify-*` utilities.
+    justify: {
+      center: "justify-center",
+      start: "justify-start",
+      end: "justify-end",
+    },
     /** The segment active member → cyan (the sorted column label). No-op elsewhere. */
     active: {
       true: "text-primary",
@@ -64,6 +82,7 @@ export const control = tv({
   defaultVariants: {
     variant: "primary",
     size: "md",
+    justify: "center",
     active: false,
     disabled: false,
   },

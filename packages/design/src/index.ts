@@ -12,7 +12,7 @@
 // canonical focus ring + the variant/size token recipes (sourced from the DESIGN.md
 // `button-*` recipes). The ~7 hand-rolled catalog controls render through these; the
 // internal `control` recipe is NOT graduated.
-export type { ButtonVariant, ButtonSize } from "./shared/uikit/Button";
+export type { ButtonVariant, ButtonSize, ButtonJustify } from "./shared/uikit/Button";
 export { Button, Link } from "./shared/uikit/Button";
 
 // ---- KIT-04 Data-trust family (Wave 2 / Plan 02-02) ----

@@ -8,7 +8,7 @@
 // `aria-disabled` + the shared disabled treatment (pointer-events-none) — the consumer
 // keeps any active-marker wrapper concern (the cyan edge bar) around it.
 import type { AnchorHTMLAttributes, ReactNode } from "react";
-import { control, type ButtonSize, type ButtonVariant } from "./control";
+import { control, type ButtonJustify, type ButtonSize, type ButtonVariant } from "./control";
 
 type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & {
   // system props first
@@ -16,6 +16,7 @@ type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & {
   // values
   variant?: ButtonVariant;
   size?: ButtonSize;
+  justify?: ButtonJustify;
   /** The anchor target. Dropped when `disabled` (a disabled link is not navigable). */
   href?: string;
   // booleans
@@ -30,6 +31,7 @@ export function Link({
   className,
   variant,
   size,
+  justify,
   href,
   active,
   disabled = false,
@@ -40,7 +42,7 @@ export function Link({
     <a
       href={disabled ? undefined : href}
       aria-disabled={disabled ? true : undefined}
-      className={control({ variant, size, active, disabled, className })}
+      className={control({ variant, size, justify, active, disabled, className })}
       {...rest}
     >
       {children}

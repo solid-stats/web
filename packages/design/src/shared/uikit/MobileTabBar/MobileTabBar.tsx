@@ -8,6 +8,7 @@
 // states render identically across the family. `/lite` is the merge-free build.
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants/lite";
+import { Link } from "../Button";
 import type { NavItem, NavItemState } from "../NavBar";
 
 type Props = {
@@ -28,10 +29,14 @@ const tabBar = tv({
   base: "flex h-15 items-stretch gap-1 border-t border-border-1 bg-bg-1/80 px-2 backdrop-blur",
 });
 
-// One tab: icon-over-label, ≥44×44 box. `base` carries the live pseudo-classes;
-// `state` is the catalog `data-state` override; `active` adds the cyan top marker.
+// GAP-19: each tab renders `<Link variant="ghost">` (the shared ghost recipe owns the
+// transparent surface + muted→primary hover + active bg + the canonical ring + the
+// ≥44px floor). This `tab` recipe carries ONLY the tab-specific surface the base does
+// not: the icon-over-label column (`flex-col`), the ≥44px WIDTH floor (`min-w-11
+// flex-1`), `relative` + the cyan top-edge active marker, and the `data-state`
+// forced-matrix overrides (RESEARCH Pattern 2).
 const tab = tv({
-  base: "relative flex min-h-11 min-w-11 flex-1 flex-col items-center justify-center gap-1 rounded-md px-2 font-body text-2xs font-semibold text-text-muted transition-colors hover:bg-surface-1 hover:text-text-primary active:translate-y-px active:bg-surface-2 focus-visible:outline-none focus-visible:shadow-(--shadow-ring)",
+  base: "relative min-w-11 flex-1 flex-col gap-1",
   variants: {
     state: {
       enabled: "",
@@ -39,7 +44,7 @@ const tab = tv({
       pressed: "translate-y-px bg-surface-2 text-text-primary",
       focused: "shadow-(--shadow-ring) outline-none",
       selected: "text-primary",
-      disabled: "pointer-events-none text-text-subtle opacity-60",
+      disabled: "",
     },
     active: {
       true: "text-primary before:absolute before:inset-x-3 before:top-0 before:h-0.5 before:rounded-full before:bg-primary",
@@ -63,18 +68,20 @@ export function MobileTabBar({
         const state = item.disabled === true ? "disabled" : forcedState;
 
         return (
-          <a
+          <Link
             key={item.key}
+            variant="ghost"
+            size="sm"
             href={item.disabled === true ? undefined : `#${item.key}`}
+            disabled={item.disabled === true}
             aria-current={isActive ? "page" : undefined}
-            aria-disabled={item.disabled === true ? true : undefined}
             data-state={state}
             data-tab={item.key}
             className={tab({ state, active: isActive })}
           >
             <Icon className="size-5 shrink-0" aria-hidden />
             {item.label}
-          </a>
+          </Link>
         );
       })}
     </nav>

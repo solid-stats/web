@@ -19,6 +19,7 @@
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { tv } from "tailwind-variants/lite";
+import { Link } from "../Button";
 
 /** The ×7 nav-item states (loading is n/a for nav). `enabled` is the resting state. */
 export type NavItemState = "enabled" | "hover" | "pressed" | "focused" | "selected" | "disabled";
@@ -64,18 +65,22 @@ const navBar = tv({
   base: "sticky top-0 z-40 flex h-14 items-center border-b border-border-1 bg-bg-1/80 px-4 backdrop-blur",
 });
 
+// GAP-19: the nav item renders `<Link variant="ghost">` (the shared ghost recipe owns
+// the transparent surface + muted→primary hover + active bg + the canonical ring + the
+// ≥44px hit area). This `navItem` recipe carries ONLY the nav-specific surface the base
+// does not: `relative` (the marker anchor), the active inset cyan left-edge `before:`
+// bar, and the `data-state` forced-matrix overrides (RESEARCH Pattern 2 — each maps to
+// the SAME utilities the live pseudo-classes apply, for the static catalog cells).
 const navItem = tv({
-  base: "relative flex min-h-11 items-center gap-2 rounded-md px-3 font-body text-xs font-semibold text-text-muted transition-colors hover:bg-surface-1 hover:text-text-primary active:translate-y-px active:bg-surface-2 focus-visible:outline-none focus-visible:shadow-(--shadow-ring)",
+  base: "relative",
   variants: {
-    // Catalog-only forced states (RESEARCH Pattern 2). Each maps to the SAME
-    // utilities the live pseudo-classes apply.
     state: {
       enabled: "",
       hover: "bg-surface-1 text-text-primary",
       pressed: "translate-y-px bg-surface-2 text-text-primary",
       focused: "shadow-(--shadow-ring) outline-none",
       selected: "text-primary",
-      disabled: "pointer-events-none text-text-subtle opacity-60",
+      disabled: "",
     },
     /** The active section — cyan text + the inset cyan left-edge marker. */
     active: {
@@ -95,18 +100,20 @@ export function NavBar({ className, items, activeKey, ariaLabel, forcedState }: 
           const state = item.disabled === true ? "disabled" : forcedState;
 
           return (
-            <a
+            <Link
               key={item.key}
+              variant="ghost"
+              size="sm"
               href={item.disabled === true ? undefined : `#${item.key}`}
+              disabled={item.disabled === true}
               aria-current={isActive ? "page" : undefined}
-              aria-disabled={item.disabled === true ? true : undefined}
               data-state={state}
               data-nav-item={item.key}
               className={navItem({ state, active: isActive })}
             >
               <Icon className="size-5 shrink-0" aria-hidden />
               {item.label}
-            </a>
+            </Link>
           );
         })}
       </nav>

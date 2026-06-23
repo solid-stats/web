@@ -5,10 +5,10 @@
 // toast manager.
 //
 // Four semantic variants (success `win` / error `loss` / warn / info), each pairing a
-// Lucide icon + the message — never color-alone (a11y.md). The optional action is a
-// real `<button type="button">` carrying a visible cyan focus ring (`focus-visible:`
-// outline, the ProvenanceLine precedent) and a ≥44px hit area, so it is
-// keyboard-operable (a11y.md / 2.5.5).
+// Lucide icon + the message — never color-alone (a11y.md). The optional action renders
+// the shared `<Button variant="ghost" size="sm">` base primitive (GAP-19): this REMOVES
+// the previous hand-rolled `focus-visible:outline-*` drift ring and gives the action the
+// ONE canonical focus ring + ≥44px hit area every control now shares.
 // It floats with the `shadow-lg` elevation token (DESIGN.md Elevation). `role="status"`
 // announces it politely without stealing focus (a11y.md). Semantic tokens are plain
 // utilities held literal in `tv()` (styling.md — no arbitrary values); `/lite` is the
@@ -16,6 +16,7 @@
 import type { ReactNode } from "react";
 import { CircleAlert, CircleCheck, Info, TriangleAlert, type LucideIcon } from "lucide-react";
 import { tv } from "tailwind-variants/lite";
+import { Button } from "../Button";
 
 /** The four semantic toast variants. Frontend-owned finite union. */
 export type ToastVariant = "success" | "error" | "warn" | "info";
@@ -71,13 +72,11 @@ export function Toast({ className, variant, message, action }: Props): ReactNode
       <Icon className={iconTone({ variant })} aria-hidden />
       <span className="flex-1">{message}</span>
       {action === undefined ? null : (
-        <button
-          type="button"
-          onClick={action.onClick}
-          className="inline-flex min-h-11 items-center rounded-sm px-3 font-body text-sm font-semibold text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-        >
+        // GAP-19: the action is the shared ghost Button — the canonical ring, no drift.
+        // `text-primary` keeps the cyan affordance the toast action has always carried.
+        <Button variant="ghost" size="sm" className="text-primary" onClick={action.onClick}>
           {action.label}
-        </button>
+        </Button>
       )}
     </div>
   );

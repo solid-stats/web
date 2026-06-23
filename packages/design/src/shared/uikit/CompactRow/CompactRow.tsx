@@ -11,6 +11,7 @@
 // pair the color with `Pips` (never color-alone). `/lite` is the tailwind-merge-free
 // build; class strings stay literal for the `@source` scan.
 import type { ReactNode } from "react";
+import { Button } from "../Button";
 import { Pips } from "../TierScale";
 import type { TierCell } from "../Table";
 
@@ -143,13 +144,10 @@ export function CompactList({
         ))}
       </div>
       {expandable && rows.length > topN ? (
-        <button
-          type="button"
-          data-show-more
-          className="inline-flex min-h-11 items-center justify-center rounded-md border border-border-1 bg-surface-2 px-4 font-body text-sm font-semibold text-primary hover:bg-surface-3 focus-visible:outline-none focus-visible:shadow-(--shadow-ring)"
-        >
+        // GAP-19: the «показать ещё · N» expander is the shared secondary Button.
+        <Button variant="secondary" data-show-more>
           {showMoreLabel}
-        </button>
+        </Button>
       ) : null}
     </section>
   );

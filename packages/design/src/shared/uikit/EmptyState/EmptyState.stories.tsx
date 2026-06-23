@@ -5,6 +5,7 @@
 // comes from `_fixtures/STRINGS`.
 import type { Story, StoryDefault } from "@ladle/react";
 import { FilterX, Inbox } from "lucide-react";
+import { Button } from "../Button";
 import { STRINGS } from "../_fixtures";
 import { StateCell, StateMatrix } from "../_state-matrix";
 import { EmptyState } from "./EmptyState";
@@ -28,12 +29,18 @@ const Cold = ({ lang }: { lang: "ru" | "en" }) => (
   />
 );
 
+// GAP-19: the filtered scenario carries a real recovery action — the shared secondary
+// Button (canonical ring + ≥44px), the "clear filters" affordance. Story-local label
+// (RU/EN), matching the ErrorState action pattern.
+const CLEAR_FILTERS = { ru: "Сбросить фильтры", en: "Clear filters" } as const;
+
 const Filtered = ({ lang }: { lang: "ru" | "en" }) => (
   <EmptyState
     icon={FilterX}
     heading={STRINGS.emptyTableHeading[lang]}
     body={STRINGS.emptyTableBody[lang]}
     totalCount={interpolate(STRINGS.emptyFilteredBody[lang], TOTAL)}
+    action={<Button variant="secondary">{CLEAR_FILTERS[lang]}</Button>}
   />
 );
 

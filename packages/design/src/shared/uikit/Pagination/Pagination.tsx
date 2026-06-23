@@ -11,7 +11,7 @@
 // is the tailwind-merge-free build; class strings stay literal for the `@source` scan.
 import type { ReactNode } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { tv } from "tailwind-variants/lite";
+import { Button } from "../Button";
 
 type Props = {
   className?: string;
@@ -31,17 +31,9 @@ type Props = {
   onNext?: () => void;
 };
 
-// The pager button. The active chevron is cyan; a disabled control is muted +
-// non-interactive (the label still present — never icon/color-alone).
-const pager = tv({
-  base: "inline-flex min-h-11 items-center gap-1.5 rounded-md border border-border-1 bg-surface-2 px-4 font-body text-sm font-semibold text-text-primary transition-colors hover:bg-surface-3 focus-visible:outline-none focus-visible:shadow-(--shadow-ring)",
-  variants: {
-    disabled: {
-      true: "pointer-events-none text-text-subtle opacity-60",
-      false: "",
-    },
-  },
-});
+// GAP-19: each pager is now `<Button variant="secondary">` — the shared recipe owns the
+// surface + hairline + the canonical ring + the ≥44px hit area + the disabled treatment.
+// The active chevron stays cyan (the directional affordance, never icon/color-alone).
 
 export function Pagination({
   className,
@@ -59,27 +51,25 @@ export function Pagination({
       aria-label={`${prevLabel} / ${nextLabel}`}
       data-pagination
     >
-      <button
-        type="button"
+      <Button
+        variant="secondary"
         disabled={!hasPrev}
         aria-disabled={!hasPrev}
         data-page-prev
         onClick={onPrev === undefined ? undefined : onPrev}
-        className={pager({ disabled: !hasPrev })}
       >
         <ChevronLeft className={`size-4 shrink-0 ${hasPrev ? "text-primary" : ""}`} aria-hidden />
         {prevLabel}
-      </button>
+      </Button>
       {hasNext ? (
-        <button
-          type="button"
+        <Button
+          variant="secondary"
           data-page-next
           onClick={onNext === undefined ? undefined : onNext}
-          className={pager({ disabled: false })}
         >
           {nextLabel}
           <ChevronRight className="size-4 shrink-0 text-primary" aria-hidden />
-        </button>
+        </Button>
       ) : (
         // End-of-list — the cursor affordance has no more pages (inert, no server).
         <span

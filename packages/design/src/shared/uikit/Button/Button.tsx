@@ -10,7 +10,7 @@
 // component does not invent one. Buttons default to `type="button"` unless a submit is
 // intentional (component-shape.md).
 import type { ButtonHTMLAttributes, ReactNode } from "react";
-import { control, type ButtonSize, type ButtonVariant } from "./control";
+import { control, type ButtonJustify, type ButtonSize, type ButtonVariant } from "./control";
 
 type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "disabled" | "type"> & {
   // system props first
@@ -18,6 +18,7 @@ type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "disabled" | "type"> 
   // values
   variant?: ButtonVariant;
   size?: ButtonSize;
+  justify?: ButtonJustify;
   type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
   // booleans
   /** Segment active member → cyan (the sorted sort-header). Inert for other variants. */
@@ -31,6 +32,7 @@ export function Button({
   className,
   variant,
   size,
+  justify,
   type = "button",
   active,
   disabled = false,
@@ -42,7 +44,7 @@ export function Button({
       // eslint-disable-next-line react/button-has-type -- type is a constrained prop, defaulted to "button"
       type={type}
       disabled={disabled}
-      className={control({ variant, size, active, disabled, className })}
+      className={control({ variant, size, justify, active, disabled, className })}
       {...rest}
     >
       {children}
