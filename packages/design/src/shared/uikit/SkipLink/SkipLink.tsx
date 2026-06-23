@@ -23,8 +23,15 @@ type Props = {
 // `sr-only` off-screen until focused; on `:focus` it becomes a fixed on-screen
 // chip top-left with the cyan ring. `shadow-(--shadow-ring)` reads the @theme
 // custom property (the sanctioned escape hatch — not an arbitrary value).
+//
+// GAP-05: `focus:not-sr-only` zeroes the padding (the `sr-only` recipe sets
+// `padding: 0`, and `not-sr-only` restores `padding: 0` too), so the revealed
+// chip's text would touch the edges — `focus:px-4` restores the horizontal
+// padding on reveal. The reveal itself is reliant on the reveal-safe
+// `clip-path`-based `.sr-only` in `.ladle/tailwind.css` (the legacy `clip` is
+// gone, so `not-sr-only`'s `clip-path: none` actually un-clips the chip).
 const skipLink = tv({
-  base: "sr-only rounded-md bg-surface-2 px-4 font-body text-sm font-semibold text-primary focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:inline-flex focus:min-h-11 focus:items-center focus:shadow-(--shadow-ring) focus:outline-none",
+  base: "sr-only rounded-md bg-surface-2 px-4 font-body text-sm font-semibold text-primary focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:inline-flex focus:min-h-11 focus:items-center focus:px-4 focus:outline-none focus:shadow-(--shadow-ring)",
 });
 
 export function SkipLink({ className, href = "#main", label }: Props): ReactNode {

@@ -22,6 +22,16 @@
  * summary and other screen-reader-only text (KIT-03, Plan 05). theme.css carries
  * no `sr-only` (it is generated from DESIGN.md tokens, not utilities), so it is
  * declared here in the base layer — the standard visually-hidden recipe.
+ *
+ * GAP-05: this MUST be reveal-safe. The hide is done with the MODERN
+ * `clip-path: inset(50%)` (NOT the legacy rect-clip recipe), because
+ * Tailwind's `not-sr-only` — what the SkipLink's `focus:not-sr-only` reveal
+ * applies — only resets `clip-path: none`; it never touches the legacy `clip`.
+ * With the legacy `clip` the SkipLink stayed `clip`-collapsed on focus and
+ * painted nothing (an invisible reveal — a real WCAG 2.4.1 failure the green box
+ * test missed). `clip-path: inset(50%)` is reset by `not-sr-only` so the link
+ * reveals; the Sparkline `<figcaption>` (never focused, never `not-sr-only`)
+ * still hides.
  */
 @layer base {
   .sr-only {
@@ -31,7 +41,7 @@
     padding: 0;
     margin: -1px;
     overflow: hidden;
-    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
     white-space: nowrap;
     border-width: 0;
   }

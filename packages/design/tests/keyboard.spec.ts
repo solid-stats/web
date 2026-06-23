@@ -28,6 +28,19 @@ test.describe("SkipLink keyboard behaviour", () => {
     const after = await link.boundingBox();
     expect(after?.height ?? 0, "visible + >=44px tall on focus").toBeGreaterThanOrEqual(44);
 
+    // GAP-05: the box alone is paint-blind — a legacy `clip: rect(0,0,0,0)` keeps
+    // the 44px box but paints NOTHING (the bug the old green test missed). Assert
+    // the COMPUTED reveal so this test CANNOT pass while clipped: on focus the
+    // visually-hidden clip must be released — `clip-path` is `none` AND the legacy
+    // `clip` is `auto`. If the reveal-unsafe legacy `clip` were reintroduced, the
+    // `clip` assertion below fails even though the box stays 44px tall.
+    const clipState = await link.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { clip: cs.clip, clipPath: cs.clipPath };
+    });
+    expect(clipState.clipPath, "clip-path released on focus (not-sr-only)").toBe("none");
+    expect(clipState.clip, "legacy clip released on focus — no paint-blind clip").toBe("auto");
+
     // It is the focused element (visible focus, not obscured).
     const focusedIsSkip = await page.evaluate(
       () => document.activeElement?.getAttribute("data-skip-link") !== null,
