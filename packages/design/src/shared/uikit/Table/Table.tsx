@@ -24,7 +24,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { ROW_H, type SkeletonDensity, Skeleton, tableViewportHeight } from "../Skeleton";
 import { Th, type SortDirection } from "./Th";
 
-/** Re-export the density type so consumers (DensityToggle, stories) share one source. */
+/** Re-export the density type so consumers (AutoTable, stories) share one source. */
 export type TableDensity = SkeletonDensity;
 
 /** A sortable column descriptor (label + fixed width + numeric alignment). */
@@ -55,7 +55,8 @@ type Props = {
   children: ReactNode;
   /** The `<table>` accessible name / caption (RU primary / EN mirror). */
   caption: string;
-  /** The active row density — fixed `ROW_H` 52/44 (controlled prop / DensityToggle). */
+  /** The active row density — fixed `ROW_H` 52/44 (controlled prop; `AutoTable` resolves
+   *  it from the `@container`, GAP-06 — there is no user-facing toggle). */
   density: TableDensity;
   /** The controlled sort state (parent owns it — no engine). */
   sort: SortState;

@@ -78,7 +78,9 @@ export type {
   TierCell,
 } from "./shared/uikit/Table";
 export { Table, Th, TableRow } from "./shared/uikit/Table";
-export { DensityToggle } from "./shared/uikit/DensityToggle";
+// GAP-06: DensityToggle removed — table density now derives automatically from the
+// `@container` (the `AutoTable` resolver), not a user-facing toggle.
+export { AutoTable } from "./shared/uikit/Table";
 export type { CompactRowData } from "./shared/uikit/CompactRow";
 export { CompactList, CompactRow } from "./shared/uikit/CompactRow";
 export { Pagination } from "./shared/uikit/Pagination";

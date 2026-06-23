@@ -49,16 +49,9 @@ export const STRINGS = {
   },
   loadingColdAggregate: { ru: "Пересчитываем агрегат…", en: "Recomputing aggregate…" },
   mobileShowMore: { ru: "показать ещё · {n}", en: "show more · {n}" },
-  densityToggle: {
-    ru: "Плотность: Обычная / Компактная",
-    en: "Density: Comfortable / Compact",
-  },
-  // The DensityToggle group label + the two per-option labels (the `densityToggle`
-  // string above is the combined Copywriting-Contract phrase; the toggle control
-  // needs them split into the group name + each option word).
-  densityGroup: { ru: "Плотность", en: "Density" },
-  densityComfortable: { ru: "Обычная", en: "Comfortable" },
-  densityCompact: { ru: "Компактная", en: "Compact" },
+  // GAP-06: the DensityToggle was removed (density now auto-derives from the @container),
+  // so its copy keys (densityToggle/densityGroup/densityComfortable/densityCompact) are
+  // dropped — no consumer remained.
   sortHeaderAria: { ru: "сортировать по {col}", en: "sort by {col}" },
   paginationPrev: { ru: "Назад", en: "Prev" },
   paginationNext: { ru: "Дальше", en: "Next" },

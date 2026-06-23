@@ -4,6 +4,9 @@
 // + `_state-matrix` stay internal helpers (NOT graduated).
 export type { SortState, TableColumn, TableDensity } from "./Table";
 export { Table } from "./Table";
+// GAP-06: the auto-density resolver (replaces the removed DensityToggle) — density
+// derives from the `@container`, not a user-facing control.
+export { AutoTable } from "./AutoTable";
 export type { SortDirection, ThState } from "./Th";
 export { Th } from "./Th";
 export type { RowState, TierCell } from "./TableRow";

@@ -12,6 +12,7 @@ import { EmptyState } from "../EmptyState";
 import { ErrorState } from "../ErrorState";
 import { StateCell, StateMatrix } from "../_state-matrix";
 import { Pagination } from "../Pagination";
+import { AutoTable } from "./AutoTable";
 import { Table, type SortState, type TableColumn, type TableDensity } from "./Table";
 import { TableRow, type RowState, type TierCell } from "./TableRow";
 
@@ -127,10 +128,7 @@ function VolumeCaption({
           .replace("{total}", String(total))
       : `Все ${shown} · конец списка`;
   return (
-    <span
-      className="font-body text-sm tabular-nums text-text-muted"
-      data-volume-cue={variant}
-    >
+    <span className="font-body text-sm tabular-nums text-text-muted" data-volume-cue={variant}>
       {text}
     </span>
   );
@@ -273,6 +271,54 @@ export const DataVolumes: Story = () => (
     </section>
   </div>
 );
+
+// ---- GAP-06: auto density derived from the @container (NO toggle) ----
+// `AutoTable` resolves the density from its container width (comfortable at the @5xl
+// desktop-class width, compact below), mirroring the hi-fi `players.jsx` L318. The two
+// framed widths below prove it: the WIDE container renders the comfortable (ROW_H 52)
+// branch, the NARROW 360px floor renders the compact (ROW_H 44) branch — with no
+// user-facing control. `data-density-branch` marks each branch for the catalog.
+export const AutoDensity: Story = () => {
+  const rows = ROSTER.slice(0, 5);
+  const renderRows = (density: TableDensity): ReturnType<Story> => {
+    const rowHeight = density === "comfortable" ? 52 : 44;
+    return (
+      <>
+        {rows.map((p, i) => (
+          <TableRow key={p.name} rowHeight={rowHeight} {...rowProps(p, i + 1)} />
+        ))}
+      </>
+    );
+  };
+  const autoTable = (
+    <AutoTable
+      columns={COLUMNS}
+      caption={caption("ru", LARGER_TOTAL)}
+      sort={SORT_SCORE_DESC}
+      sortLabels={sortLabels("ru")}
+      visibleRows={5}
+      rows={renderRows}
+    />
+  );
+  return (
+    <div className="flex flex-col gap-6 bg-bg-1 p-4">
+      {/* Wide desktop-class container → the comfortable (ROW_H 52) branch is shown. */}
+      <section className="flex flex-col gap-2" data-state-cell="auto-comfortable">
+        <span className="font-body text-xs font-semibold uppercase text-text-muted">
+          desktop container → comfortable
+        </span>
+        <div className="w-full max-w-3xl">{autoTable}</div>
+      </section>
+      {/* Narrow 360px floor → the compact (ROW_H 44) branch is shown — no toggle. */}
+      <section className="flex flex-col gap-2" data-state-cell="auto-compact">
+        <span className="font-body text-xs font-semibold uppercase text-text-muted">
+          360px floor → compact
+        </span>
+        <div className="w-90">{autoTable}</div>
+      </section>
+    </div>
+  );
+};
 
 // ---- ×5 scenario endings ----
 export const Endings: Story = () => (
