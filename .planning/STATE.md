@@ -6,15 +6,15 @@ current_phase: 02
 current_phase_name: uikit-structural-data-display-primitives
 status: executing
 stopped_at: Phase 2 planned — 6 plans, plan-checker PASSED
-last_updated: "2026-06-23T15:48:39.065Z"
-last_activity: 2026-06-21
-last_activity_desc: Phase 02 execution resumed (wave continue)
+last_updated: "2026-06-23T17:27:33.520Z"
+last_activity: 2026-06-23
+last_activity_desc: Phase 02 execution started
 progress:
   total_phases: 9
   completed_phases: 1
   total_plans: 16
-  completed_plans: 12
-  percent: 75
+  completed_plans: 13
+  percent: 11
 ---
 
 # Project State
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 ## Current Position
 
 Phase: 02 (uikit-structural-data-display-primitives) — EXECUTING
-Plan: 7 of 11 complete (02-07 done — Button/Link base, GAP-19)
-Status: Executing — gap-closure wave 1 (02-07) complete; next 02-08
-Last activity: 2026-06-23 — 02-07 Button/Link base primitive (GAP-19) executed + verified
+Plan: 8 of 11 complete
+Status: Executing gap-closure plans (02-09…02-11 remaining)
+Last activity: 2026-06-23 — Completed 02-08 (KIT-01 nav-shell rework, GAP-01…05)
 
-Plans: [████████████░░░░░░░░] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 7/11 complete (gap-closure 02-07 done)
+Plans: [██████████████░░░░░░] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 8/11 complete (gap-closure 02-08 done)
 
 ## Performance Metrics
 
@@ -61,6 +61,7 @@ Plans: [████████████░░░░░░░░] Phase 01: 
 | Phase 01 P04 | 12min | 2 tasks | 9 files |
 | Phase 01 P05 | 12min | 2 tasks | 5 files |
 | Phase 02 P07 | 13min | 3 tasks | 15 files |
+| Phase 02 P08 | 14min | 3 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -86,6 +87,7 @@ Recent decisions affecting current work:
 - [Phase 01]: UAT/verify fix (quick 260620-q5q, d9b307a) — dark base backdrop now painted from `--color-bg-0` via a generated `@layer base { html { … } }` rule. The prior `bg-bg-0` utility lived only on the Ladle GlobalProvider (outside `@source "../src"`), so Tailwind v4 tree-shook the token and the dark base was incidental (browser canvas). Base-paint emitted by gen-theme.mjs forces token emission + paints html — dark-only base is now token-driven, not luck. Verified live in-browser (Playwright).
 - [Phase 02 / 02-07 GAP-19]: Shared Button/Link base primitive — one `control` tv() owns the ≥44px hit area + the ONE canonical `focus-visible:shadow-(--shadow-ring)` ring + the DESIGN.md `button-primary/secondary/ghost` + `segment` recipes; the 7 hand-rolled controls (NavBar/MobileTabBar→Link ghost, Th→Button segment, Pagination/CompactList show-more→Button secondary, Toast→Button ghost, EmptyState/ErrorState story actions) refactored onto it; the Toast/ErrorState `focus-visible:outline-*` drift ring removed. Graduated into the barrel with `ButtonVariant`/`ButtonSize`/`ButtonJustify`.
 - [Phase 02 / 02-07]: `cursor-pointer` is a project-wide product decision single-sourced on the `control` base (all interactive controls show the hand cursor, overriding native button default-arrow); disabled keeps `pointer-events-none` (no `cursor-not-allowed`). A `justify` variant on `control` (center default; start/end) keeps the merge-free `tailwind-variants/lite` build from emitting conflicting `justify-*` utilities. Minor token shifts (rounded-md→rounded-sm, gap-2→gap-1.5, tab text-2xs→text-xs) accepted as the intended de-duplication onto the canonical recipe.
+- [Phase ?]: KIT-01 nav-shell reworked vs binding hi-fi: three-zone NavBar + universal account per signed-in role + raised @5xl breakpoint + 5-tab MobileTabBar + reveal-safe SkipLink (GAP-01…05)
 
 ### Pending Todos
 
@@ -115,7 +117,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-23T15:48:26.992Z
+Last session: 2026-06-23T17:27:23.308Z
 Stopped at: Phase 2 planned (6 plans, verified)
 Resume file: .planning/phases/02-uikit-structural-data-display-primitives/02-01-PLAN.md
 </content>

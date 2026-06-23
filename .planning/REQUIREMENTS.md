@@ -68,7 +68,7 @@ Each as a colocated Ladle story with component states (enabled / hover / pressed
 ### Quality gates (applied to every surface in design-review)
 
 - [ ] **QUAL-01**: Scenario endings ×5 (success / error system-vs-user / loading / onboarding / empty) and data-volume states ×4 (empty / few / many / limit-reached) per list, table, and field.
-- [ ] **QUAL-02**: Responsiveness explicit at every breakpoint, keyed off the container (no device-frame trap); verified at the real mobile-floor width.
+- [x] **QUAL-02**: Responsiveness explicit at every breakpoint, keyed off the container (no device-frame trap); verified at the real mobile-floor width.
 - [x] **QUAL-03**: WCAG 2.2 AA (axe clean; visible focus; keyboard; 44px targets; never color-alone; logical headings) — targeted AAA where practical.
 - [ ] **QUAL-04**: CLS = 0 — space reserved for media / tables / skeletons / SSE; tabular numerals; self-hosted fonts.
 - [ ] **QUAL-05**: RU + EN, every string i18n-keyed, RU sanity-checked (no clipped or awkward wording).
@@ -137,7 +137,7 @@ listed as "Phases 2–9 (gate)".
 | SURF-16 | Phase 9 | Pending |
 | SURF-17 | Phase 9 | Pending |
 | QUAL-01 | Phases 2–9 (gate) | Pending |
-| QUAL-02 | Phases 2–9 (gate) | Pending |
+| QUAL-02 | Phases 2–9 (gate) | Complete |
 | QUAL-03 | Phases 2–9 (gate) | Complete |
 | QUAL-04 | Phases 2–9 (gate) | Pending |
 | QUAL-05 | Phases 2–9 (gate) | Pending |
