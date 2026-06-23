@@ -343,3 +343,29 @@ fix: |
   refactor; needs a scope decision (do it in the gap cycle vs a dedicated base-primitives plan). Typography
   stays token recipes (DS-01) — optionally add a Typography showcase story. Tooltip/forms are Phase 3
   (KIT-05/06), not this gap.
+
+### GAP-20 — NavBar / MobileTabBar / Table story matrices use fake forced-state cells (catalog misrepresents hover/pressed/focused)
+status: open
+severity: medium
+requirements: [KIT-01, KIT-02, QUAL-02]
+decision: AUDIT + FIX AFTER buttons (user decision, 2026-06-23). The Button matrix carried this defect and was fixed in the 02-07 follow-up (commit 4a2cddf); these three stories share the same pattern and are deferred to a follow-up pass.
+evidence: |
+  Same root cause as the Button matrix bug fixed in 4a2cddf. The `StateMatrix` forced
+  "hover/pressed/focused" cells in `NavBar.stories.tsx`, `MobileTabBar.stories.tsx` and `Table.stories.tsx`
+  apply a hardcoded, variant-agnostic className override (the Button one used `bg-surface-3` for every
+  "hover"), NOT each item's real recipe tokens. With the merge-free `tv()/lite` build a plain override
+  often loses to the base by stylesheet order, so a forced cell can render the resting style or a wrong
+  colour. Net: the catalog matrices misrepresent the real `:hover` / `:active` / `:focus-visible` per item,
+  and a design-review reading those cells passes on fake states (verified for Button: primary "hover"
+  rendered grey `surface-3`, never the real cyan `primary-hover`). Detect:
+  `grep -rl 'FORCED\|forcedState' packages/design/src/shared/uikit --include='*.stories.tsx'`
+  → NavBar, MobileTabBar, Table (Button now fixed).
+fix: |
+  Apply the Button fix pattern (02-07 follow-up): the forced cells must render each item's REAL
+  per-state tokens as a literal mirror of the live recipe, made deterministic in the merge-free build
+  (`!`-important) and asserted in sync by a unit test (see `control.ts` `FORCED_STATE` +
+  `control.test.ts`) — OR drop the in-Ladle forced matrix and force real pseudo-states in the Playwright
+  catalog instead. Re-run the design-review against the corrected matrices. Note: NavBar/MobileTabBar items
+  now render through `Button`/`Link` (02-07), so their states may already route through the fixed `control`
+  recipe — confirm whether a separate forced map is still needed or the stale local override can just be
+  deleted.
