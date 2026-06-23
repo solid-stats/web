@@ -29,13 +29,13 @@
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-frontend-react-code-review/SKILL.md",
-      "computedHash": "549078ed1160a9a1517e6d1f944c3a959c0c904befdee05dbec15cc7fbe6178c"
+      "computedHash": "c01916cc00b140e9380e295eb1c2a4694ef5822366389338b095764da3663b6c"
     },
     "solidstats-frontend-react-conventions": {
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-frontend-react-conventions/SKILL.md",
-      "computedHash": "4a3b1b9c71e4fbf963ea360c9fee2ccd7ff09dcaafb4e977398b4d220d35a03d"
+      "computedHash": "19d504478f8c0330b7ae7770e704b67288dd78a1b5440d42c1c5d36ea7821546"
     },
     "solidstats-frontend-react-design": {
       "source": "solid-stats/skills",

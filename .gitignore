@@ -49,6 +49,10 @@ packages/*/.last-run.json
 .agents/settings.json
 .agents/settings.local.json
 .agents/skills/gsd-*/
+# Skill feedback journals are source-of-truth in solid-stats/skills, not the vendored
+# copy (process-skill-feedback SKILL.md §H) — `npx skills update` copies them in; ignore.
+.agents/skills/**/corrections-log.md
+.agents/skills/**/regression-evals.jsonl
 
 # graphify working dir (build + cache); canonical graph lives in .planning/graphs/
 graphify-out/
