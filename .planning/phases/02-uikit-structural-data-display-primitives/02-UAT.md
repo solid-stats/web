@@ -102,15 +102,27 @@ fix: |
   sign-in when out). Deep admin/moderation routes themselves are Phase 9 — but the account entry point must
   exist here. Give MobileTabBar a dedicated account-tab slot rather than slicing the section list.
 
-### GAP-05 — SkipLink demonstrates poorly in the catalog (functionally correct)
+### GAP-05 — SkipLink stays INVISIBLE on focus (legacy `clip` never reset) — real a11y defect; test is green-but-broken
 status: failed
-severity: low
+severity: high
 requirements: [KIT-01, QUAL-03]
 evidence: |
-  `keyboard.spec.ts` is green: SkipLink is sr-only until focused, then visible and targets `#main` — so it
-  WORKS. But the Matrix story shows nothing at rest, and in Ladle the first Tab lands in Ladle's own chrome,
-  so the user tabbed and saw nothing (user finding 9). a11y addition beyond the hi-fi (which has no skip link).
+  Diagnosed live (Playwright computed-style + screenshot, SkipLink/Matrix on the built preview). On focus the
+  link IS `position:fixed; top:16; left:16; width:155; height:44; z-index:50; opacity:1` with the focus ring —
+  BUT computed `clip: rect(0px, 0px, 0px, 0px)` PERSISTS (`clip-path` resets to `none`, the legacy `clip` does
+  not), so it paints nothing → invisible (screenshot: empty top-left corner). Root cause: the custom `.sr-only`
+  in `.ladle/tailwind.css` (`@layer base`, added Plan 02-01) uses the legacy `clip: rect(0,0,0,0)`; Tailwind's
+  `not-sr-only` only resets the modern `clip-path`, never the legacy `clip`. `keyboard.spec.ts` asserts only
+  `boundingBox().height >= 44`, but `clip` is paint-time not layout, so the box stays 44px and the test passes
+  GREEN while the link is visually gone. (The earlier "low / demonstrates poorly" triage was WRONG — this is a
+  real WCAG 2.4.1 Bypass-Blocks reveal failure.)
 fix: |
-  Add a story cell that renders the focused/revealed state statically (or a visible hint "Tab to reveal"),
-  so the catalog demonstrates the behavior without relying on iframe focus order. No change to the component
-  contract. Lowest priority.
+  CSS — make the visually-hidden recipe reveal-safe: either DELETE the redundant custom `.sr-only`
+  (Tailwind v4's own clip-path-based `sr-only`/`not-sr-only` IS generated via `@import "tailwindcss"` —
+  confirmed present in the build — and reveals correctly), or change the custom rule's `clip: rect(0,0,0,0)`
+  → `clip-path: inset(50%)` so `not-sr-only`'s `clip-path:none` resets it on focus. Verify the Sparkline
+  `<figcaption>` sr-only still hides. Also restore the chip's `px-4` on reveal — `not-sr-only` zeroes padding,
+  so the revealed text currently touches the edges.
+  TEST — strengthen `keyboard.spec.ts` so it CANNOT pass while clipped: assert the computed `clip` is `auto`
+  (and/or `clip-path` is `none`) on focus, or add a real paint/visibility check (`toBeInViewport` + non-empty
+  render). boundingBox-height alone is what hid this bug.
