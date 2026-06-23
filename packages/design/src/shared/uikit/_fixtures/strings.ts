@@ -88,6 +88,19 @@ export const STRINGS = {
   navMyRequests: { ru: "Мои заявки", en: "My requests" },
   navQueue: { ru: "Очередь", en: "Queue" },
   navAdmin: { ru: "Админка", en: "Admin" },
+  // GAP-02 nav-shell rework — the right-cluster utility controls. `navAccount` is
+  // the UNIVERSAL signed-in account/profile entry (every signed-in role gets it,
+  // independent of role); `navSignInSteam` is the signed-out Steam OAuth control.
+  // `navSearchAria`/`navLanguageAria` name the two icon-only right-cluster controls
+  // (icon-only ⇒ needs an accessible name — a11y.md). `tabAccount`/`tabSignIn` are
+  // the short labels for the MobileTabBar 5th account/sign-in tab (GAP-04). RU
+  // primary / EN mirror at parity (QUAL-05).
+  navAccount: { ru: "Профиль", en: "Account" },
+  navSignInSteam: { ru: "Войти через Steam", en: "Sign in with Steam" },
+  navSearchAria: { ru: "Поиск", en: "Search" },
+  navLanguageAria: { ru: "Сменить язык", en: "Switch language" },
+  tabAccount: { ru: "Профиль", en: "Account" },
+  tabSignIn: { ru: "Войти", en: "Sign in" },
   // Landmark aria-labels for the two nav regions (distinguished for SR users).
   navPrimaryAria: { ru: "Основная навигация", en: "Primary" },
   navMobileAria: { ru: "Мобильная навигация", en: "Mobile" },

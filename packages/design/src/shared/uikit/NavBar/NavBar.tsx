@@ -1,25 +1,36 @@
-// NavBar (KIT-01) — the desktop top nav: a sticky `<header>`-hosted `<nav>` at
-// `--nav-h` (56px → `h-14`) rendering a role-aware `items` list. Each item is a
-// focusable control whose ×7 states (enabled / hover / pressed / focused /
-// selected / disabled — loading n/a for nav) are mapped through a `data-state` +
-// `tv()` recipe (RESEARCH Pattern 2): the recipe applies the SAME token utilities
-// the real `:hover`/`:active`/`:focus-visible` apply, and a `data-state` override
-// drives the static catalog matrix (no real pointer, no arbitrary value).
+// NavBar (KIT-01) — the desktop top nav, reworked into a THREE-ZONE shell
+// (GAP-01/02, diffed against the binding hi-fi `.design/hifi/shell.jsx` nav-inner;
+// re-implemented with project tokens, never ported):
 //
-// The active section is `text-primary` (cyan) + `aria-current="page"` + a cyan
-// inset left-edge marker (`shadow-(--shadow-ring-glow)`-free; a literal inset
-// box-shadow token via `--color-primary`) — meaning is never carried by color
-// alone (a11y.md). Icons are `lucide-react` 18px locals; the whole item (icon +
-// label) is the click zone, and the interactive element carries `min-h-11` (the
-// 44px hit area lives on the control, not the glyph — Pitfall 3). Backdrop-blur on
-// the sticky bar is allowed (DESIGN.md Elevation); content is never blurred.
+//   [ Brand ]      [ section links (center) ]      [ right utility cluster ]
+//   left            overview … replays              search · language · account
 //
-// Role-aware slots are simply the passed `items` list — denied items are absent
-// (NO RBAC, NO routes — v1.0). `/lite` is the tailwind-merge-free build.
+// The right cluster is pinned right (`ml-auto`) and holds: a search icon-only
+// `<Button variant="ghost">` (accessible name from `navSearchAria`), a language
+// toggle `<Button variant="ghost">` showing the lang code (`navLanguageAria`), and
+// the account control — the UNIVERSAL signed-in account entry (`<Button
+// variant="secondary">` + user glyph) for every signed-in role, OR the Steam
+// sign-in (`<Button variant="primary">` + the sanctioned SteamLogo SVG) when
+// signed-out (GAP-02). Role extras (queue / admin) ADD to the cluster, never
+// replace the account entry.
+//
+// GAP-03 mid-width condense: the center section-link LABELS collapse to icon-only
+// below the `@5xl` container width and reappear at `@5xl` and up, so no width
+// between the mobile floor and the full-desktop breakpoint shows a cramped /
+// overflowing bar (the icons keep the targets ≥44px; the label is `title`-exposed).
+//
+// Every interactive control renders through the shared `Button` / `Link` `control`
+// recipe (GAP-19) — one source for the ≥44px hit area + the ONE canonical
+// `focus-visible:shadow-(--shadow-ring)` ring + `cursor-pointer`. The active
+// section stays `text-primary` (cyan) + `aria-current="page"` + a cyan inset
+// left-edge `before:` marker — never color-alone (a11y.md). `/lite` is the
+// merge-free build; all classes are literal token utilities (no arbitrary values).
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
+import { Languages, Search, User } from "lucide-react";
 import { tv } from "tailwind-variants/lite";
-import { Link } from "../Button";
+import { Button, Link } from "../Button";
+import { SteamLogo } from "./SteamLogo";
 
 /** The ×7 nav-item states (loading is n/a for nav). `enabled` is the resting state. */
 export type NavItemState = "enabled" | "hover" | "pressed" | "focused" | "selected" | "disabled";
@@ -36,6 +47,12 @@ export type NavItem = {
   readonly disabled?: boolean;
 };
 
+/** The right-cluster account control: the universal signed-in account entry, or the
+ *  signed-out Steam sign-in. Shaped by `navFixtures.accountFor(role)`. */
+export type NavAccount =
+  | { readonly kind: "account"; readonly label: string }
+  | { readonly kind: "signin"; readonly label: string };
+
 type Props = {
   className?: string;
   /** The role-aware section list (denied items simply absent — no RBAC, v1.0). */
@@ -44,33 +61,39 @@ type Props = {
   activeKey: string;
   /** The `<nav>` landmark accessible name (RU/EN), from `_fixtures/STRINGS`. */
   ariaLabel: string;
+  /** The LEFT brand slot — a word-mark / glyph node the consumer passes (rendered as a
+   *  ghost Link to overview). Omitted = no brand (the catalog passes one). */
+  brand?: ReactNode;
+  /** The RIGHT-cluster account control (universal account, or Steam sign-in). */
+  account: NavAccount;
+  /** Role-specific extras (queue / admin) that ADD to the right cluster (GAP-02). */
+  roleExtras?: readonly NavItem[];
+  /** The current language code shown on the language toggle (e.g. "RU" / "EN"). */
+  langCode: string;
+  /** Accessible name for the icon-only search control (RU/EN), from STRINGS. */
+  searchAriaLabel: string;
+  /** Accessible name for the language toggle (RU/EN), from STRINGS. */
+  languageAriaLabel: string;
   /**
    * Optional forced state for the static catalog matrix only — drives the
    * `data-state` override so one cell can show hover/pressed/focused without a
-   * real pointer. Omitted in real use (real `:hover`/`:active`/`:focus-visible`
-   * utilities below own live interaction).
+   * real pointer. Omitted in real use.
    */
   forcedState?: NavItemState;
 };
 
-// The nav-item recipe. `base` carries the real interaction utilities (hover /
-// active / focus-visible) so live nav works; the `state` variant is the catalog
-// override applied via `data-state`. Active = `text-primary` + a cyan inset
-// left-edge marker built from a literal `before:` pseudo-element bar
-// (`before:bg-primary`) — never fill-alone.
 // The sticky desktop header bar at `--nav-h` (56px → `h-14`). Backdrop-blur on the
 // sticky bar is sanctioned (DESIGN.md Elevation); the translucent `bg-bg-1/80` lets
 // content show through the blur — never blurs content itself.
 const navBar = tv({
-  base: "sticky top-0 z-40 flex h-14 items-center border-b border-border-1 bg-bg-1/80 px-4 backdrop-blur",
+  base: "sticky top-0 z-40 flex h-14 items-center gap-2 border-b border-border-1 bg-bg-1/80 px-4 backdrop-blur",
 });
 
 // GAP-19: the nav item renders `<Link variant="ghost">` (the shared ghost recipe owns
 // the transparent surface + muted→primary hover + active bg + the canonical ring + the
 // ≥44px hit area). This `navItem` recipe carries ONLY the nav-specific surface the base
 // does not: `relative` (the marker anchor), the active inset cyan left-edge `before:`
-// bar, and the `data-state` forced-matrix overrides (RESEARCH Pattern 2 — each maps to
-// the SAME utilities the live pseudo-classes apply, for the static catalog cells).
+// bar, and the `data-state` forced-matrix overrides (RESEARCH Pattern 2).
 const navItem = tv({
   base: "relative",
   variants: {
@@ -90,9 +113,29 @@ const navItem = tv({
   },
 });
 
-export function NavBar({ className, items, activeKey, ariaLabel, forcedState }: Props): ReactNode {
+export function NavBar({
+  className,
+  items,
+  activeKey,
+  ariaLabel,
+  brand,
+  account,
+  roleExtras,
+  langCode,
+  searchAriaLabel,
+  languageAriaLabel,
+  forcedState,
+}: Props): ReactNode {
   return (
     <header className={navBar({ className })}>
+      {/* LEFT — brand slot (ghost Link to overview). */}
+      {brand !== undefined && (
+        <Link variant="ghost" size="sm" href="#overview" className="shrink-0" data-nav-brand>
+          {brand}
+        </Link>
+      )}
+
+      {/* CENTER — role-invariant section links. */}
       <nav aria-label={ariaLabel} className="flex items-center gap-1">
         {items.map((item) => {
           const isActive = item.key === activeKey;
@@ -107,16 +150,59 @@ export function NavBar({ className, items, activeKey, ariaLabel, forcedState }: 
               href={item.disabled === true ? undefined : `#${item.key}`}
               disabled={item.disabled === true}
               aria-current={isActive ? "page" : undefined}
+              title={item.label}
               data-state={state}
               data-nav-item={item.key}
               className={navItem({ state, active: isActive })}
             >
               <Icon className="size-5 shrink-0" aria-hidden />
-              {item.label}
+              {/* GAP-03 condense: label icon-only below @5xl, shown at full width. */}
+              <span className="hidden @5xl:inline">{item.label}</span>
             </Link>
           );
         })}
       </nav>
+
+      {/* RIGHT — utility cluster, pinned right. */}
+      <div className="ml-auto flex shrink-0 items-center gap-1" data-nav-right>
+        <Button variant="ghost" size="sm" aria-label={searchAriaLabel} data-nav-search>
+          <Search className="size-5 shrink-0" aria-hidden />
+        </Button>
+        <Button variant="ghost" size="sm" aria-label={languageAriaLabel} data-nav-language>
+          <Languages className="size-5 shrink-0" aria-hidden />
+          {langCode}
+        </Button>
+
+        {/* Role-specific extras ADD to (never replace) the account entry (GAP-02). */}
+        {roleExtras?.map((extra) => {
+          const Icon = extra.icon;
+          return (
+            <Link
+              key={extra.key}
+              variant="ghost"
+              size="sm"
+              href={`#${extra.key}`}
+              title={extra.label}
+              data-nav-extra={extra.key}
+            >
+              <Icon className="size-5 shrink-0" aria-hidden />
+              <span className="hidden @5xl:inline">{extra.label}</span>
+            </Link>
+          );
+        })}
+
+        {account.kind === "account" ? (
+          <Button variant="secondary" size="sm" data-nav-account>
+            <User className="size-5 shrink-0" aria-hidden />
+            {account.label}
+          </Button>
+        ) : (
+          <Button variant="primary" size="sm" data-nav-signin>
+            <SteamLogo size={16} className="shrink-0" />
+            {account.label}
+          </Button>
+        )}
+      </div>
     </header>
   );
 }
