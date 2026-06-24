@@ -195,6 +195,12 @@ Seven-pillar review of the reworked `TableRow` + `CompactRow` diffed against the
 - Full gate green: ladle build, Playwright (220 passed), Vitest (91 passed), root `pnpm check` exit 0.
 - No STATE.md / ROADMAP.md writes (worktree mode — orchestrator owns those after the wave).
 
+## Self-Check: PASSED
+
+- Files verified on disk: 02-10-SUMMARY.md, TableRow.tsx, CompactRow.tsx (+ stories, specs, theme.css, gen-theme.mjs, DESIGN.md).
+- Commits verified in git log: deb4e49 (GAP-09), 28be118 (GAP-10), f72db64 (GAP-12/13), fd0c04b (SUMMARY).
+- Gate: ladle build OK · Playwright 220 passed · Vitest 91 passed · `pnpm check` exit 0 · no-arbitrary-values grep = 0.
+
 ---
 *Phase: 02-uikit-structural-data-display-primitives*
 *Completed: 2026-06-24*
