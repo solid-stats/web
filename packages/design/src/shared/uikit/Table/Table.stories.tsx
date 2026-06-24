@@ -192,7 +192,7 @@ export const RowStates: Story = () => {
         <div key={state} className="flex flex-col gap-1" data-state-cell={state}>
           <span className="font-body text-xs font-semibold uppercase text-text-muted">{state}</span>
           <div className="overflow-hidden rounded-md border border-border-1">
-            <table className="w-full table-fixed border-collapse">
+            <table className="w-full table-fixed border-separate border-spacing-0">
               <colgroup>
                 {COLUMNS.map((c) => (
                   <col key={c.key} style={{ width: `${c.width}px` }} />
