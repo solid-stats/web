@@ -45,7 +45,7 @@ blocked: 0
 > Close via `/gsd-plan-phase 2 --gaps` → `/gsd-execute-phase 2 --gaps-only`, with a re-run design-review that diffs against the hi-fi shell.
 
 ### GAP-01 — NavBar is a flat single-row list; missing the three-cluster shell + right-aligned account
-status: failed
+status: resolved
 severity: high
 requirements: [KIT-01, QUAL-02]
 evidence: |
@@ -60,7 +60,7 @@ fix: |
   no arbitrary values. AppShell passes the brand/search/lang/account slots through.
 
 ### GAP-02 — Account/profile is player-only; moderator & admin have no account entry
-status: failed
+status: resolved
 severity: high
 requirements: [KIT-01]
 evidence: |
@@ -73,7 +73,7 @@ fix: |
   per the chosen extended-role model — they do not replace the account entry. `signed-out` → sign-in (Steam).
 
 ### GAP-03 — Desktop↔mobile breakpoint too low; nav overflows at 640/768px
-status: failed
+status: resolved
 severity: high
 requirements: [KIT-01, QUAL-02]
 evidence: |
@@ -86,7 +86,7 @@ fix: |
   no width between mobile and full-desktop shows a cramped/overflowing bar.
 
 ### GAP-04 — MobileTabBar drops the account/sign-in tab; signed-in users (incl. admin) can't reach their account on mobile
-status: failed
+status: resolved
 severity: high
 requirements: [KIT-01]
 evidence: |
@@ -100,7 +100,7 @@ fix: |
   exist here. Give MobileTabBar a dedicated account-tab slot rather than slicing the section list.
 
 ### GAP-05 — SkipLink stays INVISIBLE on focus (legacy `clip` never reset) — real a11y defect; test is green-but-broken
-status: failed
+status: resolved
 severity: high
 requirements: [KIT-01, QUAL-03]
 evidence: |
@@ -135,7 +135,7 @@ fix: |
 > Close via `/gsd-plan-phase 2 --gaps` → `/gsd-execute-phase 2 --gaps-only` with a re-run design-review vs the hi-fi.
 
 ### GAP-06 — DensityToggle removed; density is automatic by screen/container (hi-fi divergence)
-status: failed
+status: resolved
 severity: high
 requirements: [KIT-02]
 evidence: |
@@ -149,7 +149,7 @@ fix: |
   `density` prop on `Table` (the auto-resolver feeds it), but no user-facing toggle.
 
 ### GAP-07 — Pagination diverges from hi-fi: no pages, no total, a stray «Это всё» text marker
-status: failed
+status: resolved
 severity: high
 requirements: [KIT-02]
 decision: KEEP the pager, make it real (user decision — option B, not the hi-fi no-pager model)
@@ -163,7 +163,7 @@ fix: |
   start. Controlled props (no engine, D-01). Surface the total here AND/OR in the table caption.
 
 ### GAP-08 — every table (and the skeleton) has a stray ~1–2px scroll; the skeleton must never scroll
-status: failed
+status: resolved
 severity: medium
 requirements: [KIT-02, QUAL-04]
 evidence: |
@@ -179,7 +179,7 @@ fix: |
   data box) AND assert no scrollbar (scrollHeight <= clientHeight) on both.
 
 ### GAP-09 — SELECTED row breaks the table-fixed column layout
-status: failed
+status: resolved
 severity: high
 requirements: [KIT-02, QUAL-03]
 evidence: |
@@ -196,7 +196,7 @@ fix: |
   aria-selected). Verify columns stay aligned with the colgroup.
 
 ### GAP-10 — FOCUSED row state is identical to ENABLED; no visible row focus
-status: failed
+status: resolved
 severity: high
 requirements: [KIT-02, QUAL-03]
 evidence: |
@@ -211,7 +211,7 @@ fix: |
   comment.
 
 ### GAP-11 — Table/RowStates "loading" cell shows real data, not the Skeleton
-status: failed
+status: resolved
 severity: medium
 requirements: [KIT-02, QUAL-04]
 evidence: |
@@ -224,7 +224,7 @@ fix: |
   `<Skeleton variant="table">` directly) so the catalog shows the shimmer placeholder, not data.
 
 ### GAP-12 — CompactRow/DataVolumes is broken: no rows render (narrow StateMatrix cells)
-status: failed
+status: resolved
 severity: high
 requirements: [KIT-02, QUAL-02]
 evidence: |
@@ -239,7 +239,7 @@ fix: |
   pattern.
 
 ### GAP-13 — CompactRow/Mobile: huge vertical gap between nickname and squad
-status: failed
+status: resolved
 severity: medium
 requirements: [KIT-02, QUAL-02]
 evidence: |
@@ -251,7 +251,7 @@ fix: |
   from the inline name so name + squad stack tightly. Tighten the row's vertical rhythm.
 
 ### GAP-14 — few vs limit-reached are visually indistinguishable
-status: failed
+status: resolved
 severity: low
 requirements: [KIT-02, QUAL-02]
 evidence: |
@@ -268,7 +268,7 @@ fix: |
 ## Gaps — KIT-03 / KIT-04 / KIT-07 + base primitives (visual UAT)
 
 ### GAP-15 — Skeleton has no sweep shimmer; it only pulses opacity (hi-fi divergence)
-status: failed
+status: resolved
 severity: medium
 requirements: [KIT-07, QUAL-04]
 evidence: |
@@ -282,7 +282,7 @@ fix: |
   to all Skeleton variants (text/tile/table); this also fixes the dull loading look on Table + StatTile.
 
 ### GAP-16 — StatTile loading skeleton does not reserve the delta row → CLS when delta tiles load
-status: failed
+status: resolved
 severity: medium
 requirements: [KIT-03, QUAL-04]
 evidence: |
@@ -310,7 +310,7 @@ fix: |
   Phase-3 KIT-06 tooltip when it lands (per-point week/value). Decide interim-now vs defer to Phase 3.
 
 ### GAP-18 — Badge outcome copy: RU is asymmetric («П» vs «пор.»); user wants W/L unified
-status: failed
+status: resolved
 severity: low
 requirements: [KIT-07, QUAL-05]
 evidence: |
@@ -323,7 +323,7 @@ fix: |
   parity intent documented (shorthand is intentional non-translation).
 
 ### GAP-19 — No shared Button / Link base primitive; ~7 components hand-roll inline buttons/anchors (DRY)
-status: failed
+status: resolved
 severity: medium
 requirements: [KIT-01, KIT-02, KIT-07]
 decision: INTRODUCE NOW in this Phase-2 gap cycle (user decision) — build the Button/Link base + refactor the hand-rolled controls onto it. (Typography showcase story: delivered inline outside the gap cycle on user request.)
