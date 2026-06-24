@@ -60,8 +60,14 @@ export const STRINGS = {
   // dropped). RU primary / EN mirror at parity. Interpolated at render by the story.
   paginationRange: { ru: "{from}–{to} из {total}", en: "{from}–{to} of {total}" },
   tierLevels: { ru: "ниже / норма / хорошо / отлично", en: "below / normal / good / excellent" },
-  outcomeWin: { ru: "П", en: "W" },
-  outcomeLoss: { ru: "пор.", en: "L" },
+  // GAP-18 / QUAL-05: the outcome badge copy is the W/L gaming shorthand in BOTH
+  // languages — an INTENTIONAL non-translation. The DESIGN.md `badge-outcome-*` recipes
+  // already name "W"/"L" as the paired label, and W/L is the universal community shorthand
+  // (the prior asymmetric RU «П» / «пор.» read as awkward and unbalanced against the EN
+  // W/L). QUAL-05 parity is satisfied: both locales carry the same shorthand by design —
+  // the `ru === en` value here is deliberate, not a missing translation.
+  outcomeWin: { ru: "W", en: "W" },
+  outcomeLoss: { ru: "L", en: "L" },
   // Moderation request status vocabulary (KIT-07 badge-status-*). The fixed set the
   // design-review Pillar 6 asserts; RU primary / EN mirror at parity.
   statusPending: { ru: "На рассмотрении", en: "Pending" },

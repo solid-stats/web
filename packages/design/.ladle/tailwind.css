@@ -46,3 +46,55 @@
     border-width: 0;
   }
 }
+
+/*
+ * GAP-15: the Skeleton SWEEP shimmer — a moving shine bar diffed (NOT ported) from the
+ * binding hi-fi `.design/hifi/players.css` `.sk::after` recipe (a `linear-gradient`
+ * overlay translated `translateX(-100%) → translateX(100%)`). Re-implemented with
+ * PROJECT tokens: the gradient shine reads `--color-text-muted` (the hi-fi used its
+ * `--fg-3`) via `color-mix`, NOT a raw hex. The Tailwind `animate-pulse` opacity pulse
+ * was barely perceptible on dark gunmetal; this sweep is the visible loading cue.
+ *
+ * Why a hand-authored keyframe (not a stock Tailwind animation utility): no stock
+ * Tailwind animation translates an `::after` overlay, and the gradient stop must read a
+ * token. This lives here (the Ladle Tailwind root) for the same reason `sr-only` does —
+ * theme.css is generated from DESIGN.md and carries no utilities. Transform-only
+ * (`translateX`) → performance.md compliant (never animates width/height/top/left);
+ * `prefers-reduced-motion: reduce` drops it to a STATIC block (no shine, no motion).
+ *
+ * Usage: put `.sk-sweep` on a `position: relative; overflow: hidden` shimmer block; the
+ * `::after` shine sweeps across it. The block keeps its reserved box (the overlay is
+ * `position: absolute; inset: 0` — it never changes box height, CLS = 0).
+ */
+@layer utilities {
+  .sk-sweep {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sk-sweep::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--color-text-muted) 16%, transparent),
+      transparent
+    );
+    animation: sk-sweep 1.25s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sk-sweep::after {
+      animation: none;
+    }
+  }
+}
+
+@keyframes sk-sweep {
+  100% {
+    transform: translateX(100%);
+  }
+}

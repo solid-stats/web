@@ -88,6 +88,35 @@ export const Matrix: Story = () => (
   </div>
 );
 
+// GAP-16: the CLS = 0 proof. A delta-bearing StatTile must be NO taller than its loading
+// skeleton, so the `withDelta` skeleton reserves the delta row; a plain (no-delta) tile
+// still matches the compact `tile` skeleton. cls.spec asserts both box equalities — the
+// skeleton holds the layout, so the skeleton→tile swap shifts nothing on load.
+export const Proof: Story = () => (
+  <div className="flex flex-col gap-6 bg-bg-1 p-4">
+    <div className="grid w-48 gap-3" data-cls-tile-delta>
+      <div data-cls-tile-delta-skeleton>
+        <Skeleton variant="tile" withDelta />
+      </div>
+      <div data-cls-tile-delta-final>
+        <StatTile
+          label={HERO_SCORE.ru}
+          value={fmt(VASILIY.score)}
+          delta={{ sign: "up", text: "+0.31" }}
+        />
+      </div>
+    </div>
+    <div className="grid w-48 gap-3" data-cls-tile-plain>
+      <div data-cls-tile-plain-skeleton>
+        <Skeleton variant="tile" />
+      </div>
+      <div data-cls-tile-plain-final>
+        <StatTile label={HERO_SCORE.ru} value={fmt(VASILIY.score)} />
+      </div>
+    </div>
+  </div>
+);
+
 type PlaygroundArgs = {
   label: string;
   value: string;

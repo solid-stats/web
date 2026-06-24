@@ -116,6 +116,58 @@ test.describe("Table CLS = 0", () => {
   });
 });
 
+// StatTile (KIT-03 / GAP-16 / QUAL-04): a delta-bearing StatTile renders a third
+// (`text-sm` delta) line, so its loading skeleton must reserve that delta row — else a
+// delta tile is TALLER than its skeleton and the skeleton→tile swap shifts the layout.
+// The Proof story renders the `withDelta` skeleton above a delta StatTile, and the plain
+// skeleton above a no-delta StatTile; each pair's box heights must match exactly (CLS = 0).
+const STAT_TILE_STORY = "kit-03-stat--stattile--proof";
+
+test.describe("StatTile CLS = 0", () => {
+  test("delta-tile skeleton reserves the same box height as the final delta tile", async ({
+    page,
+  }) => {
+    await page.goto(`/?story=${STAT_TILE_STORY}&mode=preview`);
+    await page.waitForSelector("[data-storyloaded]");
+
+    // GAP-16: the withDelta skeleton vs. the delta-bearing StatTile.
+    const deltaSkeleton = page.locator('[data-cls-tile-delta-skeleton] [data-skeleton="tile"]');
+    const deltaFinal = page.locator("[data-cls-tile-delta-final] [data-stat-tile]");
+
+    await expect(deltaSkeleton).toBeVisible();
+    await expect(deltaFinal).toBeVisible();
+
+    const deltaSkeletonBox = await deltaSkeleton.boundingBox();
+    const deltaFinalBox = await deltaFinal.boundingBox();
+
+    expect(deltaSkeletonBox, "delta skeleton has a box").not.toBeNull();
+    expect(deltaFinalBox, "delta tile has a box").not.toBeNull();
+    // The withDelta skeleton holds the delta tile's layout — heights match (CLS = 0).
+    expect(deltaSkeletonBox?.height).toBe(deltaFinalBox?.height);
+  });
+
+  test("plain-tile skeleton still matches the no-delta tile box height (no regression)", async ({
+    page,
+  }) => {
+    await page.goto(`/?story=${STAT_TILE_STORY}&mode=preview`);
+    await page.waitForSelector("[data-storyloaded]");
+
+    const plainSkeleton = page.locator('[data-cls-tile-plain-skeleton] [data-skeleton="tile"]');
+    const plainFinal = page.locator("[data-cls-tile-plain-final] [data-stat-tile]");
+
+    await expect(plainSkeleton).toBeVisible();
+    await expect(plainFinal).toBeVisible();
+
+    const plainSkeletonBox = await plainSkeleton.boundingBox();
+    const plainFinalBox = await plainFinal.boundingBox();
+
+    expect(plainSkeletonBox, "plain skeleton has a box").not.toBeNull();
+    expect(plainFinalBox, "plain tile has a box").not.toBeNull();
+    // The compact tile skeleton equals the no-delta tile box (CLS = 0).
+    expect(plainSkeletonBox?.height).toBe(plainFinalBox?.height);
+  });
+});
+
 // Sparkline (KIT-03 / D-03 / QUAL-04): the dependency-free DOM-bar chart reserves a
 // FIXED height regardless of the value count, so changing the data volume shifts
 // nothing. The Cls story renders an empty (flat-baseline) sparkline above a 10-week
