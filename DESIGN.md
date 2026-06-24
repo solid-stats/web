@@ -211,6 +211,7 @@ elevation:
   lg: "0 18px 48px rgba(0, 0, 0, 0.55)"
   ring: "0 0 0 2px {colors.bg-0}, 0 0 0 4px {colors.primary}"        # focus ring (2px offset)
   ring-glow: "0 0 0 1px {colors.primary-border}, 0 0 12px rgba(54, 197, 224, 0.25)"  # input focus
+  selected: "inset 2px 0 0 {colors.primary}"   # GAP-09 table-row left-edge marker (inset, no positioned <tr>)
 
 motion:
   # Fast and functional — animate transform/opacity ONLY (CLS = 0). No decorative motion.

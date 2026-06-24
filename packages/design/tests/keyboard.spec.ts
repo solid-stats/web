@@ -105,4 +105,36 @@ test.describe("Table full-row keyboard traversal", () => {
     const selected = page.locator('tr[aria-selected="true"]');
     expect(await selected.count(), "a selected row is marked aria-selected").toBeGreaterThan(0);
   });
+
+  // GAP-09: the selected-row left-edge marker is an inset box-shadow, NOT a positioned
+  // `before:` bar on a `position:relative` `<tr>` (which broke `table-fixed` widths on
+  // the selected row only). Prove columns stay aligned: the selected row's cell
+  // x-positions must match a non-selected (enabled) row's cell x-positions — same
+  // colgroup, no rightward shift / clipped trailing column.
+  test("the selected row's columns stay aligned with the colgroup (GAP-09)", async ({ page }) => {
+    await page.goto(`/?story=${TABLE_ROWSTATES_STORY}&mode=preview`);
+    await page.waitForSelector("[data-state-cell='selected'] [data-table-row]");
+
+    const cellX = async (stateCell: string): Promise<number[]> => {
+      const cells = page.locator(`[data-state-cell='${stateCell}'] tbody td`);
+      const count = await cells.count();
+      const xs: number[] = [];
+      for (let i = 0; i < count; i++) {
+        const box = await cells.nth(i).boundingBox();
+        xs.push(Math.round(box?.x ?? -1));
+      }
+      return xs;
+    };
+
+    const enabledX = await cellX("enabled");
+    const selectedX = await cellX("selected");
+    expect(selectedX.length, "selected row has the full column set").toBe(enabledX.length);
+    expect(selectedX, "selected row cells align with the enabled row (no shift)").toEqual(enabledX);
+
+    // The marker itself paints — the selected row carries the inset box-shadow.
+    const shadow = await page
+      .locator("[data-state-cell='selected'] tr[aria-selected='true']")
+      .evaluate((el) => getComputedStyle(el).boxShadow);
+    expect(shadow, "selected row paints the inset cyan left-edge marker").not.toBe("none");
+  });
 });

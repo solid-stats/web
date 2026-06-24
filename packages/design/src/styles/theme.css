@@ -112,6 +112,7 @@
   --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.55);
   --shadow-ring: 0 0 0 2px #0A0D13, 0 0 0 4px #36C5E0;
   --shadow-ring-glow: 0 0 0 1px rgba(54, 197, 224, 0.40), 0 0 12px rgba(54, 197, 224, 0.25);
+  --shadow-selected: inset 2px 0 0 #36C5E0;
 
   /* Motion — easing + duration custom props */
   --ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
