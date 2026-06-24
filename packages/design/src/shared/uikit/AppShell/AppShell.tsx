@@ -99,8 +99,16 @@ export function AppShell({
         />
       </div>
 
+      {/* The data/page container caps at the `--container` (1760px) ceiling and
+          CENTERS on wide screens — fluid below, then the gutters grow symmetrically
+          (DESIGN.md "container = 1760 ceiling, fluid below, then centers"). The
+          `<main>` landmark keeps the side padding full-width; the inner wrapper is the
+          measured content box (`max-w-(--container)` reads the token — no arbitrary
+          value, styling.md). `mx-auto` does the centering. */}
       <main id="main" className="flex-1 px-4 py-6" data-main>
-        {children}
+        <div className="mx-auto w-full max-w-(--container)" data-main-content>
+          {children}
+        </div>
       </main>
 
       {/* Mobile bottom tabs — primary nav below @5xl, hidden at @5xl and up. */}
