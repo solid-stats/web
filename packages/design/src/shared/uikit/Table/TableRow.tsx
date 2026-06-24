@@ -56,9 +56,20 @@ type Props = {
   forcedState?: RowState;
 };
 
+// GAP-10: the focused-row treatment — a surface lift (`bg-surface-3`) + an INSET cyan
+// ring (`shadow-(--shadow-row-focus)`). It is inset so the ring paints INSIDE the row
+// box and is never clipped under the sticky `<thead>` (WCAG 2.4.12). The live
+// `focus-within:` prefix and the forced `focused` catalog state map to the SAME
+// utilities via this one constant, so the static matrix cell matches real keyboard
+// focus exactly (the anchor keeps its own `focus-visible:shadow-(--shadow-ring)`).
+const ROW_FOCUS = "bg-surface-3 shadow-(--shadow-row-focus)";
+const rowFocusWithin = "focus-within:bg-surface-3 focus-within:shadow-(--shadow-row-focus)";
+
 // The row recipe. `base` carries the live interaction utilities (`hover:bg-surface-3`
-// per `table-row` L383). The `state` variant is the catalog override; `selected` adds
-// the primary-weak fill + the inset cyan left-edge marker (never fill-only).
+// per `table-row` L383; the real `focus-within:` lift via `rowFocusWithin`). The
+// `state` variant is the catalog override; `focused` maps to the SAME `ROW_FOCUS`
+// utilities; `selected` adds the primary-weak fill + the inset cyan left-edge marker
+// (never fill-only).
 // GAP-09: the selected left-edge marker is an inset box-shadow on the row
 // (`shadow-(--shadow-selected)` → `inset 2px 0 0 var(--color-primary)`), NOT an
 // absolutely-positioned `before:` bar on a `position:relative` `<tr>`. An abspos child
@@ -69,13 +80,13 @@ type Props = {
 // `box-border` the border sits INSIDE each cell box → zero added row height (no stray
 // scroll), and the last row drops it (`last:[&>td]:border-b-0`).
 const row = tv({
-  base: "group bg-surface-1 text-text-primary transition-colors [&>td]:border-b [&>td]:border-border-1 last:[&>td]:border-b-0 hover:bg-surface-3",
+  base: `group bg-surface-1 text-text-primary transition-colors [&>td]:border-b [&>td]:border-border-1 last:[&>td]:border-b-0 hover:bg-surface-3 ${rowFocusWithin}`,
   variants: {
     state: {
       enabled: "",
       hover: "bg-surface-3",
       pressed: "bg-surface-2",
-      focused: "",
+      focused: ROW_FOCUS,
       selected: "",
       disabled: "opacity-60",
     },

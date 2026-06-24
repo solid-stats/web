@@ -137,4 +137,54 @@ test.describe("Table full-row keyboard traversal", () => {
       .evaluate((el) => getComputedStyle(el).boxShadow);
     expect(shadow, "selected row paints the inset cyan left-edge marker").not.toBe("none");
   });
+
+  // GAP-10: the forced `focused` catalog cell is visibly distinct from `enabled` — it
+  // carries the surface lift + the inset cyan focus ring (the row recipe maps the forced
+  // state to the SAME utilities the live `focus-within:` applies).
+  test("the forced focused row differs from enabled (GAP-10)", async ({ page }) => {
+    await page.goto(`/?story=${TABLE_ROWSTATES_STORY}&mode=preview`);
+    await page.waitForSelector("[data-state-cell='focused'] [data-table-row]");
+
+    const rowStyle = async (stateCell: string) =>
+      page
+        .locator(`[data-state-cell='${stateCell}'] tbody tr`)
+        .evaluate((el) => {
+          const cs = getComputedStyle(el);
+          return { bg: cs.backgroundColor, shadow: cs.boxShadow };
+        });
+
+    const enabled = await rowStyle("enabled");
+    const focused = await rowStyle("focused");
+    expect(focused.shadow, "focused row paints an inset focus ring").not.toBe("none");
+    expect(
+      focused.bg !== enabled.bg || focused.shadow !== enabled.shadow,
+      "focused row is visibly distinct from enabled",
+    ).toBe(true);
+  });
+
+  // GAP-10: live keyboard focus on a row's name anchor lifts the ROW (focus-within) and
+  // the cyan focus indication paints inside the row box — it is inset, so it is never
+  // clipped under the sticky <thead> (WCAG 2.4.12).
+  test("live focus lifts the row and the ring is not obscured by the sticky header (GAP-10)", async ({
+    page,
+  }) => {
+    await page.goto(`/?story=${TABLE_SUCCESS_STORY}&mode=preview`);
+    await page.waitForSelector("[data-name-anchor]");
+
+    const firstRow = page.locator("[data-table-row]").first();
+    const restingShadow = await firstRow.evaluate((el) => getComputedStyle(el).boxShadow);
+
+    await firstRow.locator("[data-name-anchor]").focus();
+    const focusedShadow = await firstRow.evaluate((el) => getComputedStyle(el).boxShadow);
+    expect(focusedShadow, "row gains a focus-within indication on live focus").not.toBe(
+      restingShadow,
+    );
+    expect(focusedShadow, "the focus-within indication actually paints").not.toBe("none");
+
+    // The ring is inset → its painted box is fully within the row's own bounding box (not
+    // an outset ring that the sticky header would clip at the top edge).
+    const rowBox = await firstRow.boundingBox();
+    expect(rowBox, "focused row has a box").not.toBeNull();
+    expect(rowBox?.y ?? -1, "focused row sits below the viewport top (visible)").toBeGreaterThan(0);
+  });
 });
