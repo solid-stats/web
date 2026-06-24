@@ -14,7 +14,7 @@
 import type { ReactNode } from "react";
 import { LogIn, User } from "lucide-react";
 import { tv } from "tailwind-variants/lite";
-import { Button, Link } from "../Button";
+import { Button, FORCED_STATE, Link } from "../Button";
 import type { NavAccount, NavItem, NavItemState } from "../NavBar";
 
 type Props = {
@@ -42,25 +42,32 @@ const tabBar = tv({
 // transparent surface + muted→primary hover + active bg + the canonical ring + the
 // ≥44px floor). This `tab` recipe carries ONLY the tab-specific surface the base does
 // not: the icon-over-label column (`flex-col`), the ≥44px WIDTH floor (`min-w-11
-// flex-1`), `relative` + the cyan top-edge active marker, and the `data-state`
-// forced-matrix overrides (RESEARCH Pattern 2).
+// flex-1`), `relative` + the cyan top-edge active marker.
+//
+// GAP-20: the catalog forced hover/pressed/focused state is NOT a local variant-agnostic
+// override here — under the merge-free `/lite` build it lost to the ghost base by
+// stylesheet order, so the matrix cell misrepresented the tab's real
+// `:hover`/`:active`/`:focus-visible`. The forced cell now applies the shared
+// `FORCED_STATE.ghost` mirror (the same `!`-important tokens the ghost recipe applies
+// live, asserted in sync by `control.test.ts`) as an extra className on the `<Link>`.
 const tab = tv({
   base: "relative min-w-11 flex-1 flex-col gap-1",
   variants: {
-    state: {
-      enabled: "",
-      hover: "bg-surface-1 text-text-primary",
-      pressed: "translate-y-px bg-surface-2 text-text-primary",
-      focused: "shadow-(--shadow-ring) outline-none",
-      selected: "text-primary",
-      disabled: "",
-    },
     active: {
       true: "text-primary before:absolute before:inset-x-3 before:top-0 before:h-0.5 before:rounded-full before:bg-primary",
       false: "",
     },
   },
 });
+
+/** The catalog forced-state className for a tab (ghost) — empty for the resting/selected/
+ *  disabled states the matrix renders without a forced override. CATALOG-ONLY. */
+function forcedTabClass(state: NavItemState | undefined): string {
+  if (state === "hover" || state === "pressed" || state === "focused") {
+    return FORCED_STATE.ghost[state];
+  }
+  return "";
+}
 
 export function MobileTabBar({
   className,
@@ -87,7 +94,7 @@ export function MobileTabBar({
             aria-current={isActive ? "page" : undefined}
             data-state={state}
             data-tab={item.key}
-            className={tab({ state, active: isActive })}
+            className={`${tab({ active: isActive })} ${forcedTabClass(forcedState)}`}
           >
             <Icon className="size-5 shrink-0" aria-hidden />
             {item.label}
@@ -106,7 +113,7 @@ export function MobileTabBar({
           aria-current={activeKey === "account" ? "page" : undefined}
           data-state={forcedState}
           data-tab="account"
-          className={tab({ state: forcedState, active: activeKey === "account" })}
+          className={`${tab({ active: activeKey === "account" })} ${forcedTabClass(forcedState)}`}
         >
           <User className="size-5 shrink-0" aria-hidden />
           {accountTab.label}
@@ -116,7 +123,7 @@ export function MobileTabBar({
           variant="ghost"
           size="sm"
           data-tab="signin"
-          className={tab({ state: forcedState, active: false })}
+          className={`${tab({ active: false })} ${forcedTabClass(forcedState)}`}
         >
           <LogIn className="size-5 shrink-0" aria-hidden />
           {accountTab.label}

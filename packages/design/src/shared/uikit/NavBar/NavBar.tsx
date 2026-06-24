@@ -29,7 +29,7 @@ import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { Languages, Search, User } from "lucide-react";
 import { tv } from "tailwind-variants/lite";
-import { Button, Link } from "../Button";
+import { Button, FORCED_STATE, Link } from "../Button";
 import { SteamLogo } from "./SteamLogo";
 
 /** The ×7 nav-item states (loading is n/a for nav). `enabled` is the resting state. */
@@ -92,19 +92,18 @@ const navBar = tv({
 // GAP-19: the nav item renders `<Link variant="ghost">` (the shared ghost recipe owns
 // the transparent surface + muted→primary hover + active bg + the canonical ring + the
 // ≥44px hit area). This `navItem` recipe carries ONLY the nav-specific surface the base
-// does not: `relative` (the marker anchor), the active inset cyan left-edge `before:`
-// bar, and the `data-state` forced-matrix overrides (RESEARCH Pattern 2).
+// does not: `relative` (the marker anchor) and the active inset cyan left-edge `before:`
+// bar.
+//
+// GAP-20: the catalog forced hover/pressed/focused state is NOT a local variant-agnostic
+// override here — that lost to the ghost base by stylesheet order under the merge-free
+// `/lite` build, so the matrix cell rendered the resting style instead of the item's real
+// `:hover`/`:active`/`:focus-visible`. The forced cell now applies the shared
+// `FORCED_STATE.ghost` mirror (the same `!`-important tokens the ghost recipe applies live,
+// asserted in sync by `control.test.ts`) as an extra className on the `<Link>`.
 const navItem = tv({
   base: "relative",
   variants: {
-    state: {
-      enabled: "",
-      hover: "bg-surface-1 text-text-primary",
-      pressed: "translate-y-px bg-surface-2 text-text-primary",
-      focused: "shadow-(--shadow-ring) outline-none",
-      selected: "text-primary",
-      disabled: "",
-    },
     /** The active section — cyan text + the inset cyan left-edge marker. */
     active: {
       true: "text-primary before:absolute before:inset-y-1 before:left-0 before:w-0.5 before:rounded-full before:bg-primary",
@@ -112,6 +111,15 @@ const navItem = tv({
     },
   },
 });
+
+/** The catalog forced-state className for a nav item (ghost) — empty for the resting/
+ *  selected/disabled states the matrix renders without a forced override. CATALOG-ONLY. */
+function forcedNavClass(state: NavItemState | undefined): string {
+  if (state === "hover" || state === "pressed" || state === "focused") {
+    return FORCED_STATE.ghost[state];
+  }
+  return "";
+}
 
 export function NavBar({
   className,
@@ -153,7 +161,7 @@ export function NavBar({
               title={item.label}
               data-state={state}
               data-nav-item={item.key}
-              className={navItem({ state, active: isActive })}
+              className={`${navItem({ active: isActive })} ${forcedNavClass(forcedState)}`}
             >
               <Icon className="size-5 shrink-0" aria-hidden />
               {/* GAP-03 condense: label icon-only below @5xl, shown at full width. */}
