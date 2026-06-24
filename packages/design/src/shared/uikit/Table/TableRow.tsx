@@ -57,11 +57,17 @@ type Props = {
 };
 
 // GAP-10: the focused-row treatment — a surface lift (`bg-surface-3`) + an INSET cyan
-// ring (`shadow-(--shadow-row-focus)`). It is inset so the ring paints INSIDE the row
-// box and is never clipped under the sticky `<thead>` (WCAG 2.4.12). The live
-// `focus-within:` prefix and the forced `focused` catalog state map to the SAME
+// ring (`shadow-(--shadow-row-focus)`, the `--tw-shadow` slot). It is inset so the ring
+// paints INSIDE the row box and is never clipped under the sticky `<thead>` (WCAG 2.4.12).
+// The live `focus-within:` prefix and the forced `focused` catalog state map to the SAME
 // utilities via this one constant, so the static matrix cell matches real keyboard
 // focus exactly (the anchor keeps its own `focus-visible:shadow-(--shadow-ring)`).
+//
+// Two-slot composition (WCAG 2.4.7): the focus ring lives on `shadow-(--…)` (→ `--tw-shadow`)
+// while the selected left-edge marker (below) lives on `inset-shadow-(--…)` (→ `--tw-inset-shadow`).
+// `box-shadow` composes `var(--tw-inset-shadow), …, var(--tw-shadow)`, so a row that is BOTH
+// selected AND keyboard-focused paints BOTH markers — neither overwrites the other's slot
+// (the bug the single-`shadow-*` approach had under the merge-free `/lite` build).
 const ROW_FOCUS = "bg-surface-3 shadow-(--shadow-row-focus)";
 const rowFocusWithin = "focus-within:bg-surface-3 focus-within:shadow-(--shadow-row-focus)";
 
@@ -71,10 +77,14 @@ const rowFocusWithin = "focus-within:bg-surface-3 focus-within:shadow-(--shadow-
 // utilities; `selected` adds the primary-weak fill + the inset cyan left-edge marker
 // (never fill-only).
 // GAP-09: the selected left-edge marker is an inset box-shadow on the row
-// (`shadow-(--shadow-selected)` → `inset 2px 0 0 var(--color-primary)`), NOT an
+// (`inset-shadow-(--shadow-selected-marker)` → `inset 2px 0 0 var(--color-primary)`), NOT an
 // absolutely-positioned `before:` bar on a `position:relative` `<tr>`. An abspos child
 // in a `<tr>` broke the `table-fixed` colgroup widths on the selected row only; an inset
 // shadow paints the marker without positioning the `<tr>`, so columns stay aligned.
+// It uses the `inset-shadow-*` utility (→ `--tw-inset-shadow`), NOT `shadow-*`, so it occupies
+// a DIFFERENT box-shadow slot than the focus ring and the two compose (WCAG 2.4.7 — see ROW_FOCUS).
+// The `--shadow-selected-marker` token omits the `inset` keyword because `inset-shadow-(--var)`
+// prepends its own (`shadow-(--shadow-selected)` with the inset-bearing token would have doubled it).
 // GAP-08: under the table's `border-separate` model a `<tr>` border does not paint, so
 // the hairline lives on the row's CELLS (`[&>td]:border-b`). With Tailwind's global
 // `box-border` the border sits INSIDE each cell box → zero added row height (no stray
@@ -93,8 +103,10 @@ const row = tv({
     selected: {
       // primary-weak fill + the inset 2px cyan left-edge marker (an inset box-shadow on
       // the row, NOT a positioned before: bar — GAP-09) — paired with aria-selected,
-      // never fill-only. The marker reads the `--shadow-selected` @theme token.
-      true: "bg-primary-weak shadow-(--shadow-selected)",
+      // never fill-only. The marker reads the `--shadow-selected-marker` @theme token via the
+      // `inset-shadow-*` utility (the `--tw-inset-shadow` slot), so it composes with the
+      // focus ring on `--tw-shadow` instead of colliding with it (WCAG 2.4.7).
+      true: "bg-primary-weak inset-shadow-(--shadow-selected-marker)",
       false: "",
     },
     disabled: {

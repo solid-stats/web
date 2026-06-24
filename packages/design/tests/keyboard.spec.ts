@@ -160,6 +160,48 @@ test.describe("Table full-row keyboard traversal", () => {
     ).toBe(true);
   });
 
+  // GAP-09 + GAP-10 (WCAG 2.4.7): a row that is BOTH selected AND keyboard-focused must
+  // paint BOTH markers. The selected left-edge marker lives on the `--tw-inset-shadow` slot
+  // (`inset-shadow-(--shadow-selected-marker)`) and the focus ring on `--tw-shadow`
+  // (`shadow-(--shadow-row-focus)`), so `box-shadow` composes them instead of one
+  // overwriting the other (the single-`shadow-*` collision under the merge-free `/lite`
+  // build that this fix removed). Focus the SELECTED row's name anchor and assert the
+  // computed `box-shadow` carries BOTH a left-edge marker (`2px 0` offset, no spread) AND a
+  // 2px-spread inset ring — the case that had zero coverage before.
+  test("a selected + focused row paints both the marker and the focus ring (WCAG 2.4.7)", async ({
+    page,
+  }) => {
+    await page.goto(`/?story=${TABLE_ROWSTATES_STORY}&mode=preview`);
+    await page.waitForSelector("[data-state-cell='selected'] [data-name-anchor]");
+
+    const selectedRow = page.locator("[data-state-cell='selected'] tr[aria-selected='true']");
+
+    // Before focus the selected row already shows the marker but no ring.
+    const restingShadow = await selectedRow.evaluate((el) => getComputedStyle(el).boxShadow);
+
+    await page.locator("[data-state-cell='selected'] [data-name-anchor]").focus();
+    const focusedShadow = await selectedRow.evaluate((el) => getComputedStyle(el).boxShadow);
+
+    // Focus must ADD the ring, not replace the marker → the two values differ.
+    expect(focusedShadow, "focus adds an indication on top of the selected marker").not.toBe(
+      restingShadow,
+    );
+
+    // Both layers paint. Computed `box-shadow` serializes each shadow as
+    // `<color> <offset-x> <offset-y> <blur> <spread> inset` (Chromium puts `inset` last).
+    // The left-edge marker is `2px 0px 0px 0px inset` (a 2px x-offset, zero spread); the
+    // inset focus ring is `0px 0px 0px 2px inset` (zero offset, a 2px spread). Both must be
+    // present and inset — neither overwrote the other's slot.
+    const segments = focusedShadow.split(/,(?![^(]*\))/).map((s) => s.trim());
+    const marker = segments.find((s) => /\b2px 0px 0px 0px inset\b/.test(s));
+    const ring = segments.find((s) => /\b0px 0px 0px 2px inset\b/.test(s));
+    expect(
+      marker,
+      `selected left-edge marker still paints — box-shadow: ${focusedShadow}`,
+    ).toBeTruthy();
+    expect(ring, `focus ring paints alongside it — box-shadow: ${focusedShadow}`).toBeTruthy();
+  });
+
   // GAP-10: live keyboard focus on a row's name anchor lifts the ROW (focus-within) and
   // the cyan focus indication paints inside the row box — it is inset, so it is never
   // clipped under the sticky <thead> (WCAG 2.4.12).

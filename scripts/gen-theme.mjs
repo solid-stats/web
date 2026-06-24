@@ -314,13 +314,18 @@ function buildTheme(design) {
     // Focus-ring vars (consumed via box-shadow in component CSS, not a Tailwind shadow utility).
     lines.push(`--shadow-ring: ${resolveRefs(elevation.ring)};`);
     lines.push(`--shadow-ring-glow: ${resolveRefs(elevation["ring-glow"])};`);
-    // GAP-09: the table-row selected left-edge marker — an inset box-shadow (no positioned
-    // <tr>), consumed via the `shadow-(--shadow-selected)` arbitrary-property utility.
+    // GAP-09: the table-row selected left-edge marker — an inset box-shadow value (no
+    // positioned <tr>). `--shadow-selected` keeps the full `inset …` value (still referenced
+    // in the design-system component recipe); the row consumes `--shadow-selected-marker`,
+    // whose value omits the `inset` keyword because Tailwind's `inset-shadow-(--var)` utility
+    // prepends its own — so the marker lands on the `--tw-inset-shadow` slot and composes with
+    // the focus ring on `--tw-shadow` (a selected+focused row paints BOTH — WCAG 2.4.7).
     lines.push(`--shadow-selected: ${resolveRefs(elevation.selected)};`);
+    lines.push(`--shadow-selected-marker: ${resolveRefs(elevation["selected-marker"])};`);
     // GAP-10: the table-row focus-within frame — an INSET cyan ring so live keyboard focus
     // is visible on the row and never clipped under the sticky header (WCAG 2.4.12).
     lines.push(`--shadow-row-focus: ${resolveRefs(elevation["row-focus"])};`);
-    bump("shadow", 4);
+    bump("shadow", 5);
     sections.push(block("Shadows (floating UI) + focus-ring custom props", lines));
   }
 

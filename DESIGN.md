@@ -211,7 +211,14 @@ elevation:
   lg: "0 18px 48px rgba(0, 0, 0, 0.55)"
   ring: "0 0 0 2px {colors.bg-0}, 0 0 0 4px {colors.primary}"        # focus ring (2px offset)
   ring-glow: "0 0 0 1px {colors.primary-border}, 0 0 12px rgba(54, 197, 224, 0.25)"  # input focus
-  selected: "inset 2px 0 0 {colors.primary}"   # GAP-09 table-row left-edge marker (inset, no positioned <tr>)
+  selected: "inset 2px 0 0 {colors.primary}"   # GAP-09 table-row left-edge marker (inset box-shadow value)
+  # GAP-09 fix: the marker consumed via Tailwind's `inset-shadow-(--var)` utility, which
+  # PREPENDS its own `inset` keyword (`--tw-inset-shadow: inset var(--…)`). So the value here
+  # carries NO `inset` keyword — `inset-shadow-(--shadow-selected-marker)` resolves to
+  # `inset 2px 0 0 {primary}`. This puts the selected marker on the `--tw-inset-shadow` slot,
+  # leaving `--tw-shadow` free for `row-focus`, so a selected+focused row composes BOTH
+  # (`box-shadow: var(--tw-inset-shadow), …, var(--tw-shadow)`) — WCAG 2.4.7.
+  selected-marker: "2px 0 0 {colors.primary}"
   row-focus: "inset 0 0 0 2px {colors.primary}"   # GAP-10 table-row focus-within frame (inset, never clipped under the sticky header)
 
 motion:
