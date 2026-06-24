@@ -3,7 +3,7 @@ status: diagnosed
 phase: 02-uikit-structural-data-display-primitives
 source: [02-VERIFICATION.md]
 started: 2026-06-21T14:30:00Z
-updated: 2026-06-23T00:00:00Z
+updated: 2026-06-24T00:00:00Z
 ---
 
 ## Current Test
@@ -398,3 +398,97 @@ fix: |
   nav switch and is not redundant with the canonical tiers. Note: container-query components key off
   `@5xl`, so most per-component reflow is already exercised by 360/800/1280; the new widths primarily
   guard the large-screen ceiling and the tablet (768/1024) band.
+
+---
+
+## Gaps — round 2 (visual UAT, 2026-06-24)
+
+> Source: a second visual UAT pass over the Ladle catalog after the round-1 gap closure (GAP-01..21).
+> Two real defects (CompactRow / TableRow) fixed in-session; three were design-system questions resolved
+> by user decision. Code edits were direct (not via `/gsd-execute-phase`), gated by the design-package
+> Vitest + Playwright suites.
+
+### GAP-22 — CompactRow metric columns glue together (Счёт↔K/D nearly touch)
+status: resolved
+resolved: 2026-06-24 — `CompactRow.tsx` metric column `w-14` (56px) → `w-18` (72px). The value content
+  (Pips ≈30px + gap + a 4-glyph tabular value «4.13» ≈31px) ≈ 65px was WIDER than the 56px box; with
+  `items-end` the overflow spilled left into the `gap-3`, collapsing the visual Счёт↔K/D gap to ~2.8px
+  (measured live). `w-18` contains the content and restores an ~18.8px gap; columns stay aligned across rows.
+severity: medium
+requirements: [KIT-02, QUAL-02]
+evidence: |
+  Live measurement (CompactRow/DataVolumes, Chrome DevTools): metric box width 56px, inner content
+  (Pips+value) 65.2px → content overflows the box left by 9.2px; adjacent score-content-right (286) vs
+  kd-content-left (288.8) ⇒ only ~2.8px between the two metrics (user finding "колонки склеиваются").
+  Root cause is the under-width fixed column, NOT missing cell padding (padding would not help — the box is
+  narrower than its content).
+fix: |
+  Done: widen the `CompactMetric` column to `w-18` (72px) so Pips+value fit with a clean inter-column gap.
+  Post-fix measurement: box 72px, visual content gap 18.8px. (Note: the desktop `Table` cells already carry
+  `px-3` on wide fixed columns and were never affected — this was CompactRow-only, per user clarification.)
+
+### GAP-23 — Table row focus lift fires on pointer click (focus-within, not focus-visible)
+status: resolved
+resolved: 2026-06-24 — `TableRow.tsx` row recipe `focus-within:bg-surface-3 focus-within:shadow-(--shadow-row-focus)`
+  → `has-[:focus-visible]:…` (i.e. `:has(:focus-visible)`). The sync test (`TableRow.test.ts`) prefix and the
+  `keyboard.spec.ts` comments/messages were updated in step. Gate: TableRow Vitest 6/6, keyboard Playwright 9/9.
+severity: medium
+requirements: [KIT-02, QUAL-03]
+evidence: |
+  User finding: the row focus treatment triggers when clicking INSIDE the row. `:focus-within` matches on any
+  descendant `:focus`, including the name anchor taking POINTER focus on a mouse click, so a mouse user got
+  the keyboard-style row lift on every click. The anchor itself already gates its ring on `focus-visible:`,
+  so the row was inconsistent with it. Confirmed live: programmatic `.focus()` (what the keyboard spec uses)
+  DOES match `:focus-visible`, so `:has(:focus-visible)` keeps the keyboard tests green while dropping the
+  mouse-click false positive.
+fix: |
+  Done: key the row lift off `has-[:focus-visible]` so it paints only on keyboard / non-pointer focus,
+  mirroring the anchor's own `focus-visible:shadow-(--shadow-ring)` ring. ROW_FOCUS / ROW_FORCED_STATE.focused
+  (the resolved utilities) are unchanged — only the live prefix changed; the GAP-20 sync contract still holds.
+
+### GAP-24 — Button: no square `icon` size; no compact (<44px) tier
+status: deferred
+severity: low
+requirements: [KIT-01, KIT-02]
+decision: DEFER (user, 2026-06-24) — agreed both will be needed but NOT built now; add when a concrete dense
+  surface requires it. Recorded in MemPalace (wing `web`, room `design-system-backlog`).
+evidence: |
+  User questions: "кнопки-иконки не нужны?" and "две кнопки sm/md … точно хватит? … нужны будут низкие кнопки".
+  Icon-only already works via the existing Button (Lucide child + mandatory `aria-label`, documented in
+  Button.tsx), but there is no dedicated SQUARE `icon` size (equal padding + `min-w-11` to pair the 44px floor),
+  so an icon button renders rectangular `px-4`. And sm/md differ only in padding/font while both hold `min-h-11`
+  (44px a11y floor) — a compact <44px tier would be needed for dense toolbars/tables, but the only dense use
+  today (the sort-header Th) already runs `size="sm"` at the 44px floor.
+fix: |
+  Deferred. When built: add an `icon` size (square, `min-w-11`) + a catalog story; consider a `compact` low
+  tier (with the documented WCAG target-size trade-off) only once a real dense surface needs it.
+
+### GAP-25 — Catalog taxonomy: Button under "Base", Typography under "Foundations"
+status: resolved
+resolved: 2026-06-24 — no change (user accepted the rationale). Foundations = token primitives (Typography is a
+  token scale, DS-01), Base = interactive components (Button); the split is the standard design-system taxonomy
+  and grows naturally as more items land. Optional future rename `Base → Components` for clarity; not done now.
+severity: low
+requirements: [KIT-02]
+evidence: |
+  User question: "почему кнопки и типографика в разных блоках (Base / Foundations)? не логичнее оба в Base?"
+  The two groups currently hold one item each, which reads as arbitrary, but the semantic split is correct —
+  Typography is a token scale (a foundation), not a component.
+fix: |
+  None required. Optionally rename the "Base" Ladle group to "Components"; merging Typography into "Base" was
+  rejected (it is a token foundation, not a base component).
+
+### GAP-26 — Nav role model: admin sees «админка», moderator sees «очереди» — one panel or two?
+status: resolved
+resolved: 2026-06-24 — user decision: "админка включает в себя очереди" (the admin panel subsumes the moderation
+  queue). The current `navFixtures.ts` model is therefore correct as-is — `admin → админка` (queues live inside
+  it), `moderator → очереди`, both as additions to the universal account entry (GAP-02). No code change.
+severity: low
+requirements: [KIT-01]
+evidence: |
+  User question: "почему у админа админка, а у модератора очереди? разве у них не обоих одна админка?" Surfaced
+  the role-model question of whether admin ⊇ moderator. Resolved by defining админка ⊇ очереди, so a separate
+  admin "очереди" nav entry is unnecessary (admin reaches the queue through the admin panel).
+fix: |
+  None required. Decision recorded; `navFixtures.ts` unchanged. The real app builds the nav from the route tree
+  + signed-in role in v1.0 — this fixture documents the intended role model.

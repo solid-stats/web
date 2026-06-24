@@ -152,7 +152,7 @@ test.describe("Table full-row keyboard traversal", () => {
 
   // GAP-10: the forced `focused` catalog cell is visibly distinct from `enabled` — it
   // carries the surface lift + the inset cyan focus ring (the row recipe maps the forced
-  // state to the SAME utilities the live `focus-within:` applies).
+  // state to the SAME utilities the live `:has(:focus-visible)` applies).
   test("the forced focused row differs from enabled (GAP-10)", async ({ page }) => {
     await page.goto(`/?story=${TABLE_ROWSTATES_STORY}&mode=preview`);
     await page.waitForSelector("[data-state-cell='focused'] [data-table-row]");
@@ -214,7 +214,7 @@ test.describe("Table full-row keyboard traversal", () => {
     expect(ring, `focus ring paints alongside it — box-shadow: ${focusedShadow}`).toBeTruthy();
   });
 
-  // GAP-10: live keyboard focus on a row's name anchor lifts the ROW (focus-within) and
+  // GAP-10: live keyboard focus on a row's name anchor lifts the ROW (:has(:focus-visible)) and
   // the cyan focus indication paints inside the row box — it is inset, so it is never
   // clipped under the sticky <thead> (WCAG 2.4.12).
   test("live focus lifts the row and the ring is not obscured by the sticky header (GAP-10)", async ({
@@ -228,10 +228,10 @@ test.describe("Table full-row keyboard traversal", () => {
 
     await firstRow.locator("[data-name-anchor]").focus();
     const focusedShadow = await firstRow.evaluate((el) => getComputedStyle(el).boxShadow);
-    expect(focusedShadow, "row gains a focus-within indication on live focus").not.toBe(
+    expect(focusedShadow, "row gains a focus-visible indication on live focus").not.toBe(
       restingShadow,
     );
-    expect(focusedShadow, "the focus-within indication actually paints").not.toBe("none");
+    expect(focusedShadow, "the focus-visible indication actually paints").not.toBe("none");
 
     // Strong oracle for the GAP-10 rationale: the ring MUST be inset. An inset ring paints
     // INSIDE the row's client box, so the sticky `<thead>` (which overlaps the row's TOP

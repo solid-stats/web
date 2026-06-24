@@ -84,8 +84,13 @@ function CompactMetric({ label, cell }: { label: string; cell: TierCell }): Reac
           ? "text-info"
           : "text-win";
   return (
+    // UAT-R2: the column is `w-18` (72px), NOT `w-14` (56px). The value content
+    // (Pips ~30px + gap + a 4-glyph tabular value «4.13» ~31px) is ~65px — wider than a
+    // 56px box. With `items-end` the overflow spilled LEFT into the `gap-3` between the two
+    // metrics, collapsing the Счёт↔K/D gap to ~3px (the columns read as glued). `w-18`
+    // contains the content and keeps a clean ~19px gap; the two columns stay aligned across rows.
     <div
-      className="flex w-14 shrink-0 flex-col items-end gap-0.5"
+      className="flex w-18 shrink-0 flex-col items-end gap-0.5"
       data-compact-metric={cell.metric}
     >
       <span className="font-body text-2xs font-semibold uppercase tracking-label text-text-subtle">

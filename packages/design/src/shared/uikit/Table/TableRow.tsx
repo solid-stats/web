@@ -10,7 +10,7 @@
 // tier-colored with `Pips` (paired — never color-alone).
 //
 // `data-state` drives the static catalog matrix (RESEARCH Pattern 2); the forced
-// state maps to the SAME utilities the live `:hover`/`:focus-within` apply. The
+// state maps to the SAME utilities the live `:hover`/`:focus-visible` apply. The
 // row height is a computed dynamic value via inline style (ROW_H is row-model
 // geometry, not a themable token — the sanctioned escape, like the skeleton's
 // reserved colgroup widths). `/lite` is the tailwind-merge-free build.
@@ -59,9 +59,13 @@ type Props = {
 // GAP-10: the focused-row treatment — a surface lift (`bg-surface-3`) + an INSET cyan
 // ring (`shadow-(--shadow-row-focus)`, the `--tw-shadow` slot). It is inset so the ring
 // paints INSIDE the row box and is never clipped under the sticky `<thead>` (WCAG 2.4.12).
-// The live `focus-within:` prefix and the forced `focused` catalog state map to the SAME
-// utilities via this one constant, so the static matrix cell matches real keyboard
-// focus exactly (the anchor keeps its own `focus-visible:shadow-(--shadow-ring)`).
+// UAT-R2: it is keyed off `has-[:focus-visible]` (`:has(:focus-visible)`), NOT `focus-within`.
+// `focus-within` also matches when the inner name anchor takes POINTER focus, so a mouse user
+// got the keyboard-style row lift on every click (UAT round-2 finding). `:has(:focus-visible)`
+// lifts the row only when the anchor matches `:focus-visible` (keyboard / non-pointer focus),
+// mirroring the anchor's own `focus-visible:shadow-(--shadow-ring)` ring. The forced `focused`
+// catalog state maps to the SAME resolved utilities via this one constant, so the static
+// matrix cell matches real keyboard focus exactly.
 //
 // Two-slot composition (WCAG 2.4.7): the focus ring lives on `shadow-(--…)` (→ `--tw-shadow`)
 // while the selected left-edge marker (below) lives on `inset-shadow-(--…)` (→ `--tw-inset-shadow`).
@@ -69,12 +73,13 @@ type Props = {
 // selected AND keyboard-focused paints BOTH markers — neither overwrites the other's slot
 // (the bug the single-`shadow-*` approach had under the merge-free `/lite` build).
 // Exported so `TableRow.test.ts` can pin `ROW_FORCED_STATE.focused` against the SAME
-// utilities the live `focus-within:` lift applies (the sync contract — GAP-20).
+// utilities the live `:has(:focus-visible)` lift applies (the sync contract — GAP-20).
 export const ROW_FOCUS = "bg-surface-3 shadow-(--shadow-row-focus)";
-const rowFocusWithin = "focus-within:bg-surface-3 focus-within:shadow-(--shadow-row-focus)";
+const rowFocusVisible =
+  "has-[:focus-visible]:bg-surface-3 has-[:focus-visible]:shadow-(--shadow-row-focus)";
 
 // The row recipe. `base` carries the live interaction utilities (`hover:bg-surface-3`
-// per `table-row` L383; the real `focus-within:` lift via `rowFocusWithin`). `selected`
+// per `table-row` L383; the real `:has(:focus-visible)` lift via `rowFocusVisible`). `selected`
 // adds the primary-weak fill + the inset cyan left-edge marker (never fill-only) and
 // `disabled` the non-interactive treatment — both driven by the row's real props, not a
 // catalog override.
@@ -105,7 +110,7 @@ const rowFocusWithin = "focus-within:bg-surface-3 focus-within:shadow-(--shadow-
 // Exported so `TableRow.test.ts` can assert `ROW_FORCED_STATE` mirrors the recipe's live
 // `hover:` / `focus-within:` utilities (the catalog-can't-drift contract — GAP-20).
 export const row = tv({
-  base: `group bg-surface-1 text-text-primary transition-colors [&>td]:border-b [&>td]:border-border-1 last:[&>td]:border-b-0 hover:bg-surface-3 ${rowFocusWithin}`,
+  base: `group bg-surface-1 text-text-primary transition-colors [&>td]:border-b [&>td]:border-border-1 last:[&>td]:border-b-0 hover:bg-surface-3 ${rowFocusVisible}`,
   variants: {
     selected: {
       // primary-weak fill + the inset 2px cyan left-edge marker (an inset box-shadow on
@@ -124,13 +129,13 @@ export const row = tv({
 });
 
 // The catalog forced-state mirror for `<TableRow>` (RESEARCH Pattern 2). Each entry equals
-// the live `:hover` / `:active` / `:focus-within` utilities the `row` recipe applies for a
+// the live `:hover` / `:active` / `:has(:focus-visible)` utilities the `row` recipe applies for a
 // data row — pseudo-prefix dropped, `!`-important added so the forced cell deterministically
 // overrides the row's resting fill in the merge-free `/lite` build (a plain utility loses to
 // the base by stylesheet order, which is how the old map rendered `hover` as the resting
 // fill). The row has NO `active:` press treatment (the whole-row click delegates to the name
 // anchor), so `pressed` is empty — a faithful mirror, not an invented `bg-surface-2`. The
-// `focused` cell mirrors `ROW_FOCUS` (the SAME utilities the live `focus-within:` applies).
+// `focused` cell mirrors `ROW_FOCUS` (the SAME utilities the live `:has(:focus-visible)` applies).
 // `TableRow.test.ts` asserts this stays in sync with the recipe. CATALOG-ONLY — never put an
 // `!`-important state utility on a shipped row.
 export const ROW_FORCED_STATE: Record<"hover" | "pressed" | "focused", string> = {

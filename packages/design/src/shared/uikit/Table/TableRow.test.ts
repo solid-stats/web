@@ -3,7 +3,7 @@
 // OWN `tv()` recipe (not the shared Button/Link `control`), so it carries its own forced
 // map; this test pins that map against the live recipe so a later drift (a changed hover
 // fill, a re-introduced fake `pressed`, a moved focus ring) fails HERE instead of shipping
-// a fake catalog cell that misrepresents the real `:hover`/`:focus-within` (the GAP-20
+// a fake catalog cell that misrepresents the real `:hover`/`:has(:focus-visible)` (the GAP-20
 // defect: a variant-agnostic forced override lost to the base by stylesheet order under the
 // merge-free `/lite` build).
 import { describe, expect, test } from "vitest";
@@ -31,10 +31,10 @@ describe("TableRow — the catalog forced-state mirror stays in sync with the re
     expect(forced(ROW_FORCED_STATE.hover)).toEqual(pseudo(row(), "hover"));
   });
 
-  test("forced `focused` mirrors the live `focus-within:` lift + inset ring", () => {
-    // The live `focus-within:` utilities and `ROW_FOCUS` (the exported source of truth the
-    // recipe composes) describe the SAME treatment — the forced cell mirrors both.
-    expect(forced(ROW_FORCED_STATE.focused)).toEqual(pseudo(row(), "focus-within"));
+  test("forced `focused` mirrors the live `:has(:focus-visible)` lift + inset ring", () => {
+    // The live `has-[:focus-visible]:` utilities and `ROW_FOCUS` (the exported source of truth
+    // the recipe composes) describe the SAME treatment — the forced cell mirrors both.
+    expect(forced(ROW_FORCED_STATE.focused)).toEqual(pseudo(row(), "has-[:focus-visible]"));
     expect(forced(ROW_FORCED_STATE.focused)).toEqual(forced(ROW_FOCUS));
   });
 
