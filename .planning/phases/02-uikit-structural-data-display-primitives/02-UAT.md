@@ -1,5 +1,5 @@
 ---
-status: diagnosed
+status: complete
 phase: 02-uikit-structural-data-display-primitives
 source: [02-VERIFICATION.md]
 started: 2026-06-21T14:30:00Z
@@ -8,17 +8,7 @@ updated: 2026-06-24T00:00:00Z
 
 ## Current Test
 
-number: 2
-name: Visual inspection of the merged component catalog at representative breakpoints
-expected: |
-  Open Ladle (cd packages/design && pnpm ladle) and review at least NavBar,
-  MobileTabBar, AppShell (360px mobile / 1280px desktop), Table (row states + the
-  CLS skeleton-match), TierChip (tier levels), Sparkline (data volumes), and
-  FreshnessPill (4 states). Confirm: dark-only gunmetal palette with cyan only on
-  active/focus; tier level name + entry threshold visible (not clipped) and never
-  color-alone; hover/pressed/focused/selected states perceivably distinct; no clipped
-  RU text at the 360px floor; numerals are tabular-mono.
-awaiting: gap closure — KIT-01 nav-shell (5 gaps logged in ## Gaps; target = extended 4-role model, fixed)
+[testing complete]
 
 ## Tests
 
@@ -29,14 +19,21 @@ note: Discharged by the orchestrator after the wave-6 merge — `cd packages/des
 
 ### 2. Visual inspection of the component catalog at representative breakpoints
 expected: Dark-only gunmetal palette; cyan only on active/focus; tier level name + entry threshold visible; all interactive targets perceivably distinct in hover/pressed/focused/selected states; no clipped RU text at 360px; tabular-mono numerals.
-result: issues
-note: KIT-04/07/03 visually OK. KIT-01 nav-shell (5 gaps) AND KIT-02 data-table (9 gaps) both diverged from the binding hi-fi references `.design/hifi/shell.jsx` / `players.jsx` (D-11) — logged below. KIT-01 target: keep the 4-role model but fix it (universal account per signed-in role, right cluster, Brand, mobile account tab, breakpoint). KIT-02: density auto (drop DensityToggle) + Pagination model pending decision + real table bugs (selected-breaks-layout, focused==enabled, loading-shows-data, compact DataVolumes broken, nick↔squad gap, border-overflow scroll).
+result: pass
+note: |
+  Round-1 gaps (GAP-01..21) closed by the gap-closure plans 02-07..02-11 and recorded in
+  02-VERIFICATION.md (score 5/5, gaps_closed). The human round-2 visual pass (2026-06-24)
+  found GAP-22..26: GAP-22 (CompactRow metric glue) and GAP-23 (table row focus-within on
+  pointer click) FIXED in-session (commit b52e920); GAP-24 (icon/compact button tier)
+  DEFERRED; GAP-25 (Base/Foundations taxonomy) and GAP-26 (admin ⊇ queue role model)
+  resolved by user decision with no code change. User verdict: "в остальном всё хорошо".
+  Objective gate at close: design Vitest 97/97 + Playwright 252/252 (ladle build + full suite).
 
 ## Summary
 
 total: 2
-passed: 1
-issues: 1
+passed: 2
+issues: 0
 pending: 0
 skipped: 0
 blocked: 0
