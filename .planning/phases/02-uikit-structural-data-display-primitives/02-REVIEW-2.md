@@ -27,7 +27,14 @@ findings:
   warning: 0
   info: 2
   total: 2
-status: issues_found
+status: resolved
+resolution:
+  reviewed_verdict: approve
+  all_findings_fixed: true
+  low_findings_fixed:
+    - "IN-01 (--shadow-selected orphan-token comment overstated runtime use) — fixed in f9ebd49: gen-theme.mjs + TableRow.tsx comments now state it is the documented table-row.selected design-of-record value, NOT consumed at runtime (the shipped marker is --shadow-selected-marker on the inset-shadow slot). Token kept as design-of-record; DESIGN.md/theme.css untouched."
+    - "IN-02 (RowStates story used border-collapse vs production border-separate) — fixed in 5ba186b: story table now uses `border-separate border-spacing-0` matching Table.tsx, so the GAP-09 alignment test asserts the as-shipped geometry."
+  gate_after_fix: "Vitest 97, Playwright 252, pnpm check exit 0."
 ---
 
 # Phase 02 — UIKIT Structural / Data-Display Primitives — Code Review (Round 2)
