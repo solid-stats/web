@@ -82,7 +82,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Every primitive demonstrates its component states (enabled / hover / pressed / focused / selected / disabled / loading) and a defined click zone (whole row beats text), and is axe-clean, keyboard-operable, 44px targets, RU+EN sanity-checked.
   5. Tier/stat mock fixtures are internally consistent with the Score / K/D formulas and population tiers (`SS_BASELINE`).
 
-**Plans**: 9/11 plans executed
+**Plans**: 11/11 plans complete
 
 **Wave 1** *(enabler)*
 
@@ -124,11 +124,11 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 4 (gap — blocked on 02-09)**
 
-- [ ] 02-10-PLAN.md — GAP-09/10/12/13: KIT-02 row + compact visuals (selected inset shadow, focus-within, full-width compact, tight stack) (KIT-02, QUAL-02, QUAL-03)
+- [x] 02-10-PLAN.md — GAP-09/10/12/13: KIT-02 row + compact visuals (selected inset shadow, focus-within, full-width compact, tight stack) (KIT-02, QUAL-02, QUAL-03)
 
 **Wave 5 (gap — blocked on 02-09)**
 
-- [ ] 02-11-PLAN.md — GAP-15/16/18: skeleton sweep-shimmer, StatTile delta reserve, Badge W/L copy (KIT-03, KIT-07, QUAL-04, QUAL-05)
+- [x] 02-11-PLAN.md — GAP-15/16/18: skeleton sweep-shimmer, StatTile delta reserve, Badge W/L copy (KIT-03, KIT-07, QUAL-04, QUAL-05)
 
 **UI hint**: yes
 
@@ -255,7 +255,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Workspace & Design-System Foundation | 5/5 | Complete    | 2026-06-20 |
-| 2. UIKIT — Structural & Data-Display Primitives | 9/11 | In Progress|  |
+| 2. UIKIT — Structural & Data-Display Primitives | 11/11 | Complete   | 2026-06-24 |
 | 3. UIKIT — Interactive, i18n & Global-State Patterns | 0/TBD | Not started | - |
 | 4. Public Stats — Overview, Players & Player Profile | 0/TBD | Not started | - |
 | 5. Public Stats — Squads | 0/TBD | Not started | - |
