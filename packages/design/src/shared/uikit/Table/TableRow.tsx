@@ -68,14 +68,16 @@ type Props = {
 // `box-shadow` composes `var(--tw-inset-shadow), …, var(--tw-shadow)`, so a row that is BOTH
 // selected AND keyboard-focused paints BOTH markers — neither overwrites the other's slot
 // (the bug the single-`shadow-*` approach had under the merge-free `/lite` build).
-const ROW_FOCUS = "bg-surface-3 shadow-(--shadow-row-focus)";
+// Exported so `TableRow.test.ts` can pin `ROW_FORCED_STATE.focused` against the SAME
+// utilities the live `focus-within:` lift applies (the sync contract — GAP-20).
+export const ROW_FOCUS = "bg-surface-3 shadow-(--shadow-row-focus)";
 const rowFocusWithin = "focus-within:bg-surface-3 focus-within:shadow-(--shadow-row-focus)";
 
 // The row recipe. `base` carries the live interaction utilities (`hover:bg-surface-3`
-// per `table-row` L383; the real `focus-within:` lift via `rowFocusWithin`). The
-// `state` variant is the catalog override; `focused` maps to the SAME `ROW_FOCUS`
-// utilities; `selected` adds the primary-weak fill + the inset cyan left-edge marker
-// (never fill-only).
+// per `table-row` L383; the real `focus-within:` lift via `rowFocusWithin`). `selected`
+// adds the primary-weak fill + the inset cyan left-edge marker (never fill-only) and
+// `disabled` the non-interactive treatment — both driven by the row's real props, not a
+// catalog override.
 // GAP-09: the selected left-edge marker is an inset box-shadow on the row
 // (`inset-shadow-(--shadow-selected-marker)` → `inset 2px 0 0 var(--color-primary)`), NOT an
 // absolutely-positioned `before:` bar on a `position:relative` `<tr>`. An abspos child
@@ -89,17 +91,20 @@ const rowFocusWithin = "focus-within:bg-surface-3 focus-within:shadow-(--shadow-
 // the hairline lives on the row's CELLS (`[&>td]:border-b`). With Tailwind's global
 // `box-border` the border sits INSIDE each cell box → zero added row height (no stray
 // scroll), and the last row drops it (`last:[&>td]:border-b-0`).
-const row = tv({
+//
+// GAP-20: the catalog forced hover/pressed/focused state is NOT a local variant-agnostic
+// `state` variant anymore. Under the merge-free `/lite` build a plain forced `bg-surface-3`
+// lost to the base `bg-surface-1` by stylesheet order, so the catalog `hover` cell could
+// render the resting fill; and the old `pressed: bg-surface-2` invented a press treatment the
+// row has none of (the whole-row click delegates to the name anchor — there is no `active:`
+// on the `<tr>`). The forced cell now mirrors THIS recipe's real interaction utilities
+// VERBATIM with `!`-important via `ROW_FORCED_STATE` (asserted in sync by `TableRow.test.ts`),
+// so a recipe drift fails the test instead of shipping a fake catalog cell.
+// Exported so `TableRow.test.ts` can assert `ROW_FORCED_STATE` mirrors the recipe's live
+// `hover:` / `focus-within:` utilities (the catalog-can't-drift contract — GAP-20).
+export const row = tv({
   base: `group bg-surface-1 text-text-primary transition-colors [&>td]:border-b [&>td]:border-border-1 last:[&>td]:border-b-0 hover:bg-surface-3 ${rowFocusWithin}`,
   variants: {
-    state: {
-      enabled: "",
-      hover: "bg-surface-3",
-      pressed: "bg-surface-2",
-      focused: ROW_FOCUS,
-      selected: "",
-      disabled: "opacity-60",
-    },
     selected: {
       // primary-weak fill + the inset 2px cyan left-edge marker (an inset box-shadow on
       // the row, NOT a positioned before: bar — GAP-09) — paired with aria-selected,
@@ -110,11 +115,36 @@ const row = tv({
       false: "",
     },
     disabled: {
-      true: "pointer-events-none",
+      true: "pointer-events-none opacity-60",
       false: "",
     },
   },
 });
+
+// The catalog forced-state mirror for `<TableRow>` (RESEARCH Pattern 2). Each entry equals
+// the live `:hover` / `:active` / `:focus-within` utilities the `row` recipe applies for a
+// data row — pseudo-prefix dropped, `!`-important added so the forced cell deterministically
+// overrides the row's resting fill in the merge-free `/lite` build (a plain utility loses to
+// the base by stylesheet order, which is how the old map rendered `hover` as the resting
+// fill). The row has NO `active:` press treatment (the whole-row click delegates to the name
+// anchor), so `pressed` is empty — a faithful mirror, not an invented `bg-surface-2`. The
+// `focused` cell mirrors `ROW_FOCUS` (the SAME utilities the live `focus-within:` applies).
+// `TableRow.test.ts` asserts this stays in sync with the recipe. CATALOG-ONLY — never put an
+// `!`-important state utility on a shipped row.
+export const ROW_FORCED_STATE: Record<"hover" | "pressed" | "focused", string> = {
+  hover: "bg-surface-3!",
+  pressed: "",
+  focused: "bg-surface-3! shadow-(--shadow-row-focus)!",
+};
+
+/** The catalog forced-state className for a data row — empty for the resting/selected/
+ *  disabled states the matrix renders via the real props. CATALOG-ONLY. */
+function forcedRowClass(state: RowState | undefined): string {
+  if (state === "hover" || state === "pressed" || state === "focused") {
+    return ROW_FORCED_STATE[state];
+  }
+  return "";
+}
 
 // The player-name anchor — the focusable visible affordance. The focus ring sits on
 // the anchor (`focus-visible:shadow-(--shadow-ring)`), and `after:absolute
@@ -169,7 +199,7 @@ export function TableRow({
       data-state={state}
       data-table-row={rank}
       style={rowStyle}
-      className={row({ state, selected, disabled, className })}
+      className={`${row({ selected, disabled, className })} ${forcedRowClass(forcedState)}`}
     >
       {/* Rank — numeric, muted, the row's leading ordinal. */}
       <td className="px-3 text-right align-middle font-mono text-sm tabular-nums text-text-muted">
