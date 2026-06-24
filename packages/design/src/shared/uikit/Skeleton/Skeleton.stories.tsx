@@ -2,8 +2,11 @@
 // variants (text / tile / table) out via StateMatrix. `Proof` renders the table
 // skeleton beside a real table with the IDENTICAL colgroup + density ROW_H — the
 // CLS = 0 proof the `cls.spec` asserts (skeleton box height === final box height).
-// `Playground` exposes the variant via Ladle args. The skeleton shimmer animates
-// opacity only and is static under reduced-motion (the catalog runs `reducedMotion`).
+// `Playground` exposes the variant via Ladle args. GAP-15: the shimmer is now a SWEEP
+// — a `.sk-sweep` gradient bar that animates `transform: translateX(...)` ONLY across
+// every variant (text / tile / table), STATIC under reduced-motion (the catalog runs
+// `reducedMotion: "reduce"`, so the harness sees the static sweep — the overlay never
+// changes the reserved box, so CLS stays 0 regardless of motion).
 import type { Story, StoryDefault } from "@ladle/react";
 import { ROW_H, Skeleton, tableViewportHeight } from "./Skeleton";
 

@@ -1,7 +1,10 @@
 // Skeleton (KIT-07) — the loading placeholder that reserves the EXACT final layout
 // dimensions so a skeleton→data swap shifts nothing (CLS = 0, performance.md). The
-// shimmer animates `opacity` ONLY (never width/height/top/left/margin), and drops to
-// a static block under `motion-reduce:` (a11y.md / styling.md Motion). The whole
+// shimmer is a SWEEP (GAP-15): a gradient shine bar that animates `transform:
+// translateX(...)` ONLY (never width/height/top/left/margin) across an overlay, and
+// drops to a static block under `prefers-reduced-motion: reduce` (a11y.md / styling.md
+// Motion). The sweep keyframe + token-driven gradient live in `.ladle/tailwind.css`
+// (`.sk-sweep`), diffed from the binding hi-fi `players.css` `.sk::after`. The whole
 // surface is `aria-busy` and `aria-hidden` — it is a visual placeholder a screen
 // reader skips; the live "loading" intent is the consumer's `role="status"` label.
 //
@@ -41,10 +44,13 @@ export function tableViewportHeight(visibleRows: number, rowHeight: number): num
   return TABLE_HEADER_H + TABLE_HEADER_BORDER + visibleRows * rowHeight;
 }
 
-// The shimmer block: `surface-2` fill, opacity-only pulse, static under reduced motion.
-// `animate-pulse` is the Tailwind keyframe that animates `opacity` ONLY (no
-// width/height/top/left/margin) — `motion-reduce:animate-none` drops it to a static block.
-const shimmer = "rounded-sm bg-surface-2 motion-safe:animate-pulse motion-reduce:animate-none";
+// The shimmer block: `surface-2` fill + the GAP-15 `.sk-sweep` overlay shine. `.sk-sweep`
+// (defined in `.ladle/tailwind.css`) makes the block a `relative overflow-hidden` sweep
+// container whose `::after` gradient bar animates `transform: translateX(...)` ONLY (no
+// width/height/top/left/margin) and goes STATIC under `prefers-reduced-motion: reduce`.
+// Applied to EVERY variant's shimmer block (text / tile / table) — the dull pulse on
+// Table + StatTile loading is replaced too. The overlay never changes the box (CLS = 0).
+const shimmer = "sk-sweep rounded-sm bg-surface-2";
 
 const text = tv({
   base: shimmer,
