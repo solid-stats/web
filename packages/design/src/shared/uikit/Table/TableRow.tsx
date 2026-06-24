@@ -86,7 +86,9 @@ const rowFocusWithin = "focus-within:bg-surface-3 focus-within:shadow-(--shadow-
 // It uses the `inset-shadow-*` utility (→ `--tw-inset-shadow`), NOT `shadow-*`, so it occupies
 // a DIFFERENT box-shadow slot than the focus ring and the two compose (WCAG 2.4.7 — see ROW_FOCUS).
 // The `--shadow-selected-marker` token omits the `inset` keyword because `inset-shadow-(--var)`
-// prepends its own (`shadow-(--shadow-selected)` with the inset-bearing token would have doubled it).
+// prepends its own. The inset-bearing `--shadow-selected` token is retained only as the documented
+// `table-row.selected` design-of-record (DESIGN.md / theme.css); it is NOT consumed at runtime —
+// the shipped marker is `--shadow-selected-marker` on the inset-shadow slot.
 // GAP-08: under the table's `border-separate` model a `<tr>` border does not paint, so
 // the hairline lives on the row's CELLS (`[&>td]:border-b`). With Tailwind's global
 // `box-border` the border sits INSIDE each cell box → zero added row height (no stray
