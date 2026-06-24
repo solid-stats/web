@@ -1,10 +1,11 @@
 ---
 phase: 3
 slug: uikit-interactive-i18n-global-state-patterns
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-06-24
+reviewed_at: 2026-06-24
 ---
 
 # Phase 3 — UI Design Contract
