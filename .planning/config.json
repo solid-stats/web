@@ -48,7 +48,8 @@
     "security_block_on": "high",
     "post_planning_gaps": true,
     "plan_review_convergence": true,
-    "ui_review": true
+    "ui_review": true,
+    "test_command": "pnpm --filter @solid-stats/design test"
   },
   "git": {
     "branching_strategy": "milestone",
