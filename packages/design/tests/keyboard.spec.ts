@@ -121,7 +121,10 @@ test.describe("Table full-row keyboard traversal", () => {
       const xs: number[] = [];
       for (let i = 0; i < count; i++) {
         const box = await cells.nth(i).boundingBox();
-        xs.push(Math.round(box?.x ?? -1));
+        // No `?? -1` sentinel — a missing box is itself a failure, asserted explicitly
+        // with the column index so the message localizes the regression.
+        if (box === null) throw new Error(`${stateCell} cell ${i} has no bounding box`);
+        xs.push(box.x);
       }
       return xs;
     };
@@ -129,7 +132,16 @@ test.describe("Table full-row keyboard traversal", () => {
     const enabledX = await cellX("enabled");
     const selectedX = await cellX("selected");
     expect(selectedX.length, "selected row has the full column set").toBe(enabledX.length);
-    expect(selectedX, "selected row cells align with the enabled row (no shift)").toEqual(enabledX);
+    // Compare UNROUNDED x with a sub-pixel tolerance: a ≤0.5px colgroup drift on the
+    // selected row (the exact `table-fixed` regression GAP-09 guards) must FAIL, not be
+    // rounded away to integer-pixel equality.
+    for (const [i, selX] of selectedX.entries()) {
+      const enX = enabledX[i] ?? Number.NaN;
+      expect(
+        Math.abs(selX - enX),
+        `selected cell ${i} aligns with the enabled colgroup (no sub-pixel shift)`,
+      ).toBeLessThan(0.5);
+    }
 
     // The marker itself paints — the selected row carries the inset box-shadow.
     const shadow = await page
@@ -221,10 +233,39 @@ test.describe("Table full-row keyboard traversal", () => {
     );
     expect(focusedShadow, "the focus-within indication actually paints").not.toBe("none");
 
-    // The ring is inset → its painted box is fully within the row's own bounding box (not
-    // an outset ring that the sticky header would clip at the top edge).
-    const rowBox = await firstRow.boundingBox();
-    expect(rowBox, "focused row has a box").not.toBeNull();
-    expect(rowBox?.y ?? -1, "focused row sits below the viewport top (visible)").toBeGreaterThan(0);
+    // Strong oracle for the GAP-10 rationale: the ring MUST be inset. An inset ring paints
+    // INSIDE the row's client box, so the sticky `<thead>` (which overlaps the row's TOP
+    // edge when the row scrolls under it) cannot clip it. A regression to an OUTSET
+    // (clippable) ring — the exact failure GAP-10 guards — would drop `inset` here and fail.
+    expect(
+      focusedShadow,
+      `focus ring is inset (paints inside the row box, unclippable by the sticky header) — box-shadow: ${focusedShadow}`,
+    ).toContain("inset");
+
+    // Geometry corroboration: scroll the focused row up until it sits partially UNDER the
+    // sticky `<thead>`, then assert the ring still paints within the row's own client box —
+    // i.e. the row's painted top edge is below the sticky header's bottom edge, so the inset
+    // ring is not obscured (WCAG 2.4.12). Only meaningful when the viewport actually scrolls;
+    // a non-scrolling fixture can never put a row under the header, so guard on it.
+    const viewport = page.locator("[data-table-viewport]");
+    const canScroll = await viewport.evaluate((el) => el.scrollHeight > el.clientHeight + 1);
+    if (canScroll) {
+      // Scroll a later row to the top so it tucks under the sticky header, then focus it.
+      const probeRow = page.locator("[data-table-row]").last();
+      await probeRow.scrollIntoViewIfNeeded();
+      await probeRow.locator("[data-name-anchor]").focus();
+
+      const theadBottom = await page
+        .locator("[data-table] thead")
+        .evaluate((el) => el.getBoundingClientRect().bottom);
+      const probeBox = await probeRow.boundingBox();
+      if (probeBox === null) throw new Error("probed focused row has no bounding box");
+      // The row's painted top is at or below the sticky header's bottom edge → the inset
+      // ring's top edge paints in visible space, never under the `<thead>` band.
+      expect(
+        probeBox.y,
+        "focused row's top is not hidden behind the sticky header (ring unclipped)",
+      ).toBeGreaterThanOrEqual(theadBottom - 0.5);
+    }
   });
 });
