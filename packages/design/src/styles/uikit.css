@@ -1,0 +1,67 @@
+/*
+ * Hand-authored uikit utility recipes — the EXPORTED companion stylesheet to the
+ * generated `theme.css`.
+ *
+ * Why this file exists: `theme.css` is generated from DESIGN.md and carries only
+ * @theme tokens (no utilities), so a uikit primitive that needs a hand-authored CSS
+ * recipe cannot live there. `fonts.css` is the existing precedent — a hand-authored,
+ * exported sibling to `theme.css`. This file is the same: the package exports it
+ * (`@solid-stats/design/uikit.css`) so a production consumer (TanStack Start app) gets
+ * the recipe on graduation, NOT only the Ladle catalog. The Ladle Tailwind root imports
+ * this file too, so the catalog and the app compile the SAME class.
+ *
+ * theme.css stays the single GENERATED token source — do NOT move tokens here.
+ */
+
+/*
+ * GAP-15: the Skeleton SWEEP shimmer — a moving shine bar diffed (NOT ported) from the
+ * binding hi-fi `.design/hifi/players.css` `.sk::after` recipe (a `linear-gradient`
+ * overlay translated `translateX(-100%) → translateX(100%)`). Re-implemented with
+ * PROJECT tokens: the gradient shine reads `--color-text-muted` (the hi-fi used its
+ * `--fg-3`) via `color-mix`, NOT a raw hex. The Tailwind `animate-pulse` opacity pulse
+ * was barely perceptible on dark gunmetal; this sweep is the visible loading cue.
+ *
+ * Why a hand-authored keyframe (not a stock Tailwind animation utility): no stock
+ * Tailwind animation translates an `::after` overlay, and the gradient stop must read a
+ * token. It lives in this EXPORTED hand-authored stylesheet (not the generated theme.css,
+ * which carries no utilities) so it ships to a real consumer, not just the catalog.
+ * Transform-only (`translateX`) → performance.md compliant (never animates
+ * width/height/top/left); `prefers-reduced-motion: reduce` drops it to a STATIC block
+ * (no shine, no motion).
+ *
+ * Usage: put `.sk-sweep` on a `position: relative; overflow: hidden` shimmer block; the
+ * `::after` shine sweeps across it. The block keeps its reserved box (the overlay is
+ * `position: absolute; inset: 0` — it never changes box height, CLS = 0).
+ */
+@layer utilities {
+  .sk-sweep {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sk-sweep::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--color-text-muted) 16%, transparent),
+      transparent
+    );
+    animation: sk-sweep 1.25s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sk-sweep::after {
+      animation: none;
+    }
+  }
+}
+
+@keyframes sk-sweep {
+  100% {
+    transform: translateX(100%);
+  }
+}

@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     "./theme.css": "./src/styles/theme.css",
+    "./uikit.css": "./src/styles/uikit.css",
     ".": {
       "types": "./src/index.ts",
       "default": "./src/index.ts"

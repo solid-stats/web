@@ -3,8 +3,12 @@
 // shimmer is a SWEEP (GAP-15): a gradient shine bar that animates `transform:
 // translateX(...)` ONLY (never width/height/top/left/margin) across an overlay, and
 // drops to a static block under `prefers-reduced-motion: reduce` (a11y.md / styling.md
-// Motion). The sweep keyframe + token-driven gradient live in `.ladle/tailwind.css`
-// (`.sk-sweep`), diffed from the binding hi-fi `players.css` `.sk::after`. The whole
+// Motion). The sweep keyframe + token-driven gradient live in the EXPORTED
+// `src/styles/uikit.css` (`.sk-sweep`), diffed from the binding hi-fi `players.css`
+// `.sk::after`. GRADUATION NOTE: a production consumer MUST import
+// `@solid-stats/design/uikit.css` (alongside `@solid-stats/design/theme.css`) or the
+// `.sk-sweep` shimmer silently degrades to a static block — the class is NOT in the
+// generated theme.css. The Ladle catalog imports it via `.ladle/tailwind.css`. The whole
 // surface is `aria-busy` and `aria-hidden` — it is a visual placeholder a screen
 // reader skips; the live "loading" intent is the consumer's `role="status"` label.
 //
@@ -45,7 +49,7 @@ export function tableViewportHeight(visibleRows: number, rowHeight: number): num
 }
 
 // The shimmer block: `surface-2` fill + the GAP-15 `.sk-sweep` overlay shine. `.sk-sweep`
-// (defined in `.ladle/tailwind.css`) makes the block a `relative overflow-hidden` sweep
+// (defined in the exported `src/styles/uikit.css`) makes the block a `relative overflow-hidden` sweep
 // container whose `::after` gradient bar animates `transform: translateX(...)` ONLY (no
 // width/height/top/left/margin) and goes STATIC under `prefers-reduced-motion: reduce`.
 // Applied to EVERY variant's shimmer block (text / tile / table) — the dull pulse on
