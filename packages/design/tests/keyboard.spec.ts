@@ -105,4 +105,84 @@ test.describe("Table full-row keyboard traversal", () => {
     const selected = page.locator('tr[aria-selected="true"]');
     expect(await selected.count(), "a selected row is marked aria-selected").toBeGreaterThan(0);
   });
+
+  // GAP-09: the selected-row left-edge marker is an inset box-shadow, NOT a positioned
+  // `before:` bar on a `position:relative` `<tr>` (which broke `table-fixed` widths on
+  // the selected row only). Prove columns stay aligned: the selected row's cell
+  // x-positions must match a non-selected (enabled) row's cell x-positions — same
+  // colgroup, no rightward shift / clipped trailing column.
+  test("the selected row's columns stay aligned with the colgroup (GAP-09)", async ({ page }) => {
+    await page.goto(`/?story=${TABLE_ROWSTATES_STORY}&mode=preview`);
+    await page.waitForSelector("[data-state-cell='selected'] [data-table-row]");
+
+    const cellX = async (stateCell: string): Promise<number[]> => {
+      const cells = page.locator(`[data-state-cell='${stateCell}'] tbody td`);
+      const count = await cells.count();
+      const xs: number[] = [];
+      for (let i = 0; i < count; i++) {
+        const box = await cells.nth(i).boundingBox();
+        xs.push(Math.round(box?.x ?? -1));
+      }
+      return xs;
+    };
+
+    const enabledX = await cellX("enabled");
+    const selectedX = await cellX("selected");
+    expect(selectedX.length, "selected row has the full column set").toBe(enabledX.length);
+    expect(selectedX, "selected row cells align with the enabled row (no shift)").toEqual(enabledX);
+
+    // The marker itself paints — the selected row carries the inset box-shadow.
+    const shadow = await page
+      .locator("[data-state-cell='selected'] tr[aria-selected='true']")
+      .evaluate((el) => getComputedStyle(el).boxShadow);
+    expect(shadow, "selected row paints the inset cyan left-edge marker").not.toBe("none");
+  });
+
+  // GAP-10: the forced `focused` catalog cell is visibly distinct from `enabled` — it
+  // carries the surface lift + the inset cyan focus ring (the row recipe maps the forced
+  // state to the SAME utilities the live `focus-within:` applies).
+  test("the forced focused row differs from enabled (GAP-10)", async ({ page }) => {
+    await page.goto(`/?story=${TABLE_ROWSTATES_STORY}&mode=preview`);
+    await page.waitForSelector("[data-state-cell='focused'] [data-table-row]");
+
+    const rowStyle = async (stateCell: string) =>
+      page.locator(`[data-state-cell='${stateCell}'] tbody tr`).evaluate((el) => {
+        const cs = getComputedStyle(el);
+        return { bg: cs.backgroundColor, shadow: cs.boxShadow };
+      });
+
+    const enabled = await rowStyle("enabled");
+    const focused = await rowStyle("focused");
+    expect(focused.shadow, "focused row paints an inset focus ring").not.toBe("none");
+    expect(
+      focused.bg !== enabled.bg || focused.shadow !== enabled.shadow,
+      "focused row is visibly distinct from enabled",
+    ).toBe(true);
+  });
+
+  // GAP-10: live keyboard focus on a row's name anchor lifts the ROW (focus-within) and
+  // the cyan focus indication paints inside the row box — it is inset, so it is never
+  // clipped under the sticky <thead> (WCAG 2.4.12).
+  test("live focus lifts the row and the ring is not obscured by the sticky header (GAP-10)", async ({
+    page,
+  }) => {
+    await page.goto(`/?story=${TABLE_SUCCESS_STORY}&mode=preview`);
+    await page.waitForSelector("[data-name-anchor]");
+
+    const firstRow = page.locator("[data-table-row]").first();
+    const restingShadow = await firstRow.evaluate((el) => getComputedStyle(el).boxShadow);
+
+    await firstRow.locator("[data-name-anchor]").focus();
+    const focusedShadow = await firstRow.evaluate((el) => getComputedStyle(el).boxShadow);
+    expect(focusedShadow, "row gains a focus-within indication on live focus").not.toBe(
+      restingShadow,
+    );
+    expect(focusedShadow, "the focus-within indication actually paints").not.toBe("none");
+
+    // The ring is inset → its painted box is fully within the row's own bounding box (not
+    // an outset ring that the sticky header would clip at the top edge).
+    const rowBox = await firstRow.boundingBox();
+    expect(rowBox, "focused row has a box").not.toBeNull();
+    expect(rowBox?.y ?? -1, "focused row sits below the viewport top (visible)").toBeGreaterThan(0);
+  });
 });

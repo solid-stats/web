@@ -314,7 +314,13 @@ function buildTheme(design) {
     // Focus-ring vars (consumed via box-shadow in component CSS, not a Tailwind shadow utility).
     lines.push(`--shadow-ring: ${resolveRefs(elevation.ring)};`);
     lines.push(`--shadow-ring-glow: ${resolveRefs(elevation["ring-glow"])};`);
-    bump("shadow", 2);
+    // GAP-09: the table-row selected left-edge marker — an inset box-shadow (no positioned
+    // <tr>), consumed via the `shadow-(--shadow-selected)` arbitrary-property utility.
+    lines.push(`--shadow-selected: ${resolveRefs(elevation.selected)};`);
+    // GAP-10: the table-row focus-within frame — an INSET cyan ring so live keyboard focus
+    // is visible on the row and never clipped under the sticky header (WCAG 2.4.12).
+    lines.push(`--shadow-row-focus: ${resolveRefs(elevation["row-focus"])};`);
+    bump("shadow", 4);
     sections.push(block("Shadows (floating UI) + focus-ring custom props", lines));
   }
 

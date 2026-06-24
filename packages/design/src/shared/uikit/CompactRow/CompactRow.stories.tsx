@@ -5,7 +5,6 @@
 // the top-N + show-more via Ladle args. Copy is RU primary / EN mirror from STRINGS.
 import type { Story, StoryDefault } from "@ladle/react";
 import { ROSTER, SS_BASELINE, STRINGS, type TierMetric, tierFor, type Player } from "../_fixtures";
-import { StateCell, StateMatrix } from "../_state-matrix";
 import type { TierCell } from "../Table";
 import { CompactList, type CompactRowData } from "./CompactRow";
 
@@ -80,48 +79,39 @@ export const MobileEn: Story = () => {
   );
 };
 
-// ×4 data-volume states for the mobile list.
+// ×4 data-volume states for the mobile list. GAP-12: each state is a FULL-WIDTH labelled
+// section at a real mobile width (a ≤384px `max-w-sm` column), NOT inside the shared
+// narrow `StateMatrix` grid — the wide compact-row content could not lay out in a cramped
+// grid cell (empty tall boxes, the caption wrapped to 3 lines). This mirrors the Table
+// DataVolumes/RowStates full-width fix the prior wave applied; the `data-state-cell` hook
+// stays so the catalog asserts each named volume.
+const VOLUMES: readonly { label: string; count: number; topN: number; expandable: boolean }[] = [
+  { label: "few", count: 3, topN: 3, expandable: false },
+  { label: "many", count: ROWS.length, topN: 6, expandable: true },
+  { label: "limit", count: 4, topN: 4, expandable: false },
+  { label: "single", count: 1, topN: 1, expandable: false },
+];
+
 export const DataVolumes: Story = () => (
   <div className="flex flex-col gap-6 bg-bg-1 p-4">
-    <StateMatrix title="CompactList — объёмы данных (×4)">
-      <StateCell label="few">
-        <CompactList
-          rows={ROWS.slice(0, 3)}
-          topN={3}
-          metricLabels={metricLabels("ru")}
-          showMoreLabel={showMore("ru", 0)}
-          caption={caption("ru", 3)}
-        />
-      </StateCell>
-      <StateCell label="many">
-        <CompactList
-          rows={ROWS}
-          topN={6}
-          metricLabels={metricLabels("ru")}
-          showMoreLabel={showMore("ru", ROWS.length - 6)}
-          caption={caption("ru", ROWS.length)}
-        />
-      </StateCell>
-      <StateCell label="limit">
-        <CompactList
-          rows={ROWS.slice(0, 4)}
-          topN={4}
-          metricLabels={metricLabels("ru")}
-          showMoreLabel={showMore("ru", 0)}
-          caption={caption("ru", 4)}
-          expandable={false}
-        />
-      </StateCell>
-      <StateCell label="single">
-        <CompactList
-          rows={ROWS.slice(0, 1)}
-          topN={1}
-          metricLabels={metricLabels("ru")}
-          showMoreLabel={showMore("ru", 0)}
-          caption={caption("ru", 1)}
-        />
-      </StateCell>
-    </StateMatrix>
+    <h2 className="font-display text-lg font-semibold tracking-tight text-text-primary">
+      CompactList — объёмы данных (×4)
+    </h2>
+    {VOLUMES.map(({ label, count, topN, expandable }) => (
+      <section key={label} className="flex flex-col gap-1" data-state-cell={label}>
+        <span className="font-body text-xs font-semibold uppercase text-text-muted">{label}</span>
+        <div className="w-full max-w-sm">
+          <CompactList
+            rows={ROWS.slice(0, count)}
+            topN={topN}
+            metricLabels={metricLabels("ru")}
+            showMoreLabel={showMore("ru", Math.max(count - topN, 0))}
+            caption={caption("ru", count)}
+            expandable={expandable}
+          />
+        </div>
+      </section>
+    ))}
   </div>
 );
 

@@ -189,4 +189,57 @@ test.describe("CompactRow at the 360px floor", () => {
     await page.waitForSelector("[data-compact-list]");
     await expect(page.locator("[data-show-more]")).toBeVisible();
   });
+
+  // GAP-13: the inline name dropped `min-h-11`, so name + squad stack tightly. The ≥44px
+  // hit area now comes from the ROW (`min-h-11` on the flex row). Assert both: the row box
+  // is ≥44px tall AND the squad sits directly under the name (no ~44px inflated gap).
+  test("the row keeps a >=44px hit area while name + squad stack tightly (GAP-13)", async ({
+    page,
+  }) => {
+    await page.goto(`/?story=${COMPACTROW_STORY}&mode=preview`);
+    await page.waitForSelector("[data-compact-row]");
+
+    const firstRow = page.locator("[data-compact-row]").first();
+    const rowBox = await firstRow.boundingBox();
+    expect(
+      rowBox?.height ?? 0,
+      "the row is >=44px tall (hit area on the row)",
+    ).toBeGreaterThanOrEqual(44);
+
+    // name + squad stack tightly: the squad's top is within a few px of the name's
+    // bottom (the old `min-h-11` on the name inflated this gap to ~44px). The squad is
+    // the muted span that immediately follows the name anchor in the identity column.
+    const nameBox = await firstRow.locator("[data-name-anchor]").boundingBox();
+    const squadBox = await firstRow.locator("[data-name-anchor] + span").first().boundingBox();
+    const gap = (squadBox?.y ?? 0) - ((nameBox?.y ?? 0) + (nameBox?.height ?? 0));
+    expect(gap, "no inflated gap between the name and the squad").toBeLessThan(12);
+  });
+});
+
+// GAP-12: the CompactRow/DataVolumes story renders each ×4 data-volume as a FULL-WIDTH
+// labelled section at a ≤384px column — real rows render (not empty tall boxes in a
+// narrow StateMatrix cell), and the caption stays a single line.
+const COMPACTROW_VOLUMES_STORY = "kit-02-data-table--compactrow--data-volumes";
+
+test.describe("CompactRow DataVolumes renders full-width (GAP-12)", () => {
+  test("every labelled volume cell renders real rows; the caption does not wrap", async ({
+    page,
+  }) => {
+    await page.goto(`/?story=${COMPACTROW_VOLUMES_STORY}&mode=preview`);
+    await page.waitForSelector("[data-state-cell] [data-compact-row]");
+
+    for (const label of ["few", "many", "limit", "single"]) {
+      const cell = page.locator(`[data-state-cell='${label}']`);
+      const rows = cell.locator("[data-compact-row]");
+      expect(await rows.count(), `${label} cell renders real compact rows`).toBeGreaterThan(0);
+
+      // The caption stays one line (it wrapped to 3 lines in the cramped StateMatrix cell).
+      const caption = cell.locator("[data-compact-caption]");
+      const box = await caption.boundingBox();
+      const lineHeight = await caption.evaluate((el) =>
+        parseFloat(getComputedStyle(el).lineHeight),
+      );
+      expect(box?.height ?? 0, `${label} caption is a single line`).toBeLessThan(lineHeight * 1.8);
+    }
+  });
 });

@@ -43,7 +43,7 @@ type RowProps = {
 export function CompactRow({ className, row, metricLabels }: RowProps): ReactNode {
   return (
     <div
-      className={`group relative flex items-center gap-3 border-b border-border-1 bg-surface-1 px-3 py-2 last:border-b-0 hover:bg-surface-3 ${className ?? ""}`}
+      className={`group relative flex min-h-11 items-center gap-3 border-b border-border-1 bg-surface-1 px-3 py-2 last:border-b-0 hover:bg-surface-3 ${className ?? ""}`}
       data-compact-row={row.rank}
     >
       {/* Rank — the de-emphasised ordinal (a secondary column, kept tiny on mobile). */}
@@ -52,11 +52,15 @@ export function CompactRow({ className, row, metricLabels }: RowProps): ReactNod
       </span>
       {/* Identity — name anchor (stretches across the row) over the muted squad. */}
       <div className="min-w-0 flex-1">
+        {/* GAP-13: the inline name no longer carries `min-h-11` — that 44px floor inflated
+            the name block and pushed the squad ~44px down. The ≥44px hit area comes from
+            the ROW (`min-h-11` on the flex row above); the anchor still stretches its hit
+            area across the whole row via `after:inset-0`, so name + squad stack tightly. */}
         <a
           href={row.href}
           title={row.name}
           data-name-anchor
-          className="relative block min-h-11 truncate py-1 font-body text-sm font-semibold text-text-primary outline-none after:absolute after:inset-0 after:content-[''] hover:text-primary focus-visible:shadow-(--shadow-ring)"
+          className="relative block truncate font-body text-sm font-semibold text-text-primary outline-none after:absolute after:inset-0 after:content-[''] hover:text-primary focus-visible:shadow-(--shadow-ring)"
         >
           {row.name}
         </a>

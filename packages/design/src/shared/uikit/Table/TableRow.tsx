@@ -4,7 +4,7 @@
 // reaches the anchor, the row delegates the pointer click to it (Pitfall 5 — a
 // keyboard/SR user reaches and understands the row). The selected row is THREE
 // redundant signals — a `primary-weak` fill + an inset 2px cyan left-edge marker
-// (a literal `before:` bar, never fill-only) + `aria-selected` (a11y.md never
+// (an inset box-shadow on the row, never fill-only) + `aria-selected` (a11y.md never
 // color-alone). Long name/squad cells `truncate` + `title` (Pitfall 6 — never clip).
 // Numeric cells are `table-cell-numeric` (tabular mono, right-aligned), Счёт/K-D
 // tier-colored with `Pips` (paired — never color-alone).
@@ -56,30 +56,45 @@ type Props = {
   forcedState?: RowState;
 };
 
+// GAP-10: the focused-row treatment — a surface lift (`bg-surface-3`) + an INSET cyan
+// ring (`shadow-(--shadow-row-focus)`). It is inset so the ring paints INSIDE the row
+// box and is never clipped under the sticky `<thead>` (WCAG 2.4.12). The live
+// `focus-within:` prefix and the forced `focused` catalog state map to the SAME
+// utilities via this one constant, so the static matrix cell matches real keyboard
+// focus exactly (the anchor keeps its own `focus-visible:shadow-(--shadow-ring)`).
+const ROW_FOCUS = "bg-surface-3 shadow-(--shadow-row-focus)";
+const rowFocusWithin = "focus-within:bg-surface-3 focus-within:shadow-(--shadow-row-focus)";
+
 // The row recipe. `base` carries the live interaction utilities (`hover:bg-surface-3`
-// per `table-row` L383; `focus-within` lifts the row when the inner anchor is
-// focused — the ring is on the anchor, not hidden under the sticky header, WCAG
-// 2.4.12). The `state` variant is the catalog override; `selected` adds the
-// primary-weak fill + the inset cyan left-edge `before:` bar (never fill-only).
+// per `table-row` L383; the real `focus-within:` lift via `rowFocusWithin`). The
+// `state` variant is the catalog override; `focused` maps to the SAME `ROW_FOCUS`
+// utilities; `selected` adds the primary-weak fill + the inset cyan left-edge marker
+// (never fill-only).
+// GAP-09: the selected left-edge marker is an inset box-shadow on the row
+// (`shadow-(--shadow-selected)` → `inset 2px 0 0 var(--color-primary)`), NOT an
+// absolutely-positioned `before:` bar on a `position:relative` `<tr>`. An abspos child
+// in a `<tr>` broke the `table-fixed` colgroup widths on the selected row only; an inset
+// shadow paints the marker without positioning the `<tr>`, so columns stay aligned.
 // GAP-08: under the table's `border-separate` model a `<tr>` border does not paint, so
 // the hairline lives on the row's CELLS (`[&>td]:border-b`). With Tailwind's global
 // `box-border` the border sits INSIDE each cell box → zero added row height (no stray
 // scroll), and the last row drops it (`last:[&>td]:border-b-0`).
 const row = tv({
-  base: "group relative bg-surface-1 text-text-primary transition-colors [&>td]:border-b [&>td]:border-border-1 last:[&>td]:border-b-0 hover:bg-surface-3",
+  base: `group bg-surface-1 text-text-primary transition-colors [&>td]:border-b [&>td]:border-border-1 last:[&>td]:border-b-0 hover:bg-surface-3 ${rowFocusWithin}`,
   variants: {
     state: {
       enabled: "",
       hover: "bg-surface-3",
       pressed: "bg-surface-2",
-      focused: "",
+      focused: ROW_FOCUS,
       selected: "",
       disabled: "opacity-60",
     },
     selected: {
-      // primary-weak fill + the inset 2px cyan left-edge marker (a literal before:
-      // bar, like the NavBar active item) — paired with aria-selected, never fill-only.
-      true: "bg-primary-weak before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary",
+      // primary-weak fill + the inset 2px cyan left-edge marker (an inset box-shadow on
+      // the row, NOT a positioned before: bar — GAP-09) — paired with aria-selected,
+      // never fill-only. The marker reads the `--shadow-selected` @theme token.
+      true: "bg-primary-weak shadow-(--shadow-selected)",
       false: "",
     },
     disabled: {
