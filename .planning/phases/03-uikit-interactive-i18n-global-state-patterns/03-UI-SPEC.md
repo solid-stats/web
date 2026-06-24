@@ -60,7 +60,7 @@ Tailwind's **stock 4px scale** (DESIGN.md: no custom keys). Dense defaults: 8/12
 
 | Token | Value | Tailwind | Usage in this phase |
 |-------|-------|----------|---------------------|
-| xs | 4px | `p-1` / `gap-1` | icon↔label gap inside a control (`gap-1.5` = 6px on the `control` base) |
+| xs | 4px | `p-1` / `gap-1` | icon↔label gap inside a control (`gap-1` = 4px on the `control` base) |
 | sm | 8px | `p-2` / `gap-2` | field label↔input gap, menu item padding, tooltip padding |
 | md | 16px | `p-4` / `gap-4` | default field/dialog body padding, stack gap between form fields |
 | lg | 24px | `p-6` / `gap-6` | dialog padding, section padding |
@@ -77,21 +77,24 @@ height. `2px` sub-step (`p-0.5`) is allowed (stock scale).
 
 ## Typography
 
-The full scale + roles live in `DESIGN.md typography` and `theme.css` (`--text-2xs`…`--text-5xl` with
-paired `--text-*--line-height`). The roles this phase's primitives use:
+The full scale + roles live in `DESIGN.md typography` and `theme.css`. This phase's interactive
+primitives consume a **4-size scale {12, 14, 18, 22}** at **2 weights {400 regular, 600 semibold}**
+only. Tabular alignment of numbers comes from the **monospace font face**, not from weight — so the
+mono/stat role is 400 at 14px (no 500 medium, no separate 13px step):
 
 | Role | Size | Weight | Line Height | Family | Applied to |
 |------|------|--------|-------------|--------|-----------|
 | body (default UI) | 14px (`text-base`) | 400 regular | 1.5 | IBM Plex Sans | input value text, menu items, dialog body, tab labels |
 | label | 12px (`text-xs`) | 600 semibold | 1.5, `letterSpacing.label` 0.06em, uppercase | IBM Plex Sans | field labels, column-header-style labels |
-| caption | 12px (`text-xs`) | 400 | 1.5 | IBM Plex Sans | helper text, char counts (use `text-muted`, never `text-subtle` for meaningful copy) |
-| h4 / dialog title | 18px (`text-lg`) | 600 semibold | 1.25 snug | IBM Plex Sans | Dialog title, Popover heading |
-| h3 / section | 22px (`text-xl`) | 600 semibold | 1.25 snug | Exo 2 | StateMatrix section titles |
-| stat / mono | 13px (`text-sm`) | 500 medium | tabular-nums | IBM Plex Mono | NumberInput/Stepper value (numbers align) |
+| caption | 12px (`text-xs`) | 400 regular | 1.5 | IBM Plex Sans | helper text, char counts (use `text-muted`, never `text-subtle` for meaningful copy) |
+| dialog title / heading | 18px (`text-lg`) | 600 semibold | 1.25 snug | IBM Plex Sans | Dialog title, Popover heading |
+| section heading | 22px (`text-xl`) | 600 semibold | 1.25 snug | Exo 2 | StateMatrix section titles |
+| stat / mono | 14px (`text-base`) | 400 regular | 1.5, tabular-nums | IBM Plex Mono | NumberInput/Stepper value (numbers align via the mono face, not weight) |
 
-Rules carried in: error message copy uses `body`/`caption` weight at `text-loss` color **paired with a
-Lucide icon** (never color-alone); placeholder uses `text-subtle` (the one sanctioned `text-subtle`
-use); `2xs`/11px reserved for provenance/meta only.
+Rules carried in: error message copy uses the `body`/`caption` role at `text-loss` color **paired with
+a Lucide icon** (never color-alone); placeholder uses `text-subtle` (the one sanctioned `text-subtle`
+use); `2xs`/11px is reserved for provenance/meta in other phases and is NOT in this phase's primitive
+contract.
 
 ---
 
@@ -132,8 +135,8 @@ mirror:
 
 | Element | Key (proposed) | RU | EN |
 |---------|----------------|----|----|
-| Primary CTA (form submit) | `formSubmit` | Отправить | Submit |
-| Form cancel / dismiss | `formCancel` | Отмена | Cancel |
+| Primary CTA (form submit — demo form) | `formSubmit` | Отправить | Save changes |
+| Form cancel / dismiss | `formCancel` | Отмена | Go back |
 | Select placeholder | `selectPlaceholder` | Выберите… | Select… |
 | Input required hint | `fieldRequired` | Обязательное поле | Required |
 | Field error — generic user error (by-field) | `fieldErrorRequired` | Заполните это поле | Fill in this field |
@@ -145,7 +148,7 @@ mirror:
 | Tooltip / popover trigger aria (when icon-only) | per-use `*Aria` | (per control) | (per control) |
 | Language switcher aria | `navLanguageAria` (exists) | Сменить язык | Switch language |
 | Toast dismiss aria | `toastDismiss` | Закрыть уведомление | Dismiss notification |
-| Empty state heading (global pattern) | `emptyTableHeading` (exists) | Нет данных | No data |
+| Empty state heading (global pattern) | `emptyTableHeading` | Пока нет игроков | No players yet |
 | Empty state body (global pattern) | `emptyTableBody` (exists) | Игроки появятся здесь после первого пересчёта. | Players appear here after the first recompute. |
 | Error state (system error — id + contact) | `errorSystem` (exists) | Не удалось загрузить. Код: {id}. Сообщите нам, если повторяется. | Could not load. Ref: {id}. Contact us if it persists. |
 | Loading (cold aggregate) | `loadingColdAggregate` (exists) | Пересчитываем агрегат… | Recomputing aggregate… |
@@ -183,7 +186,7 @@ interactive Ladle `Playground` story exercising Ark's real keyboard/focus runtim
 | `Field` | (wrapper) | Owns the **visible label**, helper text, **inline error**, and `aria-live` live-region shared across fields. Label is real `<label>` associated to the control; error announced, sits by the field, includes recovery copy. No naked inputs. (Discretion: one shared wrapper vs split-per-control — planner's call.) |
 | `Input` | Ark Field / native input styled | `input` recipe: `surface-2` fill, `border-1` hairline → `border-2` on hover → `primary-border` + `ring-glow` on focus-visible; `text-subtle` placeholder; disabled = `surface-1` + `text-subtle` + 0.6 opacity. |
 | `Select` | Ark Select | Options typed by their value union (not `SelectOption<string>`); placeholder `selectPlaceholder`; active option cyan; popover content on `surface-1` + `border-2` + `--shadow-md`; full keyboard (arrows/Home/End/type-ahead), no trap. |
-| `Stepper` | Ark NumberInput | Value in tabular mono (`stat`/`mono` role, numbers align); inc/dec controls ≥44px with `aria-label`; (discretion: own slice vs `NumberInput` variant). |
+| `Stepper` | Ark NumberInput | Value in tabular mono (`stat`/`mono` role — 14px/400, alignment from the mono face); inc/dec controls ≥44px with `aria-label`; (discretion: own slice vs `NumberInput` variant). |
 | `FileUpload` | Ark FileUpload | Image evidence + external link; **keyboard-accessible dropzone** (focusable, Enter/Space opens picker, explicit Browse button — not a div-only drag target); drag-over announced not color-only; per-file pending/success/error/retry; rejection states *why* + fix; revoke object URLs on unmount; **disallow SVG**; client validation is UX only (real gate is `server-2`, v1.0). (security.md). |
 
 Forms compose under **TanStack Form** in v1.0 (forms.md) — this phase ships the presentational
