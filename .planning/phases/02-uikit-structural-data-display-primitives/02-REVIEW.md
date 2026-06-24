@@ -23,14 +23,21 @@ findings:
   warning: 5
   info: 3
   total: 8
-status: high_resolved
+status: resolved
 resolution:
   reviewed_verdict: request_changes
+  all_findings_fixed: true
   high_findings_fixed:
     - "High 1 (TableRow selected+focus shadow-slot collision, WCAG 2.4.7) — fixed in b5a2a27: selected marker moved to inset-shadow-(--shadow-selected-marker) (new non-inset DESIGN.md token), focus ring kept on shadow-(--shadow-row-focus); both compose; new keyboard.spec selected+focused intersection assertion."
     - "High 2 (Skeleton .sk-sweep only in Ladle-only root) — fixed in e9f488e: recipe moved to exported src/styles/uikit.css (+ package.json export, Ladle @import, graduation note in Skeleton.tsx)."
-  medium_low_deferred: "2 Medium (test-strength) + 3 Low left as-is by user decision (fix-High-only); recorded for a later pass."
-  gate_after_fix: "Vitest 91, Playwright 226 (incl. the new WCAG assertion), pnpm check exit 0."
+  medium_findings_fixed:
+    - "Medium 3 (GAP-10 weak clip oracle) — fixed in 3bb27a9: focused-row box-shadow must contain `inset` + sticky-thead clip geometry assertion."
+    - "Medium 4 (GAP-09 rounded-x hides sub-pixel drift) — fixed in 3bb27a9: unrounded x compared with <0.5px tolerance + explicit non-null cell-box checks."
+  low_findings_fixed:
+    - "Low 5 (skeleton implicit stretch) — fixed in 275b345: items-stretch + self-stretch; CLS box-height parity intact."
+    - "Low 6 (TableRow stale '×7 row states' comment) — fixed in 275b345: aligned to the 6-member union."
+    - "Low 7 (CompactRow over-long GAP-13 comment) — fixed in 275b345: trimmed to one line."
+  gate_after_fix: "Vitest 91, Playwright 226 (incl. the new WCAG + strengthened GAP-09/GAP-10 oracles), pnpm check exit 0."
 ---
 
 # Review — Phase 02 gap-closure (plans 02-10 + 02-11), scoped delta vs `bac4c3d`
