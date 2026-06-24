@@ -23,7 +23,14 @@ findings:
   warning: 5
   info: 3
   total: 8
-status: issues_found
+status: high_resolved
+resolution:
+  reviewed_verdict: request_changes
+  high_findings_fixed:
+    - "High 1 (TableRow selected+focus shadow-slot collision, WCAG 2.4.7) — fixed in b5a2a27: selected marker moved to inset-shadow-(--shadow-selected-marker) (new non-inset DESIGN.md token), focus ring kept on shadow-(--shadow-row-focus); both compose; new keyboard.spec selected+focused intersection assertion."
+    - "High 2 (Skeleton .sk-sweep only in Ladle-only root) — fixed in e9f488e: recipe moved to exported src/styles/uikit.css (+ package.json export, Ladle @import, graduation note in Skeleton.tsx)."
+  medium_low_deferred: "2 Medium (test-strength) + 3 Low left as-is by user decision (fix-High-only); recorded for a later pass."
+  gate_after_fix: "Vitest 91, Playwright 226 (incl. the new WCAG assertion), pnpm check exit 0."
 ---
 
 # Review — Phase 02 gap-closure (plans 02-10 + 02-11), scoped delta vs `bac4c3d`
