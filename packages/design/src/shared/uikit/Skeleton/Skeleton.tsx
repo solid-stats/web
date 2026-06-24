@@ -75,6 +75,14 @@ type TextProps = {
 type TileProps = {
   className?: string;
   variant: "tile";
+  /**
+   * GAP-16: reserve the StatTile delta row. A delta-bearing StatTile renders a third
+   * `text-sm` line under label + value; without this flag the tile skeleton (label +
+   * value only) is SHORTER than a delta tile → CLS on load. `withDelta` appends a
+   * delta-line shimmer at the StatTile delta line's exact height so the skeleton box
+   * equals a delta tile's box. A plain tile (no delta) stays compact (flag off).
+   */
+  withDelta?: boolean;
 };
 
 type TableProps = {
@@ -119,17 +127,35 @@ export function Skeleton(props: Props): ReactNode {
   }
 
   if (props.variant === "tile") {
-    const { className } = props;
-    // Reserves the StatTile box: label line + the stat-xl value block.
+    const { className, withDelta = false } = props;
+    // Mirrors the StatTile box EXACTLY so the skeleton→tile swap is CLS = 0. The trick:
+    // each shimmer ROW carries the SAME text-size utility as the StatTile line it stands
+    // in for (`text-2xs` label · `text-4xl` value · `text-sm` delta), so the row's line
+    // BOX height is the identical font line-height (theme.css pairs `--text-*--line-height`)
+    // — fractional Exo-2 metrics and all. A zero-width non-joiner gives the row a line box
+    // to size to; the shimmer bar fills that box via `h-full` (an overlay-free reserve).
+    // `withDelta` (GAP-16) adds the third (delta) row so a delta tile is NOT taller than
+    // its skeleton. The container is the StatTile's own `gap-1 p-4` frame.
+    const skeletonRow = (textRole: string, widthClassName: string): ReactNode => (
+      <div className={`flex items-center ${textRole}`}>
+        <span aria-hidden>{"‌"}</span>
+        <div className={`${shimmer} ${widthClassName} h-full`} />
+      </div>
+    );
     return (
       <div
-        className={`flex flex-col gap-3 rounded-md border border-border-1 bg-surface-1 p-4 ${className ?? ""}`}
+        className={`flex flex-col gap-1 rounded-md border border-border-1 bg-surface-1 p-4 ${className ?? ""}`}
         aria-busy
         aria-hidden
         data-skeleton="tile"
+        data-skeleton-delta={withDelta ? "" : undefined}
       >
-        <div className={`${shimmer} h-3 w-20`} />
-        <div className={`${shimmer} h-12 w-32`} />
+        {/* label line — `text-2xs` box (the StatTile label leading). */}
+        {skeletonRow("text-2xs", "w-20")}
+        {/* value line — `text-4xl` stat-xl box (the StatTile hero value leading). */}
+        {skeletonRow("text-4xl", "w-32")}
+        {/* GAP-16: delta line — the `text-sm` delta box, reserved only for a delta tile. */}
+        {withDelta ? skeletonRow("text-sm", "w-16") : null}
       </div>
     );
   }
