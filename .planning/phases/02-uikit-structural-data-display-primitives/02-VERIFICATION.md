@@ -1,9 +1,10 @@
 ---
 phase: 02-uikit-structural-data-display-primitives
 verified: 2026-06-24T13:10:00Z
-status: human_needed
+status: verified
+human_verified: 2026-06-24 — both human_verification items satisfied via /gsd-verify-work round-2. Playwright matrix re-run green (252/252, ladle build + full suite); human visual inspection passed (user verdict "в остальном всё хорошо"). Round-2 visual gaps GAP-22..26 resolved/decided (see 02-UAT.md). Both behavior_unverified_items (CLS=0, responsive 360px) covered by the green cls.spec/responsive.spec.
 score: 5/5
-behavior_unverified: 2
+behavior_unverified: 0
 overrides_applied: 0
 re_verification:
   previous_status: human_needed
