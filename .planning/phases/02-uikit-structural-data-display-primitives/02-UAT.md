@@ -345,7 +345,8 @@ fix: |
   (KIT-05/06), not this gap.
 
 ### GAP-20 — NavBar / MobileTabBar / Table story matrices use fake forced-state cells (catalog misrepresents hover/pressed/focused)
-status: open
+status: resolved
+resolved: 2026-06-24 (commits a4a3aeb, cb9861c). Nav item / tab / Th route through the shared control recipe, so their matrices now reuse control.ts FORCED_STATE (exported from the Button barrel); the stale variant-agnostic local overrides were dropped. TableRow has its own tv() recipe, so a per-component ROW_FORCED_STATE mirrors it verbatim (!-important, merge-free-safe) guarded by a pure-Vitest TableRow.test.ts sync test. Gate: Vitest 97, Playwright 226, pnpm check exit 0.
 severity: medium
 requirements: [KIT-01, KIT-02, QUAL-02]
 decision: AUDIT + FIX AFTER buttons (user decision, 2026-06-23). The Button matrix carried this defect and was fixed in the 02-07 follow-up (commit 4a2cddf); these three stories share the same pattern and are deferred to a follow-up pass.
@@ -371,7 +372,8 @@ fix: |
   deleted.
 
 ### GAP-21 — responsive.spec asserts only 3 widths (360 / 800 / 1280); the canonical 6-width review matrix + the large-screen container ceiling are untested
-status: open
+status: resolved
+resolved: 2026-06-24 (commits 2a2f78f, 8a5a5c9). responsive.spec parametrized to the canonical 360/768/1024/1280/1920/2560 tiers + 390/414 spot-checks + 3440 cap-check (the 800 @5xl dead-zone probe retained). The 1760 container ceiling was NOT wired (the --container token existed but no component consumed it) — AppShell <main> now wraps content in a token-driven `mx-auto w-full max-w-(--container)` box ([data-main-content]); the test asserts it caps at ~1760, is strictly narrower than <main>, and centers at 1920/2560/3440. Gate: Vitest 97, Playwright 252, pnpm check exit 0.
 severity: medium
 requirements: [QUAL-02, KIT-01, KIT-02]
 decision: AUDIT + WIDEN AFTER the gap-closure wave (user decision, 2026-06-24). `responsive.spec.ts` is actively rewritten by 02-08 (and touched again by 02-09/02-11) in this wave, so widening it now would conflict with the running executor; deferred to a dedicated follow-up test pass — same handling as GAP-20.
