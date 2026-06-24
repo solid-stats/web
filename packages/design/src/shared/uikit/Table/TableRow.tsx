@@ -19,7 +19,7 @@ import { tv } from "tailwind-variants/lite";
 import { type TierLevel, type TierMetric } from "../_fixtures";
 import { Pips } from "../TierScale";
 
-/** The ×7 row states. `enabled` is resting; `loading` is the Skeleton variant (handled by Table). */
+/** The six row states. `enabled` is resting; the `loading` row is the Skeleton variant (handled by Table). */
 export type RowState = "enabled" | "hover" | "pressed" | "focused" | "selected" | "disabled";
 
 /** A tier-colored numeric cell (Счёт / K-D): the value + its resolved tier level. */

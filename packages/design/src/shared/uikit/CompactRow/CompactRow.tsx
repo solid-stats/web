@@ -52,10 +52,7 @@ export function CompactRow({ className, row, metricLabels }: RowProps): ReactNod
       </span>
       {/* Identity — name anchor (stretches across the row) over the muted squad. */}
       <div className="min-w-0 flex-1">
-        {/* GAP-13: the inline name no longer carries `min-h-11` — that 44px floor inflated
-            the name block and pushed the squad ~44px down. The ≥44px hit area comes from
-            the ROW (`min-h-11` on the flex row above); the anchor still stretches its hit
-            area across the whole row via `after:inset-0`, so name + squad stack tightly. */}
+        {/* GAP-13: the ≥44px hit area comes from the ROW's `min-h-11`, not the name anchor (responsive.spec). */}
         <a
           href={row.href}
           title={row.name}

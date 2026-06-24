@@ -137,13 +137,15 @@ export function Skeleton(props: Props): ReactNode {
     // in for (`text-2xs` label · `text-4xl` value · `text-sm` delta), so the row's line
     // BOX height is the identical font line-height (theme.css pairs `--text-*--line-height`)
     // — fractional Exo-2 metrics and all. A zero-width non-joiner gives the row a line box
-    // to size to; the shimmer bar fills that box via `h-full` (an overlay-free reserve).
+    // to size to; the shimmer bar reserves that box height via `self-stretch` against the
+    // row's `items-stretch` cross-axis (an overlay-free reserve — explicit, not relying on
+    // `h-full` to silently override the default `items-center`).
     // `withDelta` (GAP-16) adds the third (delta) row so a delta tile is NOT taller than
     // its skeleton. The container is the StatTile's own `gap-1 p-4` frame.
     const skeletonRow = (textRole: string, widthClassName: string): ReactNode => (
-      <div className={`flex items-center ${textRole}`}>
+      <div className={`flex items-stretch ${textRole}`}>
         <span aria-hidden>{"‌"}</span>
-        <div className={`${shimmer} ${widthClassName} h-full`} />
+        <div className={`${shimmer} ${widthClassName} self-stretch`} />
       </div>
     );
     return (
