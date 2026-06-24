@@ -2,11 +2,6 @@
   "name": "@solid-stats/web",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@11.6.0",
-  "engines": {
-    "node": ">=25 <26",
-    "pnpm": ">=11 <12"
-  },
   "scripts": {
     "gen-theme": "node scripts/gen-theme.mjs",
     "lint:design": "design.md lint DESIGN.md",
@@ -19,5 +14,10 @@
     "fallow": "^2.101.0",
     "tailwindcss": "4.3.1",
     "vite-plus": "^0.2.1"
-  }
+  },
+  "engines": {
+    "node": ">=25 <26",
+    "pnpm": ">=11 <12"
+  },
+  "packageManager": "pnpm@11.6.0"
 }
