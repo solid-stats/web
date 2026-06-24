@@ -146,12 +146,10 @@ test.describe("Table full-row keyboard traversal", () => {
     await page.waitForSelector("[data-state-cell='focused'] [data-table-row]");
 
     const rowStyle = async (stateCell: string) =>
-      page
-        .locator(`[data-state-cell='${stateCell}'] tbody tr`)
-        .evaluate((el) => {
-          const cs = getComputedStyle(el);
-          return { bg: cs.backgroundColor, shadow: cs.boxShadow };
-        });
+      page.locator(`[data-state-cell='${stateCell}'] tbody tr`).evaluate((el) => {
+        const cs = getComputedStyle(el);
+        return { bg: cs.backgroundColor, shadow: cs.boxShadow };
+      });
 
     const enabled = await rowStyle("enabled");
     const focused = await rowStyle("focused");
