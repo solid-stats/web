@@ -194,3 +194,42 @@ test.describe("Sparkline CLS = 0", () => {
     expect(emptyBox?.height).toBe(manyBox?.height);
   });
 });
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// WAVE-0 RED SCAFFOLD (Plan 03-01 Task 4 — Nyquist contract). SURF-18 AsyncBoundary
+// (D-05): the state→primitive seam maps the six global states to the right Phase-2
+// primitive (Skeleton / EmptyState / ErrorState / DataTrustBanner) and MUST reserve
+// the SAME box height as the `ready` content slot in every state, so swapping among
+// loading/empty/error/offline/reconnecting/stale and the ready content shifts nothing
+// (QUAL-04, CLS = 0). This block references a story id that does not exist yet — it is
+// RED until Wave 7 (SURF-18) ships `surf-18-global-state--asyncboundary--cls`; turning
+// it GREEN is that wave's acceptance gate. No `.skip` (a skipped scaffold is a no-op).
+//   Wave (SURF-18) → block `AsyncBoundary CLS = 0` → story surf-18-global-state--asyncboundary--cls
+// ═══════════════════════════════════════════════════════════════════════════════
+const ASYNC_BOUNDARY_STORY = "surf-18-global-state--asyncboundary--cls";
+const ASYNC_STATES = ["loading", "empty", "error", "offline", "reconnecting", "stale"] as const;
+
+test.describe("AsyncBoundary CLS = 0 (Wave-0 RED)", () => {
+  test("all six states reserve the same box height as the ready slot", async ({ page }) => {
+    await page.goto(`/?story=${ASYNC_BOUNDARY_STORY}&mode=preview`);
+    // The story does not exist yet → this selector times out (RED). A short timeout
+    // keeps the failure fast instead of hanging on the default 30s wait.
+    await page.waitForSelector("[data-async-cell='ready']", { timeout: 4000 });
+
+    // The `ready` content slot is the reserved-height reference; every state cell must
+    // match it exactly (copying the DataTrustBanner boundingBox().height match oracle).
+    const readyBox = await page.locator("[data-async-cell='ready']").boundingBox();
+    if (readyBox === null) throw new Error("ready content slot has no bounding box");
+
+    for (const state of ASYNC_STATES) {
+      const cell = page.locator(`[data-async-cell='${state}']`);
+      await expect(cell, `${state} state cell renders`).toBeVisible();
+      const box = await cell.boundingBox();
+      if (box === null) throw new Error(`${state} state cell has no bounding box`);
+      // Exact match — the boundary reserves the ready slot's height in every state (CLS = 0).
+      expect(box.height, `${state} reserves the same height as the ready slot`).toBe(
+        readyBox.height,
+      );
+    }
+  });
+});

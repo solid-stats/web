@@ -5,6 +5,22 @@
 //      targets `#main` (WCAG 2.4.1 Bypass Blocks; focus not obscured — 2.4.12).
 //   2. The active NavBar item carries `aria-current="page"` (never color-alone).
 //   3. Tab reaches every NavBar item in order (no keyboard trap).
+//
+// ─────────────────────────────────────────────────────────────────────────────
+// WAVE-0 RED SCAFFOLDS (Plan 03-01 Task 4 — Nyquist contract). The `describe`
+// blocks at the BOTTOM of this file assert the interactive-primitive behaviours
+// (overlay focus management, menu/tab ARIA, form live-region) that the generic
+// `catalog.spec.ts` cannot express. They reference story ids that DO NOT EXIST
+// YET — each block is RED until its owning wave lands its story; turning a block
+// GREEN is that wave's acceptance gate. No `.skip` (a skipped scaffold is a
+// no-op); RED-by-design. Wave → block → story-id map (the dependency set):
+//   • Wave (KIT-06 Overlay) — `Dialog Esc-close + return-focus`   → kit-06-overlay--dialog--playground
+//   • Wave (KIT-06 Overlay) — `Menu aria-expanded/aria-controls`  → kit-06-overlay--menu--playground
+//   • Wave (KIT-06 Overlay) — `Tabs arrow-key roving tabindex`    → kit-06-overlay--tabs--playground
+//   • Wave (KIT-06 Overlay) — `Dialog trap-free Tab cycle`        → kit-06-overlay--dialog--playground
+//   • Wave (KIT-05 Form)    — `Field forced-invalid live error`   → kit-05-form--field--matrix
+// (AsyncBoundary CLS=0 — SURF-18 Wave 7 — lives in cls.spec.ts.)
+// ─────────────────────────────────────────────────────────────────────────────
 import { expect, test } from "@playwright/test";
 
 const SKIPLINK_STORY = "kit-01-nav-shell--skiplink--matrix";
@@ -267,5 +283,163 @@ test.describe("Table full-row keyboard traversal", () => {
         "focused row's top is not hidden behind the sticky header (ring unclipped)",
       ).toBeGreaterThanOrEqual(theadBottom - 0.5);
     }
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// WAVE-0 RED SCAFFOLDS — the interactive-primitive behaviour contracts the later
+// waves must satisfy. Each block navigates to a story id that does not exist yet,
+// so `page.goto` loads a "story not found" shell and the first `waitForSelector`
+// times out → the test FAILS (RED). When the owning wave ships the story with the
+// asserted `data-*` hooks and ARIA, the block turns GREEN — that is the wave's
+// acceptance gate. Tight per-block timeouts keep RED fast instead of hanging on
+// the default 30s wait against the missing selector.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// KIT-06 Overlay / Dialog (SC#1, a11y.md — prefer the Ark `Dialog` primitive). Two
+// invariants the generic axe pass cannot express: Esc closes the dialog AND focus
+// RETURNS to the trigger (WCAG 2.4.3 Focus Order / 2.1.2 No Keyboard Trap), and an
+// open dialog does not trap Tab (a bounded forward cycle stays inside the dialog and
+// never escapes to the page chrome). The forced-open StateMatrix cell renders the
+// dialog deterministically (RESEARCH Pitfall 2 — controlled `open`, no Ladle hack).
+const DIALOG_STORY = "kit-06-overlay--dialog--playground";
+const SELECTOR_TIMEOUT = 4000;
+
+test.describe("KIT-06 Dialog keyboard behaviour (Wave-0 RED)", () => {
+  test("Esc closes the dialog and focus returns to the trigger", async ({ page }) => {
+    await page.goto(`/?story=${DIALOG_STORY}&mode=preview`);
+    await page.waitForSelector("[data-dialog-trigger]", { timeout: SELECTOR_TIMEOUT });
+
+    const trigger = page.locator("[data-dialog-trigger]").first();
+    await trigger.click();
+
+    // The dialog content is open and focus has moved inside it.
+    const dialog = page.locator('[role="dialog"]');
+    await expect(dialog).toBeVisible();
+
+    await page.keyboard.press("Escape");
+    await expect(dialog, "Esc closes the dialog").toBeHidden();
+
+    // WCAG 2.4.3: focus is restored to the element that opened the dialog.
+    const focusReturned = await trigger.evaluate((el) => el === document.activeElement);
+    expect(focusReturned, "focus returns to the trigger after Esc-close").toBe(true);
+  });
+
+  test("an open dialog does not trap Tab outside its focus scope", async ({ page }) => {
+    await page.goto(`/?story=${DIALOG_STORY}&mode=preview`);
+    await page.waitForSelector("[data-dialog-trigger]", { timeout: SELECTOR_TIMEOUT });
+
+    await page.locator("[data-dialog-trigger]").first().click();
+    const dialog = page.locator('[role="dialog"]');
+    await expect(dialog).toBeVisible();
+
+    // Tab forward a bounded number of times; every stop must remain INSIDE the
+    // dialog (Ark's focus trap cycles within scope — it never lets focus leak to
+    // the page behind the inert backdrop). Bounded so a regression FAILS, never hangs.
+    let everEscaped = false;
+    for (let i = 0; i < 12; i++) {
+      await page.keyboard.press("Tab");
+      const insideDialog = await page.evaluate(() => {
+        const active = document.activeElement;
+        const dlg = document.querySelector('[role="dialog"]');
+        return dlg !== null && active !== null && dlg.contains(active);
+      });
+      if (!insideDialog) everEscaped = true;
+    }
+    expect(everEscaped, "Tab focus stays scoped inside the open dialog (trap-free cycle)").toBe(
+      false,
+    );
+  });
+});
+
+// KIT-06 Overlay / Menu (SC#1, a11y.md — Ark `Menu`). The trigger exposes the
+// disclosure relationship: `aria-expanded` flips false→true on open and
+// `aria-controls` points at the panel's id (color/visual state alone is never the
+// only signal — WCAG 4.1.2 Name, Role, Value).
+const MENU_STORY = "kit-06-overlay--menu--playground";
+
+test.describe("KIT-06 Menu disclosure semantics (Wave-0 RED)", () => {
+  test("the trigger toggles aria-expanded false→true and names aria-controls", async ({ page }) => {
+    await page.goto(`/?story=${MENU_STORY}&mode=preview`);
+    await page.waitForSelector("[data-menu-trigger]", { timeout: SELECTOR_TIMEOUT });
+
+    const trigger = page.locator("[data-menu-trigger]").first();
+    await expect(trigger, "menu is collapsed before interaction").toHaveAttribute(
+      "aria-expanded",
+      "false",
+    );
+
+    await trigger.click();
+    await expect(trigger, "opening the menu sets aria-expanded=true").toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
+
+    // aria-controls names the panel that actually exists in the DOM.
+    const controlsId = await trigger.getAttribute("aria-controls");
+    expect(controlsId, "the trigger declares aria-controls").toBeTruthy();
+    const panel = page.locator(`#${controlsId}`);
+    await expect(panel, "aria-controls points at the live menu panel").toBeVisible();
+  });
+});
+
+// KIT-06 Overlay / Tabs (SC#1, a11y.md — Ark `Tabs`). Roving tabindex: arrow keys
+// move the active tab through the list (WAI-ARIA tabs pattern), the active tab
+// carries `aria-selected="true"`, and only ONE tab is in the tab order at a time.
+const TABS_STORY = "kit-06-overlay--tabs--playground";
+
+test.describe("KIT-06 Tabs roving tabindex (Wave-0 RED)", () => {
+  test("ArrowRight moves the active tab (roving tabindex)", async ({ page }) => {
+    await page.goto(`/?story=${TABS_STORY}&mode=preview`);
+    await page.waitForSelector('[role="tab"]', { timeout: SELECTOR_TIMEOUT });
+
+    const tabs = page.locator('[role="tab"]');
+    expect(await tabs.count(), "the tablist has at least two tabs").toBeGreaterThan(1);
+
+    // Focus the first tab, then ArrowRight: the selected tab must advance.
+    await tabs.first().focus();
+    const firstSelected = await page.locator('[role="tab"][aria-selected="true"]').textContent();
+
+    await page.keyboard.press("ArrowRight");
+    const afterArrow = await page.locator('[role="tab"][aria-selected="true"]').textContent();
+
+    expect(afterArrow, "ArrowRight rotates the active tab (roving tabindex)").not.toBe(
+      firstSelected,
+    );
+
+    // Roving tabindex: exactly one tab is tabbable (tabindex=0); the rest are -1.
+    const tabbable = await page.locator('[role="tab"][tabindex="0"]').count();
+    expect(tabbable, "exactly one tab is in the page tab order").toBe(1);
+  });
+});
+
+// KIT-05 Form / Field (SC#1, a11y.md — visible label + associated, announced error
+// with recovery guidance). The forced-invalid matrix cell exposes `Field.ErrorText`
+// with `aria-live` (the error is ANNOUNCED, not just painted) and the error is
+// programmatically associated to the control via `aria-describedby` (WCAG 3.3.1
+// Error Identification / 1.3.1 Info and Relationships).
+const FIELD_STORY = "kit-05-form--field--matrix";
+
+test.describe("KIT-05 Field forced-invalid announcement (Wave-0 RED)", () => {
+  test("the forced-invalid field exposes a live, associated error", async ({ page }) => {
+    await page.goto(`/?story=${FIELD_STORY}&mode=preview`);
+    await page.waitForSelector("[data-field-error]", { timeout: SELECTOR_TIMEOUT });
+
+    // ErrorText is a live region so SR users hear it without a focus move (a11y.md
+    // dynamic-content rule).
+    const error = page.locator("[data-field-error]").first();
+    await expect(error).toBeVisible();
+    const ariaLive = await error.getAttribute("aria-live");
+    expect(ariaLive, "the error text is an aria-live region").toBeTruthy();
+
+    // The invalid control names the error via aria-describedby (programmatic association).
+    const control = page.locator("[data-field-control][aria-invalid='true']").first();
+    const describedBy = await control.getAttribute("aria-describedby");
+    expect(describedBy, "the invalid control declares aria-describedby").toBeTruthy();
+    const errorId = await error.getAttribute("id");
+    expect(
+      describedBy?.split(/\s+/).includes(errorId ?? "\0"),
+      "aria-describedby references the error text id (error associated to the control)",
+    ).toBe(true);
   });
 });
