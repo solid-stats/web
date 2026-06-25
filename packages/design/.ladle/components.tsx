@@ -6,6 +6,7 @@
 // root wrapper paints the gunmetal base surface using @theme utilities.
 import type { GlobalProvider } from "@ladle/react";
 import { I18nProvider } from "@lingui/react";
+import { useEffect } from "react";
 import "../src/styles/fonts.css";
 // tailwind.css is the single Tailwind root: it `@import`s ../src/styles/theme.css
 // (the one generated token source) and adds the @source Ladle needs because its
@@ -13,16 +14,29 @@ import "../src/styles/fonts.css";
 import "./tailwind.css";
 import { i18n } from "../src/shared/uikit/_i18n";
 
+/** The supported UI locales — RU primary (D-03). Any other control value falls back to RU. */
+type Locale = "ru" | "en";
+
+/** Narrow an arbitrary control value to a real {@link Locale} (fallback RU), not an unchecked `as`. */
+function toLocale(value: unknown): Locale {
+  return value === "en" ? "en" : "ru";
+}
+
 // KIT-08 language switch (RESEARCH Pattern 4): the GlobalProvider reads the `locale`
 // global control declared in config.mjs (the global-control-arg path, D-04 — mirrors the
 // disabled `theme` addon precedent, no custom addon-button file), re-activates that locale
-// on the shared runtime instance per render, and wraps every story in `<I18nProvider>` so a
-// story's `i18n._({ id, message, values })` resolves in the chosen language. Toggling the
-// control re-renders every catalogued story bilingually (SC#2). The instance + the
+// on the shared runtime instance, and wraps every story in `<I18nProvider>` so a story's
+// `i18n._({ id, message, values })` resolves in the chosen language. Toggling the control
+// re-renders every catalogued story bilingually (SC#2). The control value is narrowed with a
+// real runtime guard (`toLocale` — non-ru/en falls back to RU, never an unchecked `as` that
+// could `activate` an unloaded locale), and `i18n.activate` runs in an effect keyed on the
+// locale (a render-body mutation React may run/discard/re-run freely). The instance + the
 // fonts.css → tailwind.css import-once order are untouched; I18nProvider wraps, never reorders.
 export const Provider: GlobalProvider = ({ globalState, children }) => {
-  const locale = (globalState.control?.["locale"]?.value as "ru" | "en") ?? "ru";
-  i18n.activate(locale);
+  const locale = toLocale(globalState.control?.["locale"]?.value);
+  useEffect(() => {
+    i18n.activate(locale);
+  }, [locale]);
   return (
     <I18nProvider i18n={i18n}>
       <div className="bg-bg-0 text-text-primary font-body min-h-screen p-4">{children}</div>
