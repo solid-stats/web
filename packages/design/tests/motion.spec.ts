@@ -1,23 +1,27 @@
 // GAP-02 + GAP-04 motion regression (Plan 03-11). ONE motion policy across the
 // overlay+toast family — proven at RUNTIME, not by reading source classes.
 //
-// GAP-02: the overlay recipes carry `transition duration-150 data-[state=closed]:scale-95/
+// GAP-02: the overlay recipes carried `transition duration-150 data-[state=closed]:scale-95/
 // opacity-0`, but Ark mounts the content directly in `data-state="open"` (lazyMount +
-// unmountOnExit), so the element's FIRST rendered frame is already opacity:1 / transform:none
-// — the closed→open frame never renders, no enter animation plays. The fix declares the
-// from-frame via the Tailwind `starting:` variant (`@starting-style`), so even a direct-to-open
-// mount transitions from the closed frame. The runtime oracle below samples the content's
-// computed opacity on the first frame after the open trigger: pre-fix it is already 1 (no enter),
-// post-fix it starts < 1 (the @starting-style frame renders) → this FAILS RED, PASSES GREEN.
+// unmountOnExit), so the element's FIRST rendered frame was already opacity:1 / transform:none
+// — the closed→open frame never rendered, no enter animation played (and a `transition`, even
+// with `@starting-style`, never fired in this Ark/Chromium matrix). The fix is the
+// `.uikit-overlay-motion` keyframe-animation recipe (`styles/uikit.css`), driven by Ark's
+// `[data-state]`: a CSS animation runs as soon as its rule first applies to the connected
+// element, so the enter keyframes (opacity 0 → 1, scale 0.95 → 1) play even on a direct-to-open
+// mount. The runtime oracle below samples the content's computed opacity on the first frames
+// after open: pre-fix it stayed 1 (no enter), post-fix it starts < 1 → FAILS RED, PASSES GREEN.
 //
-// GAP-04: ToastManager declares `overlap:true, gap:12` but the rendered toasts apply neither —
-// they stack flush (gaps 0) with `transitionDuration:0s` (no enter/exit). The oracle fires ≥3
-// toasts and asserts a real at-rest gap>0 AND each toast's computed transitionDuration>0s.
+// GAP-04: ToastManager declared `overlap:true, gap:12` but the rendered toasts applied neither —
+// they stacked flush (gaps 0) with no enter/exit. The oracle fires ≥3 toasts and asserts a real
+// at-rest gap>0 AND that each toast runs the shared enter animation (non-zero animation-duration).
 //
 // The harness forces `reducedMotion:"reduce"` globally (playwright.config.ts) — correct for the
 // a11y opt-out, but it would suppress the very motion the animation-PLAYS tests assert. So those
-// describe blocks override with `test.use({ reducedMotion: "no-preference" })`; a separate
-// reduced-motion block KEEPS "reduce" and proves the opt-out suppresses the non-essential enter.
+// describe blocks override with `test.use({ contextOptions: { reducedMotion: "no-preference" } })`
+// (the typed per-test override in Playwright 1.61 — `reducedMotion` is a `BrowserContextOptions`
+// key, not a top-level test-fixture key); a separate reduced-motion block re-asserts "reduce" and
+// proves the opt-out suppresses the non-essential enter.
 import { expect, test } from "@playwright/test";
 
 const DIALOG_STORY = "kit-06-overlay--dialog--playground";
@@ -27,12 +31,12 @@ const SELECTOR_TIMEOUT = 4000;
 // ─────────────────────────────────────────────────────────────────────────────
 // Test 1 — overlay enter animates (the closed→open frame actually renders).
 // Under no-preference, open the Dialog and sample the content's computed opacity
-// on the FIRST frame after the trigger. The @starting-style enter frame makes that
-// first frame start from the closed value (opacity < 1); the pre-fix direct-to-open
-// mount reads opacity 1 with no enter frame → RED.
+// across the first frames after the trigger. The `.uikit-overlay-motion` enter
+// keyframes start the content at opacity 0; the pre-fix direct-to-open mount read
+// opacity 1 with no enter frame → RED.
 // ─────────────────────────────────────────────────────────────────────────────
 test.describe("Overlay enter animation plays (GAP-02)", () => {
-  test.use({ reducedMotion: "no-preference" });
+  test.use({ contextOptions: { reducedMotion: "no-preference" } });
 
   test("opening a Dialog renders the closed→open enter frame (opacity starts < 1)", async ({
     page,
@@ -40,31 +44,36 @@ test.describe("Overlay enter animation plays (GAP-02)", () => {
     await page.goto(`/?story=${DIALOG_STORY}&mode=preview`);
     await page.waitForSelector("[data-dialog-trigger]", { timeout: SELECTOR_TIMEOUT });
 
-    // Sample the dialog content's opacity on the first animation frame after the open
-    // trigger, in-page, synchronously — Playwright assertions auto-wait for the transition
-    // to SETTLE (opacity 1), which would mask the enter frame. We click + read the first
-    // rAF's computed opacity inside one page.evaluate so the closed→open frame is captured
-    // before it settles.
-    const firstFrameOpacity = await page.evaluate(async () => {
+    // Sample the dialog content's opacity across the first few animation frames after the open
+    // trigger, in-page — Playwright's own assertions auto-wait for the animation to SETTLE
+    // (opacity 1), which would mask the enter frame, so we click + read the early frames inside
+    // one page.evaluate and keep the MINIMUM opacity observed. The `.uikit-overlay-motion` enter
+    // keyframes start the content at opacity 0; the pre-fix code mounted already at opacity 1
+    // (no enter frame) → the min stays 1 → this assertion FAILS RED, PASSES GREEN.
+    const minOpacity = await page.evaluate(async () => {
       const trigger = document.querySelector<HTMLElement>("[data-dialog-trigger]");
       trigger?.click();
-      // Wait two rAFs: one for Ark to mount the content, one to read the first painted frame.
-      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-      const content = document.querySelector<HTMLElement>("[data-dialog]");
-      if (content === null) return null;
-      return Number.parseFloat(getComputedStyle(content).opacity);
+      let min = Number.POSITIVE_INFINITY;
+      // Read the first handful of frames; the enter keyframe ramps opacity 0 → 1 over ~170ms.
+      for (let i = 0; i < 4; i += 1) {
+        await new Promise((r) => requestAnimationFrame(r));
+        const content = document.querySelector<HTMLElement>("[data-dialog]");
+        if (content === null) continue;
+        min = Math.min(min, Number.parseFloat(getComputedStyle(content).opacity));
+      }
+      return Number.isFinite(min) ? min : null;
     });
 
-    expect(firstFrameOpacity, "the dialog content has rendered").not.toBeNull();
-    // The enter frame: the content starts from the closed (faded) frame and transitions in.
+    expect(minOpacity, "the dialog content has rendered").not.toBeNull();
+    // The enter frame: the content starts from the closed (faded) frame and animates in.
     // Pre-fix it mounts already at opacity 1 (no enter frame) → this assertion FAILS RED.
     expect(
-      firstFrameOpacity,
+      minOpacity,
       "the dialog content renders its closed→open enter frame (opacity starts < 1)",
     ).toBeLessThan(1);
   });
 
-  test("the Dialog content animates on a non-zero, token-driven transition", async ({ page }) => {
+  test("the Dialog content runs the token-driven enter animation", async ({ page }) => {
     await page.goto(`/?story=${DIALOG_STORY}&mode=preview`);
     await page.waitForSelector("[data-dialog-trigger]", { timeout: SELECTOR_TIMEOUT });
 
@@ -72,13 +81,21 @@ test.describe("Overlay enter animation plays (GAP-02)", () => {
     const content = page.locator("[data-dialog]");
     await expect(content).toBeVisible();
 
-    // The shared motion policy reads `--duration-base` (170ms). Assert a real, non-zero
-    // transition-duration so the family animates from the @theme tokens (not 0s, not absent).
-    const durationMs = await content.evaluate((el) => {
-      const raw = getComputedStyle(el).transitionDuration.split(",")[0]?.trim() ?? "0s";
-      return raw.endsWith("ms") ? Number.parseFloat(raw) : Number.parseFloat(raw) * 1000;
+    // The shared `.uikit-overlay-motion` policy runs the `uikit-overlay-enter` keyframes for a
+    // non-zero duration read from the `--duration-base` (170ms) @theme token. Assert the named
+    // enter animation is wired and runs for a real, non-zero duration (not 0s, not absent).
+    const anim = await content.evaluate((el) => {
+      const style = getComputedStyle(el);
+      const raw = style.animationDuration.split(",")[0]?.trim() ?? "0s";
+      const durationMs = raw.endsWith("ms")
+        ? Number.parseFloat(raw)
+        : Number.parseFloat(raw) * 1000;
+      return { name: style.animationName, durationMs };
     });
-    expect(durationMs, "the overlay enter transition is non-zero").toBeGreaterThan(0);
+    expect(anim.name, "the overlay runs the shared enter keyframes").toContain(
+      "uikit-overlay-enter",
+    );
+    expect(anim.durationMs, "the overlay enter animation is non-zero").toBeGreaterThan(0);
   });
 });
 
@@ -89,7 +106,7 @@ test.describe("Overlay enter animation plays (GAP-02)", () => {
 // Pre-fix: gaps [0,0,0] and transitionDuration 0s → RED.
 // ─────────────────────────────────────────────────────────────────────────────
 test.describe("Toast stacking is real and animates (GAP-04)", () => {
-  test.use({ reducedMotion: "no-preference" });
+  test.use({ contextOptions: { reducedMotion: "no-preference" } });
 
   test("fired toasts stack with a gap > 0 at rest and each animates", async ({ page }) => {
     await page.goto(`/?story=${TOAST_STORY}&mode=preview`);
@@ -136,7 +153,7 @@ test.describe("Toast stacking is real and animates (GAP-04)", () => {
 // is suppressed: `motion-reduce:transition-none` zeroes the transition-duration.
 // ─────────────────────────────────────────────────────────────────────────────
 test.describe("Reduced motion suppresses the overlay enter (a11y opt-out)", () => {
-  test.use({ reducedMotion: "reduce" });
+  test.use({ contextOptions: { reducedMotion: "reduce" } });
 
   test("under prefers-reduced-motion the Dialog enter transition is suppressed", async ({
     page,
@@ -148,14 +165,17 @@ test.describe("Reduced motion suppresses the overlay enter (a11y opt-out)", () =
     const content = page.locator("[data-dialog]");
     await expect(content).toBeVisible();
 
-    // `motion-reduce:transition-none` → transition-property:none, so every component's
-    // transition-duration collapses to 0s. The opt-out holds.
-    const durationMs = await content.evaluate((el) => {
-      const style = getComputedStyle(el);
-      if (style.transitionProperty === "none") return 0;
-      const raw = style.transitionDuration.split(",")[0]?.trim() ?? "0s";
-      return raw.endsWith("ms") ? Number.parseFloat(raw) : Number.parseFloat(raw) * 1000;
-    });
-    expect(durationMs, "reduced-motion suppresses the non-essential enter transition").toBe(0);
+    // The `prefers-reduced-motion: reduce` media query in `styles/uikit.css` sets
+    // `animation: none` on the overlay-motion recipe, so the named enter keyframes are dropped
+    // and no animation runs. The opt-out holds deterministically (it cannot be out-ordered the
+    // way the old merge-free `motion-reduce:transition-none` was).
+    const reduced = await content.evaluate((el) => ({
+      animationName: getComputedStyle(el).animationName,
+      running: el.getAnimations().length,
+    }));
+    expect(reduced.animationName, "reduced-motion drops the non-essential enter keyframes").toBe(
+      "none",
+    );
+    expect(reduced.running, "no animation runs under reduced motion").toBe(0);
   });
 });

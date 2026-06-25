@@ -11,6 +11,19 @@
 // open/close enter-exit is an opacity fade the backdrop + content share. `motion-reduce:`
 // drops the non-essential animation (a11y.md Targets & motion).
 //
+// MOTION POLICY (Plan 03-11, GAP-02): the family shares ONE motion mechanism — the
+// `.uikit-overlay-motion` keyframe-animation recipe in `styles/uikit.css`, driven by Ark's
+// `[data-state]` (enter on `open`, exit on `closed`). It reads the @theme motion tokens
+// (`--duration-base` / `--ease-out`), animates transform/opacity ONLY (CLS = 0), and the
+// `prefers-reduced-motion: reduce` media query in that stylesheet DROPS the non-essential
+// enter/exit. A CSS animation (not a Tailwind `transition` + `@starting-style`) is used because
+// Ark mounts the content directly in `data-state="open"` (lazyMount + unmountOnExit), so the
+// element's first resolved style is already the open frame — a `transition` needs a cross-frame
+// property delta to fire and `@starting-style` did not run in this Ark/Chromium matrix, whereas a
+// CSS animation runs as soon as its rule first applies to the connected element. The backdrop
+// scrim uses the opacity-only `.uikit-overlay-backdrop-motion` sibling (scaling a full-viewport
+// scrim is meaningless). See the long rationale in `styles/uikit.css`.
+//
 // Slots:
 //   backdrop   — the fixed full-viewport overlay scrim (`bg-overlay`, the dark-trust scrim
 //                token theme.css#L28); fades in/out on opacity only.
@@ -28,11 +41,10 @@ import { tv } from "tailwind-variants/lite";
 
 export const dialog = tv({
   slots: {
-    backdrop:
-      "fixed inset-0 z-modal bg-overlay transition-opacity duration-150 data-[state=closed]:opacity-0 data-[state=open]:opacity-100 motion-reduce:transition-none",
+    backdrop: "uikit-overlay-backdrop-motion fixed inset-0 z-modal bg-overlay",
     positioner: "fixed inset-0 z-modal flex items-center justify-center p-4",
     content:
-      "flex w-full max-w-md flex-col gap-4 rounded-xl border border-border-2 bg-surface-1 p-6 shadow-lg transition duration-150 focus-visible:outline-none data-[state=closed]:scale-95 data-[state=closed]:opacity-0 data-[state=open]:scale-100 data-[state=open]:opacity-100 motion-reduce:transition-none motion-reduce:data-[state=closed]:scale-100",
+      "uikit-overlay-motion flex w-full max-w-md flex-col gap-4 rounded-xl border border-border-2 bg-surface-1 p-6 shadow-lg focus-visible:outline-none",
     title: "font-body text-lg font-semibold leading-snug text-text-primary",
     body: "font-body text-sm text-text-muted",
     close:
