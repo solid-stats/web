@@ -282,8 +282,7 @@ test.describe("AsyncBoundary CLS = 0", () => {
       heights.push(box.height);
     }
     // The banner family reserves one consistent block height (its own invariant).
-    for (const h of heights) expect(h, "all banner kinds reserve the same block height").toBe(
-      heights[0],
-    );
+    for (const h of heights)
+      expect(h, "all banner kinds reserve the same block height").toBe(heights[0]);
   });
 });
