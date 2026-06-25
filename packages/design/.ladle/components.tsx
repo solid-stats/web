@@ -15,26 +15,42 @@ import { useEffect } from "react";
 import "./styles.mjs";
 import { i18n } from "../src/shared/uikit/_i18n";
 
-/** The supported UI locales — RU primary (D-03). Any other control value falls back to RU. */
+/** The supported UI locales — RU primary (D-03). Any other source value falls back to RU. */
 type Locale = "ru" | "en";
 
-/** Narrow an arbitrary control value to a real {@link Locale} (fallback RU), not an unchecked `as`. */
+/** Narrow an arbitrary locale source value to a real {@link Locale} (fallback RU), not an unchecked `as`. */
 function toLocale(value: unknown): Locale {
   return value === "en" ? "en" : "ru";
 }
 
-// KIT-08 language switch (RESEARCH Pattern 4): the GlobalProvider reads the `locale`
-// global control declared in config.mjs (the global-control-arg path, D-04 — mirrors the
-// disabled `theme` addon precedent, no custom addon-button file), re-activates that locale
-// on the shared runtime instance, and wraps every story in `<I18nProvider>` so a story's
-// `i18n._({ id, message, values })` resolves in the chosen language. Toggling the control
-// re-renders every catalogued story bilingually (SC#2). The control value is narrowed with a
-// real runtime guard (`toLocale` — non-ru/en falls back to RU, never an unchecked `as` that
-// could `activate` an unloaded locale), and `i18n.activate` runs in an effect keyed on the
-// locale (a render-body mutation React may run/discard/re-run freely). The instance + the
-// fonts.css → tailwind.css import-once order are untouched; I18nProvider wraps, never reorders.
-export const Provider: GlobalProvider = ({ globalState, children }) => {
-  const locale = toLocale(globalState.control?.["locale"]?.value);
+/**
+ * Read the active locale from the `?locale=` URL query param — the REAL persistent,
+ * global locale source (GAP-01 fix). Unlike the dead `control.defaultState.locale` config
+ * block (a per-story args seed in Ladle 5.1.1, never merged into `globalState.control`), the
+ * URL survives a story switch and is independent of any story declaring its own args, so the
+ * switch works even on no-args stories like `smoke--tokens`. SSR/no-window-safe: if `window`
+ * is absent (Ladle building without a DOM), fall back to RU. Junk values fall back to RU via
+ * `toLocale` — an unloaded locale can never be activated (T-03-08-01 tampering mitigation).
+ */
+function readLocaleFromUrl(): Locale {
+  if (typeof window === "undefined") return "ru";
+  return toLocale(new URLSearchParams(window.location.search).get("locale"));
+}
+
+// KIT-08 language switch (GAP-01 fix): the GlobalProvider reads the active locale from the
+// `?locale=` URL query param — a real persistent, global source (replacing the dead
+// `control.defaultState.locale` declaration that Ladle 5.1.1 never injected into
+// `globalState.control`) — re-activates that locale on the shared runtime instance, and wraps
+// every story in `<I18nProvider>` so a story's `i18n._({ id, message, values })` resolves in
+// the chosen language. The source is global (lives in the URL, independent of any story's
+// args), so toggling RU↔EN re-renders every catalogued story bilingually, including no-args
+// stories (SC#2). The value is narrowed with a real runtime guard (`toLocale` — non-ru/en
+// falls back to RU, never an unchecked `as` that could `activate` an unloaded locale), and
+// `i18n.activate` runs in an effect keyed on the locale (a render-body mutation React may
+// run/discard/re-run freely). The instance + the fonts.css → tailwind.css import-once order
+// are untouched; I18nProvider wraps, never reorders.
+export const Provider: GlobalProvider = ({ children }) => {
+  const locale = readLocaleFromUrl();
   useEffect(() => {
     i18n.activate(locale);
   }, [locale]);
