@@ -18,7 +18,7 @@
 // (WCAG 4.1.2). `createToast` is the typed helper that makes the name a `tsc` requirement at the
 // `toaster.create(...)` call site — a consumer cannot push a toast without it.
 import type { ReactNode } from "react";
-import { Toaster, createToaster } from "@ark-ui/react/toast";
+import { Toast as ArkToast, Toaster, createToaster } from "@ark-ui/react/toast";
 import { Toast, type ToastVariant } from "../Toast";
 
 /**
@@ -33,11 +33,18 @@ export type ToastMeta = {
 
 /**
  * The single toaster instance (D-06). Owns the portal (mounts its own to `document.body` — no app
- * shell needed), the FIFO queue, per-toast auto-dismiss, and the bottom-end overlap stacking.
+ * shell needed), the FIFO queue, per-toast auto-dismiss, and the bottom-end stacking.
  * Push toasts via {@link createToast} (the typed wrapper that requires the dismiss name), not
  * `toaster.create(...)` directly.
+ *
+ * Plan 03-11 (GAP-04): `overlap: false` (STACKED) so fired toasts always show a real gap > 0 at
+ * rest — in stacked mode the Ark/zag per-toast `--y` offset includes the configured `gap` (12px)
+ * + each toast's height, and the `Toast.Root` (the leaf renders through it) carries the
+ * `.uikit-toast-motion` recipe that applies `translateY(var(--y))`. The previous `overlap: true`
+ * stacked toasts flush because nothing applied the overlap transform (GAP-04). `max: 4` caps the
+ * visible stack.
  */
-export const toaster = createToaster({ placement: "bottom-end", overlap: true, gap: 12, max: 4 });
+export const toaster = createToaster({ placement: "bottom-end", overlap: false, gap: 12, max: 4 });
 
 /** The toast shape a consumer pushes — Ark's `create` options with the required {@link ToastMeta}. */
 type CreateToastOptions = Parameters<typeof toaster.create>[0] & { meta: ToastMeta };
@@ -88,18 +95,35 @@ export function ToastViewport(): ReactNode {
           toast.action === undefined
             ? undefined
             : { label: toast.action.label, onClick: toast.action.onClick };
-        // Defensive: a missing name omits the dismiss control entirely rather than rendering an
-        // unnamed icon-only button — an unnamed dismiss can never reach the DOM (WCAG 4.1.2).
-        return meta?.dismissAria === undefined ? (
-          <Toast variant={toVariant(toast.type)} message={message(toast.title)} action={action} />
-        ) : (
-          <Toast
-            variant={toVariant(toast.type)}
-            message={message(toast.title)}
-            action={action}
-            onDismiss={() => toaster.dismiss(toast.id)}
-            dismissAria={meta.dismissAria}
-          />
+        // GAP-04: render the leaf THROUGH the Ark `Toast.Root` so it receives the stacking CSS vars
+        // (`--y`/`--offset`/`--index`) + `data-state`; `.uikit-toast-motion` applies the
+        // `translateY(var(--y))` stack offset (real gap > 0 at rest) + the shared-token opacity
+        // enter/exit. The Root also already carries `role="status"`/`aria-*`, so the leaf's own
+        // `role="status"` is redundant in this composed path — the manager keeps the visual leaf
+        // as the surface inside the positioned Root (no re-expression of the leaf, D-06).
+        return (
+          <ArkToast.Root className="uikit-toast-motion">
+            {meta?.dismissAria === undefined ? (
+              // Defensive: a missing name omits the dismiss control rather than rendering an
+              // unnamed icon-only button — an unnamed dismiss can never reach the DOM (WCAG 4.1.2).
+              // `live={false}`: the Ark `Toast.Root` already owns the polite live region.
+              <Toast
+                variant={toVariant(toast.type)}
+                message={message(toast.title)}
+                action={action}
+                live={false}
+              />
+            ) : (
+              <Toast
+                variant={toVariant(toast.type)}
+                message={message(toast.title)}
+                action={action}
+                live={false}
+                onDismiss={() => toaster.dismiss(toast.id)}
+                dismissAria={meta.dismissAria}
+              />
+            )}
+          </ArkToast.Root>
         );
       }}
     </Toaster>

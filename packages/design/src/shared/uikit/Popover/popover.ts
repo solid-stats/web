@@ -5,6 +5,13 @@
 // through the Portal (RESEARCH Pitfall 3), ONLY emitted `@theme` tokens, NO arbitrary values
 // (styling.md). Transform/opacity-only animation (CLS = 0, QUAL-04), `motion-reduce:` drops it.
 //
+// MOTION POLICY (Plan 03-11, GAP-02): the SAME family mechanism as the Dialog recipe — the
+// `.uikit-overlay-motion` keyframe-animation recipe (`styles/uikit.css`) driven by Ark's
+// `[data-state]`, reading the `--duration-base`/`--ease-out` tokens, transform/opacity only
+// (CLS = 0), dropped under `prefers-reduced-motion`. A CSS animation (not `transition` +
+// `@starting-style`) because Ark mounts the content directly in `data-state="open"`. One policy,
+// applied identically across Dialog/Menu/Popover/Tooltip — see the rationale in `styles/uikit.css`.
+//
 // The popover is the NON-modal sibling of the Dialog: lower elevation (`--shadow-md`, the
 // floating-UI shadow, theme.css#L111) and a tighter radius (`rounded-lg`) than the modal's
 // `--shadow-lg` + `rounded-xl` (03-UI-SPEC KIT-06). No backdrop scrim — it does not inert the
@@ -28,7 +35,7 @@ export const popover = tv({
   slots: {
     positioner: "z-modal",
     content:
-      "flex w-64 flex-col gap-2 rounded-lg border border-border-2 bg-surface-1 p-4 shadow-md transition duration-150 focus-visible:outline-none data-[state=closed]:scale-95 data-[state=closed]:opacity-0 data-[state=open]:scale-100 data-[state=open]:opacity-100 motion-reduce:transition-none motion-reduce:data-[state=closed]:scale-100",
+      "uikit-overlay-motion flex w-64 flex-col gap-2 rounded-lg border border-border-2 bg-surface-1 p-4 shadow-md focus-visible:outline-none",
     title: "font-body text-sm font-semibold leading-snug text-text-primary",
     body: "font-body text-sm text-text-muted",
   },

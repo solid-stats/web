@@ -16,6 +16,13 @@
 //   content    — the small floating surface: `surface-1` + `border-2` + `rounded-md` +
 //                `--shadow-md`, tight padding, the small-print body type. Opacity + a small
 //                scale-in (transform only); `motion-reduce:` drops it.
+//
+// MOTION POLICY (Plan 03-11, GAP-02): the SAME family mechanism as Dialog/Menu/Popover — the
+// `.uikit-overlay-motion` keyframe-animation recipe (`styles/uikit.css`) driven by Ark's
+// `[data-state]` — but on the FAST duration role via the `.uikit-overlay-motion-fast` modifier
+// (`--duration-fast`, the small hover surface; the design Motion roles). Transform/opacity only
+// (CLS = 0), dropped under `prefers-reduced-motion`. A CSS animation (not `transition` +
+// `@starting-style`) because Ark mounts the content directly in `data-state="open"`.
 //   arrow      — kept as the Ark anatomy slot but unpainted: a connector arrow's size/bg/border
 //                are raw-literal CSS custom props that would breach no-arbitrary-values
 //                (styling.md) — the Popover precedent ships none (YAGNI). Held empty so the
@@ -26,7 +33,7 @@ export const tooltip = tv({
   slots: {
     positioner: "z-modal",
     content:
-      "max-w-xs rounded-md border border-border-2 bg-surface-1 px-2.5 py-1.5 font-body text-xs text-text-primary shadow-md transition duration-150 focus-visible:outline-none data-[state=closed]:scale-95 data-[state=closed]:opacity-0 data-[state=open]:scale-100 data-[state=open]:opacity-100 motion-reduce:transition-none motion-reduce:data-[state=closed]:scale-100",
+      "uikit-overlay-motion uikit-overlay-motion-fast max-w-xs rounded-md border border-border-2 bg-surface-1 px-2.5 py-1.5 font-body text-xs text-text-primary shadow-md focus-visible:outline-none",
     arrow: "",
   },
 });

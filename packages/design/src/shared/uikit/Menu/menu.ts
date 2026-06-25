@@ -6,6 +6,13 @@
 // the Portal (RESEARCH Pitfall 3), ONLY emitted `@theme` tokens, NO arbitrary values
 // (styling.md). Transform/opacity-only animation (CLS = 0, QUAL-04), `motion-reduce:` drops it.
 //
+// MOTION POLICY (Plan 03-11, GAP-02): the SAME family mechanism as the Dialog recipe — the
+// `.uikit-overlay-motion` keyframe-animation recipe (`styles/uikit.css`) driven by Ark's
+// `[data-state]`, reading the `--duration-base`/`--ease-out` tokens, transform/opacity only
+// (CLS = 0), dropped under `prefers-reduced-motion`. A CSS animation (not `transition` +
+// `@starting-style`) because Ark mounts the content directly in `data-state="open"`. One policy,
+// applied identically across Dialog/Menu/Popover/Tooltip — see the rationale in `styles/uikit.css`.
+//
 // The menu content is the popover-style surface (03-UI-SPEC KIT-06 → Menu): `surface-1` +
 // `border-2` hairline + `rounded-lg` + `--shadow-md` — the same floating elevation as the
 // Popover. Items are ≥44px (`min-h-11`, a11y.md 2.5.5) with a `surface-3` hover; the
@@ -30,7 +37,7 @@ export const menu = tv({
   slots: {
     positioner: "z-modal",
     content:
-      "flex min-w-48 flex-col gap-0.5 rounded-lg border border-border-2 bg-surface-1 p-1 shadow-md transition duration-150 focus-visible:outline-none data-[state=closed]:scale-95 data-[state=closed]:opacity-0 data-[state=open]:scale-100 data-[state=open]:opacity-100 motion-reduce:transition-none motion-reduce:data-[state=closed]:scale-100",
+      "uikit-overlay-motion flex min-w-48 flex-col gap-0.5 rounded-lg border border-border-2 bg-surface-1 p-1 shadow-md focus-visible:outline-none",
     item: "flex min-h-11 cursor-pointer items-center rounded-sm px-3 font-body text-sm text-text-muted transition-colors hover:bg-surface-3 hover:text-text-primary focus-visible:outline-none data-[highlighted]:bg-surface-3 data-[highlighted]:text-primary",
     itemGroup: "flex flex-col gap-0.5",
     separator: "my-1 border-t border-border-2",

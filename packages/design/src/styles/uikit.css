@@ -65,3 +65,153 @@
     transform: translateX(100%);
   }
 }
+
+/*
+ * Plan 03-11 (GAP-02): the ONE overlay+toast enter/exit MOTION POLICY.
+ *
+ * Why a keyframe ANIMATION, not a Tailwind `transition` + `@starting-style`: Ark mounts
+ * overlay/toast content directly in `data-state="open"` (lazyMount + unmountOnExit), so the
+ * element's FIRST resolved style is already the open frame — a `transition` needs a property
+ * delta ACROSS frames to fire, and even `@starting-style` did not run in this Ark/Chromium
+ * matrix (the element is connected + styled past the starting frame in a single paint, so no
+ * closed→open transition was ever observed: 0 running animations, opacity 1 on the first frame).
+ * A CSS `animation` instead RUNS as soon as its rule first applies to a connected element —
+ * independent of any cross-frame property delta — so the enter frame plays even on a
+ * direct-to-open mount. This is the plan's sanctioned fallback ("if @starting-style is not
+ * viable in this Ark/browser matrix, use Ark's present/animation API — pick ONE mechanism and
+ * apply it family-wide").
+ *
+ * ONE policy, applied family-wide: Dialog/Menu/Popover/Tooltip content + the Toast root all carry
+ * `.uikit-overlay-motion`; Ark's `[data-state]` drives enter (`open`) and exit (`closed`). The
+ * timing reads the @theme MOTION TOKENS (`--duration-base`/`--ease-out`; the tooltip overrides to
+ * the fast role via `--uikit-overlay-duration`). Transform/opacity ONLY (compositor-only, CLS = 0,
+ * performance.md). `prefers-reduced-motion: reduce` DROPS the non-essential enter/exit (a11y.md /
+ * WCAG 2.3.3) — the deterministic opt-out (the merge-free `tailwind-variants/lite` had let the old
+ * `motion-reduce:transition-none` lose to source order; this media query cannot be out-ordered).
+ */
+@layer utilities {
+  .uikit-overlay-motion {
+    --uikit-overlay-duration: var(--duration-base);
+  }
+
+  /*
+   * The FAST duration role (the small tooltip hover surface — the design Motion roles). Overrides
+   * only the duration token; the enter/exit keyframes + reduced-motion opt-out are shared.
+   */
+  .uikit-overlay-motion-fast {
+    --uikit-overlay-duration: var(--duration-fast);
+  }
+
+  .uikit-overlay-motion[data-state="open"] {
+    animation: uikit-overlay-enter var(--uikit-overlay-duration) var(--ease-out);
+  }
+
+  .uikit-overlay-motion[data-state="closed"] {
+    animation: uikit-overlay-exit var(--uikit-overlay-duration) var(--ease-out);
+  }
+
+  /*
+   * The backdrop scrim variant — an opacity-only fade (no scale; scaling a fixed inset-0
+   * full-viewport scrim is meaningless and would only cost compositor work). Shares the
+   * Dialog content's duration so the scrim and the modal fade in together.
+   */
+  .uikit-overlay-backdrop-motion[data-state="open"] {
+    animation: uikit-overlay-backdrop-enter var(--duration-base) var(--ease-out);
+  }
+
+  .uikit-overlay-backdrop-motion[data-state="closed"] {
+    animation: uikit-overlay-backdrop-exit var(--duration-base) var(--ease-out);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .uikit-overlay-motion[data-state="open"],
+    .uikit-overlay-motion[data-state="closed"],
+    .uikit-overlay-backdrop-motion[data-state="open"],
+    .uikit-overlay-backdrop-motion[data-state="closed"] {
+      animation: none;
+    }
+  }
+}
+
+@keyframes uikit-overlay-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes uikit-overlay-exit {
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes uikit-overlay-backdrop-enter {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes uikit-overlay-backdrop-exit {
+  to {
+    opacity: 0;
+  }
+}
+
+/*
+ * Plan 03-11 (GAP-04): real toast STACKING + enter/exit, on the SAME motion policy.
+ *
+ * The Ark `Toast.Root` (which the leaf renders through) exposes per-toast stacking via CSS vars
+ * (`--y`, `--offset`, `--index`, …) but does NOT apply the transform itself — the consumer must.
+ * In STACKED mode (`overlap:false`) a mounted toast's `--y` is `calc(var(--lift) * var(--offset))`
+ * where `--offset = heightIndex * gap + heightBefore`, so applying `translateY(var(--y))` spaces
+ * the stack by each toast's height PLUS the configured `gap` (12px) — a real gap > 0 at rest
+ * (GAP-04 was flush because nothing applied this transform). `--x`/`--y` default to `0`/`100%`
+ * pre-mount, so the resting translate is the stacking offset.
+ *
+ * The enter/exit here is OPACITY-ONLY (not the shared `.uikit-overlay-motion` scale keyframes):
+ * the stacking `translateY(var(--y))` is the toast's RESTING transform, and a `transform`-animating
+ * enter would clobber it (and reset to `none` afterwards, collapsing the stack). So the toast
+ * shares the policy's tokens, reduced-motion mechanism, and uikit.css home, but animates opacity
+ * only — transform stays the stacking offset (still compositor-only, CLS = 0). Reduced motion drops
+ * the fade (the stacking transform is essential layout, not decoration, so it is kept).
+ */
+@layer utilities {
+  .uikit-toast-motion {
+    position: absolute;
+    transform: translateY(var(--y, 0)) translateX(var(--x, 0));
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .uikit-toast-motion[data-state="open"] {
+    animation: uikit-toast-enter var(--duration-base) var(--ease-out);
+  }
+
+  .uikit-toast-motion[data-state="closed"] {
+    animation: uikit-toast-exit var(--duration-base) var(--ease-out) forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .uikit-toast-motion {
+      transition: none;
+    }
+
+    .uikit-toast-motion[data-state="open"],
+    .uikit-toast-motion[data-state="closed"] {
+      animation: none;
+    }
+  }
+}
+
+@keyframes uikit-toast-enter {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes uikit-toast-exit {
+  to {
+    opacity: 0;
+  }
+}
