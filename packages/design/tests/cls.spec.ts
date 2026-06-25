@@ -196,40 +196,93 @@ test.describe("Sparkline CLS = 0", () => {
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SURF-18 AsyncBoundary (D-05) — GREEN since Wave 7 (Plan 03-07). The state→primitive
-// seam maps the six global states to the right Phase-2 primitive (Skeleton / EmptyState
-// / ErrorState / DataTrustBanner) and MUST reserve the SAME box height as the `ready`
-// content slot in every state, so swapping among loading/empty/error/offline/
-// reconnecting/stale and the ready content shifts nothing (QUAL-04, CLS = 0). The Cls
-// story renders every state + the ready content inside an IDENTICAL fixed-size reserved
-// box (`data-async-cell=<state>`) — the box holds the layout (the DataTrustBanner
-// `reserved` precedent), proving CLS = 0 across the whole seam. This block was the
-// Plan-03-01 Wave-0 RED scaffold; Wave 7 ships `surf-18-global-state--asyncboundary--cls`
-// and turns it GREEN.
+// SURF-18 AsyncBoundary (D-05 / GAP-03) — the state→primitive seam maps the global states
+// to the right Phase-2 primitive (Skeleton / EmptyState / ErrorState / DataTrustBanner).
+// GAP-03 rewrote this block: the old oracle measured the `[data-async-cell]` `h-64` cage
+// (every cell equal at 256px → trivially green = FALSE-GREEN) and over-claimed "all six
+// states the same reserved height as ready" — lumping the 40px status banners in with the
+// content region. The corrected oracle measures the ROUTED `[data-async-boundary]` primitive
+// and scopes the claim per the SURF-18 spec re-scope (03-UI-SPEC.md):
+//   • CONTENT-REGION states (loading / empty / error / ready) — the CLS-equality SET. The
+//     swap users actually see is loading↔ready, which MUST be byte-for-byte equal (the 1px
+//     hairline the human caught: framed Skeleton table ≡ the real KIT-02 Table). empty / error
+//     reserve their own content-region min-height (EmptyState / ErrorState `min-h-48`), an
+//     intentional content-sized reservation — present and non-zero, not forced to the table box.
+//   • STATUS BANNERS (offline / reconnecting / stale) — a SEPARATE 40px block role, NOT
+//     height-compared to the content region; their CLS guarantee is the DataTrustBanner
+//     reserved-height invariant asserted in the DataTrustBanner CLS block above.
 //   Wave (SURF-18) → block `AsyncBoundary CLS = 0` → story surf-18-global-state--asyncboundary--cls
 // ═══════════════════════════════════════════════════════════════════════════════
 const ASYNC_BOUNDARY_STORY = "surf-18-global-state--asyncboundary--cls";
-const ASYNC_STATES = ["loading", "empty", "error", "offline", "reconnecting", "stale"] as const;
+const CONTENT_REGION_STATES = ["loading", "empty", "error", "ready"] as const;
+const BANNER_STATES = ["offline", "reconnecting", "stale"] as const;
 
 test.describe("AsyncBoundary CLS = 0", () => {
-  test("all six states reserve the same box height as the ready slot", async ({ page }) => {
+  test("loading reserves byte-for-byte the same box height as ready (the content swap)", async ({
+    page,
+  }) => {
     await page.goto(`/?story=${ASYNC_BOUNDARY_STORY}&mode=preview`);
-    await page.waitForSelector("[data-async-cell='ready']");
+    await page.waitForSelector("[data-async-boundary='ready']");
 
-    // The `ready` content slot is the reserved-height reference; every state cell must
-    // match it exactly (copying the DataTrustBanner boundingBox().height match oracle).
-    const readyBox = await page.locator("[data-async-cell='ready']").boundingBox();
-    if (readyBox === null) throw new Error("ready content slot has no bounding box");
+    // Measure the ROUTED primitive, not the wrapper cage. loading↔ready is the swap the user
+    // sees; the boxes must match EXACTLY (the 1px hairline GAP-03 caught).
+    const loading = page.locator("[data-async-boundary='loading']");
+    const ready = page.locator("[data-async-boundary='ready']");
 
-    for (const state of ASYNC_STATES) {
-      const cell = page.locator(`[data-async-cell='${state}']`);
-      await expect(cell, `${state} state cell renders`).toBeVisible();
-      const box = await cell.boundingBox();
-      if (box === null) throw new Error(`${state} state cell has no bounding box`);
-      // Exact match — the boundary reserves the ready slot's height in every state (CLS = 0).
-      expect(box.height, `${state} reserves the same height as the ready slot`).toBe(
-        readyBox.height,
-      );
+    await expect(loading, "loading boundary renders").toBeVisible();
+    await expect(ready, "ready boundary renders").toBeVisible();
+
+    const loadingBox = await loading.boundingBox();
+    const readyBox = await ready.boundingBox();
+
+    expect(loadingBox, "loading boundary has a box").not.toBeNull();
+    expect(readyBox, "ready boundary has a box").not.toBeNull();
+    // EXACT — the loading Skeleton's framed table box equals the ready KIT-02 Table box (CLS = 0).
+    expect(loadingBox?.height, "loading height === ready height (no 1px shift)").toBe(
+      readyBox?.height,
+    );
+    expect(loadingBox?.width, "loading width === ready width").toBe(readyBox?.width);
+  });
+
+  test("every content-region state renders its routed primitive with a reserved box", async ({
+    page,
+  }) => {
+    await page.goto(`/?story=${ASYNC_BOUNDARY_STORY}&mode=preview`);
+    await page.waitForSelector("[data-async-boundary='ready']");
+
+    // Each content-region state reserves real height (no zero-height collapse). loading/ready
+    // are the equality set asserted above; empty/error are intentionally content-sized — here we
+    // only assert they render their routed primitive and reserve a non-zero box.
+    for (const state of CONTENT_REGION_STATES) {
+      const boundary = page.locator(`[data-async-boundary='${state}']`);
+      await expect(boundary, `${state} content-region boundary renders`).toBeVisible();
+      const box = await boundary.boundingBox();
+      if (box === null) throw new Error(`${state} content-region boundary has no bounding box`);
+      expect(box.height, `${state} reserves a non-zero content box`).toBeGreaterThan(0);
     }
+  });
+
+  test("status banners are a separate 40px block role, not height-compared to the content region", async ({
+    page,
+  }) => {
+    await page.goto(`/?story=${ASYNC_BOUNDARY_STORY}&mode=preview`);
+    await page.waitForSelector("[data-async-boundary='ready']");
+
+    // The banners reserve the DataTrustBanner `h-10` block (the DataTrustBanner CLS block proves
+    // the reserved-height invariant). Here: each renders + reserves a non-zero box, and the three
+    // banner kinds reserve the SAME height as each other — but they are NOT compared to the table
+    // content region (that was the over-claim GAP-03 removed).
+    const heights: number[] = [];
+    for (const state of BANNER_STATES) {
+      const boundary = page.locator(`[data-async-boundary='${state}']`);
+      await expect(boundary, `${state} banner boundary renders`).toBeVisible();
+      const box = await boundary.boundingBox();
+      if (box === null) throw new Error(`${state} banner boundary has no bounding box`);
+      expect(box.height, `${state} banner reserves a non-zero box`).toBeGreaterThan(0);
+      heights.push(box.height);
+    }
+    // The banner family reserves one consistent block height (its own invariant).
+    for (const h of heights)
+      expect(h, "all banner kinds reserve the same block height").toBe(heights[0]);
   });
 });

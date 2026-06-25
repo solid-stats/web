@@ -19,17 +19,39 @@
 import type { ReactElement } from "react";
 import type { Story, StoryDefault } from "@ladle/react";
 import { Button } from "../Button";
+import { ROSTER, SS_BASELINE, STRINGS, type TierMetric, tierFor } from "../_fixtures";
 import { i18n } from "../_i18n";
 import { StateCell, StateMatrix } from "../_state-matrix";
+import { Table, TableRow, type SortState, type TableColumn, type TierCell } from "../Table";
 import { AsyncBoundary, type AsyncKind, type AsyncState } from "./AsyncBoundary";
 
 export default {
   title: "SURF-18 Global state / AsyncBoundary",
 } satisfies StoryDefault;
 
-// The reserved-table colgroup the loading skeleton + a representative ready table share.
-const COLUMNS = [160, 96, 96] as const;
+// GAP-03: the loading Skeleton and the ready Table share ONE column model + density so the
+// loading→ready swap is byte-for-byte CLS = 0. The loading state routes to `Skeleton
+// variant="table"` (framed: a bordered card + `tableViewportHeight(ROWS, 52)` band); the ready
+// state renders the real KIT-02 `Table` (the same bordered card + the SAME
+// `tableViewportHeight(visibleRows=ROWS, 52)` viewport). Identical card chrome + identical
+// reserved height → the framed-card hairline that caused the old 1px gap is now identical on both
+// sides. The `loading` Skeleton takes raw column WIDTHS; the ready `Table` takes the full column
+// MODEL — both derived from the one `READY_COLUMNS` source.
+const READY_COLUMNS: readonly TableColumn[] = [
+  { key: "name", label: STRINGS.navPlayers.ru, width: 160, sortable: true },
+  { key: "score", label: STRINGS.statScore.ru, width: 96, numeric: true, sortable: true },
+  { key: "kd", label: STRINGS.statKd.ru, width: 96, numeric: true, sortable: true },
+] as const;
+const COLUMNS = READY_COLUMNS.map((c) => c.width);
 const ROWS = 3;
+const COMFORTABLE_ROW_H = 52;
+const READY_SORT: SortState = { key: "score", direction: "descending" };
+
+// A tier-colored numeric cell derived from a roster value via `tierFor` (the KIT-02 precedent).
+function tierCell(metric: TierMetric, value: number): TierCell {
+  const tier = tierFor(metric, value, SS_BASELINE);
+  return { value: value.toFixed(2), metric, level: tier.level };
+}
 
 /** Build the demo `AsyncState` for a kind, resolving all copy in the story (i18n-free seam). */
 function stateFor(kind: AsyncKind): AsyncState {
@@ -62,22 +84,38 @@ function stateFor(kind: AsyncKind): AsyncState {
   }
 }
 
-/** A representative "ready" surface — the real content the boundary reveals (a small table). */
+/**
+ * The "ready" surface — the REAL content the boundary reveals. GAP-03: this renders the real
+ * KIT-02 `Table` (the same `READY_COLUMNS` / comfortable density / `visibleRows=ROWS` the loading
+ * `Skeleton variant="table"` reserves), NOT a hand-rolled `h-11`/`h-13` table. Because the Table
+ * and the framed Skeleton both reserve `tableViewportHeight(ROWS, 52)` inside the identical bordered
+ * card, the loading→ready swap is byte-for-byte CLS = 0 (the 1px hairline gap is gone). The
+ * Table↔Skeleton box equality is already proven by the `Table CLS = 0` block.
+ */
 function readyContent(): ReactElement {
+  const rows = ROSTER.slice(0, ROWS);
   return (
-    <div className="overflow-hidden rounded-md border border-border-1 bg-surface-1">
-      <div className="grid h-11 items-center border-b border-border-1 bg-surface-2 px-3 font-body text-xs font-semibold text-text-muted">
-        {i18n._({ id: "tabsLabelOverview" })}
-      </div>
-      {Array.from({ length: ROWS }, (_, i) => (
-        <div
-          key={i}
-          className="flex h-13 items-center border-b border-border-1 px-3 font-body text-sm text-text-primary last:border-b-0"
-        >
-          {i18n._({ id: "tabsPanelOverview" })}
-        </div>
+    <Table
+      columns={READY_COLUMNS}
+      caption={i18n._({ id: "navPlayers" })}
+      density="comfortable"
+      sort={READY_SORT}
+      sortLabels={{}}
+      visibleRows={ROWS}
+    >
+      {rows.map((p, i) => (
+        <TableRow
+          key={p.name}
+          rowHeight={COMFORTABLE_ROW_H}
+          rank={i + 1}
+          name={p.name}
+          squad={p.squad}
+          href={`#player-${i + 1}`}
+          score={tierCell("score", p.score)}
+          kd={tierCell("kd", p.kd)}
+        />
       ))}
-    </div>
+    </Table>
   );
 }
 
@@ -105,20 +143,35 @@ export const Matrix: Story = () => (
   </div>
 );
 
-// The CLS = 0 proof (cls.spec.ts `surf-18-global-state--asyncboundary--cls`). Every state AND the
-// ready content render inside the SAME fixed-size reserved box — so the box height is identical
-// across all of them and swapping among states shifts nothing. The reserved box holds the layout
-// (the DataTrustBanner `reserved` precedent); the routed primitive lays out within it.
-const CLS_CELL = "flex h-64 w-full items-stretch overflow-hidden";
-const CLS_STATES: readonly AsyncKind[] = [...STATES, "ready"];
+// The CLS = 0 proof (cls.spec.ts `surf-18-global-state--asyncboundary--cls`). GAP-03: the proof
+// measures the ROUTED `[data-async-boundary]` primitive, NOT an equalizing wrapper cage — an
+// `h-64` cage made every cell 256px tall so the old test passed trivially (false-green). The cells
+// here add NO height of their own (`w-full`, no fixed height), so each state's box is its real
+// intrinsic reserved height. Two block roles, scoped per the SURF-18 spec re-scope:
+//   • CONTENT-REGION group (loading / empty / error / ready) — the CLS-equality set. loading and
+//     ready reserve the SAME table-card box byte-for-byte (the loading Skeleton's framed table ≡ the
+//     real KIT-02 Table the ready slot renders); empty / error are intentionally content-sized
+//     (their EmptyState / ErrorState `min-h-48` reservation, a different intrinsic min-height).
+//   • BANNER group (offline / reconnecting / stale) — a SEPARATE 40px DataTrustBanner block role,
+//     NOT height-compared to the content region; their own CLS guarantee is the DataTrustBanner
+//     reserved-height invariant (its own cls.spec block).
+const CLS_CELL = "w-full";
+const CONTENT_REGION_STATES: readonly AsyncKind[] = ["loading", "empty", "error", "ready"];
+const BANNER_STATES: readonly AsyncKind[] = ["offline", "reconnecting", "stale"];
 
 export const Cls: Story = () => (
   <div className="flex flex-col gap-4 bg-bg-1 p-4">
     <p className="font-body text-xs text-text-muted">
-      Each state reserves the same box — swapping shifts nothing (CLS = 0).
+      Content-region states reserve the table box (loading ≡ ready); banners are a separate 40px
+      block role (CLS = 0).
     </p>
     <div className="grid w-80 grid-cols-1 gap-3">
-      {CLS_STATES.map((kind) => (
+      {CONTENT_REGION_STATES.map((kind) => (
+        <div key={kind} className={CLS_CELL} data-async-cell={kind}>
+          <AsyncBoundary className="w-full" state={stateFor(kind)} />
+        </div>
+      ))}
+      {BANNER_STATES.map((kind) => (
         <div key={kind} className={CLS_CELL} data-async-cell={kind}>
           <AsyncBoundary className="w-full" state={stateFor(kind)} />
         </div>
