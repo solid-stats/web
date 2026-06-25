@@ -196,25 +196,25 @@ test.describe("Sparkline CLS = 0", () => {
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// WAVE-0 RED SCAFFOLD (Plan 03-01 Task 4 — Nyquist contract). SURF-18 AsyncBoundary
-// (D-05): the state→primitive seam maps the six global states to the right Phase-2
-// primitive (Skeleton / EmptyState / ErrorState / DataTrustBanner) and MUST reserve
-// the SAME box height as the `ready` content slot in every state, so swapping among
-// loading/empty/error/offline/reconnecting/stale and the ready content shifts nothing
-// (QUAL-04, CLS = 0). This block references a story id that does not exist yet — it is
-// RED until Wave 7 (SURF-18) ships `surf-18-global-state--asyncboundary--cls`; turning
-// it GREEN is that wave's acceptance gate. No `.skip` (a skipped scaffold is a no-op).
+// SURF-18 AsyncBoundary (D-05) — GREEN since Wave 7 (Plan 03-07). The state→primitive
+// seam maps the six global states to the right Phase-2 primitive (Skeleton / EmptyState
+// / ErrorState / DataTrustBanner) and MUST reserve the SAME box height as the `ready`
+// content slot in every state, so swapping among loading/empty/error/offline/
+// reconnecting/stale and the ready content shifts nothing (QUAL-04, CLS = 0). The Cls
+// story renders every state + the ready content inside an IDENTICAL fixed-size reserved
+// box (`data-async-cell=<state>`) — the box holds the layout (the DataTrustBanner
+// `reserved` precedent), proving CLS = 0 across the whole seam. This block was the
+// Plan-03-01 Wave-0 RED scaffold; Wave 7 ships `surf-18-global-state--asyncboundary--cls`
+// and turns it GREEN.
 //   Wave (SURF-18) → block `AsyncBoundary CLS = 0` → story surf-18-global-state--asyncboundary--cls
 // ═══════════════════════════════════════════════════════════════════════════════
 const ASYNC_BOUNDARY_STORY = "surf-18-global-state--asyncboundary--cls";
 const ASYNC_STATES = ["loading", "empty", "error", "offline", "reconnecting", "stale"] as const;
 
-test.describe("AsyncBoundary CLS = 0 (Wave-0 RED)", () => {
+test.describe("AsyncBoundary CLS = 0", () => {
   test("all six states reserve the same box height as the ready slot", async ({ page }) => {
     await page.goto(`/?story=${ASYNC_BOUNDARY_STORY}&mode=preview`);
-    // The story does not exist yet → this selector times out (RED). A short timeout
-    // keeps the failure fast instead of hanging on the default 30s wait.
-    await page.waitForSelector("[data-async-cell='ready']", { timeout: 4000 });
+    await page.waitForSelector("[data-async-cell='ready']");
 
     // The `ready` content slot is the reserved-height reference; every state cell must
     // match it exactly (copying the DataTrustBanner boundingBox().height match oracle).

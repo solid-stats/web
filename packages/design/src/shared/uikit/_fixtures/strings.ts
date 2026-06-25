@@ -241,6 +241,27 @@ export const STRINGS = {
     ru: "{n, plural, one{# реплей} few{# реплея} many{# реплеев} other{# реплея}}",
     en: "{n, plural, one{# replay} other{# replays}}",
   },
+  // SURF-18 Global state + Toast manager story copy (Plan 03-07), resolved in the STORY via
+  // `i18n._` and passed as plain string props (AsyncBoundary + the Toast leaf are i18n-free —
+  // architecture.md uikit boundary). `errorSystemContact` is the maintainer-contact path the
+  // AsyncBoundary `error` state surfaces below the `errorSystem` ref-id message (errors.md —
+  // a system error carries a contact path, never a dead end). `emptyRetry`/`errorRetry` are
+  // the recovery actions (never a blank/dead state). `toastDismiss` is the icon-only dismiss
+  // control's accessible NAME (a11y.md). `toast{Success,Info,Warn,Error}Trigger` label the
+  // Playground trigger buttons; `toast{Saved,Info,Warn,Failed}` are the toast bodies the
+  // trigger pushes. RU primary / EN mirror at parity (QUAL-05).
+  errorSystemContact: { ru: "Написать в поддержку", en: "Contact support" },
+  emptyRetry: { ru: "Сбросить фильтры", en: "Clear filters" },
+  errorRetry: { ru: "Повторить", en: "Retry" },
+  toastDismiss: { ru: "Закрыть уведомление", en: "Dismiss notification" },
+  toastSuccessTrigger: { ru: "Показать успех", en: "Show success" },
+  toastInfoTrigger: { ru: "Показать инфо", en: "Show info" },
+  toastWarnTrigger: { ru: "Показать предупреждение", en: "Show warning" },
+  toastErrorTrigger: { ru: "Показать ошибку", en: "Show error" },
+  toastSaved: { ru: "Изменения сохранены", en: "Changes saved" },
+  toastInfo: { ru: "Агрегат пересчитан", en: "Aggregate recomputed" },
+  toastWarn: { ru: "Данные могут устаревать", en: "Data may be getting stale" },
+  toastFailed: { ru: "Не удалось сохранить", en: "Could not save" },
 } as const satisfies Readonly<Record<string, Bilingual>>;
 
 /** The set of copy-element keys (derived — never hand-maintained in parallel). */

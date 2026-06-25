@@ -177,3 +177,21 @@ export { Menu } from "./shared/uikit/Menu";
 export type { TabData } from "./shared/uikit/Tabs";
 export { Tabs } from "./shared/uikit/Tabs";
 export { Tooltip } from "./shared/uikit/Tooltip";
+
+// ---- SURF-18 Global state + Toast manager (Wave 7 / Plan 03-07) ----
+// The single state→primitive seam Phases 4–9 compose, plus the deferred Toast lifecycle —
+// COMPLETING Phase 3. `AsyncBoundary` maps the discriminated `AsyncState` union (loading / empty /
+// error / offline / reconnecting / stale / ready) to the right EXISTING Phase-2 primitive
+// (`Skeleton` / `EmptyState` / `ErrorState` / `DataTrustBanner`) — never rebuilding them (D-05):
+// every state reserves its primitive's height (CLS = 0) and pairs an icon + text (never
+// color-alone). `AsyncState` graduates so a consuming surface drives its global state by that
+// shape; `AsyncKind`/`ASYNC_PRIMITIVE` graduate the pinned routing contract. `ToastManager` is the
+// Ark `createToaster` lifecycle (portal / queue / auto-dismiss / bottom-end stacking) that renders
+// the EXISTING `Toast` leaf via the `<Toaster>` render-prop (no re-expression, D-06): `toaster`
+// (consumers push via `toaster.create(...)`) + `ToastViewport` (mounted once; it portals itself)
+// graduate. The seam stays i18n-free — copy resolves in the consumer and passes as plain props
+// (architecture.md uikit boundary). This block completes Phase 3's interactive + global-state
+// catalog.
+export type { AsyncKind, AsyncState } from "./shared/uikit/AsyncBoundary";
+export { ASYNC_PRIMITIVE, AsyncBoundary } from "./shared/uikit/AsyncBoundary";
+export { ToastViewport, toaster } from "./shared/uikit/ToastManager";
