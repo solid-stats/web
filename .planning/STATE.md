@@ -6,14 +6,14 @@ current_phase: 03
 current_phase_name: UIKIT — Interactive, i18n & Global-State Patterns
 status: executing
 stopped_at: Phase 3 UI-SPEC approved
-last_updated: "2026-06-25T05:27:11.209Z"
+last_updated: "2026-06-25T05:47:24.135Z"
 last_activity: 2026-06-25
 last_activity_desc: Phase 03 execution started
 progress:
   total_phases: 9
   completed_phases: 2
   total_plans: 23
-  completed_plans: 17
+  completed_plans: 18
   percent: 22
 ---
 
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 ## Current Position
 
 Phase: 03 (UIKIT — Interactive, i18n & Global-State Patterns) — EXECUTING
-Plan: 2 of 7
+Plan: 3 of 7
 Status: Ready to execute
-Last activity: 2026-06-25 — Phase 03 execution started
+Last activity: 2026-06-25 — Completed 03-02 (KIT-05 Field + Input)
 
-Plans: [█████████████████░░░] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 9/11 complete (gap-closure 02-09 done)
+Plans: [█████████████████░░░] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 9/11 complete (gap-closure 02-09 done) · Phase 03: 2/7 (03-01 i18n harness, 03-02 KIT-05 Field+Input)
 
 ## Performance Metrics
 
@@ -65,6 +65,7 @@ Plans: [█████████████████░░░] Phase 01: 
 | Phase 02 P08 | 14min | 3 tasks | 14 files |
 | Phase 02 P09 | 38min | 3 tasks | 13 files |
 | Phase 03 P01 | 11min | 2 tasks | 5 files |
+| Phase 03 P02 | 12min | 3 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -92,6 +93,7 @@ Recent decisions affecting current work:
 - [Phase 02 / 02-07]: `cursor-pointer` is a project-wide product decision single-sourced on the `control` base (all interactive controls show the hand cursor, overriding native button default-arrow); disabled keeps `pointer-events-none` (no `cursor-not-allowed`). A `justify` variant on `control` (center default; start/end) keeps the merge-free `tailwind-variants/lite` build from emitting conflicting `justify-*` utilities. Minor token shifts (rounded-md→rounded-sm, gap-2→gap-1.5, tab text-2xs→text-xs) accepted as the intended de-duplication onto the canonical recipe.
 - [Phase ?]: KIT-01 nav-shell reworked vs binding hi-fi: three-zone NavBar + universal account per signed-in role + raised @5xl breakpoint + 5-tab MobileTabBar + reveal-safe SkipLink (GAP-01…05)
 - [Phase 02 / 02-09]: KIT-02 data-table reworked vs hi-fi — border-box viewport math (border-separate + box-internal cell hairlines, no stray scroll on table OR skeleton), a real N–M-of-total Pagination pager (disabled Next at end, GAP-07 = UAT user decision option B, a justified divergence from the hi-fi no-pager model), loading cell shows the skeleton, distinct few/limit cues, and DensityToggle replaced by the AutoTable @container auto-density resolver (comfortable at @5xl, compact below; ROW_H + controlled density prop kept). Shared geometry: tableViewportHeight + the Skeleton framed prop (GAP-06/07/08/11/14)
+- [Phase 03]: KIT-05 Field is ONE shared label+error+aria-live wrapper over Ark Field.Root (the seam Select/Stepper/FileUpload nest under); Input wraps Ark Field.Input to inherit aria-invalid/aria-describedby from context. @lingui/{react,core} ship a broken/types-only .d.mts that fails ladle:build on a clean Vite cache — fixed via a runtime-entry resolve.alias in vite.config.
 
 ### Pending Todos
 
@@ -121,7 +123,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-25T05:26:34.328Z
+Last session: 2026-06-25T05:47:06.226Z
 Stopped at: Phase 3 UI-SPEC approved
 Resume file: .planning/phases/03-uikit-interactive-i18n-global-state-patterns/03-UI-SPEC.md
 </content>

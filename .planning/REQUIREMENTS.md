@@ -30,7 +30,7 @@ Each as a colocated Ladle story with component states (enabled / hover / pressed
 - [x] **KIT-02**: Data-table primitives — sticky-header scroll-in-card, density toggle, sortable headers, cursor/pagination affordances, virtualization-ready row model, mobile compact-row layout (no horizontal scroll).
 - [x] **KIT-03**: Stat primitives — hero stat tiles (Score, K/D), even mini-stat grid, tier chips/pips with population-derived levels, sparkline microchart.
 - [x] **KIT-04**: Data-trust components — freshness pill, provenance line, Unknown/Conflict badges, stale/offline/reconnecting banners (space reserved, never color-alone).
-- [ ] **KIT-05**: Form primitives (Ark UI) — inputs, selects, steppers, file/evidence upload, inline validation with visible labels/errors and live-region behavior.
+- [x] **KIT-05**: Form primitives (Ark UI) — inputs, selects, steppers, file/evidence upload, inline validation with visible labels/errors and live-region behavior.
 - [ ] **KIT-06**: Overlay primitives (Ark UI) — dialog, menu, tabs, tooltip, popover; keyboard-accessible, focus-managed, no traps.
 - [x] **KIT-07**: Feedback primitives — skeletons (exact final dimensions, CLS = 0), empty states, error states, toasts, badges/pills.
 - [x] **KIT-08**: Language switcher + RU/EN i18n harness (typed keys; RU sanity-checked).
@@ -115,7 +115,7 @@ listed as "Phases 2–9 (gate)".
 | KIT-03 | Phase 2 | Complete |
 | KIT-04 | Phase 2 | Complete |
 | KIT-07 | Phase 2 | Complete |
-| KIT-05 | Phase 3 | Pending |
+| KIT-05 | Phase 3 | Complete |
 | KIT-06 | Phase 3 | Pending |
 | KIT-08 | Phase 3 | Complete |
 | SURF-18 | Phase 3 | Pending |
