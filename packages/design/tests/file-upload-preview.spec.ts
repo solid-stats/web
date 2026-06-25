@@ -34,20 +34,22 @@ test.describe("FileUpload single preview per accepted file (GAP-05)", () => {
     ).toHaveCount(1);
   });
 
-  test("every accepted image row in the many cell renders exactly one preview", async ({ page }) => {
+  test("every accepted image row in the many cell renders exactly one preview", async ({
+    page,
+  }) => {
     await page.goto(`/?story=${STORY}&mode=preview`);
     await page.waitForSelector("[data-storyloaded]");
 
+    // Ark populates the controlled accepted rows asynchronously after mount, so gate on the rows
+    // with the auto-retrying `toHaveCount` (a synchronous `.count()` read races the hydration —
+    // it can sample 0 rows before the `files` effect lands).
     const rows = page.locator('[data-state-cell="many"] [data-part="item"]');
-    const rowCount = await rows.count();
-    expect(rowCount, "the many cell renders its three accepted rows").toBe(3);
+    await expect(rows, "the many cell renders its three accepted rows").toHaveCount(3);
 
+    const rowCount = await rows.count();
     for (let i = 0; i < rowCount; i++) {
       const previews = rows.nth(i).locator('[data-part="item-preview"]');
-      await expect(
-        previews,
-        `accepted row ${i} renders exactly one preview node`,
-      ).toHaveCount(1);
+      await expect(previews, `accepted row ${i} renders exactly one preview node`).toHaveCount(1);
     }
   });
 
@@ -63,8 +65,9 @@ test.describe("FileUpload single preview per accepted file (GAP-05)", () => {
     // branch and dropped the `ImageUp` placeholder (the wrong branch surviving would be the
     // inverse regression).
     const previewImage = row.locator('[data-part="item-preview-image"]');
-    await expect(previewImage, "the image row's preview is the <img>, not the fallback").toHaveCount(
-      1,
-    );
+    await expect(
+      previewImage,
+      "the image row's preview is the <img>, not the fallback",
+    ).toHaveCount(1);
   });
 });
