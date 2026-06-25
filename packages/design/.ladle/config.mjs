@@ -8,24 +8,14 @@ export default {
   defaultStory: "smoke--tokens",
   addons: {
     theme: { enabled: false, defaultState: "dark" },
-    // KIT-08 language switch (D-04, RESEARCH Open Question 2 — the global-control-arg path,
-    // version-stable in 5.1.1). Seeds a `locale` global control (RU primary ↔ EN) into
-    // `globalState.control`; the GlobalProvider (components.tsx) reads `control.locale.value`
-    // and re-activates the runtime i18n instance, so toggling RU↔EN re-renders every story
-    // bilingually (SC#2). `inline-radio` gives the two-value toggle that mirrors the disabled
-    // `theme` global-toggle precedent without a custom addon-button component file.
-    control: {
-      enabled: true,
-      defaultState: {
-        locale: {
-          type: "inline-radio",
-          name: "Language",
-          options: ["ru", "en"],
-          defaultValue: "ru",
-          value: "ru",
-        },
-      },
-    },
+    // KIT-08 language switch (GAP-01): the RU↔EN locale source is the `?locale=` URL query
+    // param read by the GlobalProvider (.ladle/components.tsx → `readLocaleFromUrl`), NOT a
+    // Ladle `control` addon. In Ladle 5.1.1 `addons.control.defaultState` is only a per-STORY
+    // args seed — it is never merged into `globalState.control` — so the prior `control.locale`
+    // declaration here was dead (it implied a working toggle that never injected the locale,
+    // leaving every story stuck on RU). The URL param is persistent (survives a story switch)
+    // and global (independent of any story's args), so it drives bilingual re-render on every
+    // story including no-args stories (SC#2). No `control` addon block is needed.
     // Canonical design/review widths (design-system.md): the 360 mobile floor
     // (QUAL-02) + 390/414 mobile spot-checks, then tablet/laptop/desktop and the
     // large-screen tokens. Ladle's stock presets start at 414, so the 360 floor
