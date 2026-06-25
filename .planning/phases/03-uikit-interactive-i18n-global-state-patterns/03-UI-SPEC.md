@@ -227,7 +227,23 @@ Elevation).
   mapping a state union → the right primitive (D-05). Underlying primitives are **not** rebuilt
   (they already encode CLS-0 reservation + icon+text, never color-alone). `DataTrustBanner.BannerKind`
   already maps offline/reconnecting/stale; it has a `reserved` same-height kind for CLS = 0.
-- Every state **reserves its final height (CLS = 0)** and **never relies on color alone** (QUAL-03/04).
+- Every state **reserves its final height** and **never relies on color alone** (QUAL-03/04). The
+  **CLS = 0 contract is scoped by block role** (GAP-03 — the earlier "all six states the same
+  reserved height as ready" was an over-claim that wrongly height-compared the 40px status banners
+  against the table content region):
+  - **Content-region states — `loading` / `empty` / `error` / `ready`** — occupy the same content
+    region. The swap the user actually sees is **`loading` ↔ `ready`**, which **MUST reserve
+    byte-for-byte the SAME box** (the loading `Skeleton variant="table"` ≡ the real KIT-02 `Table`
+    the ready slot renders — both `tableViewportHeight(rows, ROW_H)` inside the identical bordered
+    card; the 1px hairline GAP-03 caught is closed). **Decision:** `empty` / `error` are
+    **intentionally content-sized**, NOT padded to the table region's height — they route to
+    `EmptyState` / `ErrorState`, whose own `min-h-48` reservation is their CLS guarantee. They are
+    a deliberate, honest "nothing here / something broke" surface at their own intrinsic height, not
+    a forced match to the table box. The CLS-equality *measured set* is therefore `loading ≡ ready`.
+  - **Status banners — `offline` / `reconnecting` / `stale`** — are a **separate block role**: a
+    40px `DataTrustBanner` strip above/around content, **NOT height-compared to the content region**.
+    Their CLS guarantee is the `DataTrustBanner` reserved-height invariant (its own `reserved`
+    same-height kind, proven by the `DataTrustBanner CLS = 0` spec block).
 - `AsyncBoundary` prop shape (discriminated state union vs slots) and slice granularity is
   **Claude's discretion** — planner reconciles against architecture.md slice rules; D-05 is the
   intended shape, not a rigid file count.
