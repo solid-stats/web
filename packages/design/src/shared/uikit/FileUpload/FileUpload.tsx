@@ -128,12 +128,20 @@ export function FileUpload({
           {(api) =>
             api.acceptedFiles.map((file) => (
               <ArkFileUpload.Item key={fileKey(file)} file={file} className={styles.item()}>
-                <ArkFileUpload.ItemPreview type="image/*" className={styles.itemPreview()}>
-                  <ArkFileUpload.ItemPreviewImage className={styles.itemPreviewImage()} />
-                </ArkFileUpload.ItemPreview>
-                <ArkFileUpload.ItemPreview type=".*" className={styles.itemPreview()}>
-                  <ImageUp className="size-4 shrink-0" aria-hidden />
-                </ArkFileUpload.ItemPreview>
+                {/* Exactly ONE preview per accepted file, branched on `file.type` — NOT on Ark's
+                    `match(props.type)` filter, whose `.*` is a catch-all that also matches images
+                    (GAP-05: the two-sibling shape double-rendered the img + the fallback). An image
+                    file renders the `<img>` via `ItemPreviewImage` (Ark keeps its object-URL
+                    create+revoke lifecycle); any non-image file renders the icon fallback alone. */}
+                {file.type.startsWith("image/") ? (
+                  <ArkFileUpload.ItemPreview type="image/*" className={styles.itemPreview()}>
+                    <ArkFileUpload.ItemPreviewImage className={styles.itemPreviewImage()} />
+                  </ArkFileUpload.ItemPreview>
+                ) : (
+                  <ArkFileUpload.ItemPreview type=".*" className={styles.itemPreview()}>
+                    <ImageUp className="size-4 shrink-0" aria-hidden />
+                  </ArkFileUpload.ItemPreview>
+                )}
                 <ArkFileUpload.ItemName className={styles.itemName()} />
                 <span className={styles.itemControls()}>
                   {onRetry === undefined ? null : (
