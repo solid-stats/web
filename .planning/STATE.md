@@ -6,14 +6,14 @@ current_phase: 03
 current_phase_name: UIKIT — Interactive, i18n & Global-State Patterns
 status: executing
 stopped_at: Completed 03-05-PLAN.md (KIT-06 Dialog + Popover)
-last_updated: "2026-06-25T07:14:42.494Z"
+last_updated: "2026-06-25T07:37:52.216Z"
 last_activity: 2026-06-25
-last_activity_desc: Completed 03-04 (KIT-05 FileUpload — completes the form family)
+last_activity_desc: Completed 03-05 (KIT-06 Dialog + Popover — opens the overlay family)
 progress:
   total_phases: 9
   completed_phases: 2
   total_plans: 23
-  completed_plans: 21
+  completed_plans: 22
   percent: 22
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 ## Current Position
 
 Phase: 03 (UIKIT — Interactive, i18n & Global-State Patterns) — EXECUTING
-Plan: 6 of 7
+Plan: 7 of 7
 Status: Ready to execute
 Last activity: 2026-06-25 — Completed 03-05 (KIT-06 Dialog + Popover — opens the overlay family)
 
@@ -68,6 +68,7 @@ Plans: [█████████████████░░░] Phase 01: 
 | Phase 03 P02 | 12min | 3 tasks | 13 files |
 | Phase 03 P03 | 35min | 3 tasks | 12 files |
 | Phase 03 P05 | 25min | 3 tasks | 11 files |
+| Phase 03 P06 | ~12min | 3 tasks | 17 files |
 
 ## Accumulated Context
 
@@ -98,6 +99,7 @@ Recent decisions affecting current work:
 - [Phase 03]: KIT-05 Field is ONE shared label+error+aria-live wrapper over Ark Field.Root (the seam Select/Stepper/FileUpload nest under); Input wraps Ark Field.Input to inherit aria-invalid/aria-describedby from context. @lingui/{react,core} ship a broken/types-only .d.mts that fails ladle:build on a clean Vite cache — fixed via a runtime-entry resolve.alias in vite.config.
 - [Phase ?]: [Phase 03 / 03-03]: KIT-05 Select adopts Ark Select (generic Select<TValue>, tv()-per-part, cyan active option + ItemIndicator check, Ark-owned keyboard) and Stepper adopts Ark NumberInput (tabular-mono value via the mono face, ≥44px aria-labelled inc/dec triggers whose names the story injects). Select forced-open uses UNCONTROLLED defaultOpen — controlled open pinned every instance closed (Rule 1 bug fix). Live keyboard specs target the lone Playground story; the matrix's forced-open Ark portal renders a dismiss layer that intercepts events.
 - [Phase ?]: [Phase 03 / 03-05]: KIT-06 Dialog (modal — Ark-owned trap/return/Esc/inert/scrim) + Popover (non-modal — return/Esc/no-trap) adopt the tv()-per-Ark-part idiom; forced-open axe cell uses UNCONTROLLED defaultOpen (Select Rule-1 lesson), Playground stays controlled. Overlays animate the bare transition utility (not arbitrary transition-[opacity,transform]) for CLS=0. Destructive-confirm story (WCAG 3.3.6) defaults focus to safe cancel + loss/verb+noun. Overlay keyboard specs poll focus-settle + activeElement-hook to defeat the dismissable-arm/restoreFocus races.
+- [Phase ?]: KIT-06 overlay family COMPLETE (Menu/Tabs/Tooltip graduated); cyan-active always paired with a structural marker (never color-alone); Tabs focus ring unclipped under a sticky bar (2.4.12)
 
 ### Pending Todos
 
@@ -127,7 +129,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-25T07:14:42.490Z
+Last session: 2026-06-25T07:37:18.615Z
 Stopped at: Completed 03-05-PLAN.md (KIT-06 Dialog + Popover)
 Resume file: None
 </content>
