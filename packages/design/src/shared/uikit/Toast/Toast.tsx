@@ -14,7 +14,7 @@
 // utilities held literal in `tv()` (styling.md — no arbitrary values); `/lite` is the
 // tailwind-merge-free build (FreshnessPill precedent).
 import type { ReactNode } from "react";
-import { CircleAlert, CircleCheck, Info, TriangleAlert, type LucideIcon } from "lucide-react";
+import { CircleAlert, CircleCheck, Info, TriangleAlert, X, type LucideIcon } from "lucide-react";
 import { tv } from "tailwind-variants/lite";
 import { Button } from "../Button";
 
@@ -31,6 +31,16 @@ type Props = {
     label: string;
     onClick?: () => void;
   };
+  /**
+   * Optional dismiss affordance — an icon-only close control the toast MANAGER wires to
+   * `toaster.dismiss(toast.id)` (Plan 03-07, D-06). The leaf stays presentational: it takes
+   * the accessible name as a prop (`dismissAria`) and does NOT invent it (a11y.md — icon-only
+   * controls need a caller-supplied name). Absent both → no dismiss button (the bare visual
+   * leaf the Phase-2 catalog still renders inert).
+   */
+  onDismiss?: () => void;
+  /** The accessible name for the icon-only dismiss control (resolved by the consumer). */
+  dismissAria?: string;
 };
 
 const ICONS = {
@@ -64,7 +74,14 @@ const iconTone = tv({
   },
 });
 
-export function Toast({ className, variant, message, action }: Props): ReactNode {
+export function Toast({
+  className,
+  variant,
+  message,
+  action,
+  onDismiss,
+  dismissAria,
+}: Props): ReactNode {
   const Icon = ICONS[variant];
 
   return (
@@ -76,6 +93,21 @@ export function Toast({ className, variant, message, action }: Props): ReactNode
         // `text-primary` keeps the cyan affordance the toast action has always carried.
         <Button variant="ghost" size="sm" className="text-primary" onClick={action.onClick}>
           {action.label}
+        </Button>
+      )}
+      {onDismiss === undefined ? null : (
+        // D-06: the icon-only dismiss the manager wires to `toaster.dismiss(toast.id)`. The
+        // shared ghost Button gives it the ONE canonical ring + ≥44px hit area; the icon is
+        // aria-hidden and the control carries the caller-supplied accessible name.
+        <Button
+          variant="ghost"
+          size="sm"
+          className="-mr-1 shrink-0 text-text-muted"
+          aria-label={dismissAria}
+          onClick={onDismiss}
+          data-toast-dismiss
+        >
+          <X className="size-4" aria-hidden />
         </Button>
       )}
     </div>
