@@ -26,7 +26,7 @@ type Props = {
    * The contact path for a `system` error (e.g. a support link/handle). Rendered
    * below the message. Ignored for `user` errors.
    */
-  contact?: string;
+  contact?: string | undefined;
   /** Recovery action (button/link) — always present, never a dead end. */
   action: ReactNode;
 };

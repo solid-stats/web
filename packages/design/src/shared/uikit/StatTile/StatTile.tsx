@@ -30,10 +30,12 @@ type Props = {
    * Optional signed delta vs. the prior period. The sign drives the win/loss color
    * AND the paired trend icon; the formatted text (e.g. `+0.4`) is shown verbatim.
    */
-  delta?: {
-    readonly sign: DeltaSign;
-    readonly text: string;
-  };
+  delta?:
+    | {
+        readonly sign: DeltaSign;
+        readonly text: string;
+      }
+    | undefined;
 };
 
 const deltaTv = tv({

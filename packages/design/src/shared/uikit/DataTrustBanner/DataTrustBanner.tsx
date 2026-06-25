@@ -24,7 +24,7 @@ type Props = {
   className?: string;
   kind: BannerKind;
   /** The literal banner text (RU/EN), from `_fixtures/STRINGS`. Ignored for `reserved`. */
-  label?: string;
+  label?: string | undefined;
 };
 
 // Fixed height (`h-10` = 40px) reserved for every kind incl. `reserved` → CLS = 0.

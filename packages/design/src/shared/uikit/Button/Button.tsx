@@ -14,16 +14,16 @@ import { control, type ButtonJustify, type ButtonSize, type ButtonVariant } from
 
 type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "disabled" | "type"> & {
   // system props first
-  className?: string;
+  className?: string | undefined;
   // values
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  justify?: ButtonJustify;
-  type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
+  variant?: ButtonVariant | undefined;
+  size?: ButtonSize | undefined;
+  justify?: ButtonJustify | undefined;
+  type?: ButtonHTMLAttributes<HTMLButtonElement>["type"] | undefined;
   // booleans
   /** Segment active member → cyan (the sorted sort-header). Inert for other variants. */
-  active?: boolean;
-  disabled?: boolean;
+  active?: boolean | undefined;
+  disabled?: boolean | undefined;
   // content
   children?: ReactNode;
 };

@@ -6,6 +6,7 @@
 // the ×5 scenario endings (success / system-error / user-error n/a / loading /
 // onboarding-empty). `Cls` renders the loading skeleton beside the data table for
 // the `cls.spec` box-height equality (CLS = 0).
+import type { ReactElement } from "react";
 import type { Story, StoryDefault } from "@ladle/react";
 import { ROSTER, SS_BASELINE, STRINGS, type TierMetric, tierFor, type Player } from "../_fixtures";
 import { EmptyState } from "../EmptyState";
@@ -83,7 +84,7 @@ function dataTable(
   sort: SortState,
   lang: Lang,
   visibleRows: number,
-): ReturnType<Story> {
+): ReactElement {
   const cols = lang === "ru" ? COLUMNS : enColumns();
   const rowHeight = density === "comfortable" ? 52 : 44;
   return (
@@ -119,7 +120,7 @@ function VolumeCaption({
   variant: "few" | "limit";
   shown: number;
   total: number;
-}): ReturnType<Story> {
+}): ReactElement {
   const text =
     variant === "few"
       ? STRINGS.paginationRange.ru
@@ -280,7 +281,7 @@ export const DataVolumes: Story = () => (
 // user-facing control. `data-density-branch` marks each branch for the catalog.
 export const AutoDensity: Story = () => {
   const rows = ROSTER.slice(0, 5);
-  const renderRows = (density: TableDensity): ReturnType<Story> => {
+  const renderRows = (density: TableDensity): ReactElement => {
     const rowHeight = density === "comfortable" ? 52 : 44;
     return (
       <>
@@ -369,7 +370,7 @@ export const Endings: Story = () => (
 );
 
 // The loading table — the Table with `loading` swapping in the Skeleton variant.
-function LoadingTable(): ReturnType<Story> {
+function LoadingTable(): ReactElement {
   return (
     <Table
       columns={COLUMNS}

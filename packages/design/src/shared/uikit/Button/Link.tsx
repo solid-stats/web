@@ -12,17 +12,17 @@ import { control, type ButtonJustify, type ButtonSize, type ButtonVariant } from
 
 type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & {
   // system props first
-  className?: string;
+  className?: string | undefined;
   // values
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  justify?: ButtonJustify;
+  variant?: ButtonVariant | undefined;
+  size?: ButtonSize | undefined;
+  justify?: ButtonJustify | undefined;
   /** The anchor target. Dropped when `disabled` (a disabled link is not navigable). */
-  href?: string;
+  href?: string | undefined;
   // booleans
   /** Segment active member → cyan. Inert for other variants. */
-  active?: boolean;
-  disabled?: boolean;
+  active?: boolean | undefined;
+  disabled?: boolean | undefined;
   // content
   children?: ReactNode;
 };

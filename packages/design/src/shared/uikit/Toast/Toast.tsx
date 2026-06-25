@@ -46,10 +46,12 @@ type Props = {
   /** The toast message (RU primary / EN mirror), from `_fixtures/STRINGS`. */
   message: string;
   /** Optional action: a label + click handler (the catalog renders it inert). */
-  action?: {
-    label: string;
-    onClick?: () => void;
-  };
+  action?:
+    | {
+        label: string;
+        onClick?: () => void;
+      }
+    | undefined;
 } & DismissProps;
 
 const ICONS = {

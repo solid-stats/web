@@ -17,5 +17,11 @@
       "@lingui/react": ["./node_modules/@lingui/react/dist/index.d.mts"]
     }
   },
+  // The package-root config files (`vite.config.ts`, `playwright.config.ts`) are NOT in
+  // `include`, but `vp check packages` globs every `.ts` under the package and would still
+  // type-check them — and `vite.config.ts`'s `vite` type import must NOT resolve (the
+  // no-direct-vite-dep boundary, architecture.md). They are dropped from the gate via the
+  // root vite.config.ts `lint.ignorePatterns`, not an `exclude` here (an `exclude` only
+  // subtracts from `include`, and these files were never in it).
   "include": ["src", ".ladle"]
 }

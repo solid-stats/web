@@ -30,9 +30,9 @@ type Props = {
   /** Accessible action name for the sort button (e.g. «сортировать по Счёт»). */
   sortLabel: string;
   /** Right-align the header (numeric columns) to match `table-cell-numeric`. */
-  numeric?: boolean;
+  numeric?: boolean | undefined;
   /** Parent sort intent — inert in the catalog (no engine, D-01). */
-  onSort?: () => void;
+  onSort?: (() => void) | undefined;
   /** Forced state for the static catalog matrix only (no real pointer). */
   forcedState?: ThState;
 };

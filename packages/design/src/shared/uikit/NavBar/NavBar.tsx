@@ -63,11 +63,11 @@ type Props = {
   ariaLabel: string;
   /** The LEFT brand slot — a word-mark / glyph node the consumer passes (rendered as a
    *  ghost Link to overview). Omitted = no brand (the catalog passes one). */
-  brand?: ReactNode;
+  brand?: ReactNode | undefined;
   /** The RIGHT-cluster account control (universal account, or Steam sign-in). */
   account: NavAccount;
   /** Role-specific extras (queue / admin) that ADD to the right cluster (GAP-02). */
-  roleExtras?: readonly NavItem[];
+  roleExtras?: readonly NavItem[] | undefined;
   /** The current language code shown on the language toggle (e.g. "RU" / "EN"). */
   langCode: string;
   /** Accessible name for the icon-only search control (RU/EN), from STRINGS. */

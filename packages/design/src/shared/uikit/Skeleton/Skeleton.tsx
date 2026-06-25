@@ -96,7 +96,7 @@ type TableProps = {
   columns: readonly number[];
   /** Number of skeleton body rows to reserve. */
   rows: number;
-  density?: SkeletonDensity;
+  density?: SkeletonDensity | undefined;
   /**
    * Render the standalone bordered card (default). When the `Table` swaps this in as its
    * loading body, the Table's own card + viewport already frame it, so it passes

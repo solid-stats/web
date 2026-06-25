@@ -16,6 +16,7 @@
 // control) and pass as plain props — AsyncBoundary + the primitives stay i18n-free
 // (architecture.md uikit boundary). The long RU error/empty copy exercises QUAL-05 at the 360
 // floor.
+import type { ReactElement } from "react";
 import type { Story, StoryDefault } from "@ladle/react";
 import { Button } from "../Button";
 import { i18n } from "../_i18n";
@@ -62,7 +63,7 @@ function stateFor(kind: AsyncKind): AsyncState {
 }
 
 /** A representative "ready" surface — the real content the boundary reveals (a small table). */
-function readyContent(): ReturnType<Story> {
+function readyContent(): ReactElement {
   return (
     <div className="overflow-hidden rounded-md border border-border-1 bg-surface-1">
       <div className="grid h-11 items-center border-b border-border-1 bg-surface-2 px-3 font-body text-xs font-semibold text-text-muted">

@@ -71,7 +71,7 @@ type Props = {
   /** Computed spacer height (px) below the visible window (virtualization-ready). */
   bottomSpacer?: number;
   /** Parent sort intent per column key — inert in the catalog (no engine, D-01). */
-  onSort?: (key: string) => void;
+  onSort?: ((key: string) => void) | undefined;
 };
 
 export function Table({

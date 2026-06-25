@@ -20,9 +20,9 @@ type Props = {
   /** Body copy explaining the empty result. */
   body: string;
   /** Optional total-count / next-step line (e.g. "сбросьте фильтры … всех (N)"). */
-  totalCount?: string;
+  totalCount?: string | undefined;
   /** Optional recovery action (button/link). The only interactive zone. */
-  action?: ReactNode;
+  action?: ReactNode | undefined;
 };
 
 export function EmptyState({

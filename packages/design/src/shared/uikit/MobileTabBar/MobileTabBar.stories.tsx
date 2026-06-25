@@ -31,7 +31,11 @@ const accountTabFor = (role: NavRole, lang: "ru" | "en" = "ru"): NavAccount =>
     : { kind: "signin", label: STRINGS.tabSignIn[lang] };
 
 const FORCED_STATES: readonly NavItemState[] = ["enabled", "hover", "pressed", "focused"];
+// `[TAB_SAMPLE]` destructures the first tab (the disabled-state cell below borrows its
+// icon); the guard narrows `NavItem | undefined` to `NavItem` without a non-null assertion.
 const ONE = tabsFor("signed-out").slice(0, 1);
+const [TAB_SAMPLE] = ONE;
+if (TAB_SAMPLE === undefined) throw new Error("tabsFor returned no tabs");
 
 export const Matrix: Story = () => (
   <div className="flex flex-col gap-6 bg-bg-1 p-4">
@@ -58,7 +62,7 @@ export const Matrix: Story = () => (
       <StateCell label="disabled">
         <MobileTabBar
           items={[
-            { key: "squads", label: STRINGS.navSquads.ru, icon: ONE[0].icon, disabled: true },
+            { key: "squads", label: STRINGS.navSquads.ru, icon: TAB_SAMPLE.icon, disabled: true },
           ]}
           activeKey="none"
           ariaLabel={`${STRINGS.navMobileAria.ru} — disabled`}

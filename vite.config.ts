@@ -12,6 +12,13 @@ import { defineConfig } from "vite-plus";
 
 export default defineConfig({
   lint: {
+    // The package-root build/tooling config files are out of the design TYPE surface:
+    // `vite.config.ts` imports `vite` types (the no-direct-vite-dep boundary means that
+    // specifier cannot — and should not — resolve in packages/design), and
+    // `playwright.config.ts` belongs to the e2e toolchain. They are not in any tsconfig
+    // `include`, so ignoring them here drops their type-check WITHOUT adding a `vite` dep
+    // and without touching any `src`/`.ladle` source. Globs resolve from this config's dir.
+    ignorePatterns: ["**/vite.config.ts", "**/playwright.config.ts"],
     options: {
       typeAware: true,
       typeCheck: true,

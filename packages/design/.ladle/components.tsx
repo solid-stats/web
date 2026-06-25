@@ -7,11 +7,12 @@
 import type { GlobalProvider } from "@ladle/react";
 import { I18nProvider } from "@lingui/react";
 import { useEffect } from "react";
-import "../src/styles/fonts.css";
-// tailwind.css is the single Tailwind root: it `@import`s ../src/styles/theme.css
-// (the one generated token source) and adds the @source Ladle needs because its
-// Vite root is the bundled app dir in node_modules, not this package — see the file.
-import "./tailwind.css";
+// The fonts.css → tailwind.css side-effect imports (import-once order) live in the
+// sibling `styles.mjs`: the type-aware tsgolint gate flags a relative `.css` side-effect
+// import as TS2882 and ignores ambient `*.css` decls, so routing them through a `.mjs`
+// (a resolvable module) keeps the gate green while this file stays fully type-checked.
+// tailwind.css `@import`s the generated theme.css token source + the @source Ladle needs.
+import "./styles.mjs";
 import { i18n } from "../src/shared/uikit/_i18n";
 
 /** The supported UI locales — RU primary (D-03). Any other control value falls back to RU. */

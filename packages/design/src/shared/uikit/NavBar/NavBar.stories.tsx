@@ -33,8 +33,12 @@ function Brand({ lang }: { lang: "ru" | "en" }) {
 // item, `disabled` via a disabled item — the rest via the forced `data-state`.
 const FORCED_STATES: readonly NavItemState[] = ["enabled", "hover", "pressed", "focused"];
 
-// A single-section list to isolate one nav item per forced-state cell.
+// A single-section list to isolate one nav item per forced-state cell. `[NAV_SAMPLE]`
+// destructures the first section (the disabled-state cell below borrows its icon); the
+// guard narrows `NavItem | undefined` to `NavItem` without a non-null assertion.
 const ONE = navItemsFor("signed-out").slice(0, 1);
+const [NAV_SAMPLE] = ONE;
+if (NAV_SAMPLE === undefined) throw new Error("navItemsFor returned no sections");
 
 // Shared right-cluster props for a role + language (account + extras + the two
 // icon-only control labels + the language code).
@@ -73,7 +77,7 @@ export const Matrix: Story = () => (
       <StateCell label="disabled">
         <NavBar
           items={[
-            { key: "squads", label: STRINGS.navSquads.ru, icon: ONE[0].icon, disabled: true },
+            { key: "squads", label: STRINGS.navSquads.ru, icon: NAV_SAMPLE.icon, disabled: true },
           ]}
           activeKey="none"
           ariaLabel={`${STRINGS.navPrimaryAria.ru} — disabled`}
