@@ -102,18 +102,20 @@ test.describe("Overlay enter animation plays (GAP-02)", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 // Test 2 — toast stacking is real and animates (GAP-04).
 // Fire ≥3 toasts; assert the at-rest vertical gap between stacked toasts is > 0
-// (real spacing, not flush) and each toast's computed transitionDuration > 0s.
-// Pre-fix: gaps [0,0,0] and transitionDuration 0s → RED.
+// (real spacing, not flush) and the toast root runs the shared enter animation.
+// Pre-fix: gaps [0,0,0], no enter animation → RED.
 // ─────────────────────────────────────────────────────────────────────────────
 test.describe("Toast stacking is real and animates (GAP-04)", () => {
   test.use({ contextOptions: { reducedMotion: "no-preference" } });
 
   test("fired toasts stack with a gap > 0 at rest and each animates", async ({ page }) => {
     await page.goto(`/?story=${TOAST_STORY}&mode=preview`);
-    await page.waitForSelector("[data-storyloaded]");
+    // The Playground is an interactive React story — wait for its trigger buttons to actually
+    // render (Ladle's `[data-storyloaded]` flips before the story tree is interactive).
+    await page.locator("button").first().waitFor({ timeout: SELECTOR_TIMEOUT });
 
     // Fire ≥3 toasts (the four trigger buttons are the story's secondary Buttons).
-    const triggers = page.getByRole("button");
+    const triggers = page.locator("button");
     const count = await triggers.count();
     for (let i = 0; i < Math.min(3, count); i += 1) {
       await triggers.nth(i).click();
@@ -122,7 +124,23 @@ test.describe("Toast stacking is real and animates (GAP-04)", () => {
     const toasts = page.locator("[data-toast]");
     await expect(toasts.nth(2), "at least three toasts are stacked").toBeVisible();
 
-    // Measure each toast's top; the at-rest gap between adjacent stacked toasts must be > 0.
+    // Let the stack SETTLE before measuring: the enter animation + the `transform` transition on
+    // `--y` take ~170ms to land the resting stacking offset, so a measurement taken on the first
+    // frame can still read two toasts mid-transit (a transient 0 gap). Wait for every toast root's
+    // running animations/transitions to finish so the measured tops are the at-REST geometry.
+    await page
+      .locator(".uikit-toast-motion")
+      .first()
+      .evaluate(async () => {
+        const roots = Array.from(document.querySelectorAll<HTMLElement>(".uikit-toast-motion"));
+        await Promise.all(
+          roots.flatMap((r) => r.getAnimations().map((a) => a.finished.catch(() => undefined))),
+        );
+      });
+
+    // Measure each toast's top; the at-rest gap between adjacent stacked toasts must be > 0
+    // (the `.uikit-toast-motion` root applies the zag `translateY(var(--y))` stack offset, which
+    // includes the configured 12px gap). Pre-fix nothing applied the transform → flush (gaps 0).
     const tops: number[] = [];
     const n = await toasts.count();
     for (let i = 0; i < n; i += 1) {
@@ -137,13 +155,19 @@ test.describe("Toast stacking is real and animates (GAP-04)", () => {
       expect(gap, "stacked toasts show a real gap > 0 at rest").toBeGreaterThan(0);
     }
 
-    // Each toast animates: a non-zero enter/exit transition on the shared token policy.
-    const durationMs = await toasts.first().evaluate((el) => {
-      const raw = getComputedStyle(el).transitionDuration.split(",")[0]?.trim() ?? "0s";
-      return raw.endsWith("ms") ? Number.parseFloat(raw) : Number.parseFloat(raw) * 1000;
+    // Each toast animates: the `.uikit-toast-motion` root runs the shared-token enter keyframes
+    // for a non-zero duration. Pre-fix there was no enter/exit at all → this FAILS RED.
+    const root = page.locator(".uikit-toast-motion").first();
+    const anim = await root.evaluate((el) => {
+      const style = getComputedStyle(el);
+      const raw = style.animationDuration.split(",")[0]?.trim() ?? "0s";
+      const durationMs = raw.endsWith("ms")
+        ? Number.parseFloat(raw)
+        : Number.parseFloat(raw) * 1000;
+      return { name: style.animationName, durationMs };
     });
-    // Pre-fix transitionDuration is 0s → this FAILS RED.
-    expect(durationMs, "each toast plays a non-zero enter/exit transition").toBeGreaterThan(0);
+    expect(anim.name, "the toast runs the shared enter keyframes").toContain("uikit-toast-enter");
+    expect(anim.durationMs, "each toast plays a non-zero enter transition").toBeGreaterThan(0);
   });
 });
 

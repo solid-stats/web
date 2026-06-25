@@ -158,3 +158,60 @@
     opacity: 0;
   }
 }
+
+/*
+ * Plan 03-11 (GAP-04): real toast STACKING + enter/exit, on the SAME motion policy.
+ *
+ * The Ark `Toast.Root` (which the leaf renders through) exposes per-toast stacking via CSS vars
+ * (`--y`, `--offset`, `--index`, …) but does NOT apply the transform itself — the consumer must.
+ * In STACKED mode (`overlap:false`) a mounted toast's `--y` is `calc(var(--lift) * var(--offset))`
+ * where `--offset = heightIndex * gap + heightBefore`, so applying `translateY(var(--y))` spaces
+ * the stack by each toast's height PLUS the configured `gap` (12px) — a real gap > 0 at rest
+ * (GAP-04 was flush because nothing applied this transform). `--x`/`--y` default to `0`/`100%`
+ * pre-mount, so the resting translate is the stacking offset.
+ *
+ * The enter/exit here is OPACITY-ONLY (not the shared `.uikit-overlay-motion` scale keyframes):
+ * the stacking `translateY(var(--y))` is the toast's RESTING transform, and a `transform`-animating
+ * enter would clobber it (and reset to `none` afterwards, collapsing the stack). So the toast
+ * shares the policy's tokens, reduced-motion mechanism, and uikit.css home, but animates opacity
+ * only — transform stays the stacking offset (still compositor-only, CLS = 0). Reduced motion drops
+ * the fade (the stacking transform is essential layout, not decoration, so it is kept).
+ */
+@layer utilities {
+  .uikit-toast-motion {
+    position: absolute;
+    transform: translateY(var(--y, 0)) translateX(var(--x, 0));
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .uikit-toast-motion[data-state="open"] {
+    animation: uikit-toast-enter var(--duration-base) var(--ease-out);
+  }
+
+  .uikit-toast-motion[data-state="closed"] {
+    animation: uikit-toast-exit var(--duration-base) var(--ease-out) forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .uikit-toast-motion {
+      transition: none;
+    }
+
+    .uikit-toast-motion[data-state="open"],
+    .uikit-toast-motion[data-state="closed"] {
+      animation: none;
+    }
+  }
+}
+
+@keyframes uikit-toast-enter {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes uikit-toast-exit {
+  to {
+    opacity: 0;
+  }
+}

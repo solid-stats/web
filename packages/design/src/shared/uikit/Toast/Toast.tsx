@@ -43,6 +43,13 @@ type DismissProps =
 type Props = {
   className?: string;
   variant: ToastVariant;
+  /**
+   * Whether this leaf owns the polite live region (`role="status"`). Defaults to `true` for the
+   * standalone catalog leaf. The ToastManager renders the leaf INSIDE an Ark `Toast.Root`, which
+   * already carries `role="status"` + the `aria-*` wiring — so it passes `live={false}` to avoid a
+   * REDUNDANT nested live region that would double-announce to screen readers (a11y.md).
+   */
+  live?: boolean;
   /** The toast message (RU primary / EN mirror), from `_fixtures/STRINGS`. */
   message: string;
   /** Optional action: a label + click handler (the catalog renders it inert). */
@@ -88,6 +95,7 @@ const iconTone = tv({
 export function Toast({
   className,
   variant,
+  live = true,
   message,
   action,
   onDismiss,
@@ -96,7 +104,11 @@ export function Toast({
   const Icon = ICONS[variant];
 
   return (
-    <div className={toast({ variant, className })} role="status" data-toast={variant}>
+    <div
+      className={toast({ variant, className })}
+      role={live ? "status" : undefined}
+      data-toast={variant}
+    >
       <Icon className={iconTone({ variant })} aria-hidden />
       <span className="flex-1">{message}</span>
       {action === undefined ? null : (
