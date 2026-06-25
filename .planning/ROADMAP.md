@@ -26,7 +26,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Workspace & Design-System Foundation** - pnpm workspace, `DESIGN.md` → `@theme`, Ladle wired, toolchain green (verified — automated 5/5, UAT 1/1 pass, security 10/10 closed) (completed 2026-06-20)
 - [x] **Phase 2: UIKIT — Structural & Data-Display Primitives** - nav shell, data tables, stat primitives, data-trust, feedback (completed 2026-06-21)
-- [ ] **Phase 3: UIKIT — Interactive, i18n & Global-State Patterns** - Ark UI forms/overlays, RU/EN harness, reusable loading/empty/error/offline patterns
+- [x] **Phase 3: UIKIT — Interactive, i18n & Global-State Patterns** - Ark UI forms/overlays, RU/EN harness, reusable loading/empty/error/offline patterns (completed 2026-06-25)
 - [ ] **Phase 4: Public Stats — Overview, Players & Player Profile** - the hi-fi-anchored core stats trio (loading model, tiers, provenance)
 - [ ] **Phase 5: Public Stats — Squads** - squads list + squad profile (membership timeline, explainable effectiveness)
 - [ ] **Phase 6: Public Stats — Commander-side & Bounty** - КС wins/losses with Unknown legacy outcomes, explainable bounty leaderboards
@@ -145,7 +145,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Global state patterns (loading / empty / error / offline / reconnecting / stale) exist as reusable, reviewed Ladle stories that reserve space (CLS = 0) and never rely on color alone.
   4. The ×5 scenario endings and ×4 data-volume states are demonstrable per interactive component, and all pass axe / keyboard / 44px-target checks.
 
-**Plans**: 6/7 plans executed
+**Plans**: 7/7 plans complete
 
 **Wave 1** *(enabler)*
 
@@ -173,7 +173,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 7** *(blocked on Wave 6 — barrel)*
 
-- [ ] 03-07-PLAN.md — SURF-18 AsyncBoundary + six global-state recipes + Toast manager (createToaster) (SURF-18, KIT-06, QUAL-01/03/04/05)
+- [x] 03-07-PLAN.md — SURF-18 AsyncBoundary + six global-state recipes + Toast manager (createToaster) (SURF-18, KIT-06, QUAL-01/03/04/05)
 
 **UI hint**: yes
 
@@ -285,7 +285,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 |-------|----------------|--------|-----------|
 | 1. Workspace & Design-System Foundation | 5/5 | Complete    | 2026-06-20 |
 | 2. UIKIT — Structural & Data-Display Primitives | 11/11 | Complete    | 2026-06-24 |
-| 3. UIKIT — Interactive, i18n & Global-State Patterns | 6/7 | In Progress|  |
+| 3. UIKIT — Interactive, i18n & Global-State Patterns | 7/7 | Complete   | 2026-06-25 |
 | 4. Public Stats — Overview, Players & Player Profile | 0/TBD | Not started | - |
 | 5. Public Stats — Squads | 0/TBD | Not started | - |
 | 6. Public Stats — Commander-side & Bounty | 0/TBD | Not started | - |

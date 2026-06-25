@@ -63,7 +63,7 @@ Each as a colocated Ladle story with component states (enabled / hover / pressed
 
 ### Surfaces — Cross-cutting
 
-- [ ] **SURF-18**: Global state patterns — loading / empty / error / offline / reconnecting / stale, designed as reusable patterns across surfaces.
+- [x] **SURF-18**: Global state patterns — loading / empty / error / offline / reconnecting / stale, designed as reusable patterns across surfaces.
 
 ### Quality gates (applied to every surface in design-review)
 
@@ -118,7 +118,7 @@ listed as "Phases 2–9 (gate)".
 | KIT-05 | Phase 3 | Complete |
 | KIT-06 | Phase 3 | Complete |
 | KIT-08 | Phase 3 | Complete |
-| SURF-18 | Phase 3 | Pending |
+| SURF-18 | Phase 3 | Complete |
 | SURF-01 | Phase 4 | Pending |
 | SURF-02 | Phase 4 | Pending |
 | SURF-03 | Phase 4 | Pending |
