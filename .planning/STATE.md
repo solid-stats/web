@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 03
 current_phase_name: UIKIT — Interactive, i18n & Global-State Patterns
 status: executing
-stopped_at: Phase 3 UI-SPEC approved
-last_updated: "2026-06-25T06:18:40.068Z"
+stopped_at: Completed 03-05-PLAN.md (KIT-06 Dialog + Popover)
+last_updated: "2026-06-25T07:14:42.494Z"
 last_activity: 2026-06-25
-last_activity_desc: Completed 03-02 (KIT-05 Field + Input)
+last_activity_desc: Completed 03-04 (KIT-05 FileUpload — completes the form family)
 progress:
   total_phases: 9
   completed_phases: 2
   total_plans: 23
-  completed_plans: 19
+  completed_plans: 21
   percent: 22
 ---
 
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 ## Current Position
 
 Phase: 03 (UIKIT — Interactive, i18n & Global-State Patterns) — EXECUTING
-Plan: 5 of 7
+Plan: 6 of 7
 Status: Ready to execute
-Last activity: 2026-06-25 — Completed 03-04 (KIT-05 FileUpload — completes the form family)
+Last activity: 2026-06-25 — Completed 03-05 (KIT-06 Dialog + Popover — opens the overlay family)
 
-Plans: [█████████████████░░░] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 9/11 complete (gap-closure 02-09 done) · Phase 03: 4/7 (03-01 i18n harness, 03-02 Field+Input, 03-03 Select+Stepper, 03-04 FileUpload — KIT-05 form family complete)
+Plans: [█████████████████░░░] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 9/11 complete (gap-closure 02-09 done) · Phase 03: 5/7 (03-01 i18n harness, 03-02 Field+Input, 03-03 Select+Stepper, 03-04 FileUpload — KIT-05 form family complete; 03-05 Dialog+Popover — KIT-06 overlay family opened, Menu/Tabs in Wave 6)
 
 ## Performance Metrics
 
@@ -67,6 +67,7 @@ Plans: [█████████████████░░░] Phase 01: 
 | Phase 03 P01 | 11min | 2 tasks | 5 files |
 | Phase 03 P02 | 12min | 3 tasks | 13 files |
 | Phase 03 P03 | 35min | 3 tasks | 12 files |
+| Phase 03 P05 | 25min | 3 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -96,6 +97,7 @@ Recent decisions affecting current work:
 - [Phase 02 / 02-09]: KIT-02 data-table reworked vs hi-fi — border-box viewport math (border-separate + box-internal cell hairlines, no stray scroll on table OR skeleton), a real N–M-of-total Pagination pager (disabled Next at end, GAP-07 = UAT user decision option B, a justified divergence from the hi-fi no-pager model), loading cell shows the skeleton, distinct few/limit cues, and DensityToggle replaced by the AutoTable @container auto-density resolver (comfortable at @5xl, compact below; ROW_H + controlled density prop kept). Shared geometry: tableViewportHeight + the Skeleton framed prop (GAP-06/07/08/11/14)
 - [Phase 03]: KIT-05 Field is ONE shared label+error+aria-live wrapper over Ark Field.Root (the seam Select/Stepper/FileUpload nest under); Input wraps Ark Field.Input to inherit aria-invalid/aria-describedby from context. @lingui/{react,core} ship a broken/types-only .d.mts that fails ladle:build on a clean Vite cache — fixed via a runtime-entry resolve.alias in vite.config.
 - [Phase ?]: [Phase 03 / 03-03]: KIT-05 Select adopts Ark Select (generic Select<TValue>, tv()-per-part, cyan active option + ItemIndicator check, Ark-owned keyboard) and Stepper adopts Ark NumberInput (tabular-mono value via the mono face, ≥44px aria-labelled inc/dec triggers whose names the story injects). Select forced-open uses UNCONTROLLED defaultOpen — controlled open pinned every instance closed (Rule 1 bug fix). Live keyboard specs target the lone Playground story; the matrix's forced-open Ark portal renders a dismiss layer that intercepts events.
+- [Phase ?]: [Phase 03 / 03-05]: KIT-06 Dialog (modal — Ark-owned trap/return/Esc/inert/scrim) + Popover (non-modal — return/Esc/no-trap) adopt the tv()-per-Ark-part idiom; forced-open axe cell uses UNCONTROLLED defaultOpen (Select Rule-1 lesson), Playground stays controlled. Overlays animate the bare transition utility (not arbitrary transition-[opacity,transform]) for CLS=0. Destructive-confirm story (WCAG 3.3.6) defaults focus to safe cancel + loss/verb+noun. Overlay keyboard specs poll focus-settle + activeElement-hook to defeat the dismissable-arm/restoreFocus races.
 
 ### Pending Todos
 
@@ -125,7 +127,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-25T06:18:16.996Z
-Stopped at: Phase 3 UI-SPEC approved
-Resume file: .planning/phases/03-uikit-interactive-i18n-global-state-patterns/03-UI-SPEC.md
+Last session: 2026-06-25T07:14:42.490Z
+Stopped at: Completed 03-05-PLAN.md (KIT-06 Dialog + Popover)
+Resume file: None
 </content>
