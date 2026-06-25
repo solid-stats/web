@@ -695,13 +695,13 @@ test.describe("KIT-05 Select disclosure + keyboard (Plan 03-03 GREEN)", () => {
 
 // KIT-05 Form / FileUpload (SC#1, security.md + a11y.md — the dropzone is a keyboard
 // control, NOT a div-only drag target). GREEN as of Plan 03-04: the `FileUpload` slice
-// ships the `kit-05-form--file-upload--playground` story (a single live Ark dropzone — the
+// ships the `kit-05-form--fileupload--playground` story (a single live Ark dropzone — the
 // matrix renders several, so the live-keyboard spec runs against the lone Playground
 // instance, mirroring the Select precedent; the matrix serves the static axe/44px gate).
 // Ark's `FileUpload.Dropzone` is `role="button"` + `tabIndex=0` and opens the file picker on
 // Enter/Space; the explicit `Browse` Trigger is a real ≥44px button — the invariants that
 // PROVE the dropzone is keyboard-operable, which the generic catalog axe pass cannot express.
-const FILE_UPLOAD_STORY = "kit-05-form--file-upload--playground";
+const FILE_UPLOAD_STORY = "kit-05-form--fileupload--playground";
 
 test.describe("KIT-05 FileUpload keyboard dropzone (Plan 03-04 GREEN)", () => {
   test("Tab reaches the focusable dropzone (not a div-only drag target)", async ({ page }) => {

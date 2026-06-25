@@ -4,8 +4,9 @@ Out-of-scope discoveries logged during execution (not fixed in the owning plan; 
 
 ## Discovered in Plan 03-05 (KIT-06 Dialog + Popover)
 
-### DEF-03-05-01 — Pre-existing FileUpload keyboard-spec story-id mismatch (Plan 03-04)
+### DEF-03-05-01 — Pre-existing FileUpload keyboard-spec story-id mismatch (Plan 03-04) — ✅ RESOLVED 2026-06-25
 
+- **Resolution:** Fixed during Phase-03 execution (orchestrator, between Wave 5 and Wave 6). Corrected the two story-id occurrences `kit-05-form--file-upload--playground` → `kit-05-form--fileupload--playground` (const + comment); the `[data-file-upload]` data-hook selectors were already correct and left untouched. The 3 `KIT-05 FileUpload keyboard dropzone` tests now pass (e2e: 308 passed, FileUpload absent from failures). Committed as `fix(03-04)`.
 - **File:** `packages/design/tests/keyboard.spec.ts`
 - **Symptom:** The three `KIT-05 FileUpload keyboard dropzone (Plan 03-04 GREEN)` tests fail
   with `waitForSelector` timeouts — the block references story id
