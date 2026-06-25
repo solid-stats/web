@@ -36,6 +36,15 @@ import { ACCEPT_DEFAULT, fileUpload, firstRejectReason, type RejectReason } from
 
 const styles = fileUpload();
 
+/**
+ * A stable React key for a file row. `file.name` alone collides when two files share a basename
+ * (different folders) or a file is re-added after removal; the size + lastModified composite keeps
+ * each row distinct (component-shape.md — stable keys).
+ */
+function fileKey(file: File): string {
+  return `${file.name}-${file.size}-${file.lastModified}`;
+}
+
 type Props = {
   // system props first
   className?: string;
@@ -118,7 +127,7 @@ export function FileUpload({
         <ArkFileUpload.Context>
           {(api) =>
             api.acceptedFiles.map((file) => (
-              <ArkFileUpload.Item key={file.name} file={file} className={styles.item()}>
+              <ArkFileUpload.Item key={fileKey(file)} file={file} className={styles.item()}>
                 <ArkFileUpload.ItemPreview type="image/*" className={styles.itemPreview()}>
                   <ArkFileUpload.ItemPreviewImage className={styles.itemPreviewImage()} />
                 </ArkFileUpload.ItemPreview>
@@ -157,7 +166,7 @@ export function FileUpload({
           api.rejectedFiles.length === 0 ? null : (
             <ul className={styles.itemGroup()}>
               {api.rejectedFiles.map((rejection) => (
-                <li key={rejection.file.name} className={styles.rejectedItem()}>
+                <li key={fileKey(rejection.file)} className={styles.rejectedItem()}>
                   <span className={styles.rejectedRow()}>
                     <span className={styles.itemPreview()}>
                       <CircleAlert className="size-4 shrink-0" aria-hidden />
