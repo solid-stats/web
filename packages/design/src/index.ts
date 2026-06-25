@@ -84,3 +84,18 @@ export { AutoTable } from "./shared/uikit/Table";
 export type { CompactRowData } from "./shared/uikit/CompactRow";
 export { CompactList, CompactRow } from "./shared/uikit/CompactRow";
 export { Pagination } from "./shared/uikit/Pagination";
+
+// ---- KIT-08 i18n harness (Wave 1 / Plan 03-01) ----
+// The PUBLIC i18n seam: the loaded+activated runtime `i18n` instance (RU primary, D-03) that
+// every consuming surface resolves copy through — `i18n._({ id, message, values })` in the
+// story/feature, NEVER inside a `shared/uikit` primitive (architecture.md uikit boundary; the
+// primitive takes a plain `message: string`). `StringKey` (the typed key union) and `Bilingual`
+// graduate too so downstream phases narrow ids against the same single source. The `_i18n`
+// `en`/`ru` catalog maps + the `_fixtures/STRINGS` seed stay INTERNAL (underscore-prefix rule —
+// not graduated); the `lingui.d.ts` Register augmentation is ambient (no runtime export) and
+// already makes a missing/renamed id a type error at every `i18n._` call site (SC#4).
+// v1.0 graduation seam (D-03): this SAME instance is wrapped under the `/ru` `/en` localized
+// router and its runtime catalogs become the migration source for the `@lingui/cli`
+// extract/compile pipeline introduced then.
+export { i18n } from "./shared/uikit/_i18n";
+export type { Bilingual, StringKey } from "./shared/uikit/_fixtures/strings";
