@@ -191,7 +191,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3 (minors + sweep)**
 
-- [ ] 03-14-PLAN.md — GAP-12/13/14/15/16/17: 360 story wrappers, FileUpload bounded list, caption token decision, Select 360 max-width cap, a11y/dead-code sweep, reserve-only FU7 keys + itemStatus slot (QUAL-02, KIT-05, QUAL-03, KIT-06, SURF-18)
+- [ ] 03-14-PLAN.md — GAP-12/13/15/16/17: 360 story wrappers, FileUpload bounded list, Select 360 max-width cap, a11y/dead-code sweep, reserve-only FU7 keys + itemStatus slot (QUAL-02, KIT-05, QUAL-03, KIT-06, SURF-18)
+- [ ] 03-15-PLAN.md — GAP-14: caption-color DESIGN.md token decision + gen-theme re-export (isolated design-system workflow) (KIT-05, QUAL-03)
 
 **UI hint**: yes
 
