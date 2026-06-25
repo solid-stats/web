@@ -33,7 +33,7 @@ Each as a colocated Ladle story with component states (enabled / hover / pressed
 - [ ] **KIT-05**: Form primitives (Ark UI) — inputs, selects, steppers, file/evidence upload, inline validation with visible labels/errors and live-region behavior.
 - [ ] **KIT-06**: Overlay primitives (Ark UI) — dialog, menu, tabs, tooltip, popover; keyboard-accessible, focus-managed, no traps.
 - [x] **KIT-07**: Feedback primitives — skeletons (exact final dimensions, CLS = 0), empty states, error states, toasts, badges/pills.
-- [ ] **KIT-08**: Language switcher + RU/EN i18n harness (typed keys; RU sanity-checked).
+- [x] **KIT-08**: Language switcher + RU/EN i18n harness (typed keys; RU sanity-checked).
 
 ### Surfaces — Public (designed in Ladle)
 
@@ -117,7 +117,7 @@ listed as "Phases 2–9 (gate)".
 | KIT-07 | Phase 2 | Complete |
 | KIT-05 | Phase 3 | Pending |
 | KIT-06 | Phase 3 | Pending |
-| KIT-08 | Phase 3 | Pending |
+| KIT-08 | Phase 3 | Complete |
 | SURF-18 | Phase 3 | Pending |
 | SURF-01 | Phase 4 | Pending |
 | SURF-02 | Phase 4 | Pending |
