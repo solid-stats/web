@@ -197,6 +197,41 @@ export const STRINGS = {
     ru: "Показатель пересчитывается из последних реплеев игрока.",
     en: "The figure is recomputed from the player's latest replays.",
   },
+  // KIT-06 Overlay family — Menu + Tabs + Tooltip story copy (Plan 03-06), resolved in the
+  // STORY via `i18n._` and passed as plain string props (the primitives are i18n-free —
+  // architecture.md uikit boundary). `menuTrigger` labels the trigger button; the `menuItem*`
+  // keys are the typed item labels (the highlighted/active item is cyan paired with the
+  // highlight). `menuItemLongest` is the QUAL-05 RU-longest menu row exercised at the 360 floor.
+  // The `tabsLabel*` keys label the tabs; `tabsPanel*` carry each panel's body. `tooltipTrigger`
+  // is the VISIBLE, already-meaningful label the tooltip supplements (never the only carrier);
+  // `tooltipContent` is the supplementary hint. RU primary / EN mirror at parity (QUAL-05).
+  menuTrigger: { ru: "Действия", en: "Actions" },
+  menuItemView: { ru: "Открыть профиль", en: "View profile" },
+  menuItemCompare: { ru: "Сравнить игроков", en: "Compare players" },
+  menuItemLongest: {
+    ru: "Пожаловаться на этого игрока модератору",
+    en: "Report this player to a moderator",
+  },
+  tabsLabelOverview: { ru: "Обзор", en: "Overview" },
+  tabsLabelMatches: { ru: "Матчи", en: "Matches" },
+  tabsLabelSquads: { ru: "Отряды", en: "Squads" },
+  tabsPanelOverview: {
+    ru: "Сводная статистика игрока за последние реплеи.",
+    en: "The player's summary stats across recent replays.",
+  },
+  tabsPanelMatches: {
+    ru: "История матчей с результатом и счётом.",
+    en: "Match history with outcome and score.",
+  },
+  tabsPanelSquads: {
+    ru: "Отряды, за которые играл игрок.",
+    en: "Squads the player has fought with.",
+  },
+  tooltipTrigger: { ru: "Счёт", en: "Score" },
+  tooltipContent: {
+    ru: "Взвешенный счёт за последние реплеи.",
+    en: "A weighted score over recent replays.",
+  },
   // KIT-08 / QUAL-05: the bilingual ICU plural exemplar (D-03 — RU one/few/many must
   // be exercised now). The plural lives INSIDE the message string as ICU
   // `{n, plural, …}` parsed at runtime by Lingui's CLDR rules — never concatenation

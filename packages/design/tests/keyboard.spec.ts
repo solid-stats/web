@@ -14,11 +14,11 @@
 // YET — each block is RED until its owning wave lands its story; turning a block
 // GREEN is that wave's acceptance gate. No `.skip` (a skipped scaffold is a
 // no-op); RED-by-design. Wave → block → story-id map (the dependency set):
-//   • Wave (KIT-06 Overlay) — `Dialog Esc-close + return-focus`   → kit-06-overlay--dialog--playground
-//   • Wave (KIT-06 Overlay) — `Menu aria-expanded/aria-controls`  → kit-06-overlay--menu--playground
-//   • Wave (KIT-06 Overlay) — `Tabs arrow-key roving tabindex`    → kit-06-overlay--tabs--playground
-//   • Wave (KIT-06 Overlay) — `Dialog trap-free Tab cycle`        → kit-06-overlay--dialog--playground
-//   • Wave (KIT-05 Form)    — `Field forced-invalid live error`   → kit-05-form--field--matrix
+//   • Wave (KIT-06 Overlay) — `Dialog Esc-close + return-focus`   → kit-06-overlay--dialog--playground (GREEN 03-05)
+//   • Wave (KIT-06 Overlay) — `Menu aria-expanded/aria-controls`  → kit-06-overlay--menu--playground (GREEN 03-06)
+//   • Wave (KIT-06 Overlay) — `Tabs arrow-key roving tabindex`    → kit-06-overlay--tabs--playground (GREEN 03-06)
+//   • Wave (KIT-06 Overlay) — `Dialog trap-free Tab cycle`        → kit-06-overlay--dialog--playground (GREEN 03-05)
+//   • Wave (KIT-05 Form)    — `Field forced-invalid live error`   → kit-05-form--field--matrix (GREEN 03-02)
 // (AsyncBoundary CLS=0 — SURF-18 Wave 7 — lives in cls.spec.ts.)
 // ─────────────────────────────────────────────────────────────────────────────
 import { expect, test } from "@playwright/test";
@@ -485,13 +485,16 @@ test.describe("KIT-06 Popover keyboard behaviour (Plan 03-05 GREEN)", () => {
   });
 });
 
-// KIT-06 Overlay / Menu (SC#1, a11y.md — Ark `Menu`). The trigger exposes the
-// disclosure relationship: `aria-expanded` flips false→true on open and
-// `aria-controls` points at the panel's id (color/visual state alone is never the
-// only signal — WCAG 4.1.2 Name, Role, Value).
+// KIT-06 Overlay / Menu (SC#1, a11y.md — Ark `Menu`). GREEN as of Plan 03-06: the `Menu` slice
+// ships the `kit-06-overlay--menu--playground` story (the lone INTERACTIVE Menu — the Matrix
+// forced-open cell renders a portalled menu whose dismiss layer would intercept events, so live
+// keyboard runs against the Playground; the Matrix serves the static axe gate, the Dialog/Select
+// precedent). The trigger exposes the disclosure relationship: `aria-expanded` flips false→true
+// on open and `aria-controls` points at the panel's id (color/visual state alone is never the
+// only signal — WCAG 4.1.2 Name, Role, Value). Ark owns the roving highlight + Esc + no-trap.
 const MENU_STORY = "kit-06-overlay--menu--playground";
 
-test.describe("KIT-06 Menu disclosure semantics (Wave-0 RED)", () => {
+test.describe("KIT-06 Menu disclosure semantics (Plan 03-06 GREEN)", () => {
   test("the trigger toggles aria-expanded false→true and names aria-controls", async ({ page }) => {
     await page.goto(`/?story=${MENU_STORY}&mode=preview`);
     await page.waitForSelector("[data-menu-trigger]", { timeout: SELECTOR_TIMEOUT });
@@ -508,20 +511,27 @@ test.describe("KIT-06 Menu disclosure semantics (Wave-0 RED)", () => {
       "true",
     );
 
-    // aria-controls names the panel that actually exists in the DOM.
+    // aria-controls names the panel that actually exists in the DOM. Attribute-id locator (NOT
+    // `#id`) — the Ark v5 id carries `:` colons that a CSS id selector cannot express (the Select
+    // block precedent).
     const controlsId = await trigger.getAttribute("aria-controls");
     expect(controlsId, "the trigger declares aria-controls").toBeTruthy();
-    const panel = page.locator(`#${controlsId}`);
+    const panel = page.locator(`[id="${controlsId}"]`);
     await expect(panel, "aria-controls points at the live menu panel").toBeVisible();
   });
 });
 
-// KIT-06 Overlay / Tabs (SC#1, a11y.md — Ark `Tabs`). Roving tabindex: arrow keys
-// move the active tab through the list (WAI-ARIA tabs pattern), the active tab
-// carries `aria-selected="true"`, and only ONE tab is in the tab order at a time.
+// KIT-06 Overlay / Tabs (SC#1, a11y.md — Ark `Tabs`). GREEN as of Plan 03-06: the `Tabs` slice
+// ships the `kit-06-overlay--tabs--playground` story. Roving tabindex: arrow keys move the active
+// tab through the list (WAI-ARIA tabs pattern), the active tab carries `aria-selected="true"`,
+// and only ONE tab is in the tab order at a time. Two contracts the generic axe pass cannot
+// express: the roving-tabindex rotation, and — mirroring the Table GAP-10 oracle — the FOCUSED
+// tab paints a visible focus ring on its OWN box (so it is never obscured under a sticky bar,
+// WCAG 2.4.12), and the ACTIVE tab pairs its cyan with a STRUCTURAL underline marker (the cyan is
+// never color-alone — the recipe's `data-[selected]:border-primary` underline).
 const TABS_STORY = "kit-06-overlay--tabs--playground";
 
-test.describe("KIT-06 Tabs roving tabindex (Wave-0 RED)", () => {
+test.describe("KIT-06 Tabs roving tabindex (Plan 03-06 GREEN)", () => {
   test("ArrowRight moves the active tab (roving tabindex)", async ({ page }) => {
     await page.goto(`/?story=${TABS_STORY}&mode=preview`);
     await page.waitForSelector('[role="tab"]', { timeout: SELECTOR_TIMEOUT });
@@ -529,11 +539,36 @@ test.describe("KIT-06 Tabs roving tabindex (Wave-0 RED)", () => {
     const tabs = page.locator('[role="tab"]');
     expect(await tabs.count(), "the tablist has at least two tabs").toBeGreaterThan(1);
 
-    // Focus the first tab, then ArrowRight: the selected tab must advance.
-    await tabs.first().focus();
+    // Click the first tab to ARM Ark's roving focus tracker (a bare `.focus()` lands DOM focus but
+    // does not register the tablist's roving entry, so the subsequent ArrowRight no-ops — the click
+    // is the deterministic arm, mirroring the Select block's keyboard-open). Then ArrowRight must
+    // advance the active tab.
+    await tabs.first().click();
+
+    // Poll for the roving state to SETTLE before pressing ArrowRight: the focused tab must be the
+    // first tab AND it must be the selected one (Ark moves selection + focus together in the default
+    // `automatic` activation mode). Under parallel-load the focus/selection lands a frame after the
+    // click, so a synchronous read here races the move — polling is the deterministic gate (the
+    // overlay focus-settle pattern from Plan 03-05), not a fixed sleep.
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const active = document.activeElement;
+          return (
+            active?.getAttribute("role") === "tab" &&
+            active.getAttribute("aria-selected") === "true"
+          );
+        }),
+      )
+      .toBe(true);
     const firstSelected = await page.locator('[role="tab"][aria-selected="true"]').textContent();
 
     await page.keyboard.press("ArrowRight");
+    // Poll the selected-tab text until the move lands (the controlled story re-renders a frame after
+    // `onValueChange`), so the assertion never races the roving move under parallel load.
+    await expect
+      .poll(() => page.locator('[role="tab"][aria-selected="true"]').textContent())
+      .not.toBe(firstSelected);
     const afterArrow = await page.locator('[role="tab"][aria-selected="true"]').textContent();
 
     expect(afterArrow, "ArrowRight rotates the active tab (roving tabindex)").not.toBe(
@@ -543,6 +578,52 @@ test.describe("KIT-06 Tabs roving tabindex (Wave-0 RED)", () => {
     // Roving tabindex: exactly one tab is tabbable (tabindex=0); the rest are -1.
     const tabbable = await page.locator('[role="tab"][tabindex="0"]').count();
     expect(tabbable, "exactly one tab is in the page tab order").toBe(1);
+  });
+
+  // WCAG 2.4.12 (mirror of the Table GAP-10 inset-ring oracle): the FOCUSED tab paints a visible
+  // focus ring on its OWN box-shadow — an indication that lives inside the trigger's box and so is
+  // never clipped under a sticky bar. A regression that dropped the `focus-visible:shadow-(...)`
+  // ring (the GAP-19 outline-drift symptom) would leave the focused tab indistinguishable.
+  test("the focused tab paints a visible focus ring on its own box (2.4.12)", async ({ page }) => {
+    await page.goto(`/?story=${TABS_STORY}&mode=preview`);
+    await page.waitForSelector('[role="tab"]', { timeout: SELECTOR_TIMEOUT });
+
+    const firstTab = page.locator('[role="tab"]').first();
+    const resting = await firstTab.evaluate((el) => getComputedStyle(el).boxShadow);
+
+    await firstTab.focus();
+    const focused = await firstTab.evaluate((el) => getComputedStyle(el).boxShadow);
+
+    expect(
+      focused,
+      "focusing the tab adds a visible ring (not obscured under a sticky bar)",
+    ).not.toBe(resting);
+    expect(focused, "the focus ring actually paints on the tab's own box").not.toBe("none");
+  });
+
+  // The active tab's cyan is PAIRED with a structural marker — never color-alone (a11y.md). The
+  // recipe maps `data-[selected]` to BOTH `text-primary` (cyan) AND a `border-primary` bottom
+  // underline; assert the selected tab paints a non-transparent bottom-border colour distinct
+  // from a non-selected tab's transparent one (the structural marker, not just colour).
+  test("the active tab pairs its cyan with a structural underline (never color-alone)", async ({
+    page,
+  }) => {
+    await page.goto(`/?story=${TABS_STORY}&mode=preview`);
+    await page.waitForSelector('[role="tab"][aria-selected="true"]', { timeout: SELECTOR_TIMEOUT });
+
+    const selectedBorder = await page
+      .locator('[role="tab"][aria-selected="true"]')
+      .first()
+      .evaluate((el) => getComputedStyle(el).borderBottomColor);
+    const unselectedBorder = await page
+      .locator('[role="tab"][aria-selected="false"]')
+      .first()
+      .evaluate((el) => getComputedStyle(el).borderBottomColor);
+
+    // The selected tab paints a real (opaque) underline colour; the unselected one is transparent
+    // — so the cyan is paired with a structural marker, not carried by colour alone.
+    expect(selectedBorder, "selected tab paints a structural underline").not.toBe(unselectedBorder);
+    expect(selectedBorder, "the underline is a real painted colour").not.toBe("rgba(0, 0, 0, 0)");
   });
 });
 

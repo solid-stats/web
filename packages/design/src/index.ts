@@ -156,3 +156,24 @@ export { FileUpload } from "./shared/uikit/FileUpload";
 // resolves in the story and passes as plain props (uikit boundary).
 export { Dialog } from "./shared/uikit/Dialog";
 export { Popover } from "./shared/uikit/Popover";
+
+// ---- KIT-06 Overlay family — Menu + Tabs + Tooltip (Wave 6 / Plan 03-06) ----
+// The second overlay-family slice group, COMPLETING KIT-06. `Menu` is the trigger-menu over Ark
+// Menu — Ark owns `aria-expanded`/`aria-controls`, the roving keyboard highlight (arrow/Home/End/
+// type-ahead), Esc-close and the no-trap dismiss; the slice adds the per-part `tv()` recipe
+// (popover surface, ≥44px items, the Ark-highlighted item cyan + surface-3 — never color-alone).
+// `Tabs` is the roving-tabindex tab set over Ark Tabs — Ark owns the arrow roving tabindex (one
+// tab in the tab order) + the panel aria-association; the active tab is cyan PAIRED with a
+// `border-primary` underline (never color-alone) and the canonical focus ring keeps it unclipped
+// under a sticky bar (2.4.12). `Tooltip` is the focus+hover supplementary hint over Ark Tooltip —
+// it appears on focus AS WELL AS hover, drops its animation under `prefers-reduced-motion`, is
+// NOT a label substitute and never the only meaning carrier (the consuming surface pairs it with
+// a visible label). `MenuItemData`/`TabData` graduate so consumers type their item/tab lists by
+// them. The internal `menu`/`tabs`/`tooltip` tv() recipes stay internal (NOT graduated); copy
+// resolves in the story and passes as plain props (uikit boundary). This COMPLETES the KIT-06
+// overlay family (Dialog, Popover, Menu, Tabs, Tooltip).
+export type { MenuItemData } from "./shared/uikit/Menu";
+export { Menu } from "./shared/uikit/Menu";
+export type { TabData } from "./shared/uikit/Tabs";
+export { Tabs } from "./shared/uikit/Tabs";
+export { Tooltip } from "./shared/uikit/Tooltip";
