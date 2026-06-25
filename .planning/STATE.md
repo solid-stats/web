@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 ## Current Position
 
 Phase: 03 (UIKIT — Interactive, i18n & Global-State Patterns) — EXECUTING
-Plan: 4 of 7
+Plan: 5 of 7
 Status: Ready to execute
-Last activity: 2026-06-25 — Completed 03-02 (KIT-05 Field + Input)
+Last activity: 2026-06-25 — Completed 03-04 (KIT-05 FileUpload — completes the form family)
 
-Plans: [█████████████████░░░] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 9/11 complete (gap-closure 02-09 done) · Phase 03: 2/7 (03-01 i18n harness, 03-02 KIT-05 Field+Input)
+Plans: [█████████████████░░░] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 9/11 complete (gap-closure 02-09 done) · Phase 03: 4/7 (03-01 i18n harness, 03-02 Field+Input, 03-03 Select+Stepper, 03-04 FileUpload — KIT-05 form family complete)
 
 ## Performance Metrics
 
