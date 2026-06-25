@@ -123,6 +123,15 @@ export const STRINGS = {
   // Sparkline accessible summary: the chart is aria-hidden, this figcaption carries
   // the value series for screen readers (never color-alone).
   sparklineSummary: { ru: "Недельный счёт: {values}", en: "Weekly score: {values}" },
+  // KIT-08 / QUAL-05: the bilingual ICU plural exemplar (D-03 — RU one/few/many must
+  // be exercised now). The plural lives INSIDE the message string as ICU
+  // `{n, plural, …}` parsed at runtime by Lingui's CLDR rules — never concatenation
+  // (localization.md; RESEARCH Pitfall 6). RU carries the full one/few/many/other arms
+  // (1 реплей / 2 реплея / 5 реплеев); EN carries one/other. `#` renders the count.
+  replayCount: {
+    ru: "{n, plural, one{# реплей} few{# реплея} many{# реплеев} other{# реплея}}",
+    en: "{n, plural, one{# replay} other{# replays}}",
+  },
 } as const satisfies Readonly<Record<string, Bilingual>>;
 
 /** The set of copy-element keys (derived — never hand-maintained in parallel). */

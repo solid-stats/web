@@ -1,7 +1,21 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    // @lingui/core@6.4.0 and @lingui/react@6.4.0 ship their type declarations as
+    // `dist/*.d.mts` but DON'T wire a `types` condition into their `.` export map, so
+    // under `moduleResolution: bundler` TS resolves the import to the untyped `.mjs` and
+    // silently treats the module as `any` — which defeats the KIT-08 typed-key contract
+    // (the `lingui.d.ts` Register augmentation can't narrow `i18n._` ids if the base
+    // types never load, so a missing id would NOT be a tsc error; SC#4). Map the bare
+    // specifiers to the shipped declarations through the package-local stable symlinks
+    // (not the .pnpm-hashed path). `paths` is resolved relative to this tsconfig's dir
+    // (no `baseUrl` — TS-Go/tsgolint removed it). Remove once Lingui adds the `types`
+    // export condition.
+    "paths": {
+      "@lingui/core": ["./node_modules/@lingui/core/dist/index.d.mts"],
+      "@lingui/react": ["./node_modules/@lingui/react/dist/index.d.mts"]
+    }
   },
   "include": ["src", ".ladle"]
 }
