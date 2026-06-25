@@ -110,3 +110,17 @@ export type { Bilingual, StringKey } from "./shared/uikit/_fixtures/strings";
 // `i18n._({ id })` and pass as plain props — the primitives are i18n-free (uikit boundary).
 export { Field } from "./shared/uikit/Field";
 export { Input } from "./shared/uikit/Input";
+
+// ---- KIT-05 Form family — Select + Stepper (Wave 3 / Plan 03-03) ----
+// The second form-family slice group, both nesting under `Field` for label/error/required/
+// disabled. `Select` is the GENERIC typed-value option control over Ark Select (its `options`
+// + controlled `value`/`onValueChange` narrow to the SAME value union — `SelectOption` graduates
+// so consumers type their lists by that union, never a loose `SelectOption<string>`); Ark owns
+// arrow/Home/End/type-ahead + aria-expanded/controls, the active option is cyan PAIRED with the
+// indicator check. `Stepper` is the Ark NumberInput numeric control — a tabular-mono value
+// (alignment via the mono face) with ≥44px icon-only inc/dec triggers whose accessible names the
+// caller injects. The internal `select`/`stepper` tv() recipes stay internal (NOT graduated);
+// strings resolve in the story and pass as plain props (uikit boundary).
+export type { SelectOption } from "./shared/uikit/Select";
+export { Select } from "./shared/uikit/Select";
+export { Stepper } from "./shared/uikit/Stepper";

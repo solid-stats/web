@@ -36,8 +36,12 @@ type Props<TValue extends string> = {
   placeholder: string;
   // booleans
   disabled?: boolean;
-  /** Forced-open for the StateMatrix axe/keyboard cell (controlled — RESEARCH Pitfall 2). */
-  open?: boolean;
+  /**
+   * Initial open state for the StateMatrix axe/keyboard cell (RESEARCH Pitfall 2). UNCONTROLLED
+   * (`defaultOpen`, not `open`) so a closed Select stays user-openable — passing Ark's controlled
+   * `open` pins the popover and breaks the open/close disclosure on every other instance.
+   */
+  defaultOpen?: boolean;
   // callbacks
   onValueChange?: (value: TValue) => void;
 };
@@ -48,7 +52,7 @@ export function Select<TValue extends string>({
   value,
   placeholder,
   disabled = false,
-  open,
+  defaultOpen = false,
   onValueChange,
 }: Props<TValue>): ReactNode {
   // Ark v5 wants a collection (owns label/value mapping + type-ahead). Memoized so a fresh
@@ -64,7 +68,7 @@ export function Select<TValue extends string>({
       collection={collection}
       value={value === undefined ? undefined : [value]}
       disabled={disabled}
-      open={open}
+      defaultOpen={defaultOpen}
       onValueChange={
         onValueChange === undefined
           ? undefined

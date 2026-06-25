@@ -135,6 +135,21 @@ export const STRINGS = {
     ru: "Идентификатор реплея для пересчёта",
     en: "Replay identifier for recompute",
   },
+  // KIT-05 Select/Stepper copy (Plan 03-03, UI-SPEC Copywriting Contract). The
+  // `stepper{Increment,Decrement}` keys are the accessible NAMES for the icon-only
+  // NumberInput triggers (a11y.md — icon-only controls need an accessible name); the story
+  // injects them as plain props (the slice never invents them). `selectLabel` labels the
+  // demo Select field; `selectOption*` are the option-list fixtures the ×4 data-volume cells
+  // populate (few / many lists) — author-controlled copy, RU primary / EN mirror at parity.
+  stepperIncrement: { ru: "Увеличить", en: "Increase" },
+  stepperDecrement: { ru: "Уменьшить", en: "Decrease" },
+  selectLabel: { ru: "Карта", en: "Map" },
+  selectOptionAltis: { ru: "Алтис", en: "Altis" },
+  selectOptionStratis: { ru: "Стратис", en: "Stratis" },
+  selectOptionTanoa: { ru: "Таноа", en: "Tanoa" },
+  selectOptionMalden: { ru: "Малден", en: "Malden" },
+  selectOptionLivonia: { ru: "Ливония", en: "Livonia" },
+  selectOptionChernarus: { ru: "Черноруссия", en: "Chernarus" },
   // KIT-08 / QUAL-05: the bilingual ICU plural exemplar (D-03 — RU one/few/many must
   // be exercised now). The plural lives INSIDE the message string as ICU
   // `{n, plural, …}` parsed at runtime by Lingui's CLDR rules — never concatenation

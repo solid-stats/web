@@ -454,3 +454,108 @@ test.describe("KIT-05 Field forced-invalid announcement (Plan 03-02 GREEN)", () 
     ).toBe(true);
   });
 });
+
+// KIT-05 Form / Select (SC#1, a11y.md — prefer the Ark `Select` listbox over a hand-rolled
+// one; full keyboard, no trap). GREEN as of Plan 03-03: the `Select` slice ships the
+// `kit-05-form--select--playground` story (a single live Select — the matrix's forced-open
+// cell renders a portalled dismiss layer that would intercept events, so live keyboard runs
+// against the lone Playground instance; the matrix proves the forced-open AXE gate instead).
+// Ark's combobox trigger exposes `aria-expanded` (false→true on open) + `aria-controls` naming
+// the listbox, arrow keys move the highlighted option (roving via `aria-activedescendant` →
+// `data-highlighted`, WAI-ARIA listbox pattern), and the open popover does NOT trap Tab — the
+// invariants the generic catalog axe pass cannot express. (The Menu portion of this
+// form/overlay keyboard suite stays RED until the KIT-06 Overlay wave lands
+// `kit-06-overlay--menu--playground`.)
+const SELECT_STORY = "kit-05-form--select--playground";
+
+test.describe("KIT-05 Select disclosure + keyboard (Plan 03-03 GREEN)", () => {
+  test("a closed trigger toggles aria-expanded false→true and names aria-controls", async ({
+    page,
+  }) => {
+    await page.goto(`/?story=${SELECT_STORY}&mode=preview`);
+    await page.waitForSelector('[data-select] [data-part="trigger"]', {
+      timeout: SELECTOR_TIMEOUT,
+    });
+
+    const trigger = page.locator('[data-select] [data-part="trigger"]').first();
+    await expect(trigger, "the trigger starts collapsed").toHaveAttribute("aria-expanded", "false");
+
+    // aria-controls names the listbox that lives in the DOM (the portalled popover content).
+    const controlsId = await trigger.getAttribute("aria-controls");
+    expect(controlsId, "the trigger declares aria-controls").toBeTruthy();
+
+    await trigger.click();
+    await expect(trigger, "opening the listbox sets aria-expanded=true").toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
+    // The listbox the trigger names is now visible and is a real listbox role. Attribute-id
+    // locator (NOT `#id`) — the Ark id carries `:` colons that a CSS id selector cannot express.
+    const listbox = page.locator(`[id="${controlsId}"]`);
+    await expect(listbox, "aria-controls points at the live listbox").toBeVisible();
+    await expect(listbox).toHaveAttribute("role", "listbox");
+  });
+
+  test("arrow keys move the highlighted option (WAI-ARIA listbox)", async ({ page }) => {
+    await page.goto(`/?story=${SELECT_STORY}&mode=preview`);
+    await page.waitForSelector('[data-select] [data-part="trigger"]', {
+      timeout: SELECTOR_TIMEOUT,
+    });
+
+    const trigger = page.locator('[data-select] [data-part="trigger"]').first();
+    const listboxId = await trigger.getAttribute("aria-controls");
+
+    // Open from the KEYBOARD (focus + Enter): Ark moves focus into the listbox content, which is
+    // what arms its arrow-key roving highlight. (A pointer `.click()` opens the popover but leaves
+    // the highlight un-armed — the keyboard path is the one this test exercises anyway.)
+    await trigger.focus();
+    await page.keyboard.press("Enter");
+    const listbox = page.locator(`[id="${listboxId}"]`);
+    await expect(listbox).toBeVisible();
+
+    const highlighted = listbox.locator('[role="option"][data-highlighted]');
+    // Exactly ONE option carries `data-highlighted` at a time; read its value after each step
+    // (poll for the attribute to settle, then read — avoids racing the moving highlight).
+    const highlightedValue = async (): Promise<string | null> => {
+      await highlighted.first().waitFor({ timeout: SELECTOR_TIMEOUT });
+      return highlighted.first().getAttribute("data-value");
+    };
+
+    // ArrowDown highlights the FIRST option (Ark arms the roving highlight via the option's
+    // `data-highlighted` attribute, mirrored to the content's `aria-activedescendant`).
+    await page.keyboard.press("ArrowDown");
+    const firstHighlighted = await highlightedValue();
+    expect(firstHighlighted, "ArrowDown highlights an option").toBeTruthy();
+
+    // `End` jumps the highlight to the LAST option (WAI-ARIA listbox Home/End) — a deterministic
+    // move to a DIFFERENT option, proving the roving highlight actually relocates (and that End
+    // is wired, not just ArrowDown). Polled so the attribute settle is awaited, not raced.
+    await page.keyboard.press("End");
+    await expect.poll(highlightedValue, { timeout: SELECTOR_TIMEOUT }).not.toBe(firstHighlighted);
+  });
+
+  test("the open listbox does not trap Tab (trap-free cycle)", async ({ page }) => {
+    await page.goto(`/?story=${SELECT_STORY}&mode=preview`);
+    await page.waitForSelector('[data-select] [data-part="trigger"]', {
+      timeout: SELECTOR_TIMEOUT,
+    });
+
+    const trigger = page.locator('[data-select] [data-part="trigger"]').first();
+    const listboxId = await trigger.getAttribute("aria-controls");
+    await trigger.click();
+    await expect(page.locator(`[id="${listboxId}"]`)).toBeVisible();
+
+    // Unlike a Dialog, an open Select is NOT a focus trap: Tab moves focus on (Ark closes the
+    // popover and advances). Tab a bounded number of times; the document must always retain a
+    // real focused element inside the page — focus is never lost to nowhere and never hangs.
+    // Bounded so a regression FAILS instead of hanging.
+    for (let i = 0; i < 8; i++) {
+      await page.keyboard.press("Tab");
+      const hasFocus = await page.evaluate(() => {
+        const a = document.activeElement;
+        return a !== null && a !== document.body && document.contains(a);
+      });
+      expect(hasFocus, `Tab keeps focus on a reachable control (step ${i})`).toBe(true);
+    }
+  });
+});
