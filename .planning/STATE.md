@@ -6,14 +6,14 @@ current_phase: 03
 current_phase_name: UIKIT — Interactive, i18n & Global-State Patterns
 status: executing
 stopped_at: Phase 3 UI-SPEC approved
-last_updated: "2026-06-25T05:47:24.135Z"
+last_updated: "2026-06-25T06:18:40.068Z"
 last_activity: 2026-06-25
-last_activity_desc: Phase 03 execution started
+last_activity_desc: Completed 03-02 (KIT-05 Field + Input)
 progress:
   total_phases: 9
   completed_phases: 2
   total_plans: 23
-  completed_plans: 18
+  completed_plans: 19
   percent: 22
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 ## Current Position
 
 Phase: 03 (UIKIT — Interactive, i18n & Global-State Patterns) — EXECUTING
-Plan: 3 of 7
+Plan: 4 of 7
 Status: Ready to execute
 Last activity: 2026-06-25 — Completed 03-02 (KIT-05 Field + Input)
 
@@ -66,6 +66,7 @@ Plans: [█████████████████░░░] Phase 01: 
 | Phase 02 P09 | 38min | 3 tasks | 13 files |
 | Phase 03 P01 | 11min | 2 tasks | 5 files |
 | Phase 03 P02 | 12min | 3 tasks | 13 files |
+| Phase 03 P03 | 35min | 3 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -94,6 +95,7 @@ Recent decisions affecting current work:
 - [Phase ?]: KIT-01 nav-shell reworked vs binding hi-fi: three-zone NavBar + universal account per signed-in role + raised @5xl breakpoint + 5-tab MobileTabBar + reveal-safe SkipLink (GAP-01…05)
 - [Phase 02 / 02-09]: KIT-02 data-table reworked vs hi-fi — border-box viewport math (border-separate + box-internal cell hairlines, no stray scroll on table OR skeleton), a real N–M-of-total Pagination pager (disabled Next at end, GAP-07 = UAT user decision option B, a justified divergence from the hi-fi no-pager model), loading cell shows the skeleton, distinct few/limit cues, and DensityToggle replaced by the AutoTable @container auto-density resolver (comfortable at @5xl, compact below; ROW_H + controlled density prop kept). Shared geometry: tableViewportHeight + the Skeleton framed prop (GAP-06/07/08/11/14)
 - [Phase 03]: KIT-05 Field is ONE shared label+error+aria-live wrapper over Ark Field.Root (the seam Select/Stepper/FileUpload nest under); Input wraps Ark Field.Input to inherit aria-invalid/aria-describedby from context. @lingui/{react,core} ship a broken/types-only .d.mts that fails ladle:build on a clean Vite cache — fixed via a runtime-entry resolve.alias in vite.config.
+- [Phase ?]: [Phase 03 / 03-03]: KIT-05 Select adopts Ark Select (generic Select<TValue>, tv()-per-part, cyan active option + ItemIndicator check, Ark-owned keyboard) and Stepper adopts Ark NumberInput (tabular-mono value via the mono face, ≥44px aria-labelled inc/dec triggers whose names the story injects). Select forced-open uses UNCONTROLLED defaultOpen — controlled open pinned every instance closed (Rule 1 bug fix). Live keyboard specs target the lone Playground story; the matrix's forced-open Ark portal renders a dismiss layer that intercepts events.
 
 ### Pending Todos
 
@@ -123,7 +125,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-25T05:47:06.226Z
+Last session: 2026-06-25T06:18:16.996Z
 Stopped at: Phase 3 UI-SPEC approved
 Resume file: .planning/phases/03-uikit-interactive-i18n-global-state-patterns/03-UI-SPEC.md
 </content>

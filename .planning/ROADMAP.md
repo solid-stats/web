@@ -145,7 +145,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Global state patterns (loading / empty / error / offline / reconnecting / stale) exist as reusable, reviewed Ladle stories that reserve space (CLS = 0) and never rely on color alone.
   4. The ×5 scenario endings and ×4 data-volume states are demonstrable per interactive component, and all pass axe / keyboard / 44px-target checks.
 
-**Plans**: 2/7 plans executed
+**Plans**: 3/7 plans executed
 
 **Wave 1** *(enabler)*
 
@@ -157,7 +157,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3** *(blocked on Wave 2 — barrel)*
 
-- [ ] 03-03-PLAN.md — KIT-05 form family B: Select (typed value) + Stepper (mono NumberInput) (KIT-05, QUAL-01/02/03/05)
+- [x] 03-03-PLAN.md — KIT-05 form family B: Select (typed value) + Stepper (mono NumberInput) (KIT-05, QUAL-01/02/03/05)
 
 **Wave 4** *(blocked on Wave 3 — barrel)*
 
@@ -285,7 +285,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 |-------|----------------|--------|-----------|
 | 1. Workspace & Design-System Foundation | 5/5 | Complete    | 2026-06-20 |
 | 2. UIKIT — Structural & Data-Display Primitives | 11/11 | Complete    | 2026-06-24 |
-| 3. UIKIT — Interactive, i18n & Global-State Patterns | 2/7 | In Progress|  |
+| 3. UIKIT — Interactive, i18n & Global-State Patterns | 3/7 | In Progress|  |
 | 4. Public Stats — Overview, Players & Player Profile | 0/TBD | Not started | - |
 | 5. Public Stats — Squads | 0/TBD | Not started | - |
 | 6. Public Stats — Commander-side & Bounty | 0/TBD | Not started | - |
