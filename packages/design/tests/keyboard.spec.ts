@@ -414,13 +414,18 @@ test.describe("KIT-06 Tabs roving tabindex (Wave-0 RED)", () => {
 });
 
 // KIT-05 Form / Field (SC#1, a11y.md — visible label + associated, announced error
-// with recovery guidance). The forced-invalid matrix cell exposes `Field.ErrorText`
-// with `aria-live` (the error is ANNOUNCED, not just painted) and the error is
-// programmatically associated to the control via `aria-describedby` (WCAG 3.3.1
-// Error Identification / 1.3.1 Info and Relationships).
+// with recovery guidance). GREEN as of Plan 03-02: the `Field` slice ships the
+// `kit-05-form--field--matrix` story whose forced-invalid cell (`Field invalid` over Ark
+// `Field.Root invalid`) exposes `Field.ErrorText` with `aria-live` (the error is
+// ANNOUNCED, not just painted), programmatically associated to the control via
+// `aria-describedby` (WCAG 3.3.1 Error Identification / 1.3.1 Info and Relationships), and
+// carrying the resolved `fieldErrorRequired` copy (RU primary — the active Ladle locale).
 const FIELD_STORY = "kit-05-form--field--matrix";
+// The RU primary resolution of `fieldErrorRequired` (_fixtures/strings.ts) — the announced
+// error copy the forced-invalid cell renders (i18n resolves in the story, default locale ru).
+const FIELD_ERROR_COPY_RU = "Заполните это поле";
 
-test.describe("KIT-05 Field forced-invalid announcement (Wave-0 RED)", () => {
+test.describe("KIT-05 Field forced-invalid announcement (Plan 03-02 GREEN)", () => {
   test("the forced-invalid field exposes a live, associated error", async ({ page }) => {
     await page.goto(`/?story=${FIELD_STORY}&mode=preview`);
     await page.waitForSelector("[data-field-error]", { timeout: SELECTOR_TIMEOUT });
@@ -431,6 +436,12 @@ test.describe("KIT-05 Field forced-invalid announcement (Wave-0 RED)", () => {
     await expect(error).toBeVisible();
     const ariaLive = await error.getAttribute("aria-live");
     expect(ariaLive, "the error text is an aria-live region").toBeTruthy();
+
+    // The announced text is the resolved copy (not a placeholder / raw id) — the error is
+    // never color-alone: it carries the recovery sentence next to its Lucide icon.
+    await expect(error, "the error renders the resolved fieldErrorRequired copy").toContainText(
+      FIELD_ERROR_COPY_RU,
+    );
 
     // The invalid control names the error via aria-describedby (programmatic association).
     const control = page.locator("[data-field-control][aria-invalid='true']").first();

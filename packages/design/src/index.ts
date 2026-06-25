@@ -99,3 +99,14 @@ export { Pagination } from "./shared/uikit/Pagination";
 // extract/compile pipeline introduced then.
 export { i18n } from "./shared/uikit/_i18n";
 export type { Bilingual, StringKey } from "./shared/uikit/_fixtures/strings";
+
+// ---- KIT-05 Form family — Field + Input (Wave 2 / Plan 03-02) ----
+// The first form-family slice group: `Field` is the shared visible-label + announced,
+// associated, aria-live error wrapper over Ark `Field.Root` (the seam every other form
+// control — Select/Stepper/FileUpload — nests under for its label/error/required/disabled
+// broadcast); `Input` is the text control styled per the DESIGN.md `input` recipe, inheriting
+// validation state from `Field.Root` context. The internal `field`/`input` tv() recipes and
+// the `_state-matrix` helper stay internal (NOT graduated). Strings resolve in the story via
+// `i18n._({ id })` and pass as plain props — the primitives are i18n-free (uikit boundary).
+export { Field } from "./shared/uikit/Field";
+export { Input } from "./shared/uikit/Input";

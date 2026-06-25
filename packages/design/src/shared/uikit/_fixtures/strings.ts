@@ -123,6 +123,18 @@ export const STRINGS = {
   // Sparkline accessible summary: the chart is aria-hidden, this figcaption carries
   // the value series for screen readers (never color-alone).
   sparklineSummary: { ru: "Недельный счёт: {values}", en: "Weekly score: {values}" },
+  // KIT-05 form-family copy (UI-SPEC Copywriting Contract). `selectPlaceholder` is the
+  // shared placeholder; `fieldRequired` is the required hint; `fieldErrorRequired` is the
+  // generic by-field validation error shown in the forced-invalid cell. `fieldLabelLongest`
+  // is the QUAL-05 RU-longest field label exercised at the 360 floor (RU runs longer than
+  // EN). RU primary / EN mirror at parity.
+  selectPlaceholder: { ru: "Выберите…", en: "Select…" },
+  fieldRequired: { ru: "Обязательное поле", en: "Required" },
+  fieldErrorRequired: { ru: "Заполните это поле", en: "Fill in this field" },
+  fieldLabelLongest: {
+    ru: "Идентификатор реплея для пересчёта",
+    en: "Replay identifier for recompute",
+  },
   // KIT-08 / QUAL-05: the bilingual ICU plural exemplar (D-03 — RU one/few/many must
   // be exercised now). The plural lives INSIDE the message string as ICU
   // `{n, plural, …}` parsed at runtime by Lingui's CLDR rules — never concatenation
