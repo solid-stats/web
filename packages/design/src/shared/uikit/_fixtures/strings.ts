@@ -150,6 +150,25 @@ export const STRINGS = {
   selectOptionMalden: { ru: "Малден", en: "Malden" },
   selectOptionLivonia: { ru: "Ливония", en: "Livonia" },
   selectOptionChernarus: { ru: "Черноруссия", en: "Chernarus" },
+  // KIT-05 FileUpload copy (Plan 03-04, UI-SPEC Copywriting Contract). `uploadDropzone` is
+  // the focusable-dropzone prompt — the QUAL-05 RU-longest target («Перетащите изображение
+  // или выберите файл») exercised at the 360 floor; `uploadBrowse` is the explicit Browse
+  // button label. `uploadRejected` is the why+fix rejection sentence with the `{max}`
+  // interpolation (PNG/JPEG/WebP allowlist + size ceiling — the SVG/oversize reasons the
+  // story names per RejectReason). `uploadOversize`/`uploadTooMany` name the size/count
+  // rejection reasons. `uploadRemoveAria`/`uploadRetryAria` are the accessible NAMES for the
+  // icon-only per-file remove/retry controls (a11y.md — icon-only controls need a name; the
+  // story injects them, the slice never invents them). RU primary / EN mirror at parity.
+  uploadDropzone: {
+    ru: "Перетащите изображение или выберите файл",
+    en: "Drop an image or browse",
+  },
+  uploadBrowse: { ru: "Выбрать файл", en: "Browse" },
+  uploadRejected: { ru: "Только PNG/JPEG/WebP до {max}", en: "PNG/JPEG/WebP only, up to {max}" },
+  uploadOversize: { ru: "Файл больше {max}", en: "File exceeds {max}" },
+  uploadTooMany: { ru: "Слишком много файлов", en: "Too many files" },
+  uploadRemoveAria: { ru: "Удалить файл", en: "Remove file" },
+  uploadRetryAria: { ru: "Повторить загрузку", en: "Retry upload" },
   // KIT-08 / QUAL-05: the bilingual ICU plural exemplar (D-03 — RU one/few/many must
   // be exercised now). The plural lives INSIDE the message string as ICU
   // `{n, plural, …}` parsed at runtime by Lingui's CLDR rules — never concatenation

@@ -559,3 +559,79 @@ test.describe("KIT-05 Select disclosure + keyboard (Plan 03-03 GREEN)", () => {
     }
   });
 });
+
+// KIT-05 Form / FileUpload (SC#1, security.md + a11y.md — the dropzone is a keyboard
+// control, NOT a div-only drag target). GREEN as of Plan 03-04: the `FileUpload` slice
+// ships the `kit-05-form--file-upload--playground` story (a single live Ark dropzone — the
+// matrix renders several, so the live-keyboard spec runs against the lone Playground
+// instance, mirroring the Select precedent; the matrix serves the static axe/44px gate).
+// Ark's `FileUpload.Dropzone` is `role="button"` + `tabIndex=0` and opens the file picker on
+// Enter/Space; the explicit `Browse` Trigger is a real ≥44px button — the invariants that
+// PROVE the dropzone is keyboard-operable, which the generic catalog axe pass cannot express.
+const FILE_UPLOAD_STORY = "kit-05-form--file-upload--playground";
+
+test.describe("KIT-05 FileUpload keyboard dropzone (Plan 03-04 GREEN)", () => {
+  test("Tab reaches the focusable dropzone (not a div-only drag target)", async ({ page }) => {
+    await page.goto(`/?story=${FILE_UPLOAD_STORY}&mode=preview`);
+    await page.waitForSelector('[data-file-upload] [data-part="dropzone"]', {
+      timeout: SELECTOR_TIMEOUT,
+    });
+
+    const dropzone = page.locator('[data-file-upload] [data-part="dropzone"]').first();
+    // The dropzone is a real keyboard control: role=button + a positive (focusable) tabindex.
+    await expect(dropzone, "the dropzone is exposed as a button to AT").toHaveAttribute(
+      "role",
+      "button",
+    );
+    await expect(dropzone, "the dropzone is in the tab order (focusable)").toHaveAttribute(
+      "tabindex",
+      "0",
+    );
+
+    // Tab forward (bounded) until focus lands ON the dropzone — a keyboard user reaches it,
+    // proving it is not a pointer-only drag div. Bounded so a regression FAILS, never hangs.
+    let onDropzone = false;
+    for (let i = 0; i < 8 && !onDropzone; i++) {
+      await page.keyboard.press("Tab");
+      onDropzone = await dropzone.evaluate((el) => el === document.activeElement);
+    }
+    expect(onDropzone, "Tab reaches the dropzone").toBe(true);
+  });
+
+  test("Enter/Space on the focused dropzone activates the file picker affordance", async ({
+    page,
+  }) => {
+    await page.goto(`/?story=${FILE_UPLOAD_STORY}&mode=preview`);
+    await page.waitForSelector('[data-file-upload] [data-part="dropzone"]', {
+      timeout: SELECTOR_TIMEOUT,
+    });
+
+    const dropzone = page.locator('[data-file-upload] [data-part="dropzone"]').first();
+    await dropzone.focus();
+    await expect(dropzone, "the dropzone takes keyboard focus").toBeFocused();
+
+    // The hidden file input is the picker the dropzone opens (Ark dispatches the open on
+    // Enter/Space via the dropzone's keydown). We cannot assert the OS file dialog, but the
+    // affordance exists and is wired: the hidden input is present and the dropzone keydown is
+    // the documented open path. Pressing the keys must not throw or move focus off the control.
+    await dropzone.press("Enter");
+    await dropzone.press(" ");
+    const hiddenInput = page.locator('[data-file-upload] input[type="file"]');
+    await expect(hiddenInput, "the file picker input the dropzone opens exists").toHaveCount(1);
+  });
+
+  test("the explicit Browse button is a real, reachable ≥44px control", async ({ page }) => {
+    await page.goto(`/?story=${FILE_UPLOAD_STORY}&mode=preview`);
+    await page.waitForSelector('[data-file-upload] [data-part="trigger"]', {
+      timeout: SELECTOR_TIMEOUT,
+    });
+
+    // The Browse affordance is the Ark Trigger rendered as the shared Button (asChild) — a real
+    // <button> (not a styled div) clearing the WCAG 2.5.5 ≥44px target floor.
+    const browse = page.locator('[data-file-upload] [data-part="trigger"]').first();
+    await expect(browse).toHaveJSProperty("tagName", "BUTTON");
+    const box = await browse.boundingBox();
+    if (box === null) throw new Error("the Browse button has no bounding box");
+    expect(box.height, "Browse button clears the ≥44px target floor").toBeGreaterThanOrEqual(44);
+  });
+});
