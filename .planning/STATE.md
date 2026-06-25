@@ -31,7 +31,7 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 Phase: 03 (UIKIT — Interactive, i18n & Global-State Patterns) — COMPLETE
 Plan: 7 of 7
 Status: Phase complete — ready for verification
-Last activity: 2026-06-25 — Completed 03-07 (SURF-18 AsyncBoundary + the six global-state recipes + the Toast manager — Phase 3 complete)
+Last activity: 2026-06-25 — Quick 260625-t1o: type-aware `pnpm check` gate + type-clean repo + regression oracle + CI (SC#4 resolved). Visual UAT (KIT-05/06/SURF-18) findings verified in-browser → 03-UAT-VISUAL-FINDINGS.md (gap-closure batch pending)
 
 Plans: [████████████████████] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 9/11 complete (gap-closure 02-09 done) · Phase 03: 7/7 (03-01 i18n harness, 03-02 Field+Input, 03-03 Select+Stepper, 03-04 FileUpload — KIT-05 form family complete; 03-05 Dialog+Popover, 03-06 Menu+Tabs+Tooltip — KIT-06 overlay family complete; 03-07 AsyncBoundary + Toast manager — SURF-18 complete)
 
@@ -119,6 +119,7 @@ None yet.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 260620-q5q | paint dark base backdrop from bg-0 token via gen-theme.mjs | 2026-06-20 | d9b307a | [260620-q5q-paint-dark-base-backdrop-from-bg-0-token](./quick/260620-q5q-paint-dark-base-backdrop-from-bg-0-token/) |
+| 260625-t1o | phase-03 type-aware CI gate: type-clean repo (33 errors), @ts-expect-error oracle, GH Actions check | 2026-06-25 | 1448c53 | [260625-t1o-phase-03-type-aware-ci-gate-type-clean-r](./quick/260625-t1o-phase-03-type-aware-ci-gate-type-clean-r/) |
 
 ## Deferred Items
 
