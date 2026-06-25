@@ -13,17 +13,48 @@
 // → `message`, `action` → the leaf action. The leaf stays i18n-free — the toast `title`/`action
 // label`/dismiss aria are RESOLVED BY THE CONSUMER and passed at `toaster.create(...)`; the
 // dismiss aria rides in `meta.dismissAria` (author-supplied), so the manager imports no `i18n`
-// (architecture.md uikit boundary).
+// (architecture.md uikit boundary). `dismissAria` is REQUIRED on the toast `meta` (`ToastMeta`):
+// the manager always wires `onDismiss`, so an omitted name would be an unnamed icon-only control
+// (WCAG 4.1.2). `createToast` is the typed helper that makes the name a `tsc` requirement at the
+// `toaster.create(...)` call site — a consumer cannot push a toast without it.
 import type { ReactNode } from "react";
 import { Toaster, createToaster } from "@ark-ui/react/toast";
 import { Toast, type ToastVariant } from "../Toast";
 
 /**
+ * The required `meta` contract for every toast the manager renders. `dismissAria` is the
+ * accessible name for the always-wired icon-only dismiss control — required (not optional) so an
+ * unnamed dismiss button is impossible by construction (a11y.md — icon-only controls need a name).
+ */
+export type ToastMeta = {
+  /** Accessible name for the icon-only dismiss control (resolved by the consumer). */
+  dismissAria: string;
+};
+
+/**
  * The single toaster instance (D-06). Owns the portal (mounts its own to `document.body` — no app
  * shell needed), the FIFO queue, per-toast auto-dismiss, and the bottom-end overlap stacking.
- * Story Playgrounds call `toaster.create({ title, type, meta })`; the manager renders each.
+ * Push toasts via {@link createToast} (the typed wrapper that requires the dismiss name), not
+ * `toaster.create(...)` directly.
  */
 export const toaster = createToaster({ placement: "bottom-end", overlap: true, gap: 12, max: 4 });
+
+/** The toast shape a consumer pushes — Ark's `create` options with the required {@link ToastMeta}. */
+type CreateToastOptions = Parameters<typeof toaster.create>[0] & { meta: ToastMeta };
+
+/**
+ * Push a toast through the shared {@link toaster}. The typed wrapper makes `meta.dismissAria`
+ * REQUIRED at the call site, so an omitted dismiss name is a `tsc` error, not a silent a11y
+ * regression (WCAG 4.1.2). Use this over `toaster.create(...)` directly.
+ */
+export function createToast(options: CreateToastOptions): string {
+  return toaster.create(options);
+}
+
+/** Coerce the Ark toast `title` (typed `ReactNode`) to the leaf's plain `string` message. */
+function message(title: unknown): string {
+  return typeof title === "string" ? title : "";
+}
 
 /** Map the Ark/Zag toast `type` onto the leaf's finite `ToastVariant` (`warning`→`warn`). */
 function toVariant(type: string | undefined): ToastVariant {
@@ -50,18 +81,24 @@ export function ToastViewport(): ReactNode {
   return (
     <Toaster toaster={toaster}>
       {(toast) => {
-        const meta = toast.meta as { dismissAria?: string } | undefined;
-        return (
+        // `toast.meta` is untyped on the Ark render-prop; the only push path is `createToast`,
+        // which requires `meta.dismissAria` (`ToastMeta`), so the cast is safe-by-construction.
+        const meta = toast.meta as Partial<ToastMeta> | undefined;
+        const action =
+          toast.action === undefined
+            ? undefined
+            : { label: toast.action.label, onClick: toast.action.onClick };
+        // Defensive: a missing name omits the dismiss control entirely rather than rendering an
+        // unnamed icon-only button — an unnamed dismiss can never reach the DOM (WCAG 4.1.2).
+        return meta?.dismissAria === undefined ? (
+          <Toast variant={toVariant(toast.type)} message={message(toast.title)} action={action} />
+        ) : (
           <Toast
             variant={toVariant(toast.type)}
-            message={typeof toast.title === "string" ? toast.title : ""}
-            action={
-              toast.action === undefined
-                ? undefined
-                : { label: toast.action.label, onClick: toast.action.onClick }
-            }
+            message={message(toast.title)}
+            action={action}
             onDismiss={() => toaster.dismiss(toast.id)}
-            dismissAria={meta?.dismissAria}
+            dismissAria={meta.dismissAria}
           />
         );
       }}

@@ -12,7 +12,7 @@ import type { Story, StoryDefault } from "@ladle/react";
 import type { ToastVariant } from "../Toast";
 import { i18n } from "../_i18n";
 import { Button } from "../Button";
-import { ToastViewport, toaster } from "./ToastManager";
+import { ToastViewport, createToast } from "./ToastManager";
 
 export default {
   title: "KIT-06 Overlay / ToastManager",
@@ -43,7 +43,7 @@ export const Playground: Story = () => {
             key={variant}
             variant="secondary"
             onClick={() => {
-              toaster.create({
+              createToast({
                 title: i18n._({ id: bodyId }),
                 type,
                 meta: { dismissAria },

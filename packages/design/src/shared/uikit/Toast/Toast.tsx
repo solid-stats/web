@@ -21,6 +21,25 @@ import { Button } from "../Button";
 /** The four semantic toast variants. Frontend-owned finite union. */
 export type ToastVariant = "success" | "error" | "warn" | "info";
 
+type DismissProps =
+  | {
+      /**
+       * The dismiss affordance — an icon-only close control the toast MANAGER wires to
+       * `toaster.dismiss(toast.id)` (Plan 03-07, D-06). The leaf stays presentational: it takes
+       * the accessible name as a prop (`dismissAria`) and does NOT invent it (a11y.md — icon-only
+       * controls need a caller-supplied name). When `onDismiss` is set, `dismissAria` is REQUIRED
+       * by construction — an omitted name is a `tsc` error, not a silent unnamed control (WCAG 4.1.2).
+       */
+      onDismiss: () => void;
+      /** The accessible name for the icon-only dismiss control (resolved by the consumer). */
+      dismissAria: string;
+    }
+  | {
+      /** Absent both → no dismiss button (the bare visual leaf the Phase-2 catalog renders inert). */
+      onDismiss?: undefined;
+      dismissAria?: undefined;
+    };
+
 type Props = {
   className?: string;
   variant: ToastVariant;
@@ -31,17 +50,7 @@ type Props = {
     label: string;
     onClick?: () => void;
   };
-  /**
-   * Optional dismiss affordance — an icon-only close control the toast MANAGER wires to
-   * `toaster.dismiss(toast.id)` (Plan 03-07, D-06). The leaf stays presentational: it takes
-   * the accessible name as a prop (`dismissAria`) and does NOT invent it (a11y.md — icon-only
-   * controls need a caller-supplied name). Absent both → no dismiss button (the bare visual
-   * leaf the Phase-2 catalog still renders inert).
-   */
-  onDismiss?: () => void;
-  /** The accessible name for the icon-only dismiss control (resolved by the consumer). */
-  dismissAria?: string;
-};
+} & DismissProps;
 
 const ICONS = {
   success: CircleCheck,

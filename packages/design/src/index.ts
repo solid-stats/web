@@ -187,11 +187,14 @@ export { Tooltip } from "./shared/uikit/Tooltip";
 // color-alone). `AsyncState` graduates so a consuming surface drives its global state by that
 // shape; `AsyncKind`/`ASYNC_PRIMITIVE` graduate the pinned routing contract. `ToastManager` is the
 // Ark `createToaster` lifecycle (portal / queue / auto-dismiss / bottom-end stacking) that renders
-// the EXISTING `Toast` leaf via the `<Toaster>` render-prop (no re-expression, D-06): `toaster`
-// (consumers push via `toaster.create(...)`) + `ToastViewport` (mounted once; it portals itself)
-// graduate. The seam stays i18n-free — copy resolves in the consumer and passes as plain props
-// (architecture.md uikit boundary). This block completes Phase 3's interactive + global-state
-// catalog.
+// the EXISTING `Toast` leaf via the `<Toaster>` render-prop (no re-expression, D-06): `createToast`
+// (the typed push helper that makes the dismiss accessible name REQUIRED — an omitted name is a
+// `tsc` error, never a silent unnamed control, WCAG 4.1.2) + `toaster` (the instance, for
+// `dismiss`/advanced use) + `ToastViewport` (mounted once; it portals itself) graduate, with the
+// `ToastMeta` contract. The seam stays i18n-free — copy resolves in the consumer and passes as
+// plain props (architecture.md uikit boundary). This block completes Phase 3's interactive +
+// global-state catalog.
 export type { AsyncKind, AsyncState } from "./shared/uikit/AsyncBoundary";
 export { ASYNC_PRIMITIVE, AsyncBoundary } from "./shared/uikit/AsyncBoundary";
-export { ToastViewport, toaster } from "./shared/uikit/ToastManager";
+export type { ToastMeta } from "./shared/uikit/ToastManager";
+export { ToastViewport, createToast, toaster } from "./shared/uikit/ToastManager";
