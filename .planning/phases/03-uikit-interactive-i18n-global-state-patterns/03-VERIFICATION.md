@@ -1,34 +1,19 @@
 ---
 phase: 03-uikit-interactive-i18n-global-state-patterns
-verified: 2026-06-25T08:41:41Z
-status: human_needed
+verified: 2026-06-25T14:29:05Z
+status: verified
 score: 9/9
-behavior_unverified: 1
+behavior_unverified: 0
 overrides_applied: 0
-behavior_unverified_items:
-  - truth: "SC#4 — Missing or misspelled message id is a tsc error (Register augmentation contract)"
-    test: "Introduce a deliberate bad id in a story file (e.g. `i18n._({ id: 'no.such.id', message: '' })`) and run `tsc --noEmit` or a type-aware gate"
-    expected: "TypeScript error: Argument of type '\"no.such.id\"' is not assignable to parameter of type 'StringKey'"
-    why_human: >
-      The Register augmentation is structurally present and the tsconfig.json `paths` workaround
-      correctly loads Lingui's `.d.mts` declarations, making the contract theoretically active.
-      However `vp check packages` runs oxlint+oxfmt only — no type-aware checking. Neither `tsc`
-      nor `tsgo` is installed as a dev dependency in this package. No `@ts-expect-error` regression
-      oracle tests the negative path. The contract cannot be confirmed or denied without running a
-      type-aware check that is not in the automated gate.
-human_verification:
-  - test: "Register augmentation typed-key gate — introduce a bad id and confirm tsc/tsgo rejects it"
-    expected: "Type error on the unknown id; no false-negative silent pass"
-    why_human: "vp check uses oxlint+oxfmt only; no type-aware checker is wired as an automated gate"
 ---
 
 # Phase 03: UIKIT Interactive, i18n & Global-State Patterns — Verification Report
 
 **Phase Goal:** Ship the interactive UIKIT — KIT-05 form family (Field, Input, Select, Stepper, FileUpload), KIT-06 overlay family (Dialog, Popover, Menu, Tabs, Tooltip), KIT-08 typed RU/EN i18n harness + Ladle language switcher, SURF-18 global-state patterns (AsyncBoundary + Toast manager) — all under QUAL design-review gates, presentational in Ladle (v0.1, no app/routes/network).
 
-**Verified:** 2026-06-25T08:41:41Z
-**Status:** human_needed (1 behavior-unverified truth — typed-key gate cannot be confirmed by automated gate)
-**Re-verification:** No — initial verification
+**Verified:** 2026-06-25T14:29:05Z
+**Status:** verified (all 9 truths VERIFIED — SC#4 typed-key gate now exercised by a permanent CI type-aware gate)
+**Re-verification:** Yes — SC#4 closed after the type-aware gate + regression oracle + CI were wired (quick task 260625-t1o)
 
 ---
 
@@ -56,14 +41,14 @@ Note on e2e flake: a prior run (before the previous context boundary) reported 3
 | SC#1 | Every story resolves strings bilingually; toggling the locale control switches copy | VERIFIED | `components.tsx` wraps stories in `<I18nProvider>`; `toLocale()` guard narrows control value; `useEffect(() => { i18n.activate(locale) }, [locale])` fires on every toggle; `i18n.load({ ru, en })` populates both catalogs |
 | SC#2 | Locale toggle is a Ladle global control (not a custom addon) | VERIFIED | `.ladle/config.mjs` declares the `locale` global-control-arg; `components.tsx` reads it via `globalState.control?.["locale"]?.value` |
 | SC#3 | RU catalog has ICU plural form (one/few/many) for at least one string | VERIFIED | `_fixtures/strings.ts` contains `replayCount: { ru: "{n, plural, one{# реплей} few{# реплея} many{# реплеев} other{# реплея}}", en: "{n, plural, one{# replay} other{# replays}}" }` |
-| SC#4 | Missing or misspelled message id is a tsc type error | PRESENT_BEHAVIOR_UNVERIFIED | `lingui.d.ts` Register augmentation: `interface Register { messageIds: keyof typeof STRINGS }` — structurally correct. `tsconfig.json` `paths` workaround loads Lingui's `.d.mts` declarations. But `vp check packages` is oxlint+oxfmt only — no type-aware gate is wired; no `@ts-expect-error` oracle regression exists. The contract is declared, not exercised. |
+| SC#4 | Missing or misspelled message id is a tsc type error | VERIFIED | The type-aware gate is now active: root `vite.config.ts` `lint.options.typeCheck:true` makes `pnpm check` (and CI) run the full TS-Go/tsgolint type check, so `lingui.d.ts`'s `Register { messageIds: keyof typeof STRINGS }` augmentation is exercised — a missing/misspelled `i18n._({ id })` is a hard error. `pnpm check` exits 0 (type-clean). A committed `@ts-expect-error` oracle (`_i18n/typed-key.oracle.ts`) regression-guards the contract — GREEN while the augmentation holds, RED (unused-directive TS2578) if it ever breaks; proven live. CI (`.github/workflows/check.yml`) runs `pnpm check` on every push + PR. (Quick task 260625-t1o.) |
 | SC#5 | No `shared/uikit` primitive imports `@lingui` or `_i18n` (i18n boundary) | VERIFIED | grep across all 12 primitives (Field, Input, Select, Stepper, FileUpload, Dialog, Popover, Menu, Tabs, Tooltip, AsyncBoundary, ToastManager) — zero `@lingui` or `_i18n` imports; only comment references to the boundary |
 | SC#6 | KIT-05 form family exported from `packages/design/src/index.ts` | VERIFIED | Lines 103-142: Field, Input, Select/SelectOption, Stepper, FileUpload/RejectReason/ACCEPTED_IMAGE_TYPES/ACCEPT_DEFAULT/mapRejectReason/firstRejectReason |
 | SC#7 | KIT-06 overlay family exported from `packages/design/src/index.ts` | VERIFIED | Lines 144-179: Dialog, Popover, Menu/MenuItemData, Tabs/TabData, Tooltip |
 | SC#8 | SURF-18 global-state patterns exported from `packages/design/src/index.ts` | VERIFIED | Lines 181-200: AsyncBoundary/AsyncState/AsyncKind/ASYNC_PRIMITIVE, ToastViewport/createToast/toaster/ToastMeta |
 | SC#9 | 344 e2e pass / 0 failed (QUAL gate) | VERIFIED | Confirmed `344 passed (18.6s)` on explicit re-run |
 
-**Score:** 9/9 truths present (1 behavior-unverified — SC#4 typed-key gate)
+**Score:** 9/9 truths VERIFIED (SC#4 typed-key gate now exercised by the permanent CI type-aware gate)
 
 ---
 
@@ -75,9 +60,15 @@ Note on e2e flake: a prior run (before the previous context boundary) reported 3
 ```
 interface Register { messageIds: keyof typeof STRINGS }
 ```
-`tsconfig.json` has the required `paths` workaround to load Lingui's `.d.mts` declarations (needed because Lingui v6 does not wire a `types` export condition). The tsconfig note says explicitly: "a missing id would NOT be a tsc error; SC#4" without the paths fix.
+`tsconfig.json` has the required `paths` workaround to load Lingui's `.d.mts` declarations (needed because Lingui v6 does not wire a `types` export condition).
 
-The repo's automated gate (`vp check packages`) uses oxlint+oxfmt only. No `tsc` or `tsgo` binary is installed. The `--help` output for `vp check` says "type-check still runs when `lint.options.typeCheck` is true" but no such option is configured. **Status: PRESENT_BEHAVIOR_UNVERIFIED** — contract declared, not regression-tested.
+The contract is now EXERCISED by an automated type-aware gate (quick task 260625-t1o):
+
+- Root `vite.config.ts` sets `lint.options.typeCheck:true`, so `vp check` (and `pnpm check`) runs the full TS-Go/tsgolint type check. Activating it surfaced 33 real latent type errors, all fixed as classes; `pnpm check` now exits 0 (type-clean).
+- A committed regression oracle `packages/design/src/shared/uikit/_i18n/typed-key.oracle.ts` carries a single `@ts-expect-error` over an `i18n._({ id })` with an unknown id. While the augmentation holds the unknown id is a compile error the directive consumes → GREEN; if the id ever widens back to `string` the directive turns UNUSED (TS2578) → RED. Proven live: flipping the bad id to a real STRINGS key turns the gate RED, restoring it turns it GREEN.
+- `.github/workflows/check.yml` runs `pnpm check` on every push + pull_request.
+
+**Status: VERIFIED** — contract declared AND exercised + regression-guarded by CI.
 
 ### uikit i18n boundary
 
@@ -175,7 +166,7 @@ Test "all six states reserve the same box height as the ready slot" iterates all
 |-------------|--------|----------|
 | KIT-05 — Form family (Field, Input, Select, Stepper, FileUpload) | SATISFIED | All 5 components present, exported, wired to stories; keyboard.spec GREEN for Field (aria-live), FileUpload (dropzone), Select (aria-expanded/controls); ≥44px via `min-h-11`; never-color-alone (icons paired); 186 unit tests |
 | KIT-06 — Overlay family (Dialog, Popover, Menu, Tabs, Tooltip) | SATISFIED | All 5 components present, exported, wired to stories; keyboard.spec GREEN for Dialog (focus-trap+Esc), Menu (aria-expanded+controls), Tabs (roving tabindex); axe clean for all in catalog.spec |
-| KIT-08 — Typed RU/EN i18n harness + Ladle switcher | SATISFIED (SC#4 PRESENT_BEHAVIOR_UNVERIFIED) | Register augmentation declared; catalogs derived from STRINGS; ICU plurals; `toLocale()` guard; `useEffect` locale toggle; bilingual Ladle stories. SC#4 (type-error on bad id) is structurally declared but not regression-tested by the automated gate |
+| KIT-08 — Typed RU/EN i18n harness + Ladle switcher | SATISFIED | Register augmentation declared; catalogs derived from STRINGS; ICU plurals; `toLocale()` guard; `useEffect` locale toggle; bilingual Ladle stories. SC#4 (type-error on bad id) is now EXERCISED by the permanent type-aware gate (`typeCheck:true` → `pnpm check` type-clean), regression-guarded by the committed `@ts-expect-error` oracle, and run on every push + PR by CI (quick task 260625-t1o) |
 | SURF-18 — AsyncBoundary + ToastManager | SATISFIED | AsyncBoundary routes 6 discriminated states to existing Phase-2 primitives; cls.spec GREEN; ToastManager `dismissAria` required, `createToaster` wired; exported from index |
 | QUAL-01 — Scenario endings ×5 | SATISFIED | AsyncBoundary exhaustive kind-switch covers loading/empty/error/offline/reconnecting+stale/ready (6 states, ≥5 scenario endings); ToastManager persists via `toaster` singleton |
 | QUAL-02 — ×4 data-volume | SATISFIED | `DataVolumes` story from Phase 2 continues to pass in catalog.spec; no regression |
@@ -203,19 +194,17 @@ Files modified in this phase were scanned for debt markers, stubs, and hollow wi
 
 ## Human Verification Required
 
-### 1. Register Augmentation — Typed-Key Gate (SC#4)
+None — the one prior open item (SC#4 typed-key gate) was closed by quick task 260625-t1o.
 
-**Test:** In any `.stories.tsx` file (inside `src/` or `.ladle/` so it is covered by `tsconfig.json`), introduce a deliberate bad id:
-```ts
-i18n._({ id: "no.such.key.exists", message: "" })
-```
-Then run a type-aware check — either install `typescript` as a dev dep and run `tsc --noEmit`, or run `tsgo` if available.
+### 1. Register Augmentation — Typed-Key Gate (SC#4) — RESOLVED
 
-**Expected:** TypeScript error: `Argument of type '"no.such.key.exists"' is not assignable to parameter of type 'StringKey'`. No false-negative silent pass.
+The type-aware gate that exercises the contract is now permanent and automated:
 
-**Why human:** `vp check packages` uses oxlint+oxfmt only. No `tsc`/`tsgo` binary is installed in this package. The Register augmentation and `tsconfig.json` `paths` workaround are correctly authored — but "correctly authored" is not "confirmed working." Confirming the negative path (bad id = tsc error) requires a type-aware runner the current automated gate does not provide.
+- Root `vite.config.ts` `lint.options.typeCheck:true` → `pnpm check` (and CI) run the full TS-Go/tsgolint type check; `pnpm check` exits 0 (type-clean).
+- The committed `@ts-expect-error` oracle (`packages/design/src/shared/uikit/_i18n/typed-key.oracle.ts`) regression-guards the contract — GREEN while the augmentation holds, RED (unused-directive TS2578) if it ever breaks; proven live (flip-to-real-key → RED, restore → GREEN).
+- `.github/workflows/check.yml` runs `pnpm check` on every push + pull_request.
 
-**Suggested follow-up:** Add a `pnpm --filter @solid-stats/design typecheck` script (`tsc --noEmit`) and a `@ts-expect-error` regression test file (`_fixtures/bad-id.ts`) that the CI gate includes.
+No human action remains for SC#4.
 
 ---
 
@@ -223,9 +212,9 @@ Then run a type-aware check — either install `typescript` as a dev dep and run
 
 Phase 03 delivered all 9 observable success criteria. Three gate commands (vp check, unit tests, ladle:build) passed cleanly; the e2e suite confirmed 344/344 on a confirmed re-run after an initial timing flake on the data-driven axe gate. All 9 requirements (KIT-05, KIT-06, KIT-08, SURF-18, QUAL-01..05) have implementation evidence.
 
-The single open item is SC#4: the Register augmentation that makes a missing message id a type error is structurally correct, but the repo's automated gate does not include a type-aware checker to exercise it. This cannot be confirmed or denied without human action.
+The previously open item SC#4 is now closed: the type-aware gate is permanent and automated. Root `vite.config.ts` `typeCheck:true` makes `pnpm check` (and CI) run the full TS-Go/tsgolint type check, the repo is type-clean (`pnpm check` exits 0), a committed `@ts-expect-error` oracle regression-guards the typed-key contract (proven live), and `.github/workflows/check.yml` runs `pnpm check` on every push + PR. All 9 truths are VERIFIED. (Closed by quick task 260625-t1o.)
 
 ---
 
-_Verified: 2026-06-25T08:41:41Z_
-_Verifier: Claude (gsd-verifier)_
+_Verified: 2026-06-25T08:41:41Z (initial); 2026-06-25T14:29:05Z (SC#4 re-verified)_
+_Verifier: Claude (gsd-verifier; SC#4 closure by gsd quick task 260625-t1o)_

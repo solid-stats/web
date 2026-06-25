@@ -3,18 +3,17 @@ status: testing
 phase: 03-uikit-interactive-i18n-global-state-patterns
 source: [03-VERIFICATION.md]
 started: 2026-06-25T09:01:43Z
-updated: 2026-06-25T09:01:43Z
+updated: 2026-06-25T14:29:05Z
 ---
 
 ## Current Test
 
-number: 1
-name: SC#4 — Register augmentation typed-key gate (a bad message id must be a compile error)
+number: 2
+name: Bilingual toggle — every story renders RU↔EN (SC#2, QUAL-05)
 expected: |
-  Introducing a deliberate bad id in a story/source file covered by tsconfig — e.g.
-  `i18n._({ id: "no.such.key.exists", message: "" })` — and running a type-aware check
-  produces: `Argument of type '"no.such.key.exists"' is not assignable to parameter of
-  type 'StringKey'`. No false-negative silent pass.
+  In `ladle dev`, the `locale` global control toggles RU↔EN and EVERY catalogued story
+  re-renders in the chosen language (default RU). No clipped or awkward RU wording; the
+  RU-longest strings (e.g. the FileUpload dropzone prompt) fit at the 360px mobile floor.
 awaiting: user response
 
 ## Tests
@@ -29,7 +28,18 @@ expected: |
   or a `tsc --noEmit` if added). Expect a type error on the unknown id; no silent pass.
   Decision to record: whether to wire a permanent CI type-aware gate (tsgolint is already in
   node_modules/.bin) + a `@ts-expect-error` regression oracle, or accept SC#4 as structural-only.
-result: [pending]
+result: passed
+resolution: |
+  RESOLVED — the permanent CI type-aware gate was wired (quick task 260625-t1o). The root
+  `vite.config.ts` `lint.options.typeCheck:true` makes `pnpm check` (and CI) run the full
+  TS-Go/tsgolint type check, so a missing/misspelled `i18n._({ id })` is now a hard error.
+  Activating it surfaced 33 real latent type errors; all were fixed as classes and the repo
+  is type-clean (`pnpm check` exits 0). A committed `@ts-expect-error` regression oracle
+  (`packages/design/src/shared/uikit/_i18n/typed-key.oracle.ts`) guards the contract: it is
+  GREEN while the augmentation holds and turns RED (unused-directive, TS2578) if the id ever
+  widens back to `string` — proven live (flip-to-real-key → RED, restore → GREEN). CI
+  (`.github/workflows/check.yml`) runs `pnpm check` on every push + pull_request. Decision:
+  a PERMANENT CI type-aware gate, NOT structural-only.
 
 ### 2. Bilingual toggle — every story renders RU↔EN (SC#2, QUAL-05)
 expected: |
@@ -67,9 +77,9 @@ result: [pending]
 ## Summary
 
 total: 5
-passed: 0
+passed: 1
 issues: 0
-pending: 5
+pending: 4
 skipped: 0
 blocked: 0
 
