@@ -32,7 +32,7 @@ export const dialog = tv({
       "fixed inset-0 z-modal bg-overlay transition-opacity duration-150 data-[state=closed]:opacity-0 data-[state=open]:opacity-100 motion-reduce:transition-none",
     positioner: "fixed inset-0 z-modal flex items-center justify-center p-4",
     content:
-      "flex w-full max-w-md flex-col gap-4 rounded-xl border border-border-2 bg-surface-1 p-6 shadow-lg transition-[opacity,transform] duration-150 focus-visible:outline-none data-[state=closed]:scale-95 data-[state=closed]:opacity-0 data-[state=open]:scale-100 data-[state=open]:opacity-100 motion-reduce:transition-none motion-reduce:data-[state=closed]:scale-100",
+      "flex w-full max-w-md flex-col gap-4 rounded-xl border border-border-2 bg-surface-1 p-6 shadow-lg transition duration-150 focus-visible:outline-none data-[state=closed]:scale-95 data-[state=closed]:opacity-0 data-[state=open]:scale-100 data-[state=open]:opacity-100 motion-reduce:transition-none motion-reduce:data-[state=closed]:scale-100",
     title: "font-body text-lg font-semibold leading-snug text-text-primary",
     body: "font-body text-sm text-text-muted",
     close:
