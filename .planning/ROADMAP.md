@@ -175,6 +175,24 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] 03-07-PLAN.md — SURF-18 AsyncBoundary + six global-state recipes + Toast manager (createToaster) (SURF-18, KIT-06, QUAL-01/03/04/05)
 
+**Gap closure** *(visual UAT — 17 gaps GAP-01..17; blockers first, regression-tested)*
+
+**Wave 1 (blockers)**
+
+- [ ] 03-08-PLAN.md — GAP-01: RU↔EN language toggle (real persistent locale source the GlobalProvider reads) (KIT-08, QUAL-05)
+- [ ] 03-09-PLAN.md — GAP-03: AsyncBoundary CLS — rewrite the false-green cls test to measure the routed primitive, loading≡ready geometry, re-scope the SURF-18 spec (SURF-18, QUAL-04)
+- [ ] 03-10-PLAN.md — GAP-05: FileUpload single preview per image (drop the `.*` catch-all double-render) (KIT-05)
+- [ ] 03-11-PLAN.md — GAP-02/04: one motion policy across the overlay+toast family (tokens + mount enter-frame + reduced-motion) + real toast stacking (KIT-06, SURF-18, QUAL-01)
+
+**Wave 2 (majors)**
+
+- [ ] 03-12-PLAN.md — GAP-06/07: icon-only Button variant + route FileUpload row controls through it + forward disabled; Field required marker (never color-alone) + helper aria-describedby (KIT-05, KIT-07, QUAL-03)
+- [ ] 03-13-PLAN.md — GAP-08/09/10/11: Dialog close top-right (no dead row), Select empty-state + clear control, interactive Stepper Playground (KIT-06, KIT-05)
+
+**Wave 3 (minors + sweep)**
+
+- [ ] 03-14-PLAN.md — GAP-12/13/14/15/16/17: 360 story wrappers, FileUpload bounded list, caption token decision, Select 360 max-width cap, a11y/dead-code sweep, reserve-only FU7 keys + itemStatus slot (QUAL-02, KIT-05, QUAL-03, KIT-06, SURF-18)
+
 **UI hint**: yes
 
 ### Phase 4: Public Stats — Overview, Players & Player Profile
