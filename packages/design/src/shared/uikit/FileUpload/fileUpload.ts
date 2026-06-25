@@ -8,11 +8,12 @@
 // values (styling.md).
 //
 // SECURITY (the one genuine threat surface this no-app phase carries — threat_model
-// T-03-04-01/02/03): the accept default + the reject-reason mapper + the object-URL
-// lifecycle are exported as PURE logic so they are pinned by `fileUpload.test.ts` as a
-// regression guard, not only via a render. Client validation is defense-in-depth UX — the
-// authoritative gate is `server-2` in v1.0 (security.md "the client check is UX, never
-// trust it").
+// T-03-04-01/03): the accept default + the reject-reason mapper are exported as PURE logic so
+// they are pinned by `fileUpload.test.ts` as a regression guard, not only via a render. The
+// preview object-URL lifecycle (T-03-04-02) is owned ENTIRELY by Ark's `ItemPreviewImage`
+// (create + revoke in its effect) — the slice holds no URL ledger. Client validation is
+// defense-in-depth UX — the authoritative gate is `server-2` in v1.0 (security.md "the client
+// check is UX, never trust it").
 import type { FileUploadFileError } from "@ark-ui/react/file-upload";
 import { tv } from "tailwind-variants/lite";
 
@@ -70,49 +71,15 @@ export function firstRejectReason(errors: readonly FileUploadFileError[]): Rejec
   );
 }
 
-// ── Object-URL lifecycle (T-03-04-02 leak guard) ─────────────────────────────────────
+// ── Object-URL lifecycle (T-03-04-02) — owned by Ark, not the slice ──────────────────
 //
-// Image previews go through `URL.createObjectURL`, which leaks a blob URL into the
-// document until `URL.revokeObjectURL` is called (RESEARCH Pitfall 5; performance.md
-// "effects clean up … object URLs; cleanup is correct under StrictMode remounts"). This
-// tiny tracker owns the create→revoke pairing so the component's unmount effect just calls
-// `revokeAll`, and the contract test pins that every created URL is revoked exactly once —
-// no React mount needed (the repo's vitest is node-env pure-logic, no DOM/RTL;
-// solidstats-frontend-react-tests runner split).
-
-/** Tracks created object URLs so each is revoked exactly once (no blob-URL leak). */
-export type PreviewUrlTracker = {
-  /** Create a tracked object URL for a file (records it for later revocation). */
-  readonly create: (file: File) => string;
-  /** Revoke every tracked URL and clear the set (idempotent — safe to call on each unmount). */
-  readonly revokeAll: () => void;
-  /** The live count of un-revoked URLs (the leak oracle the test asserts reaches 0). */
-  readonly size: () => number;
-};
-
-/**
- * A create→revoke tracker over the injectable `URL` API (defaults to the global, overridable
- * in the test so it can spy on `revokeObjectURL` without a DOM). Each `create` records the
- * URL; `revokeAll` revokes and forgets every one. Idempotent revoke (a URL is removed as it
- * is revoked) so a StrictMode double-unmount cannot double-revoke or under-revoke.
- */
-export function createPreviewUrlTracker(
-  urlApi: Pick<typeof URL, "createObjectURL" | "revokeObjectURL"> = URL,
-): PreviewUrlTracker {
-  const live = new Set<string>();
-  return {
-    create: (file) => {
-      const url = urlApi.createObjectURL(file);
-      live.add(url);
-      return url;
-    },
-    revokeAll: () => {
-      for (const url of live) urlApi.revokeObjectURL(url);
-      live.clear();
-    },
-    size: () => live.size,
-  };
-}
+// Image previews go through `URL.createObjectURL`, which would leak a blob URL until
+// `URL.revokeObjectURL` is called. Ark's `ItemPreviewImage` does BOTH internally: it calls
+// `createObjectURL` in a `useEffect` and returns zag's `revokeObjectURL` as that effect's
+// cleanup, so each preview URL is revoked on unmount / row removal (verified against
+// @zag-js/file-upload `createFileUrl` + @ark-ui/react `FileUploadItemPreviewImage`). The
+// per-file URL is never exposed to the consumer, so there is nothing for the slice to track —
+// no custom ledger lives here (a parallel tracker would be unreachable dead code).
 
 // ── The recipe ───────────────────────────────────────────────────────────────────────
 //

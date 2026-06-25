@@ -13,11 +13,12 @@
 // the oversize rejection. Client validation here is defense-in-depth UX; the authoritative
 // gate is `server-2` in v1.0 (security.md — "the client check is UX, never trust it").
 //
-// Object-URL lifecycle: Ark's `ItemPreviewImage` creates AND revokes the preview blob URL
-// internally (it returns zag's revoke callback on unmount), so the success previews do not
-// leak. The slice ALSO threads a `createPreviewUrlTracker` through a cleanup effect as the
-// explicit, test-pinned revoke contract (RESEARCH Pitfall 5; performance.md object-URL
-// cleanup) — the regression guard `fileUpload.test.ts` asserts against the pure tracker.
+// Object-URL lifecycle: Ark OWNS it. `ItemPreviewImage` creates the preview blob URL in a
+// `useEffect` (`createFileUrl`) and returns zag's `revokeObjectURL` callback as that effect's
+// cleanup, so each preview URL is revoked on unmount / when its row leaves — the slice neither
+// creates nor revokes a preview URL, and Ark never hands the per-file URL to the consumer
+// (RESEARCH Pitfall 5; performance.md object-URL cleanup). No custom tracker: a parallel
+// create→revoke ledger here would be dead code dressed as a guard.
 //
 // Composes under the `Field` wrapper (label/error/required/disabled). The external-link
 // evidence field is a sibling `Input` the STORY renders under the same `Field` (the brief's
@@ -27,17 +28,11 @@
 // (`dropzoneLabel`, `browseLabel`, the rejection sentence, the aria names) arrives as plain
 // string props resolved in the story (architecture.md uikit boundary). `data-file-upload`
 // slice hook.
-import { type ReactNode, useEffect, useRef } from "react";
+import type { ReactNode } from "react";
 import { FileUpload as ArkFileUpload } from "@ark-ui/react/file-upload";
 import { CircleAlert, ImageUp, RotateCcw, UploadCloud, X } from "lucide-react";
 import { Button } from "../Button";
-import {
-  ACCEPT_DEFAULT,
-  createPreviewUrlTracker,
-  fileUpload,
-  firstRejectReason,
-  type RejectReason,
-} from "./fileUpload";
+import { ACCEPT_DEFAULT, fileUpload, firstRejectReason, type RejectReason } from "./fileUpload";
 
 const styles = fileUpload();
 
@@ -87,19 +82,8 @@ export function FileUpload({
   onFilesChange,
   onRetry,
 }: Props): ReactNode {
-  // The explicit, test-pinned object-URL revoke contract (RESEARCH Pitfall 5). Ark's
-  // ItemPreviewImage revokes its own preview URL internally; this tracker is the slice's
-  // own create→revoke ledger, drained on unmount so no blob URL outlives the component
-  // (performance.md — effect cleanup correct under StrictMode remounts). The ref keeps one
-  // tracker across renders; the effect's cleanup runs revokeAll.
-  const previewTrackerRef = useRef(createPreviewUrlTracker());
-  useEffect(() => {
-    const tracker = previewTrackerRef.current;
-    return () => {
-      tracker.revokeAll();
-    };
-  }, []);
-
+  // No object-URL bookkeeping here: Ark's `ItemPreviewImage` creates the preview blob URL and
+  // revokes it in its own effect cleanup (see head comment), so the slice owns no URL lifecycle.
   return (
     <ArkFileUpload.Root
       className={styles.root({ className })}

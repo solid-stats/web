@@ -131,13 +131,13 @@ export { Stepper } from "./shared/uikit/Stepper";
 // (focusable, Enter/Space opens the picker) with an explicit Browse button (the shared
 // `Button`), per-file accepted (preview + name + remove/retry) and rejected (why+fix)
 // rows. The one client-SECURITY surface in this no-app phase: the default `accept`
-// allowlists PNG/JPEG/WebP and EXCLUDES SVG (the stored-XSS gate), and preview object URLs
-// are revoked on unmount (no blob-URL leak) — both client-side defense-in-depth UX, the
-// authoritative gate is `server-2` in v1.0. `RejectReason` graduates so a caller types the
-// `rejectedCopy` map by it. The internal `fileUpload` tv() recipe + the accept/reject/
-// object-URL logic stay internal (NOT graduated); copy resolves in the story as plain
-// props (uikit boundary). This COMPLETES the KIT-05 form family (Field, Input, Select,
-// Stepper, FileUpload).
+// allowlists PNG/JPEG/WebP and EXCLUDES SVG (the stored-XSS gate) — client-side
+// defense-in-depth UX, the authoritative gate is `server-2` in v1.0. Preview object URLs are
+// created AND revoked by Ark's `ItemPreviewImage` itself (no blob-URL leak; the slice owns no
+// URL lifecycle). `RejectReason` graduates so a caller types the `rejectedCopy` map by it. The
+// internal `fileUpload` tv() recipe + the accept/reject logic stay internal (NOT graduated);
+// copy resolves in the story as plain props (uikit boundary). This COMPLETES the KIT-05 form
+// family (Field, Input, Select, Stepper, FileUpload).
 export type { RejectReason } from "./shared/uikit/FileUpload";
 export { FileUpload } from "./shared/uikit/FileUpload";
 
