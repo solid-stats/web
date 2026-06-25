@@ -1,0 +1,31 @@
+name: check
+
+# The type-aware gate (KIT-08 SC#4): gen-theme drift check + design.md lint + the
+# type-aware `vp check` (TS-Go / tsgolint). Runs on every push and pull request so the
+# typed message-id contract and the type-clean repo cannot silently regress.
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Enable corepack BEFORE setup-node so its `cache: pnpm` step can resolve pnpm,
+      # and so the pnpm version comes from the `packageManager` pin (pnpm@11.6.0) — no
+      # second version hardcoded here.
+      - name: Enable corepack
+        run: corepack enable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 25 # mirror package.json engines (>=25 <26)
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check (gen-theme drift + design.md lint + type-aware vp check)
+        run: pnpm check
