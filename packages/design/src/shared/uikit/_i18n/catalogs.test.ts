@@ -6,7 +6,7 @@
 //   2. Key-set identity — ru, en, and STRINGS carry exactly the same id set (no orphan).
 //   3. RU plural via ICU — the `replayCount` exemplar resolves to THREE DISTINCT RU
 //      forms for n=1/2/5 (one/few/many actually differ), never concatenation (Pitfall 6).
-import { describe, expect, test } from "vitest";
+import { beforeAll, describe, expect, test } from "vitest";
 
 import { STRINGS } from "../_fixtures/strings";
 import { en, ru } from "./catalogs";
@@ -43,13 +43,21 @@ describe("i18n catalogs derived from STRINGS", () => {
 });
 
 describe("RU plural renders one/few/many via ICU (never concatenation)", () => {
-  // Activate RU explicitly so this assertion is independent of any locale the
-  // GlobalProvider may have switched to in a prior render.
-  i18n.activate("ru");
+  // The shared `i18n` singleton is mutated INSIDE beforeAll, not at describe-eval time: Vitest
+  // evaluates every describe body eagerly during collection, so an `i18n.activate` in the body
+  // would flip the active locale as a collection side effect (coupling this suite to any other
+  // file that activates a different locale). beforeAll runs only when this suite executes, and
+  // re-activates RU defensively so the assertion is independent of any prior render's locale.
+  let one = "";
+  let few = "";
+  let many = "";
 
-  const one = i18n._({ id: "replayCount", values: { n: 1 } });
-  const few = i18n._({ id: "replayCount", values: { n: 2 } });
-  const many = i18n._({ id: "replayCount", values: { n: 5 } });
+  beforeAll(() => {
+    i18n.activate("ru");
+    one = i18n._({ id: "replayCount", values: { n: 1 } });
+    few = i18n._({ id: "replayCount", values: { n: 2 } });
+    many = i18n._({ id: "replayCount", values: { n: 5 } });
+  });
 
   test("n=1 / n=2 / n=5 produce three DISTINCT RU forms", () => {
     expect(new Set([one, few, many]).size, `distinct forms: ${one} | ${few} | ${many}`).toBe(3);
