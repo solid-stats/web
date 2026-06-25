@@ -728,24 +728,58 @@ test.describe("KIT-05 Select disclosure + keyboard (Plan 03-03 GREEN)", () => {
     await expect(listbox).toBeVisible();
 
     const highlighted = listbox.locator('[role="option"][data-highlighted]');
-    // Exactly ONE option carries `data-highlighted` at a time; read its value after each step
-    // (poll for the attribute to settle, then read — avoids racing the moving highlight).
+    // Exactly ONE option carries `data-highlighted` at a time; read its current value.
     const highlightedValue = async (): Promise<string | null> => {
       await highlighted.first().waitFor({ timeout: SELECTOR_TIMEOUT });
       return highlighted.first().getAttribute("data-value");
     };
 
-    // ArrowDown highlights the FIRST option (Ark arms the roving highlight via the option's
-    // `data-highlighted` attribute, mirrored to the content's `aria-activedescendant`).
-    await page.keyboard.press("ArrowDown");
-    const firstHighlighted = await highlightedValue();
-    expect(firstHighlighted, "ArrowDown highlights an option").toBeTruthy();
+    // Gate on a STABLE initial highlight before acting. Opening via Enter arms Ark's roving
+    // highlight ASYNCHRONOUSLY (the popover paints, then the content focuses, then the first
+    // option gets `data-highlighted`). Pressing an arrow into that still-arming window is the
+    // flake: the keypress lands before the highlight exists, gets swallowed, and the move is
+    // lost. So we poll until the SAME value is read twice in a row — proof the initial highlight
+    // has settled and roving is armed — instead of racing the first paint.
+    const stableInitial = async (): Promise<string | null> => {
+      let prev: string | null = null;
+      let same = 0;
+      // Bounded so a never-settling highlight FAILS the assertion below instead of hanging.
+      for (let i = 0; i < 20 && same < 2; i++) {
+        const current = await highlightedValue();
+        same = current !== null && current === prev ? same + 1 : 0;
+        prev = current;
+      }
+      return same >= 2 ? prev : null;
+    };
+    const initialHighlighted = await stableInitial();
+    expect(initialHighlighted, "opening via Enter arms an initial highlight").toBeTruthy();
 
-    // `End` jumps the highlight to the LAST option (WAI-ARIA listbox Home/End) — a deterministic
-    // move to a DIFFERENT option, proving the roving highlight actually relocates (and that End
-    // is wired, not just ArrowDown). Polled so the attribute settle is awaited, not raced.
-    await page.keyboard.press("End");
-    await expect.poll(highlightedValue, { timeout: SELECTOR_TIMEOUT }).not.toBe(firstHighlighted);
+    // ArrowDown moves the roving highlight to the NEXT option. Even with a settled initial
+    // highlight on an `[active]` listbox, Ark can swallow the FIRST arrow keypress while the
+    // open-transition finishes (the highlight is already on the first option, so the keydown lands
+    // as a no-op). That is the residual flake — a single press is racy. So we re-press inside the
+    // poll until the signal definitively leaves the initial value: each poll iteration presses
+    // ArrowDown then reads, so a swallowed press is simply retried, not lost. This still PROVES
+    // ArrowDown relocates the highlight (the poll only passes once the value actually changed).
+    const pressArrowDownThenRead = async (): Promise<string | null> => {
+      await page.keyboard.press("ArrowDown");
+      return highlightedValue();
+    };
+    await expect
+      .poll(pressArrowDownThenRead, { timeout: SELECTOR_TIMEOUT })
+      .not.toBe(initialHighlighted);
+
+    // `End` jumps the highlight to the LAST option (WAI-ARIA listbox Home/End). The Playground
+    // renders the 6-map `MAP_OPTIONS`, so the last value is the deterministic, KNOWN target
+    // `chernarus` — assert the exact landing rather than "anything that differs". Re-press inside
+    // the poll for the same swallowed-keypress reason; `End` is idempotent (the last option stays
+    // last), so retrying cannot overshoot. This proves End is wired (not just ArrowDown) AND that
+    // it lands where the listbox contract says it must.
+    const pressEndThenRead = async (): Promise<string | null> => {
+      await page.keyboard.press("End");
+      return highlightedValue();
+    };
+    await expect.poll(pressEndThenRead, { timeout: SELECTOR_TIMEOUT }).toBe("chernarus");
   });
 
   test("the open listbox does not trap Tab (trap-free cycle)", async ({ page }) => {
