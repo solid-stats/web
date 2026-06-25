@@ -7,7 +7,9 @@
 // Open Q1). `defineConfig` comes from "@playwright/test"; no direct `vite` dep.
 import { defineConfig, devices } from "@playwright/test";
 
-const PORT = 61000;
+// Default to 61000; allow an env override so a run can use an isolated preview port (e.g. when a
+// `ladle dev` server already holds 61000, or for parallel local runs) without reusing a stale server.
+const PORT = Number(process.env["LADLE_E2E_PORT"] ?? 61000);
 const isCI = Boolean(process.env["CI"]);
 
 // chromium is the always-on local proof project; firefox/webkit/mobile widen the

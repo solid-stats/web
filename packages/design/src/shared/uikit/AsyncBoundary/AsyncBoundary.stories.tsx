@@ -105,20 +105,35 @@ export const Matrix: Story = () => (
   </div>
 );
 
-// The CLS = 0 proof (cls.spec.ts `surf-18-global-state--asyncboundary--cls`). Every state AND the
-// ready content render inside the SAME fixed-size reserved box — so the box height is identical
-// across all of them and swapping among states shifts nothing. The reserved box holds the layout
-// (the DataTrustBanner `reserved` precedent); the routed primitive lays out within it.
-const CLS_CELL = "flex h-64 w-full items-stretch overflow-hidden";
-const CLS_STATES: readonly AsyncKind[] = [...STATES, "ready"];
+// The CLS = 0 proof (cls.spec.ts `surf-18-global-state--asyncboundary--cls`). GAP-03: the proof
+// measures the ROUTED `[data-async-boundary]` primitive, NOT an equalizing wrapper cage — an
+// `h-64` cage made every cell 256px tall so the old test passed trivially (false-green). The cells
+// here add NO height of their own (`w-full`, no fixed height), so each state's box is its real
+// intrinsic reserved height. Two block roles, scoped per the SURF-18 spec re-scope:
+//   • CONTENT-REGION group (loading / empty / error / ready) — the CLS-equality set. loading and
+//     ready reserve the SAME table-card box byte-for-byte (the loading Skeleton's framed table ≡ the
+//     real KIT-02 Table the ready slot renders); empty / error are intentionally content-sized
+//     (their EmptyState / ErrorState `min-h-48` reservation, a different intrinsic min-height).
+//   • BANNER group (offline / reconnecting / stale) — a SEPARATE 40px DataTrustBanner block role,
+//     NOT height-compared to the content region; their own CLS guarantee is the DataTrustBanner
+//     reserved-height invariant (its own cls.spec block).
+const CLS_CELL = "w-full";
+const CONTENT_REGION_STATES: readonly AsyncKind[] = ["loading", "empty", "error", "ready"];
+const BANNER_STATES: readonly AsyncKind[] = ["offline", "reconnecting", "stale"];
 
 export const Cls: Story = () => (
   <div className="flex flex-col gap-4 bg-bg-1 p-4">
     <p className="font-body text-xs text-text-muted">
-      Each state reserves the same box — swapping shifts nothing (CLS = 0).
+      Content-region states reserve the table box (loading ≡ ready); banners are a separate 40px
+      block role (CLS = 0).
     </p>
     <div className="grid w-80 grid-cols-1 gap-3">
-      {CLS_STATES.map((kind) => (
+      {CONTENT_REGION_STATES.map((kind) => (
+        <div key={kind} className={CLS_CELL} data-async-cell={kind}>
+          <AsyncBoundary className="w-full" state={stateFor(kind)} />
+        </div>
+      ))}
+      {BANNER_STATES.map((kind) => (
         <div key={kind} className={CLS_CELL} data-async-cell={kind}>
           <AsyncBoundary className="w-full" state={stateFor(kind)} />
         </div>
