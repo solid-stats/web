@@ -169,6 +169,34 @@ export const STRINGS = {
   uploadTooMany: { ru: "Слишком много файлов", en: "Too many files" },
   uploadRemoveAria: { ru: "Удалить файл", en: "Remove file" },
   uploadRetryAria: { ru: "Повторить загрузку", en: "Retry upload" },
+  // KIT-06 Overlay family (Plan 03-05) — the Dialog + Popover story copy, resolved in the
+  // STORY via `i18n._` and passed as plain string props (the primitives are i18n-free —
+  // architecture.md uikit boundary). `dialogClose` is the icon-only close affordance's
+  // accessible NAME (a11y.md; 03-UI-SPEC Copywriting Contract); `formSubmit`/`formCancel`
+  // are the demo confirm/cancel actions. The `dialog*` keys carry the neutral Dialog story
+  // copy; the `confirmDelete*` keys are the destructive-confirmation pattern (WCAG 3.3.6) —
+  // `confirmDeleteConfirm` is the explicit verb+noun label on the `loss`-coloured confirm,
+  // focus defaults to the safe cancel. `popover*` keys carry the non-modal Popover copy.
+  dialogClose: { ru: "Закрыть", en: "Close" },
+  formSubmit: { ru: "Сохранить", en: "Save changes" },
+  formCancel: { ru: "Отмена", en: "Go back" },
+  dialogTitle: { ru: "Подтвердите изменения", en: "Confirm changes" },
+  dialogBody: {
+    ru: "Проверьте данные перед тем, как продолжить.",
+    en: "Review the details before you continue.",
+  },
+  confirmDeleteTitle: { ru: "Удалить заявку?", en: "Delete request?" },
+  confirmDeleteBody: {
+    ru: "Заявка и приложенные файлы будут удалены без возможности восстановления.",
+    en: "The request and its attachments will be permanently removed.",
+  },
+  confirmDeleteConfirm: { ru: "Удалить заявку", en: "Delete request" },
+  popoverTrigger: { ru: "Что это значит?", en: "What does this mean?" },
+  popoverTitle: { ru: "Как считается", en: "How it's computed" },
+  popoverBody: {
+    ru: "Показатель пересчитывается из последних реплеев игрока.",
+    en: "The figure is recomputed from the player's latest replays.",
+  },
   // KIT-08 / QUAL-05: the bilingual ICU plural exemplar (D-03 — RU one/few/many must
   // be exercised now). The plural lives INSIDE the message string as ICU
   // `{n, plural, …}` parsed at runtime by Lingui's CLDR rules — never concatenation

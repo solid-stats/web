@@ -140,3 +140,19 @@ export { Stepper } from "./shared/uikit/Stepper";
 // Stepper, FileUpload).
 export type { RejectReason } from "./shared/uikit/FileUpload";
 export { FileUpload } from "./shared/uikit/FileUpload";
+
+// ---- KIT-06 Overlay family — Dialog + Popover (Wave 5 / Plan 03-05) ----
+// The first overlay-family slice group. `Dialog` is the MODAL surface over Ark Dialog —
+// Ark owns the focus trap inside, the focus RETURN to the trigger on close, Esc-close, the
+// scroll-lock + inert/aria-hidden background; the slice adds the per-part `tv()` recipe
+// (surface-1 + border-2 + rounded-xl + --shadow-lg over an `overlay` scrim), a real
+// `Dialog.Title` heading, and the icon-only close whose `closeAria` the caller injects. Its
+// story ships the destructive-confirmation pattern (WCAG 3.3.6 — `loss` confirm + icon +
+// verb+noun label, focus on the safe cancel) Phases 8–9 compose. `Popover` is the NON-modal
+// sibling over Ark Popover (surface-1 + border-2 + rounded-lg + --shadow-md) — focus-managed,
+// returns focus, Esc-closes, NO trap. Both animate transform/opacity only (CLS = 0) and take
+// the controlled `open`/`onOpenChange` (+ uncontrolled `defaultOpen` for the forced-open axe
+// cell). The internal `dialog`/`popover` tv() recipes stay internal (NOT graduated); copy
+// resolves in the story and passes as plain props (uikit boundary).
+export { Dialog } from "./shared/uikit/Dialog";
+export { Popover } from "./shared/uikit/Popover";

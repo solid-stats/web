@@ -296,16 +296,18 @@ test.describe("Table full-row keyboard traversal", () => {
 // the default 30s wait against the missing selector.
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// KIT-06 Overlay / Dialog (SC#1, a11y.md — prefer the Ark `Dialog` primitive). Two
-// invariants the generic axe pass cannot express: Esc closes the dialog AND focus
-// RETURNS to the trigger (WCAG 2.4.3 Focus Order / 2.1.2 No Keyboard Trap), and an
-// open dialog does not trap Tab (a bounded forward cycle stays inside the dialog and
-// never escapes to the page chrome). The forced-open StateMatrix cell renders the
-// dialog deterministically (RESEARCH Pitfall 2 — controlled `open`, no Ladle hack).
+// KIT-06 Overlay / Dialog (SC#1, a11y.md — prefer the Ark `Dialog` primitive). GREEN as of
+// Plan 03-05: the `Dialog` slice ships the `kit-06-overlay--dialog--playground` story (the lone
+// INTERACTIVE Dialog — the Matrix forced-open cell renders a portalled modal whose focus trap
+// would intercept events, so live keyboard runs against the Playground; the Matrix serves the
+// static axe gate, the Select/FileUpload precedent). Two invariants the generic axe pass cannot
+// express: Esc closes the dialog AND focus RETURNS to the trigger (WCAG 2.4.3 Focus Order /
+// 2.1.2 No Keyboard Trap), and an open dialog does not trap Tab (a bounded forward cycle stays
+// inside the dialog and never escapes to the page chrome).
 const DIALOG_STORY = "kit-06-overlay--dialog--playground";
 const SELECTOR_TIMEOUT = 4000;
 
-test.describe("KIT-06 Dialog keyboard behaviour (Wave-0 RED)", () => {
+test.describe("KIT-06 Dialog keyboard behaviour (Plan 03-05 GREEN)", () => {
   test("Esc closes the dialog and focus returns to the trigger", async ({ page }) => {
     await page.goto(`/?story=${DIALOG_STORY}&mode=preview`);
     await page.waitForSelector("[data-dialog-trigger]", { timeout: SELECTOR_TIMEOUT });
@@ -317,12 +319,31 @@ test.describe("KIT-06 Dialog keyboard behaviour (Wave-0 RED)", () => {
     const dialog = page.locator('[role="dialog"]');
     await expect(dialog).toBeVisible();
 
+    // Wait for Ark to settle the initial focus INSIDE the content before pressing Esc — the
+    // `closeOnEscape` dismissable listener is armed as focus lands in the dialog, so a global
+    // keydown fired in the same frame as the open can race ahead of it. Polling for focus-inside
+    // is the deterministic gate (a fixed sleep would be flaky); it also asserts the focus-move.
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const d = document.querySelector('[role="dialog"]');
+          return d !== null && d.contains(document.activeElement);
+        }),
+      )
+      .toBe(true);
+
     await page.keyboard.press("Escape");
     await expect(dialog, "Esc closes the dialog").toBeHidden();
 
-    // WCAG 2.4.3: focus is restored to the element that opened the dialog.
-    const focusReturned = await trigger.evaluate((el) => el === document.activeElement);
-    expect(focusReturned, "focus returns to the trigger after Esc-close").toBe(true);
+    // WCAG 2.4.3: focus is restored to the opening trigger. POLL the live activeElement for the
+    // trigger hook — restoreFocus lands a frame after the close transition, and the controlled
+    // close re-renders the trigger subtree, so an identity check against the captured handle is
+    // unstable; the hook on activeElement is the stable oracle.
+    await expect
+      .poll(() =>
+        page.evaluate(() => document.activeElement?.hasAttribute("data-dialog-trigger") ?? false),
+      )
+      .toBe(true);
   });
 
   test("an open dialog does not trap Tab outside its focus scope", async ({ page }) => {
@@ -332,6 +353,18 @@ test.describe("KIT-06 Dialog keyboard behaviour (Wave-0 RED)", () => {
     await page.locator("[data-dialog-trigger]").first().click();
     const dialog = page.locator('[role="dialog"]');
     await expect(dialog).toBeVisible();
+
+    // Gate on focus settling INSIDE the dialog before Tabbing — otherwise the first Tab can fire
+    // while focus is still on the trigger (outside), falsely reading as an escape (a parallel-load
+    // race). Polling is the deterministic gate.
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const d = document.querySelector('[role="dialog"]');
+          return d !== null && d.contains(document.activeElement);
+        }),
+      )
+      .toBe(true);
 
     // Tab forward a bounded number of times; every stop must remain INSIDE the
     // dialog (Ark's focus trap cycles within scope — it never lets focus leak to
@@ -349,6 +382,106 @@ test.describe("KIT-06 Dialog keyboard behaviour (Wave-0 RED)", () => {
     expect(everEscaped, "Tab focus stays scoped inside the open dialog (trap-free cycle)").toBe(
       false,
     );
+  });
+
+  // carried_forward tree-shake guard (the Phase-1 dark-base lesson — a class only on the
+  // GlobalProvider was `@source`-scanned away): the PORTALLED dialog content must actually
+  // PAINT its recipe, not render unstyled. Assert the open content carries a real surface fill
+  // (the `bg-surface-1` token resolved to a non-transparent computed background) — a tree-shaken
+  // recipe would leave it transparent (RESEARCH Pitfall 3).
+  test("the portalled dialog content paints its recipe (not tree-shaken)", async ({ page }) => {
+    await page.goto(`/?story=${DIALOG_STORY}&mode=preview`);
+    await page.waitForSelector("[data-dialog-trigger]", { timeout: SELECTOR_TIMEOUT });
+
+    await page.locator("[data-dialog-trigger]").first().click();
+    const content = page.locator("[data-dialog]");
+    await expect(content).toBeVisible();
+
+    const bg = await content.evaluate((el) => getComputedStyle(el).backgroundColor);
+    // A painted surface fill is opaque + non-empty; a tree-shaken recipe leaves it transparent.
+    expect(bg, `dialog content paints a surface fill — got ${bg}`).not.toBe("rgba(0, 0, 0, 0)");
+    expect(bg).not.toBe("transparent");
+  });
+});
+
+// KIT-06 Overlay / Popover (SC#1, a11y.md — prefer the Ark `Popover` primitive). GREEN as of
+// Plan 03-05: the `Popover` slice ships `kit-06-overlay--popover--playground` (the lone
+// INTERACTIVE Popover; the Matrix forced-open cell serves the static axe gate). The NON-modal
+// counterpart to the Dialog: Esc closes it AND focus RETURNS to the trigger (WCAG 2.4.3), but —
+// unlike the modal Dialog — it does NOT trap Tab (it never inerts the page; Tab leaves the
+// panel and focus stays on a real, reachable control). These are the invariants the generic
+// catalog axe pass cannot express.
+const POPOVER_STORY = "kit-06-overlay--popover--playground";
+
+test.describe("KIT-06 Popover keyboard behaviour (Plan 03-05 GREEN)", () => {
+  test("Esc closes the popover and focus returns to the trigger", async ({ page }) => {
+    await page.goto(`/?story=${POPOVER_STORY}&mode=preview`);
+    await page.waitForSelector("[data-popover-trigger]", { timeout: SELECTOR_TIMEOUT });
+
+    const trigger = page.locator("[data-popover-trigger]").first();
+    await trigger.click();
+
+    const content = page.locator("[data-popover]");
+    await expect(content).toBeVisible();
+
+    // Wait for focus to settle inside the panel before Esc (same dismissable-listener arm race
+    // as the Dialog — a global keydown in the open frame can outrun the listener attach).
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const p = document.querySelector("[data-popover]");
+          return p !== null && p.contains(document.activeElement);
+        }),
+      )
+      .toBe(true);
+
+    await page.keyboard.press("Escape");
+    await expect(content, "Esc closes the popover").toBeHidden();
+
+    // WCAG 2.4.3: focus is restored to the opening trigger — POLL the live activeElement for the
+    // hook (restoreFocus lands a frame after close; the controlled close re-renders the subtree).
+    await expect
+      .poll(() =>
+        page.evaluate(() => document.activeElement?.hasAttribute("data-popover-trigger") ?? false),
+      )
+      .toBe(true);
+  });
+
+  test("an open popover does NOT trap Tab (non-modal — focus leaves the panel)", async ({
+    page,
+  }) => {
+    await page.goto(`/?story=${POPOVER_STORY}&mode=preview`);
+    await page.waitForSelector("[data-popover-trigger]", { timeout: SELECTOR_TIMEOUT });
+
+    await page.locator("[data-popover-trigger]").first().click();
+    const panel = page.locator("[data-popover]");
+    await expect(panel).toBeVisible();
+
+    // Wait for focus to settle inside the panel, then prove it is NOT trapped: unlike the modal
+    // Dialog (whose Tab cycle never escapes its scope), the non-modal Popover lets Tab carry focus
+    // OUT of the panel — the page behind stays interactive. Tab a bounded number of times and
+    // assert focus ESCAPES the panel at least once (the inverse of the Dialog trap oracle).
+    // Bounded so a regression (a popover that wrongly trapped focus) FAILS instead of hanging.
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const p = document.querySelector("[data-popover]");
+          return p !== null && p.contains(document.activeElement);
+        }),
+      )
+      .toBe(true);
+
+    let escapedPanel = false;
+    for (let i = 0; i < 8 && !escapedPanel; i++) {
+      await page.keyboard.press("Tab");
+      escapedPanel = await page.evaluate(() => {
+        const p = document.querySelector("[data-popover]");
+        // Focus has left the panel scope (it is on the trigger, the body, or elsewhere) — the
+        // panel did NOT lock it in. A trapping regression would keep focus inside on every step.
+        return p === null || !p.contains(document.activeElement);
+      });
+    }
+    expect(escapedPanel, "Tab carries focus out of the non-modal popover (no trap)").toBe(true);
   });
 });
 
