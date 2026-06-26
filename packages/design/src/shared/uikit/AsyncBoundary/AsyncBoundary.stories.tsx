@@ -57,7 +57,13 @@ function tierCell(metric: TierMetric, value: number): TierCell {
 function stateFor(kind: AsyncKind): AsyncState {
   switch (kind) {
     case "loading":
-      return { kind: "loading", columns: COLUMNS, rows: ROWS };
+      // GAP-16: the resolved polite-status copy the loading branch announces to SR users.
+      return {
+        kind: "loading",
+        columns: COLUMNS,
+        rows: ROWS,
+        label: i18n._({ id: "loadingColdAggregate" }),
+      };
     case "empty":
       return {
         kind: "empty",

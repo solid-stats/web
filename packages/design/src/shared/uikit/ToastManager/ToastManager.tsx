@@ -88,6 +88,11 @@ export function ToastViewport(): ReactNode {
   return (
     <Toaster toaster={toaster}>
       {(toast) => {
+        // GAP-16 guard: a missing/non-string title coerces to "" — render NOTHING rather than a
+        // textless icon-only toast (a label-less control with no message; a11y.md / WCAG 4.1.2).
+        // A toast with no message carries no information, so dropping it is correct, not a loss.
+        const text = message(toast.title);
+        if (text === "") return null;
         // `toast.meta` is untyped on the Ark render-prop; the only push path is `createToast`,
         // which requires `meta.dismissAria` (`ToastMeta`), so the cast is safe-by-construction.
         const meta = toast.meta as Partial<ToastMeta> | undefined;
@@ -107,16 +112,11 @@ export function ToastViewport(): ReactNode {
               // Defensive: a missing name omits the dismiss control rather than rendering an
               // unnamed icon-only button — an unnamed dismiss can never reach the DOM (WCAG 4.1.2).
               // `live={false}`: the Ark `Toast.Root` already owns the polite live region.
-              <Toast
-                variant={toVariant(toast.type)}
-                message={message(toast.title)}
-                action={action}
-                live={false}
-              />
+              <Toast variant={toVariant(toast.type)} message={text} action={action} live={false} />
             ) : (
               <Toast
                 variant={toVariant(toast.type)}
-                message={message(toast.title)}
+                message={text}
                 action={action}
                 live={false}
                 onDismiss={() => toaster.dismiss(toast.id)}

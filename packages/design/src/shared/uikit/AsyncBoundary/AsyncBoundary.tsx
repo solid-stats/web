@@ -38,6 +38,13 @@ export type AsyncState =
       rows: number;
       /** Row density → the reserved row height. Defaults to `comfortable`. */
       density?: SkeletonDensity;
+      /**
+       * GAP-16: the resolved polite-status copy announced to screen readers while loading. The
+       * Skeleton itself is `aria-hidden` (an SR skips it), so the load is announced via a
+       * visually-hidden `role="status"` region carrying this string (resolved by the consumer —
+       * i18n-free seam). Omitted → no announcement (back-compat); supply it to announce the load.
+       */
+      label?: string;
     }
   | {
       kind: "empty";
@@ -99,6 +106,15 @@ export function AsyncBoundary({ className, state }: Props): ReactNode {
     case "loading":
       return (
         <div className={className} data-async-boundary="loading">
+          {/* GAP-16: announce the load to SR users without stealing focus. The Skeleton is
+              aria-hidden, so a visually-hidden `role="status"` (polite live region) carries the
+              resolved loading copy. `sr-only` is absolutely-positioned → it adds NO measured
+              height, so the CLS-0 geometry the routed Skeleton reserves is untouched (Plan 03-09). */}
+          {state.label === undefined ? null : (
+            <span className="sr-only" role="status">
+              {state.label}
+            </span>
+          )}
           <Skeleton
             variant="table"
             columns={state.columns}

@@ -18,8 +18,6 @@
 //   trigger   — a ≥44px tab (`min-h-11`, a11y.md 2.5.5): muted resting text, the canonical ring,
 //               and the active state (`data-[selected]`) → cyan text + a `border-primary`
 //               underline (the structural marker pairing the cyan — never color-alone).
-//   indicator — the optional Ark sliding indicator wrapper (no paint of its own here; the
-//               per-trigger underline is the selection marker — kept for the Ark anatomy slot).
 //   content   — the tab panel region: comfortable padding, muted body text, the canonical ring
 //               if the panel itself is focusable.
 import { tv } from "tailwind-variants/lite";
@@ -29,7 +27,6 @@ export const tabs = tv({
     list: "flex items-stretch gap-1 border-b border-border-2",
     trigger:
       "inline-flex min-h-11 cursor-pointer items-center border-b-2 border-transparent px-4 font-body text-sm font-semibold text-text-muted transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:shadow-(--shadow-ring) data-[selected]:border-primary data-[selected]:text-primary",
-    indicator: "bg-primary",
     content:
       "py-4 font-body text-sm text-text-muted focus-visible:outline-none focus-visible:shadow-(--shadow-ring)",
   },
