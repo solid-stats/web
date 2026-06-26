@@ -26,30 +26,42 @@ async function documentOverflow(page: import("@playwright/test").Page): Promise<
   });
 }
 
-// ── GAP-12 — the KIT-05 demo wrappers do not overflow the 360 floor ──────────────────────
-// Pre-fix the Select/Stepper/FileUpload Matrix stories carry a `w-90` (360) RU-longest block
-// inside the story root `p-4` (32) = 392px → the document scrolls horizontally at 360 (RED).
-// The `w-full max-w-90` fix shrinks the block to the available width → no overflow (GREEN).
-const KIT05_MATRIX_STORIES = [
-  "kit-05-form--input--matrix",
-  "kit-05-form--select--matrix",
-  "kit-05-form--stepper--matrix",
-  "kit-05-form--fileupload--matrix",
+// ── GAP-12 — the KIT-05 floor-demo wrappers do not overflow the 360 floor ─────────────────
+// The defect (03-UAT-VISUAL-FINDINGS#GAP-I1): each KIT-05 story's 360-floor demo wrapper was a
+// fixed `w-90` (360) block which — sitting inside the Ladle root `p-4` — pushes its right edge to
+// 376px past the 360 viewport (RED). The `w-full max-w-90` fix lets the block shrink to the
+// available width so it stays within the floor (GREEN). The `data-floor-demo` hook marks the four
+// wrappers (the single-control Playground roots — no StateMatrix grid to confound the geometry).
+const KIT05_FLOOR_DEMO_STORIES = [
+  "kit-05-form--input--playground",
+  "kit-05-form--select--playground",
+  "kit-05-form--stepper--playground",
+  "kit-05-form--fileupload--playground",
 ];
 
-test.describe("GAP-12 KIT-05 stories do not overflow at the 360 floor", () => {
+test.describe("GAP-12 KIT-05 floor-demo wrappers stay within the 360 floor", () => {
   test.use({ viewport: MOBILE });
 
-  for (const story of KIT05_MATRIX_STORIES) {
-    test(`${story} has no horizontal overflow at 360`, async ({ page }) => {
+  for (const story of KIT05_FLOOR_DEMO_STORIES) {
+    test(`${story} floor-demo wrapper does not overflow at 360`, async ({ page }) => {
       await page.goto(`/?story=${story}&mode=preview`);
-      // Wait for the real story content (the lazy chunk), not just `[data-storyloaded]` — the
+      // Wait for the real demo wrapper (the lazy chunk), not just `[data-storyloaded]` — the
       // latter fires on the shell while the loading ring is still up (geometry would be the ring).
-      await page.waitForSelector("[data-state-matrix]");
-      const overflow = await documentOverflow(page);
+      const demo = page.locator("[data-floor-demo]").first();
+      await demo.waitFor({ state: "visible", timeout: SELECTOR_TIMEOUT });
+
+      const box = await demo.boundingBox();
+      if (box === null) throw new Error(`${story}: the floor-demo wrapper has no bounding box`);
+      // The wrapper's right edge stays within the 360 floor (pre-fix the fixed w-90 block + the
+      // Ladle root padding pushed it to 376 > 360).
       expect(
-        overflow,
-        `${story}: scrollWidth must be <= clientWidth at the 360 floor`,
+        box.x + box.width,
+        `${story}: the demo wrapper right edge must stay within the 360 floor`,
+      ).toBeLessThanOrEqual(MOBILE.width + 0.5);
+      // And the document itself never scrolls horizontally at the floor.
+      expect(
+        await documentOverflow(page),
+        `${story}: no document overflow at 360`,
       ).toBeLessThanOrEqual(0);
     });
   }

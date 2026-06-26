@@ -166,7 +166,7 @@ type PlaygroundArgs = {
 };
 
 export const Playground: Story<PlaygroundArgs> = ({ disabled }) => (
-  <div className="w-full max-w-90 bg-bg-1 p-4">
+  <div className="w-full max-w-90 bg-bg-1 p-4" data-floor-demo>
     <Field label={i18n._({ id: "selectLabel" })} disabled={disabled}>
       <Select
         options={MAP_OPTIONS}

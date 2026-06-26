@@ -76,7 +76,7 @@ function StepperPlayground({ value, disabled }: PlaygroundArgs): ReactNode {
   const [current, setCurrent] = useState(value);
 
   return (
-    <div className="w-full max-w-90 bg-bg-1 p-4">
+    <div className="w-full max-w-90 bg-bg-1 p-4" data-floor-demo>
       <Field label={i18n._({ id: "selectLabel" })} disabled={disabled}>
         <Stepper
           value={current}
