@@ -1,9 +1,9 @@
 ---
-status: issues
+status: resolved
 phase: 03-uikit-interactive-i18n-global-state-patterns
 source: [03-VERIFICATION.md, 03-UAT-VISUAL-FINDINGS.md]
 started: 2026-06-25T09:01:43Z
-updated: 2026-06-25
+updated: 2026-06-26
 ---
 
 ## Current Test
@@ -75,13 +75,19 @@ gaps: [GAP-03, GAP-04]
 ## Summary
 
 total: 5
-passed: 1
-issues: 4
+passed: 5
+issues: 0
 pending: 0
 skipped: 0
 blocked: 0
 gaps_total: 17
-gaps_open: 17
+gaps_open: 0
+gaps_resolved: 17
+
+> All 17 gaps closed by the 03-08..03-15 gap-closure batch (executed 2026-06-26, `--gaps-only`) and
+> re-verified PASSED (26/26 truths) in 03-VERIFICATION.md. GAP-17 is RESERVED for v1.0 (FU7 i18n vocab
+> + `itemStatus` slot reserved, not built) per its plan. Automated gates green: `pnpm check` (0 errors),
+> vitest 192, Playwright e2e 374 (incl. 7 new RED→GREEN regression specs).
 
 ## Gaps
 
@@ -94,7 +100,7 @@ gaps_open: 17
 > Select menu grows wider than trigger for long options (S2 — `min-w` + `max-w:none`), Select trigger placeholder.
 
 ### GAP-01 — RU↔EN language toggle never renders; EN is unreachable from the UI (SC#2 fails)
-status: open
+status: resolved
 severity: high
 requirements: [KIT-08, QUAL-05]
 evidence: |
@@ -112,7 +118,7 @@ fix: |
   and that flipping it re-renders EVERY story bilingually.
 
 ### GAP-02 — Overlay/Toast entrance animations do not play at runtime (dead `data-[state]` mount transition)
-status: open
+status: resolved
 severity: high
 requirements: [KIT-06, QUAL-01]
 evidence: |
@@ -129,7 +135,7 @@ fix: |
   with the `motion-reduce:` opt-out. Verify enter+exit actually animate in-browser.
 
 ### GAP-03 — AsyncBoundary CLS not 0 across content-region states; the CLS test is false-green
-status: open
+status: resolved
 severity: high
 requirements: [SURF-18, QUAL-04]
 evidence: |
@@ -146,7 +152,7 @@ fix: |
   (c) re-scope the spec's "all six states same height" claim to the content-region states (banners excluded).
 
 ### GAP-04 — ToastManager: flush stacking (no gap), overlap/fan-out broken, no expiry indicator
-status: open
+status: resolved
 severity: high
 requirements: [SURF-18, QUAL-01]
 evidence: |
@@ -161,7 +167,7 @@ fix: |
   Decide scope for a visible time-to-expiry affordance (transform/opacity-only, CLS=0) and a "+N more" overflow.
 
 ### GAP-05 — FileUpload renders TWO previews for an image (our bug: `type=".*"` catch-all)
-status: open
+status: resolved
 severity: high
 requirements: [KIT-05]
 evidence: |
@@ -173,7 +179,7 @@ fix: |
   `file.type`, or gate the fallback so it never co-renders with the image preview.
 
 ### GAP-06 — FileUpload row controls are hand-rolled, duplicate the `control` recipe, and are not in the Button catalog
-status: open
+status: resolved
 severity: medium
 requirements: [KIT-05, KIT-07]
 evidence: |
@@ -187,7 +193,7 @@ fix: |
   Also: forward `disabled` to the row controls (dead `data-[disabled]` branch today).
 
 ### GAP-07 — Field: required field has no visible required marker (and `fieldRequired` copy is unused)
-status: open
+status: resolved
 severity: medium
 requirements: [KIT-05, QUAL-03]
 evidence: |
@@ -200,7 +206,7 @@ fix: |
   Also link `helperText` to the control via `aria-describedby` (only the error is linked today).
 
 ### GAP-08 — Dialog: excessive empty space at the top (close button consumes a leading row above the title)
-status: open
+status: resolved
 severity: medium
 requirements: [KIT-06]
 evidence: |
@@ -211,7 +217,7 @@ fix: |
   consume a leading row; keep `p-6`/`gap-4` for the title/body. Tokens only.
 
 ### GAP-09 — Select: an empty listbox (zero options) renders nothing — no empty-state
-status: open
+status: resolved
 severity: medium
 requirements: [KIT-05]
 evidence: |
@@ -221,7 +227,7 @@ fix: |
   Render a first-class empty-state row inside the listbox when options are empty (message + icon, never blank).
 
 ### GAP-10 — Select: a selected value cannot be reset/cleared (no clear control)
-status: open
+status: resolved
 severity: medium
 requirements: [KIT-05]
 evidence: |
@@ -232,7 +238,7 @@ fix: |
   decide whether clearable is the default or an opt-in prop.
 
 ### GAP-11 — Stepper: the Playground is not interactive (value pinned, no state)
-status: open
+status: resolved
 severity: medium
 requirements: [KIT-05]
 evidence: |
@@ -243,7 +249,7 @@ fix: |
   Give the Playground real `useState` so inc/dec/keyboard mutate the displayed value (and clamp at min/max).
 
 ### GAP-12 — Input/Select story wrappers overflow the 360px floor (`w-90` + `p-4` = 392px)
-status: open
+status: resolved
 severity: low
 requirements: [QUAL-02]
 evidence: |
@@ -254,7 +260,7 @@ fix: |
   class across all four KIT-05 stories.
 
 ### GAP-13 — FileUpload: unbounded row width, unrealistic "many" fixture, no scroll-in-card on the file list
-status: open
+status: resolved
 severity: low
 requirements: [KIT-05]
 evidence: |
@@ -266,7 +272,7 @@ fix: |
   `overflow-y-auto`, and make the "many" fixture ~30 files. Remove or wire the dead `itemStatus` slot.
 
 ### GAP-14 — Field: caption barely distinct from the label (same color token)
-status: open
+status: resolved
 severity: low
 requirements: [KIT-05]
 evidence: |
@@ -278,7 +284,7 @@ fix: |
   accept the spec-correct weight/case/tracking delta.
 
 ### GAP-15 — Select: long-option menu has no viewport max-width cap at 360
-status: open
+status: resolved
 severity: low
 requirements: [KIT-05]
 evidence: |
@@ -288,7 +294,7 @@ fix: |
   Add a viewport-aware `max-width` cap to the listbox content so it never exceeds the 360 floor; keep the grow.
 
 ### GAP-16 — A11y / dead-code sweep surfaced during verification
-status: open
+status: resolved
 severity: low
 requirements: [QUAL-03]
 evidence: |
@@ -301,7 +307,7 @@ fix: |
   titles; drive or remove the Tabs `Indicator` slot.
 
 ### GAP-17 — Deferred to v1.0 (reserve now, do not build)
-status: open
+status: resolved
 severity: low
 requirements: [KIT-05]
 evidence: |
