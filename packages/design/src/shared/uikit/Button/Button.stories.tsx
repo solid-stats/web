@@ -7,6 +7,7 @@
 // sharing the recipe). `Playground` exposes variant/size/active/disabled via Ladle
 // args. Demo labels are literal "Button"/"Link" — a showcase reuses no STRINGS keys.
 import type { Story, StoryDefault } from "@ladle/react";
+import { RotateCcw, X } from "lucide-react";
 import { StateCell, StateMatrix } from "../_state-matrix";
 import { Button } from "./Button";
 import { FORCED_STATE as FORCED } from "./control";
@@ -79,6 +80,28 @@ export const StateMatrixStory: Story = () => (
       ))}
     </StateMatrix>
 
+    {/* The icon-only square affordance (size="icon"): ≥44px on BOTH axes, an icon child and a
+        caller-supplied aria-label (the icon-only accessible name a11y.md requires). The generic
+        catalog gate runs axe + the 44px geometry check over these cells. The FileUpload row
+        delete/retry route through this same control. */}
+    <StateMatrix title="Button — icon-only (square ≥44px)">
+      <StateCell label="ghost">
+        <Button variant="ghost" size="icon" aria-label="Remove">
+          <X className="size-4 shrink-0" aria-hidden />
+        </Button>
+      </StateCell>
+      <StateCell label="secondary">
+        <Button variant="secondary" size="icon" aria-label="Retry">
+          <RotateCcw className="size-4 shrink-0" aria-hidden />
+        </Button>
+      </StateCell>
+      <StateCell label="disabled">
+        <Button variant="ghost" size="icon" aria-label="Remove" disabled>
+          <X className="size-4 shrink-0" aria-hidden />
+        </Button>
+      </StateCell>
+    </StateMatrix>
+
     {/* The segment active member (the sorted sort-header) — cyan, paired in real use
         with aria-sort + the arrow (never color-alone). */}
     <StateMatrix title="Button — segment active (cyan member)">
@@ -112,7 +135,7 @@ export const Playground: Story<PlaygroundArgs> = ({ variant, size, active, disab
 Playground.args = { variant: "primary", size: "md", active: false, disabled: false };
 Playground.argTypes = {
   variant: { options: VARIANTS, control: { type: "inline-radio" } },
-  size: { options: ["sm", "md"], control: { type: "inline-radio" } },
+  size: { options: ["sm", "md", "icon"], control: { type: "inline-radio" } },
   active: { control: { type: "boolean" } },
   disabled: { control: { type: "boolean" } },
 };
