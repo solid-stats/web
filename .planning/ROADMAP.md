@@ -145,7 +145,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Global state patterns (loading / empty / error / offline / reconnecting / stale) exist as reusable, reviewed Ladle stories that reserve space (CLS = 0) and never rely on color alone.
   4. The ×5 scenario endings and ×4 data-volume states are demonstrable per interactive component, and all pass axe / keyboard / 44px-target checks.
 
-**Plans**: 11/15 plans executed
+**Plans**: 13/15 plans executed
 
 **Wave 1** *(enabler)*
 
@@ -186,8 +186,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 2 (majors)**
 
-- [ ] 03-12-PLAN.md — GAP-06/07: icon-only Button variant + route FileUpload row controls through it + forward disabled; Field required marker (never color-alone) + helper aria-describedby (KIT-05, KIT-07, QUAL-03)
-- [ ] 03-13-PLAN.md — GAP-08/09/10/11: Dialog close top-right (no dead row), Select empty-state + clear control, interactive Stepper Playground (KIT-06, KIT-05)
+- [x] 03-12-PLAN.md — GAP-06/07: icon-only Button variant + route FileUpload row controls through it + forward disabled; Field required marker (never color-alone) + helper aria-describedby (KIT-05, KIT-07, QUAL-03)
+- [x] 03-13-PLAN.md — GAP-08/09/10/11: Dialog close top-right (no dead row), Select empty-state + clear control, interactive Stepper Playground (KIT-06, KIT-05)
 
 **Wave 3 (minors + sweep)**
 
@@ -304,7 +304,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 |-------|----------------|--------|-----------|
 | 1. Workspace & Design-System Foundation | 5/5 | Complete    | 2026-06-20 |
 | 2. UIKIT — Structural & Data-Display Primitives | 11/11 | Complete    | 2026-06-24 |
-| 3. UIKIT — Interactive, i18n & Global-State Patterns | 11/15 | In Progress|  |
+| 3. UIKIT — Interactive, i18n & Global-State Patterns | 13/15 | In Progress|  |
 | 4. Public Stats — Overview, Players & Player Profile | 0/TBD | Not started | - |
 | 5. Public Stats — Squads | 0/TBD | Not started | - |
 | 6. Public Stats — Commander-side & Bounty | 0/TBD | Not started | - |
