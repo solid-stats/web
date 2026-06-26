@@ -17,6 +17,10 @@
 //   positioner    — the Ark floating-UI positioner wrapper (no paint of its own).
 //   content       — the popover surface: `surface-1` + `border-2` + `--shadow-md` (the
 //                   floating-UI shadow — the ONLY shadow use; carried_forward theme.css#L111).
+//                   GAP-15: `max-w-80` (320) caps the listbox at the 360 mobile floor so a very
+//                   long option never overflows it, while `min-w-(--reference-width)` PRESERVES
+//                   the grow-wider-than-trigger behaviour (DO-NOT-TOUCH) — the cap only bites a
+//                   listbox that would otherwise grow past the floor.
 //   item          — one option row; hover `surface-3`; the active/selected option is
 //                   `text-primary` (cyan) PAIRED with the `itemIndicator` check icon, so the
 //                   selected state is never carried by color alone (a11y.md).
@@ -41,7 +45,7 @@ export const select = tv({
     indicator: "size-4 shrink-0 text-text-muted",
     positioner: "z-modal",
     content:
-      "flex max-h-64 min-w-(--reference-width) flex-col gap-0.5 overflow-y-auto rounded-lg border border-border-2 bg-surface-1 p-1 shadow-md focus-visible:outline-none",
+      "flex max-h-64 min-w-(--reference-width) max-w-80 flex-col gap-0.5 overflow-y-auto rounded-lg border border-border-2 bg-surface-1 p-1 shadow-md focus-visible:outline-none",
     item: "flex min-h-11 cursor-pointer items-center justify-between gap-2 rounded-sm px-3 font-body text-sm text-text-primary transition-colors hover:bg-surface-3 data-[highlighted]:bg-surface-3 data-[state=checked]:text-primary data-[disabled]:pointer-events-none data-[disabled]:text-text-subtle data-[disabled]:opacity-60",
     itemText: "truncate",
     itemIndicator: "size-4 shrink-0 text-primary",
