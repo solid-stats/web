@@ -36,7 +36,15 @@ function imageFile(name: string): File {
 }
 
 const FEW_FILES = [imageFile("altis-killcam.png")];
-const MANY_FILES = [
+// GAP-13: a REALISTIC evidence list (~30 files, some long names) so the catalog actually
+// demonstrates the bounded, height-capped, internally-scrolling `itemGroup` + the row truncate —
+// the prior 3-file fixture masked the unbounded-list defect.
+const MANY_FILES = Array.from({ length: 30 }, (_, i) =>
+  imageFile(`evidence-${String(i + 1).padStart(2, "0")}-altis-killcam-long-frame-name.png`),
+);
+// The limit-reached cell needs `files.length === maxFiles`; kept at 3 (its own small fixture) so
+// bumping `MANY_FILES` does not break the limit semantics.
+const LIMIT_FILES = [
   imageFile("altis-killcam.png"),
   imageFile("stratis-teamkill.jpg"),
   imageFile("tanoa-evidence.webp"),
@@ -86,14 +94,14 @@ export const Matrix: Story = () => {
 
         <StateCell label="many">
           <Field label={label}>
-            <FileUpload {...props} files={MANY_FILES} maxFiles={5} />
+            <FileUpload {...props} files={MANY_FILES} maxFiles={30} />
           </Field>
         </StateCell>
 
         {/* Limit-reached: files === maxFiles; Ark marks the dropzone maxFilesReached. */}
         <StateCell label="limit">
           <Field label={label}>
-            <FileUpload {...props} files={MANY_FILES} maxFiles={3} />
+            <FileUpload {...props} files={LIMIT_FILES} maxFiles={3} />
           </Field>
         </StateCell>
       </StateMatrix>
@@ -153,7 +161,7 @@ type PlaygroundArgs = {
 };
 
 export const Playground: Story<PlaygroundArgs> = ({ disabled }) => (
-  <div className="w-full max-w-90 bg-bg-1 p-4">
+  <div className="w-full max-w-90 bg-bg-1 p-4" data-floor-demo>
     <Field label={i18n._({ id: "selectLabel" })} disabled={disabled}>
       <FileUpload {...copy()} maxFiles={5} disabled={disabled} />
     </Field>
