@@ -35,6 +35,16 @@ const FEW_OPTIONS = MAP_OPTIONS.slice(0, 2);
 const MANY_OPTIONS = MAP_OPTIONS;
 const NO_OPTIONS: readonly SelectOption<string>[] = [];
 
+// GAP-15 fixture: a deliberately very long option label (the resolved map names joined) that,
+// in a NARROW trigger at the 360 floor, would push an uncapped listbox wider than the viewport.
+// The label is composed from already-resolved i18n strings in the STORY (the slice stays
+// i18n-free — architecture.md uikit boundary). It drives the `LongOptionCap` story below.
+const LONG_OPTION_LABEL = MAP_OPTIONS.map((o) => o.label).join(" · ");
+const LONGCAP_OPTIONS = [
+  { value: "long", label: LONG_OPTION_LABEL },
+  ...FEW_OPTIONS,
+] as const satisfies readonly SelectOption<string>[];
+
 export const Matrix: Story = () => {
   const placeholder = i18n._({ id: "selectPlaceholder" });
   const label = i18n._({ id: "selectLabel" });
@@ -132,6 +142,24 @@ export const Matrix: Story = () => {
     </div>
   );
 };
+
+// GAP-15: a forced-open Select with a very long option in a NARROW (`w-40`) trigger at the 360
+// floor. Pre-fix the uncapped listbox grows wider than the viewport (overflow); the `content`
+// max-width cap keeps it ≤ the floor while still growing wider than the trigger (the grow is
+// preserved). The `form-layout-sweep` spec drives this cell.
+export const LongOptionCap: Story = () => (
+  <div className="bg-bg-1 p-4">
+    <div className="w-40">
+      <Field label={i18n._({ id: "selectLabel" })}>
+        <Select
+          options={LONGCAP_OPTIONS}
+          placeholder={i18n._({ id: "selectPlaceholder" })}
+          defaultOpen
+        />
+      </Field>
+    </div>
+  </div>
+);
 
 type PlaygroundArgs = {
   disabled: boolean;
