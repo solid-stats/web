@@ -554,6 +554,15 @@ emphasized panels.
 > but **fails** the 4.5:1 normal-text rule. Use `text-muted` for any meaningful sentence; reserve
 > `text-subtle` for placeholders, disabled controls, and decorative captions only.
 
+> **Form helper/caption text shares the label's `text-muted` — intentional (GAP-14).** A `Field`'s
+> helper text is _meaningful_ secondary copy, so it takes `text-muted` (AA everywhere), **not** the
+> decorative `caption` role's `text-subtle`. It deliberately shares the label's ink: the label↔caption
+> hierarchy is carried by **type**, not a second gray — the label is uppercase / 600 / `tracking-label`,
+> the caption is sentence-case / 400 / untracked. No new between-`muted`-and-`subtle` caption ink is
+> introduced: it would breach the deliberately tight 3-rung text ramp, risk the 4.5:1 normal-text floor
+> on the darker input surfaces (the rule that already bars `text-subtle` for this copy), and serve a
+> single slot. The accepted separation is the type treatment, not the color.
+
 ### Primary — signal cyan
 
 The single accent. It means **interactive / active / brand**: links, active nav, primary buttons,
