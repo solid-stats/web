@@ -69,12 +69,36 @@ export const Matrix: Story = () => {
             <Select options={MANY_OPTIONS} value="altis" placeholder={placeholder} defaultOpen />
           </Field>
         </StateCell>
+
+        {/* GAP-10: a clearable Select with a preset (uncontrolled `defaultValue`) value — the
+            overlay-form-interaction spec drives its accessible-named clear control and asserts it
+            resets the trigger to the placeholder. Opt-in `clearable`; the slice stays i18n-free
+            (the story resolves the clear control's accessible name). */}
+        <StateCell label="clearable">
+          <Field label={label}>
+            <Select
+              options={MANY_OPTIONS}
+              defaultValue="tanoa"
+              placeholder={placeholder}
+              clearable
+              clearAria={i18n._({ id: "selectClear" })}
+            />
+          </Field>
+        </StateCell>
       </StateMatrix>
 
       <StateMatrix title="Select — data-volume (empty / few / many / limit)">
+        {/* GAP-09: forced-open so the in-listbox empty state is asserted by the
+            overlay-form-interaction spec; `emptyText` surfaces the message+icon row instead of
+            blank padding (the slice stays i18n-free — the story resolves the copy). */}
         <StateCell label="empty">
           <Field label={label}>
-            <Select options={NO_OPTIONS} placeholder={placeholder} />
+            <Select
+              options={NO_OPTIONS}
+              placeholder={placeholder}
+              emptyText={i18n._({ id: "selectEmpty" })}
+              defaultOpen
+            />
           </Field>
         </StateCell>
 

@@ -144,6 +144,12 @@ export const STRINGS = {
   stepperIncrement: { ru: "Увеличить", en: "Increase" },
   stepperDecrement: { ru: "Уменьшить", en: "Decrease" },
   selectLabel: { ru: "Карта", en: "Map" },
+  // KIT-05 Select GAP-09/GAP-10 copy (Plan 03-13). `selectEmpty` is the in-listbox empty-state
+  // message shown (with an icon, never blank) when a Select has no options; `selectClear` is the
+  // accessible NAME for the icon-only clear control (a11y.md — icon-only controls need a name; the
+  // story injects both, the slice never invents them). RU primary / EN mirror at parity (QUAL-05).
+  selectEmpty: { ru: "Ничего не найдено", en: "Nothing found" },
+  selectClear: { ru: "Очистить", en: "Clear" },
   selectOptionAltis: { ru: "Алтис", en: "Altis" },
   selectOptionStratis: { ru: "Стратис", en: "Stratis" },
   selectOptionTanoa: { ru: "Таноа", en: "Tanoa" },
