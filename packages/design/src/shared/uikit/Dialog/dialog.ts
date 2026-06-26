@@ -32,11 +32,15 @@
 //   content    — the modal surface: `surface-1` + `border-2` hairline + `rounded-xl` +
 //                `--shadow-lg` (the elevated-overlay shadow, theme.css#L112). `z-modal` so it
 //                layers above the page chrome. Opacity + a small scale-in (transform only).
+//                `relative` so the close affordance can park in its top-right corner.
 //   title      — the dialog-title typography role (18px / 600 semibold, 03-UI-SPEC Typography).
 //   body       — the dialog body region (muted secondary text, comfortable measure).
 //   close      — the icon-only close affordance (Lucide X). ≥44px (`min-h-11 min-w-11`,
 //                a11y.md 2.5.5) with the canonical focus ring; its accessible NAME is the
-//                injected `closeAria` prop (the slice never invents copy).
+//                injected `closeAria` prop (the slice never invents copy). GAP-08: parked
+//                ABSOLUTE in the content's top-right inset (not `self-end` — that made it the
+//                first flex child, a dead 44px row ABOVE the title). Out of flow, so the title
+//                is the first in-flow child and sits at the content's top padding.
 import { tv } from "tailwind-variants/lite";
 
 export const dialog = tv({
@@ -44,10 +48,10 @@ export const dialog = tv({
     backdrop: "uikit-overlay-backdrop-motion fixed inset-0 z-modal bg-overlay",
     positioner: "fixed inset-0 z-modal flex items-center justify-center p-4",
     content:
-      "uikit-overlay-motion flex w-full max-w-md flex-col gap-4 rounded-xl border border-border-2 bg-surface-1 p-6 shadow-lg focus-visible:outline-none",
+      "uikit-overlay-motion relative flex w-full max-w-md flex-col gap-4 rounded-xl border border-border-2 bg-surface-1 p-6 shadow-lg focus-visible:outline-none",
     title: "font-body text-lg font-semibold leading-snug text-text-primary",
     body: "font-body text-sm text-text-muted",
     close:
-      "inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center self-end rounded-sm text-text-muted transition-colors hover:bg-surface-3 hover:text-text-primary focus-visible:shadow-(--shadow-ring) focus-visible:outline-none",
+      "absolute right-3 top-3 inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-sm text-text-muted transition-colors hover:bg-surface-3 hover:text-text-primary focus-visible:shadow-(--shadow-ring) focus-visible:outline-none",
   },
 });

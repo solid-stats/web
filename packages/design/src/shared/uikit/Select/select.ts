@@ -23,10 +23,18 @@
 //   itemText      — the option label.
 //   itemIndicator — the selected-option check (Lucide Check), cyan — the non-color carrier of
 //                   the selected state.
+//   empty         — GAP-09: the first-class empty-listbox row shown when `options` is empty —
+//                   a muted message PAIRED with a Lucide icon (never blank padding, never
+//                   color-alone; a11y.md / errors.md). Comfortable padding matching an item row.
+//   clearTrigger  — GAP-10: the icon-only clear control (Lucide X) parked in the trigger's
+//                   right inset (left of the chevron). ≥44px with the canonical focus ring; Ark
+//                   auto-hides it when there is no selection. Its accessible NAME is the
+//                   injected `clearAria` prop (the slice never invents copy).
 import { tv } from "tailwind-variants/lite";
 
 export const select = tv({
   slots: {
+    control: "relative w-full",
     trigger:
       "inline-flex min-h-11 w-full cursor-pointer items-center justify-between gap-2 rounded-sm border border-border-1 bg-surface-2 px-3 font-body text-base text-text-primary transition-colors hover:border-border-2 focus-visible:border-primary-border focus-visible:shadow-(--shadow-ring-glow) focus-visible:outline-none data-[disabled]:pointer-events-none data-[disabled]:bg-surface-1 data-[disabled]:text-text-subtle data-[disabled]:opacity-60 data-[placeholder-shown]:text-text-subtle",
     valueText: "truncate text-left",
@@ -37,5 +45,8 @@ export const select = tv({
     item: "flex min-h-11 cursor-pointer items-center justify-between gap-2 rounded-sm px-3 font-body text-sm text-text-primary transition-colors hover:bg-surface-3 data-[highlighted]:bg-surface-3 data-[state=checked]:text-primary data-[disabled]:pointer-events-none data-[disabled]:text-text-subtle data-[disabled]:opacity-60",
     itemText: "truncate",
     itemIndicator: "size-4 shrink-0 text-primary",
+    empty: "flex min-h-11 items-center gap-2 px-3 font-body text-sm text-text-subtle",
+    clearTrigger:
+      "absolute inset-y-0 right-9 inline-flex w-11 cursor-pointer items-center justify-center rounded-sm text-text-muted transition-colors hover:text-text-primary focus-visible:shadow-(--shadow-ring) focus-visible:outline-none",
   },
 });

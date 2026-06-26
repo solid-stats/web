@@ -16,7 +16,7 @@
 import { type ReactNode, useMemo } from "react";
 import { Portal } from "@ark-ui/react/portal";
 import { Select as ArkSelect, createListCollection } from "@ark-ui/react/select";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, SearchX, X } from "lucide-react";
 import { select } from "./select";
 
 const styles = select();
@@ -33,9 +33,28 @@ type Props<TValue extends string> = {
   // values
   options: readonly SelectOption<TValue>[];
   value?: TValue;
+  /** Uncontrolled initial value (Ark `defaultValue`) — the clearable demo cell preset that the
+   *  native `ClearTrigger` resets without a controlled `onValueChange` (mirrors `defaultOpen`). */
+  defaultValue?: TValue;
   placeholder: string;
+  /**
+   * GAP-09: the message shown inside the listbox when `options` is empty (resolved string —
+   * the story injects it; the slice stays i18n-free). When omitted, an empty listbox renders
+   * nothing (the legacy behaviour), so an empty Select must pass it to surface the empty state.
+   */
+  emptyText?: string;
+  /**
+   * GAP-10: the accessible NAME for the icon-only clear control (resolved string — the story
+   * injects it; the slice stays i18n-free). Required when `clearable` to name the control.
+   */
+  clearAria?: string;
   // booleans
   disabled?: boolean;
+  /**
+   * GAP-10: opt-in clear affordance. Renders Ark's `ClearTrigger` (auto-hidden while empty) so a
+   * value can be reset to the placeholder. Opt-in so existing required Selects keep no clear.
+   */
+  clearable?: boolean;
   /**
    * Initial open state for the StateMatrix axe/keyboard cell (RESEARCH Pitfall 2). UNCONTROLLED
    * (`defaultOpen`, not `open`) so a closed Select stays user-openable — passing Ark's controlled
@@ -50,9 +69,13 @@ export function Select<TValue extends string>({
   className,
   options,
   value,
+  defaultValue,
   placeholder,
+  emptyText,
+  clearAria,
   disabled = false,
   defaultOpen = false,
+  clearable = false,
   onValueChange,
 }: Props<TValue>): ReactNode {
   // Ark v5 wants a collection (owns label/value mapping + type-ahead). Memoized so a fresh
@@ -67,6 +90,7 @@ export function Select<TValue extends string>({
       className={className}
       collection={collection}
       value={value === undefined ? undefined : [value]}
+      defaultValue={defaultValue === undefined ? undefined : [defaultValue]}
       disabled={disabled}
       defaultOpen={defaultOpen}
       onValueChange={
@@ -79,23 +103,37 @@ export function Select<TValue extends string>({
       }
       data-select
     >
-      <ArkSelect.Control>
+      <ArkSelect.Control className={styles.control()}>
         <ArkSelect.Trigger className={styles.trigger()}>
           <ArkSelect.ValueText className={styles.valueText()} placeholder={placeholder} />
           <ChevronDown className={styles.indicator()} aria-hidden />
         </ArkSelect.Trigger>
+        {clearable ? (
+          <ArkSelect.ClearTrigger className={styles.clearTrigger()} aria-label={clearAria}>
+            <X className="size-4 shrink-0" aria-hidden />
+          </ArkSelect.ClearTrigger>
+        ) : null}
       </ArkSelect.Control>
       <Portal>
         <ArkSelect.Positioner className={styles.positioner()}>
           <ArkSelect.Content className={styles.content()}>
-            {collection.items.map((item) => (
-              <ArkSelect.Item key={item.value} item={item} className={styles.item()}>
-                <ArkSelect.ItemText className={styles.itemText()}>{item.label}</ArkSelect.ItemText>
-                <ArkSelect.ItemIndicator className={styles.itemIndicator()}>
-                  <Check className="size-4 shrink-0" aria-hidden />
-                </ArkSelect.ItemIndicator>
-              </ArkSelect.Item>
-            ))}
+            {options.length === 0 && emptyText !== undefined ? (
+              <div className={styles.empty()} role="presentation" data-select-empty>
+                <SearchX className="size-4 shrink-0" aria-hidden />
+                <span>{emptyText}</span>
+              </div>
+            ) : (
+              collection.items.map((item) => (
+                <ArkSelect.Item key={item.value} item={item} className={styles.item()}>
+                  <ArkSelect.ItemText className={styles.itemText()}>
+                    {item.label}
+                  </ArkSelect.ItemText>
+                  <ArkSelect.ItemIndicator className={styles.itemIndicator()}>
+                    <Check className="size-4 shrink-0" aria-hidden />
+                  </ArkSelect.ItemIndicator>
+                </ArkSelect.Item>
+              ))
+            )}
           </ArkSelect.Content>
         </ArkSelect.Positioner>
       </Portal>
