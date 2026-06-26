@@ -145,20 +145,23 @@ export function FileUpload({
                 <ArkFileUpload.ItemName className={styles.itemName()} />
                 <span className={styles.itemControls()}>
                   {onRetry === undefined ? null : (
-                    <button
-                      type="button"
-                      className={styles.itemDeleteTrigger()}
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       aria-label={retryAria}
+                      disabled={disabled}
                       onClick={() => onRetry(file)}
                     >
                       <RotateCcw className="size-4 shrink-0" aria-hidden />
-                    </button>
+                    </Button>
                   )}
-                  <ArkFileUpload.ItemDeleteTrigger
-                    className={styles.itemDeleteTrigger()}
-                    aria-label={removeAria}
-                  >
-                    <X className="size-4 shrink-0" aria-hidden />
+                  {/* Ark keeps the delete behaviour; the visual + ≥44px ring come from the shared
+                      Button (asChild), and `disabled` is forwarded so the row controls go inert
+                      when the FileUpload is disabled. */}
+                  <ArkFileUpload.ItemDeleteTrigger asChild>
+                    <Button variant="ghost" size="icon" aria-label={removeAria} disabled={disabled}>
+                      <X className="size-4 shrink-0" aria-hidden />
+                    </Button>
                   </ArkFileUpload.ItemDeleteTrigger>
                 </span>
               </ArkFileUpload.Item>

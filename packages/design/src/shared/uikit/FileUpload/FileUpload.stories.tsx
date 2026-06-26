@@ -120,9 +120,17 @@ export const Matrix: Story = () => {
           </div>
         </StateCell>
 
+        {/* Disabled WITH accepted rows — exercises `disabled` forwarding to the row controls
+            (the retry + delete are non-interactive when the FileUpload is disabled). */}
         <StateCell label="disabled">
           <Field label={label} disabled>
-            <FileUpload {...props} disabled />
+            <FileUpload
+              {...props}
+              files={FEW_FILES}
+              maxFiles={5}
+              onRetry={() => undefined}
+              disabled
+            />
           </Field>
         </StateCell>
       </StateMatrix>

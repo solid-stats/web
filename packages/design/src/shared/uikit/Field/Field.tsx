@@ -13,7 +13,14 @@
 // error is BOTH announced (live region) AND programmatically associated (aria-describedby) —
 // WCAG 3.3.1 / 1.3.1. We render `Field.ErrorText` ONLY when `invalid` (Ark associates it
 // only then), pairing it with a Lucide `CircleAlert` so the error is never color-alone
-// (a11y.md; mirrors `Toast/Toast.tsx` icon+message discipline).
+// (a11y.md; mirrors `Toast/Toast.tsx` icon+message discipline). `Field.HelperText`'s id is
+// ALSO folded into the control's `aria-describedby` by Ark `useField` whenever a helper is
+// present (verified against use-field.ts `labelIds` — helper is associated regardless of
+// invalid), so the helper is programmatically linked with no extra wiring here.
+//
+// GAP-07: a `required` field renders a VISIBLE required affordance in the label — the `*` glyph
+// (a shape, `text-loss`-tinted) PAIRED with visually-hidden `requiredText` (so it is never the
+// asterisk in colour alone, and AT hears "required"), driven by the existing `required` prop.
 //
 // Boundary: NO i18n import — `label`/`helperText`/`errorText` arrive as plain strings
 // resolved in the STORY via `i18n._({ id })` (architecture.md uikit-vs-feature). `data-field`
@@ -30,6 +37,10 @@ type Props = {
   className?: string;
   // values
   label: string;
+  /** Visually-hidden "required" text appended to the marker on a required field (e.g. the
+   *  resolved `fieldRequired` copy) — the slice stays i18n-free, so the story passes it. Without
+   *  it the marker still shows the `*` glyph; with it the required state is announced to AT. */
+  requiredText?: string;
   helperText?: string;
   errorText?: string;
   // booleans
@@ -43,6 +54,7 @@ type Props = {
 export function Field({
   className,
   label,
+  requiredText,
   helperText,
   errorText,
   invalid = false,
@@ -58,7 +70,15 @@ export function Field({
       disabled={disabled}
       data-field
     >
-      <ArkField.Label className={styles.label()}>{label}</ArkField.Label>
+      <ArkField.Label className={styles.label()}>
+        {label}
+        {required ? (
+          <span className={styles.requiredMarker()}>
+            <span aria-hidden="true">*</span>
+            {requiredText === undefined ? null : <span className="sr-only">{requiredText}</span>}
+          </span>
+        ) : null}
+      </ArkField.Label>
       {children}
       {helperText === undefined ? null : (
         <ArkField.HelperText className={styles.helperText()}>{helperText}</ArkField.HelperText>

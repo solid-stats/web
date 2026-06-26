@@ -19,9 +19,12 @@ import { tv } from "tailwind-variants/lite";
 /** The base interactive variants. `segment` is the sort-header / segmented member. */
 export type ButtonVariant = "primary" | "secondary" | "ghost" | "segment";
 
-/** The two sizes. Both stay ≥44px tall (the floor is non-negotiable) — `sm` differs
- *  only in horizontal padding / font size, never dropping below the 44px hit area. */
-export type ButtonSize = "sm" | "md";
+/** The sizes. All stay ≥44px tall (the floor is non-negotiable) — `sm` differs from `md`
+ *  only in horizontal padding / font size, never dropping below the 44px hit area. `icon` is
+ *  the SQUARE icon-only affordance: ≥44px on BOTH axes (`min-w-11`, no horizontal padding),
+ *  centered — for an icon-only control (e.g. a `ghost` row delete/retry) that needs a
+ *  caller-supplied `aria-label`. */
+export type ButtonSize = "sm" | "md" | "icon";
 
 /** Content justification — `center` for the button affordance, `start`/`end` for the
  *  segment / sort-header member whose label aligns with the column edge. */
@@ -58,6 +61,9 @@ export const control = tv({
       // the 44px floor from `base` (min-h-11) — only padding/font differ.
       md: "px-4 text-sm",
       sm: "px-3 text-xs",
+      // Square icon-only: holds the 44px floor from `base` (min-h-11) AND adds the matching
+      // `min-w-11` width floor; no horizontal padding (the icon centers in the square box).
+      icon: "min-w-11 px-0",
     },
     // Content justification. Default-centered (the button affordance); the segment /
     // sort-header member overrides to `start`/`end` (the label sits with the numeric
