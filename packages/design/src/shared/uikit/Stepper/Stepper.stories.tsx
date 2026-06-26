@@ -8,6 +8,7 @@
 // pass as plain props — the primitive never invents them (a11y.md; architecture.md uikit
 // boundary). The value is the mono/stat role (font-mono tabular-nums — alignment via the mono
 // face). RU-longest label exercised at the 360 floor (QUAL-05).
+import { type ReactNode, useState } from "react";
 import type { Story, StoryDefault } from "@ladle/react";
 import { i18n } from "../_i18n";
 import { Field } from "../Field";
@@ -67,19 +68,32 @@ type PlaygroundArgs = {
   disabled: boolean;
 };
 
+// GAP-11: the Playground owns ephemeral demo state so inc/dec/keyboard actually mutate the
+// displayed value and Ark's min/max clamp is exercised (the catalog demo is not a real
+// multi-field form, so `useState` here is correct — the TanStack-Form rule governs real forms).
+// Keyed on the `value` arg so editing the control reseeds the demo from the new starting value.
+function StepperPlayground({ value, disabled }: PlaygroundArgs): ReactNode {
+  const [current, setCurrent] = useState(value);
+
+  return (
+    <div className="w-90 bg-bg-1 p-4">
+      <Field label={i18n._({ id: "selectLabel" })} disabled={disabled}>
+        <Stepper
+          value={current}
+          onValueChange={setCurrent}
+          min={0}
+          max={99}
+          disabled={disabled}
+          incrementAria={i18n._({ id: "stepperIncrement" })}
+          decrementAria={i18n._({ id: "stepperDecrement" })}
+        />
+      </Field>
+    </div>
+  );
+}
+
 export const Playground: Story<PlaygroundArgs> = ({ value, disabled }) => (
-  <div className="w-90 bg-bg-1 p-4">
-    <Field label={i18n._({ id: "selectLabel" })} disabled={disabled}>
-      <Stepper
-        value={value}
-        min={0}
-        max={99}
-        disabled={disabled}
-        incrementAria={i18n._({ id: "stepperIncrement" })}
-        decrementAria={i18n._({ id: "stepperDecrement" })}
-      />
-    </Field>
-  </div>
+  <StepperPlayground key={value} value={value} disabled={disabled} />
 );
 
 Playground.args = { value: "10", disabled: false };

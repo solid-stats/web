@@ -133,12 +133,11 @@ test.describe("GAP-11 Stepper Playground is interactive", () => {
     // input never moves → before === after → RED. Post-fix useState lets the value increment.
     await expect.poll(readValue, { timeout: SELECTOR_TIMEOUT }).toBeGreaterThan(before);
 
-    // Clamp at max: End jumps the value to the max (Ark NumberInput Home/End), then another
-    // increment must NOT exceed it (max = 99 in the Playground).
+    // Clamp at max: End jumps the value to the max (Ark NumberInput Home/End), and at the max the
+    // increment trigger disables itself — the value cannot exceed it (max = 99 in the Playground).
     await input.focus();
     await input.press("End");
     await expect.poll(readValue, { timeout: SELECTOR_TIMEOUT }).toBe(99);
-    await increment.click();
-    expect(await readValue(), "the value clamps at the max").toBe(99);
+    await expect(increment, "the increment trigger disables at the max (clamp)").toBeDisabled();
   });
 });
