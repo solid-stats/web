@@ -145,7 +145,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Global state patterns (loading / empty / error / offline / reconnecting / stale) exist as reusable, reviewed Ladle stories that reserve space (CLS = 0) and never rely on color alone.
   4. The ×5 scenario endings and ×4 data-volume states are demonstrable per interactive component, and all pass axe / keyboard / 44px-target checks.
 
-**Plans**: 7/7 plans complete
+**Plans**: 11/15 plans executed
 
 **Wave 1** *(enabler)*
 
@@ -179,10 +179,10 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 1 (blockers)**
 
-- [ ] 03-08-PLAN.md — GAP-01: RU↔EN language toggle (real persistent locale source the GlobalProvider reads) (KIT-08, QUAL-05)
-- [ ] 03-09-PLAN.md — GAP-03: AsyncBoundary CLS — rewrite the false-green cls test to measure the routed primitive, loading≡ready geometry, re-scope the SURF-18 spec (SURF-18, QUAL-04)
-- [ ] 03-10-PLAN.md — GAP-05: FileUpload single preview per image (drop the `.*` catch-all double-render) (KIT-05)
-- [ ] 03-11-PLAN.md — GAP-02/04: one motion policy across the overlay+toast family (tokens + mount enter-frame + reduced-motion) + real toast stacking (KIT-06, SURF-18, QUAL-01)
+- [x] 03-08-PLAN.md — GAP-01: RU↔EN language toggle (real persistent locale source the GlobalProvider reads) (KIT-08, QUAL-05)
+- [x] 03-09-PLAN.md — GAP-03: AsyncBoundary CLS — rewrite the false-green cls test to measure the routed primitive, loading≡ready geometry, re-scope the SURF-18 spec (SURF-18, QUAL-04)
+- [x] 03-10-PLAN.md — GAP-05: FileUpload single preview per image (drop the `.*` catch-all double-render) (KIT-05)
+- [x] 03-11-PLAN.md — GAP-02/04: one motion policy across the overlay+toast family (tokens + mount enter-frame + reduced-motion) + real toast stacking (KIT-06, SURF-18, QUAL-01)
 
 **Wave 2 (majors)**
 
@@ -304,7 +304,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 |-------|----------------|--------|-----------|
 | 1. Workspace & Design-System Foundation | 5/5 | Complete    | 2026-06-20 |
 | 2. UIKIT — Structural & Data-Display Primitives | 11/11 | Complete    | 2026-06-24 |
-| 3. UIKIT — Interactive, i18n & Global-State Patterns | 7/7 | Complete   | 2026-06-25 |
+| 3. UIKIT — Interactive, i18n & Global-State Patterns | 11/15 | In Progress|  |
 | 4. Public Stats — Overview, Players & Player Profile | 0/TBD | Not started | - |
 | 5. Public Stats — Squads | 0/TBD | Not started | - |
 | 6. Public Stats — Commander-side & Bounty | 0/TBD | Not started | - |
