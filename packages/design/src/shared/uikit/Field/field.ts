@@ -9,6 +9,9 @@
 //   root       — the field group container (vertical label↔control↔message rhythm, gap-2 = 8px)
 //   label      — the visible <label> in the UI-SPEC `label` typography role (12px / 600 /
 //                uppercase / tracking-label) (03-UI-SPEC Typography)
+//   requiredMarker — the visible required affordance appended to a required field's label: the
+//                `*` glyph (a SHAPE, not colour) tinted `text-loss`, PAIRED with visually-hidden
+//                "required" text (a11y.md — never the asterisk in colour alone) (GAP-07).
 //   helperText — secondary caption copy in `text-text-muted`
 //   errorText  — the announced error row: `text-loss` PAIRED with the Lucide icon (color is
 //                never the only carrier — a11y.md Structure & contrast); inline-flex so the
@@ -20,6 +23,7 @@ export const field = tv({
     root: "flex flex-col gap-2",
     label:
       "font-body text-xs font-semibold uppercase tracking-label text-text-muted data-[disabled]:text-text-subtle",
+    requiredMarker: "ml-1 text-loss",
     helperText: "font-body text-xs text-text-muted",
     errorText: "inline-flex items-center gap-1.5 font-body text-xs text-loss",
   },

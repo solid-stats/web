@@ -29,7 +29,11 @@ export const Matrix: Story = () => (
       </StateCell>
 
       <StateCell label="required">
-        <Field label={i18n._({ id: "fieldRequired" })} required>
+        <Field
+          label={i18n._({ id: "selectLabel" })}
+          requiredText={i18n._({ id: "fieldRequired" })}
+          required
+        >
           <Input placeholder={i18n._({ id: "selectPlaceholder" })} />
         </Field>
       </StateCell>
@@ -76,6 +80,7 @@ export const Playground: Story<PlaygroundArgs> = ({ invalid, required, disabled 
   <div className="w-90 bg-bg-1 p-4">
     <Field
       label={i18n._({ id: "fieldRequired" })}
+      requiredText={i18n._({ id: "fieldRequired" })}
       helperText={i18n._({ id: "fieldRequired" })}
       errorText={i18n._({ id: "fieldErrorRequired" })}
       invalid={invalid}
