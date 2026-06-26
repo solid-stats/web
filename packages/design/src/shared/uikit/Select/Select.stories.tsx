@@ -134,7 +134,7 @@ export const Matrix: Story = () => {
       </StateMatrix>
 
       {/* QUAL-05 RU-longest label clip check at the 360 narrowest floor. */}
-      <div className="w-90">
+      <div className="w-full max-w-90">
         <Field label={i18n._({ id: "fieldLabelLongest" })}>
           <Select options={MANY_OPTIONS} placeholder={placeholder} />
         </Field>
@@ -166,7 +166,7 @@ type PlaygroundArgs = {
 };
 
 export const Playground: Story<PlaygroundArgs> = ({ disabled }) => (
-  <div className="w-90 bg-bg-1 p-4">
+  <div className="w-full max-w-90 bg-bg-1 p-4">
     <Field label={i18n._({ id: "selectLabel" })} disabled={disabled}>
       <Select
         options={MAP_OPTIONS}

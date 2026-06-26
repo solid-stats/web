@@ -136,7 +136,7 @@ export const Matrix: Story = () => {
       </StateMatrix>
 
       {/* Evidence external link + the QUAL-05 RU-longest dropzone prompt at the 360 floor. */}
-      <div className="flex w-90 flex-col gap-4">
+      <div className="flex w-full max-w-90 flex-col gap-4">
         <Field label={linkLabel}>
           <FileUpload {...props} />
         </Field>
@@ -153,7 +153,7 @@ type PlaygroundArgs = {
 };
 
 export const Playground: Story<PlaygroundArgs> = ({ disabled }) => (
-  <div className="w-90 bg-bg-1 p-4">
+  <div className="w-full max-w-90 bg-bg-1 p-4">
     <Field label={i18n._({ id: "selectLabel" })} disabled={disabled}>
       <FileUpload {...copy()} maxFiles={5} disabled={disabled} />
     </Field>

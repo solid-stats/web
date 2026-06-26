@@ -54,7 +54,7 @@ export const Matrix: Story = () => {
       </StateMatrix>
 
       {/* QUAL-05 RU-longest label clip check at the 360 narrowest floor. */}
-      <div className="w-90">
+      <div className="w-full max-w-90">
         <Field label={i18n._({ id: "fieldLabelLongest" })}>
           <Stepper value="12" min={0} max={99} {...aria} />
         </Field>
@@ -76,7 +76,7 @@ function StepperPlayground({ value, disabled }: PlaygroundArgs): ReactNode {
   const [current, setCurrent] = useState(value);
 
   return (
-    <div className="w-90 bg-bg-1 p-4">
+    <div className="w-full max-w-90 bg-bg-1 p-4">
       <Field label={i18n._({ id: "selectLabel" })} disabled={disabled}>
         <Stepper
           value={current}
