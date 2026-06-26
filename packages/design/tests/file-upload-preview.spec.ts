@@ -12,9 +12,9 @@ import { expect, test } from "@playwright/test";
 
 const STORY = "kit-05-form--fileupload--matrix";
 
-// The Matrix renders accepted image rows in the `few` (1 file) and `many` (3 files) data-volume
-// cells, each from controlled image/png fixtures. Scoping to one cell keeps the count assertion
-// about real accepted rows, not the rejection/disabled cells.
+// The Matrix renders accepted image rows in the `few` (1 file) and `many` (~30 files, GAP-13)
+// data-volume cells, each from controlled image/png fixtures. Scoping to one cell keeps the count
+// assertion about real accepted rows, not the rejection/disabled cells.
 test.describe("FileUpload single preview per accepted file (GAP-05)", () => {
   test("an accepted image row renders exactly one preview node", async ({ page }) => {
     await page.goto(`/?story=${STORY}&mode=preview`);
@@ -44,7 +44,7 @@ test.describe("FileUpload single preview per accepted file (GAP-05)", () => {
     // with the auto-retrying `toHaveCount` (a synchronous `.count()` read races the hydration —
     // it can sample 0 rows before the `files` effect lands).
     const rows = page.locator('[data-state-cell="many"] [data-part="item"]');
-    await expect(rows, "the many cell renders its three accepted rows").toHaveCount(3);
+    await expect(rows, "the many cell renders its thirty accepted rows").toHaveCount(30);
 
     const rowCount = await rows.count();
     for (let i = 0; i < rowCount; i++) {

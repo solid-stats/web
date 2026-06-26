@@ -175,6 +175,14 @@ export const STRINGS = {
   uploadTooMany: { ru: "Слишком много файлов", en: "Too many files" },
   uploadRemoveAria: { ru: "Удалить файл", en: "Remove file" },
   uploadRetryAria: { ru: "Повторить загрузку", en: "Retry upload" },
+  // GAP-17 RESERVED (v1.0 FU7 — NOT consumed in v0.1): the four-state per-file server-sync
+  // vocabulary the `itemStatus` slot will surface once the upload pipeline lands. Added now (RU
+  // primary / EN mirror at parity, QUAL-05) so the v1.0 sync model wires the slot against a
+  // ready vocabulary; no v0.1 story renders these (there is no sync state yet — reserve only).
+  uploadSyncPending: { ru: "Ожидает синхронизации", en: "Awaiting sync" },
+  uploadSyncInProgress: { ru: "Идёт синхронизация", en: "Syncing" },
+  uploadSyncPendingDelete: { ru: "Ожидает после удаления", en: "Pending after delete" },
+  uploadSynced: { ru: "Синхронизировано", en: "Synced" },
   // KIT-06 Overlay family (Plan 03-05) — the Dialog + Popover story copy, resolved in the
   // STORY via `i18n._` and passed as plain string props (the primitives are i18n-free —
   // architecture.md uikit boundary). `dialogClose` is the icon-only close affordance's

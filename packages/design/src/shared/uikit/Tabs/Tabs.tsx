@@ -65,7 +65,9 @@ export function Tabs({
             {tab.label}
           </ArkTabs.Trigger>
         ))}
-        <ArkTabs.Indicator className={styles.indicator()} />
+        {/* GAP-16: the Ark sliding `Indicator` slot was rendered but unsized — a dead slot. The
+            STRUCTURAL selection marker is the per-trigger `border-primary` underline (paired with
+            the cyan text, never color-alone), so the indicator carried no meaning; removed. */}
       </ArkTabs.List>
       {tabList.map((tab) => (
         <ArkTabs.Content key={tab.value} value={tab.value} className={styles.content()}>

@@ -94,12 +94,21 @@ export function firstRejectReason(errors: readonly FileUploadFileError[]): Rejec
 //   dropzoneLabel    — the «Перетащите изображение или выберите файл» prompt copy + icon row.
 //   trigger          — wraps the shared `Button` (the explicit Browse affordance); the slot
 //                      only positions it, the Button owns the ring + ≥44px floor.
-//   itemGroup        — the per-file rows list (ul); reset list styling.
+//   itemGroup        — the per-file rows list (ul); reset list styling. GAP-13: a realistic
+//                      evidence list is bounded — the group caps its height (`max-h-64`) and
+//                      scrolls INTERNALLY (`overflow-y-auto`), so a long list lives in a capped
+//                      scroll-in-card window instead of growing the page unbounded.
 //   item             — one file row: preview + name + per-state cue + delete/retry, on one
-//                      inline row with the input-family hairline.
+//                      inline row with the input-family hairline. GAP-13: width-bound (`w-full
+//                      min-w-0`) so the `itemName` `truncate` actually engages (a long file name
+//                      ellipses instead of pushing the row — and the grid track — wider).
 //   itemPreview      — the thumbnail frame (fixed size → CLS-0 reserved box).
 //   itemPreviewImage — the <img> preview, object-fit cover within the frame.
 //   itemName         — the file name, truncating (one line, ellipsis).
+//   itemStatus       — RESERVED (v1.0 FU7): the per-file server-sync status badge slot («ожидает
+//                      синхронизации» / «идёт синхронизация» / «ожидает после удаления» /
+//                      «синхронизировано»). Unused in v0.1 (no sync model); wired to the optional
+//                      `renderItemStatus` row slot so v1.0 composes it WITHOUT reshaping the row.
 //   itemControls     — the trailing control cluster. The row delete + retry route through the
 //                      shared icon-only `Button` (control recipe) — no bespoke hit-area/ring
 //                      recipe lives here (GAP-06: the duplicate `itemDeleteTrigger` slot was deleted).
@@ -114,8 +123,8 @@ export const fileUpload = tv({
     dropzoneLabel:
       "inline-flex items-center gap-2 font-body text-sm text-text-muted data-[disabled]:text-text-subtle",
     trigger: "inline-flex",
-    itemGroup: "flex list-none flex-col gap-2",
-    item: "flex min-h-11 items-center gap-3 rounded-sm border border-border-1 bg-surface-1 px-3 py-2",
+    itemGroup: "flex max-h-64 list-none flex-col gap-2 overflow-y-auto",
+    item: "flex min-h-11 w-full min-w-0 items-center gap-3 rounded-sm border border-border-1 bg-surface-1 px-3 py-2",
     itemPreview:
       "flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-sm border border-border-1 bg-surface-2 text-text-subtle",
     itemPreviewImage: "size-full object-cover",

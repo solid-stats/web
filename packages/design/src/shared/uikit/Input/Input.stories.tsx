@@ -54,7 +54,7 @@ type PlaygroundArgs = {
 };
 
 export const Playground: Story<PlaygroundArgs> = ({ placeholder, disabled }) => (
-  <div className="w-90 bg-bg-1 p-4">
+  <div className="w-full max-w-90 bg-bg-1 p-4" data-floor-demo>
     <Field label={i18n._({ id: "fieldRequired" })}>
       <Input placeholder={placeholder} disabled={disabled} />
     </Field>

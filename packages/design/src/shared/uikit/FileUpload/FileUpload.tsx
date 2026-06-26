@@ -67,6 +67,14 @@ type Props = {
   maxFiles?: number;
   /** Controlled accepted files (the v1.0 TanStack Form layer drives this). */
   files?: File[];
+  /**
+   * RESERVED (v1.0 FU7 — NOT built in v0.1): an optional per-file server-sync status slot. When
+   * provided, its node renders in the row's `itemStatus` slot (the four-state sync badge —
+   * «ожидает синхронизации» / «идёт синхронизация» / «ожидает после удаления» /
+   * «синхронизировано»). Omitted here (no sync model yet); wired so v1.0 composes the dead
+   * `itemStatus` slot without reshaping the row. The status copy arrives resolved (i18n-free seam).
+   */
+  renderItemStatus?: (file: File) => ReactNode;
   // booleans
   disabled?: boolean;
   // callbacks
@@ -87,6 +95,7 @@ export function FileUpload({
   maxFileSize,
   maxFiles,
   files,
+  renderItemStatus,
   disabled = false,
   onFilesChange,
   onRetry,
@@ -143,6 +152,11 @@ export function FileUpload({
                   </ArkFileUpload.ItemPreview>
                 )}
                 <ArkFileUpload.ItemName className={styles.itemName()} />
+                {/* RESERVED (v1.0 FU7): the per-file sync-status badge composes here through the
+                    `itemStatus` slot when `renderItemStatus` is supplied. Unused in v0.1. */}
+                {renderItemStatus === undefined ? null : (
+                  <span className={styles.itemStatus()}>{renderItemStatus(file)}</span>
+                )}
                 <span className={styles.itemControls()}>
                   {onRetry === undefined ? null : (
                     <Button
