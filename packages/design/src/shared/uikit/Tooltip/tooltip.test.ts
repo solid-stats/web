@@ -1,30 +1,31 @@
-// KIT-06 — pure-logic contract test for the `tooltip` recipe (Plan 03-06, Wave 6). Vitest =
-// pure logic only, no DOM (solidstats-frontend-react-tests). The recipe is the single source of
-// the reduced-motion handling (the a11y.md "respect prefers-reduced-motion" contract) and the
-// transform/opacity-only animation (CLS = 0); this test pins those so a later drift (a dropped
-// `motion-reduce:`, an animated layout property) fails here instead of shipping. The component
-// head comment + the story enforce "never the only meaning carrier"; this enforces the recipe.
+// KIT-06 — pure-logic contract test for the `tooltip` recipe (Plan 03-06, Wave 6; motion contract
+// updated Plan 03-11, GAP-02). Vitest = pure logic only, no DOM (solidstats-frontend-react-tests):
+// this pins what the recipe STRING guarantees. Since Plan 03-11 the enter/exit animation and the
+// reduced-motion opt-out live in the shared `.uikit-overlay-motion` keyframes (`styles/uikit.css`),
+// NOT in per-state Tailwind utilities — so the recipe's motion contract is now "it opts into the
+// shared overlay-motion policy on the FAST duration role." The RUNTIME guarantees (enter frame at
+// opacity < 1, transform/opacity-only / CLS = 0, animation dropped under prefers-reduced-motion) are
+// asserted against a real browser in `tests/motion.spec.ts`; this test pins the recipe wiring so a
+// dropped motion class or a leaked arbitrary/layout value fails here instead of shipping.
 import { describe, expect, test } from "vitest";
 import { tooltip } from "./tooltip";
 
 describe("tooltip recipe — the KIT-06 focus+hover tooltip", () => {
-  test("the content DROPS the animation under prefers-reduced-motion (a11y.md Targets & motion)", () => {
+  test("the content opts into the shared overlay-motion policy on the fast duration role (Plan 03-11)", () => {
     const content = tooltip().content();
-    // The non-essential enter/exit transition is dropped under reduced motion…
-    expect(content).toContain("motion-reduce:transition-none");
-    // …and the scale-in is neutralised so it does not jump (the closed scale resets to 100).
-    expect(content).toContain("motion-reduce:data-[state=closed]:scale-100");
+    // The enter/exit + reduced-motion handling is the shared `.uikit-overlay-motion` keyframe recipe…
+    expect(content).toContain("uikit-overlay-motion");
+    // …on the FAST duration role (the small hover surface — the design Motion roles).
+    expect(content).toContain("uikit-overlay-motion-fast");
   });
 
-  test("the content animates transform/opacity ONLY (CLS = 0, QUAL-04 / styling.md)", () => {
+  test("the recipe animates no layout property and leaks no arbitrary value (CLS = 0, styling.md)", () => {
     const content = tooltip().content();
-    expect(content).toContain("data-[state=open]:opacity-100");
-    expect(content).toContain("data-[state=closed]:opacity-0");
-    expect(content).toContain("data-[state=open]:scale-100");
-    expect(content).toContain("data-[state=closed]:scale-95");
     // Never an animated LAYOUT property (no width/height transition — that would shift layout).
     expect(content).not.toContain("transition-[width");
     expect(content).not.toContain("transition-[height");
+    // No arbitrary Tailwind value leaked into the recipe (styling.md).
+    expect(content).not.toMatch(/\[[^\]]*#/);
   });
 
   test("the content is a tokenised surface-1 + border-2 floating surface (no arbitrary values)", () => {
