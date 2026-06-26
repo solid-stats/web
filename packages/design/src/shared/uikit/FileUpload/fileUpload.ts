@@ -100,8 +100,9 @@ export function firstRejectReason(errors: readonly FileUploadFileError[]): Rejec
 //   itemPreview      — the thumbnail frame (fixed size → CLS-0 reserved box).
 //   itemPreviewImage — the <img> preview, object-fit cover within the frame.
 //   itemName         — the file name, truncating (one line, ellipsis).
-//   itemControls     — the trailing control cluster (delete / retry).
-//   itemDeleteTrigger— icon-only remove affordance, ≥44px + canonical ring.
+//   itemControls     — the trailing control cluster. The row delete + retry route through the
+//                      shared icon-only `Button` (control recipe) — no bespoke hit-area/ring
+//                      recipe lives here (GAP-06: the duplicate `itemDeleteTrigger` slot was deleted).
 //   rejectedItem     — a rejected-file row (wrong-type/oversize): `loss`-toned hairline,
 //                      paired with the row's alert icon (never color-alone).
 //   rejectedReason   — the why+fix rejection sentence (`text-loss`, inline with its icon).
@@ -121,8 +122,6 @@ export const fileUpload = tv({
     itemName: "min-w-0 flex-1 truncate font-body text-sm text-text-primary",
     itemStatus: "inline-flex shrink-0 items-center gap-1.5 font-body text-xs",
     itemControls: "inline-flex shrink-0 items-center gap-1",
-    itemDeleteTrigger:
-      "inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-sm text-text-muted transition-colors hover:bg-surface-3 hover:text-text-primary focus-visible:shadow-(--shadow-ring) focus-visible:outline-none data-[disabled]:pointer-events-none data-[disabled]:text-text-subtle",
     rejectedItem:
       "flex min-h-11 flex-col gap-1 rounded-sm border border-loss bg-surface-1 px-3 py-2",
     rejectedRow: "flex items-center gap-3",
