@@ -210,7 +210,20 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. All three surfaces share the same shell, tier system, freshness/provenance, and i18n; mock data is single-sourced and internally consistent with the Score / K/D formulas and population tiers (Vasiliy stays #1 everywhere).
   5. Each surface renders all ×5 scenario endings and ×4 data-volume states, is axe-clean and keyboard-operable, and reads naturally in RU + EN.
 
-**Plans**: TBD
+**Plans**: 5 plans
+**Wave 1**
+
+- [ ] 04-01-PLAN.md — Shared public-stats fixture graph, i18n keys, and surface harness (SURF-01, SURF-02, SURF-03, QUAL-01, QUAL-04, QUAL-05, QUAL-06)
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 04-02-PLAN.md — Stats Overview surface story, scenario/data-volume states, responsive and CLS checks (SURF-01, QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, QUAL-06)
+- [ ] 04-03-PLAN.md — Players list surface story, loading model, desktop visual table contract, mobile top-N/show-more (SURF-02, QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, QUAL-06)
+- [ ] 04-04-PLAN.md — Player Profile surface story, identity/hero stats/tabs/provenance, responsive and CLS checks (SURF-03, QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, QUAL-06)
+
+**Wave 3** *(blocked on Wave 2)*
+
+- [ ] 04-05-PLAN.md — Cross-surface consistency, validation map, and human design-review checkpoint (SURF-01, SURF-02, SURF-03, QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, QUAL-06)
 **UI hint**: yes
 
 ### Phase 5: Public Stats — Squads

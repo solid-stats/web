@@ -4,9 +4,9 @@ milestone: v0.1
 milestone_name: milestone
 current_phase: 4
 current_phase_name: Public Stats — Overview, Players & Player Profile
-status: executing
-stopped_at: Phase 4 context gathered (assumptions mode)
-last_updated: "2026-06-28T02:31:45.581Z"
+status: ready_to_execute
+stopped_at: Phase 04 planned
+last_updated: "2026-06-28T03:00:31.174Z"
 last_activity: 2026-06-28
 last_activity_desc: Phase 03 complete, transitioned to Phase 4
 progress:
@@ -29,8 +29,8 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 ## Current Position
 
 Phase: 4 — Public Stats — Overview, Players & Player Profile
-Plan: Not started
-Status: Not started
+Plan: 5 plans ready
+Status: Ready to execute
 Last activity: 2026-06-28 — Phase 03 complete, transitioned to Phase 4
 
 Plans: [████████████████████] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 9/11 complete (gap-closure 02-09 done) · Phase 03: 7/7 (03-01 i18n harness, 03-02 Field+Input, 03-03 Select+Stepper, 03-04 FileUpload — KIT-05 form family complete; 03-05 Dialog+Popover, 03-06 Menu+Tabs+Tooltip — KIT-06 overlay family complete; 03-07 AsyncBoundary + Toast manager — SURF-18 complete)
@@ -132,7 +132,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-28T02:31:45.576Z
-Stopped at: Phase 4 context gathered (assumptions mode)
-Resume file: .planning/phases/04-public-stats-overview-players-player-profile/04-CONTEXT.md
+Last session: 2026-06-28T03:00:31.170Z
+Stopped at: Phase 04 UI-SPEC approved
+Resume file: .planning/phases/04-public-stats-overview-players-player-profile/04-UI-SPEC.md
 </content>
