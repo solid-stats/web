@@ -29,6 +29,20 @@ Concrete validation contract for the design-only public-stats trio: Stats Overvi
 |---------|--------|-------|
 | `LADLE_E2E_PORT=61024 pnpm --filter @solid-stats/design test:e2e --grep "public stats cross-surface"` | passed | 6 Playwright checks covering story meta, rendered Vasiliy stats/trust consistency, RU/EN unresolved-key smoke, and 360/3440 no-overflow. |
 | `pnpm exec vp check --fix packages/design/src/surfaces/public-stats/StatsOverview/StatsOverview.tsx packages/design/tests/public-stats-cross-surface.spec.ts` | passed | Scoped format/lint/type gate for the cross-surface spec and the Overview count-label fix. |
+| `pnpm exec vp check --fix packages/design/src/surfaces/public-stats packages/design/src/shared/uikit/_fixtures/strings.ts packages/design/tests/public-stats-cross-surface.spec.ts packages/design/tests/public-stats-players-list.spec.ts packages/design/tests/public-stats-player-profile.spec.ts` | passed | Rejected-checkpoint remediation scope: public-stats surfaces, shared fixture strings, and targeted design gates. |
+| `pnpm check` | passed | Full repository check after the rejected design-review remediation. The design-doc lint command emitted existing warnings only and completed with `errors: 0`. |
+| `LADLE_E2E_PORT=61014 pnpm --dir packages/design exec playwright test tests/public-stats-cross-surface.spec.ts tests/public-stats-players-list.spec.ts tests/public-stats-player-profile.spec.ts tests/public-stats-overview.spec.ts --project=chromium --workers=1 --reporter=list` | passed | 49 targeted public-stats Chromium checks covering the trio plus the added density, spacer, and RU fallback gates. |
+
+## Rejected Checkpoint Remediation
+
+Task 3 human review was rejected and concretized by `04-UI-REVIEW.md`. The continuation treated those BLOCK findings as gap-closure requirements, not as approval.
+
+| Audit Class | Remediation | Automated Gate |
+|-------------|-------------|----------------|
+| Overview hierarchy collapse and leaderboards pushed below empty trust/status slabs | Rebalanced the Overview first band so leaderboards sit beside the hero stats, reduced trust/status slab weight, and added a visible trend-summary text channel | `public-stats-cross-surface.spec.ts` asserts the leaders remain in the first desktop band |
+| Players list spacer misuse and density failure | Removed default success spacers, limited spacer rows to large-volume/limit stories, and localized search/tier/status controls | `public-stats-cross-surface.spec.ts` and `public-stats-players-list.spec.ts` assert zero default success spacers and tight first-row offset |
+| Profile duplicated trust slabs and fragmented hero/identity hierarchy | Merged freshness/provenance into identity, disabled the duplicated harness trust bar for profile, and kept hero stats in the same data band | `public-stats-cross-surface.spec.ts` asserts a single freshness/trust instance inside identity and bounded profile tab offset |
+| Hardcoded English fallback labels in RU variants | Added RU/EN fixture strings for search, tier, period status, bounty explanation, and trend summary | `public-stats-cross-surface.spec.ts` asserts RU Players stories do not render the hardcoded English fallback labels |
 
 ## Sampling Rate
 
@@ -55,7 +69,7 @@ Concrete validation contract for the design-only public-stats trio: Stats Overvi
 | 04-04-02 | 04 | 2 | SURF-03, QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, QUAL-06 | T-04-04-01, T-04-04-02 | Profile renders public identity, tabs, stats, freshness, and provenance without full SteamID exposure | Playwright story + Vitest | `pnpm --filter @solid-stats/design test:e2e --grep "Player Profile" && pnpm --filter @solid-stats/design test` | Wave 2 created `PlayerProfile` files | passed |
 | 04-05-01 | 05 | 3 | SURF-01, SURF-02, SURF-03, QUAL-02, QUAL-05, QUAL-06 | T-04-05-02 | Cross-surface rendered stories agree on rank, Score, K/D, tier, squad, freshness, provenance, locale variants, and no-overflow smoke | Playwright story | `pnpm --filter @solid-stats/design test:e2e --grep "public stats cross-surface"` | Wave 3 created `packages/design/tests/public-stats-cross-surface.spec.ts` | passed |
 | 04-05-02 | 05 | 3 | SURF-01, SURF-02, SURF-03, QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, QUAL-06 | T-04-05-01 | Internal surface barrel exists, root design package barrel remains UIKIT-focused, and this validation map stays concrete | Targeted smoke + document grep | `pnpm --filter @solid-stats/design test:e2e --grep "public stats cross-surface" && pnpm --filter @solid-stats/design test -- publicStats.test.ts` | Wave 3 created `packages/design/src/surfaces/public-stats/index.ts` | passed |
-| 04-05-03 | 05 | 3 | SURF-01, SURF-02, SURF-03, QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, QUAL-06 | T-04-05-01 | Human confirms rendered trio against UI-SPEC after automated gates are green | Full phase gate + manual design review | `pnpm check && pnpm --filter @solid-stats/design test && pnpm --filter @solid-stats/design test:e2e` | Summary records approval or issues | awaiting human review |
+| 04-05-03 | 05 | 3 | SURF-01, SURF-02, SURF-03, QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, QUAL-06 | T-04-05-01 | Human checkpoint rejected; `04-UI-REVIEW.md` BLOCK findings were remediated and covered by targeted density/spacer/RU fallback gates | Full phase gate + manual design review remediation | `pnpm check`; targeted public-stats Playwright suite | Summary records the rejection, remediation, and remaining evidence | passed after remediation |
 
 ## Requirement Coverage Table
 
@@ -86,7 +100,7 @@ Existing infrastructure covers the phase baseline:
 |----------|-------------|------------|-------------------|
 | Visual hierarchy and polish for Overview, Players, and Profile | SURF-01, SURF-02, SURF-03 | Automated tests can prove hooks, layout boxes, and states, but not whether the trio matches the intended visual priority from UI-SPEC | Run `pnpm --filter @solid-stats/design ladle`; inspect the three public-stats story groups at 360, 768, 1280, 1920, 2560, and 3440 widths |
 | Russian copy quality and clipping | QUAL-05 | RU text may fit technically but still read awkwardly or wrap poorly | Switch RU/EN story variants; inspect long Russian labels in controls, tables, tabs, state cells, provenance, and mobile top-N rows |
-| Final design-review approval | QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, QUAL-06 | Phase 4 is a design-delivery phase and requires human design judgement after automated gates | Complete `04-05-PLAN.md` Task 3; record approval or concrete issues in `04-05-SUMMARY.md` |
+| Final design-review remediation | QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, QUAL-06 | Phase 4 is a design-delivery phase and requires human design judgement after automated gates | Task 3 was rejected; `04-UI-REVIEW.md` became the concrete issue list and this continuation records the remediation in `04-05-SUMMARY.md` |
 
 ## Final Phase Gate
 
@@ -107,4 +121,4 @@ pnpm --filter @solid-stats/design test:e2e
 - [x] Task-level targeted feedback is separated from the full phase gate.
 - [x] `nyquist_compliant: true` is set in frontmatter.
 
-**Approval:** automated Wave 3 checks passed; awaiting human design-review checkpoint.
+**Approval:** automated Wave 3 checks passed; the rejected design-review checkpoint was remediated against `04-UI-REVIEW.md` BLOCK findings and covered by targeted public-stats gates.

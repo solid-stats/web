@@ -37,6 +37,14 @@ async function expectSameBox(first: Locator, second: Locator): Promise<void> {
   expect(firstBox?.width, "widths match").toBe(secondBox?.width);
 }
 
+async function verticalOffset(root: Locator, child: Locator): Promise<number> {
+  const rootBox = await root.boundingBox();
+  const childBox = await child.boundingBox();
+  expect(rootBox, "root box exists").not.toBeNull();
+  expect(childBox, "child box exists").not.toBeNull();
+  return (childBox?.y ?? 0) - (rootBox?.y ?? 0);
+}
+
 test.describe("Players list journey", () => {
   test("Success shows search, filters, period selector, Vasiliy row, and tier cues", async ({
     page,
@@ -111,7 +119,7 @@ test.describe("Players list journey", () => {
     });
   }
 
-  test("Desktop story renders AutoTable fixed viewport and spacer hooks", async ({ page }) => {
+  test("Desktop success table starts with data and no spacer hooks", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await openStory(page, SUCCESS_STORY);
 
@@ -119,15 +127,15 @@ test.describe("Players list journey", () => {
     const comfortable = table.locator("[data-density-branch='comfortable']");
     await expect(table).toBeVisible();
     await expect(comfortable.locator("[data-table-viewport]")).toBeVisible();
-    await expect(comfortable.locator("[data-spacer='top']")).toBeVisible();
-    await expect(comfortable.locator("[data-spacer='bottom']")).toBeVisible();
-
-    const viewportOverflow = await comfortable
-      .locator("[data-table-viewport]")
-      .evaluate((el) => el.scrollHeight - el.clientHeight);
-    expect(viewportOverflow, "desktop table keeps the reserved viewport contract").toBeGreaterThan(
-      0,
+    await expect(comfortable.locator("[data-spacer]")).toHaveCount(0);
+    const rowOffset = await verticalOffset(
+      comfortable.locator("[data-table-viewport]"),
+      comfortable.locator("[data-table-row='1']"),
     );
+    expect(
+      rowOffset,
+      "first player row follows the sticky header, not a fake spacer",
+    ).toBeLessThanOrEqual(56);
   });
 
   test("Loading and final table/list boxes keep matched geometry", async ({ page }) => {

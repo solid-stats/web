@@ -6,19 +6,14 @@ import type { AsyncState } from "../../../shared/uikit/AsyncBoundary";
 import { Button } from "../../../shared/uikit/Button";
 import { FreshnessPill } from "../../../shared/uikit/FreshnessPill";
 import type { FreshnessState } from "../../../shared/uikit/FreshnessPill/FreshnessPill";
-import {
-  accountFor,
-  isSignedIn,
-  navItemsFor,
-  roleExtrasFor,
-} from "../../../shared/uikit/NavBar";
+import { accountFor, isSignedIn, navItemsFor, roleExtrasFor } from "../../../shared/uikit/NavBar";
 import type { NavAccount, NavRole } from "../../../shared/uikit/NavBar";
 import { ProvenanceLine } from "../../../shared/uikit/ProvenanceLine";
 import { STRINGS } from "../../../shared/uikit/_fixtures";
 import { i18n } from "../../../shared/uikit/_i18n";
 import { StateCell, StateMatrix } from "../../../shared/uikit/_state-matrix";
 import { PUBLIC_STATS } from "../_fixtures";
-import type { PublicStatsFreshness, PublicStatsProvenance } from "../_fixtures";
+import type { PublicStatsFreshness, PublicStatsProvenance } from "../_fixtures/publicStats";
 
 export type PublicStatsLang = "ru" | "en";
 export type PublicStatsHarnessState =
@@ -36,6 +31,7 @@ type Props = {
   readonly activeKey: string;
   readonly state: PublicStatsHarnessState;
   readonly provenance?: PublicStatsProvenance;
+  readonly showHeaderTrust?: boolean;
   readonly title?: string;
 };
 
@@ -54,9 +50,13 @@ const PUBLIC_STATS_STATES: readonly PublicStatsHarnessState[] = [
   "stale",
 ];
 
-function t(lang: PublicStatsLang, id: string, values?: Record<string, string | number>): string {
+function t(
+  lang: PublicStatsLang,
+  id: keyof typeof STRINGS,
+  values?: Record<string, string | number>,
+): string {
   i18n.activate(lang);
-  return i18n._({ id, values });
+  return values === undefined ? i18n._({ id }) : i18n._({ id, values });
 }
 
 function tabsFor(role: NavRole, lang: PublicStatsLang) {
@@ -165,10 +165,12 @@ function publicStatsAsyncState(
 function trustBar(lang: PublicStatsLang, provenance: PublicStatsProvenance): ReactNode {
   const label = freshnessLabel(lang, provenance.freshness);
   return (
-    <div className="flex flex-col gap-2 rounded-md border border-border-1 bg-surface-1 p-3">
-      <div className="flex flex-wrap items-center gap-3" data-public-stats-trust>
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-md border border-border-1 bg-surface-1 px-3 py-2">
+      <div className="flex shrink-0 flex-wrap items-center gap-2" data-public-stats-trust>
         <FreshnessPill state={freshnessState(provenance.freshness)} label={label} />
-        <span className="font-body text-xs text-text-muted">{t(lang, "publicStatsTrustKnown")}</span>
+        <span className="font-body text-xs text-text-muted">
+          {t(lang, "publicStatsTrustKnown")}
+        </span>
       </div>
       <ProvenanceLine
         replayCount={provenance.replayCount}
@@ -230,6 +232,7 @@ export function PublicStatsSurfaceHarness({
   activeKey,
   state,
   provenance = PUBLIC_STATS.overview.provenance,
+  showHeaderTrust = true,
   title = t(lang, "publicStatsOverviewTitle"),
 }: Props): ReactNode {
   return (
@@ -240,7 +243,7 @@ export function PublicStatsSurfaceHarness({
             <h1 className="font-display text-xl font-semibold tracking-tight text-text-primary">
               {title}
             </h1>
-            {trustBar(lang, provenance)}
+            {showHeaderTrust ? trustBar(lang, provenance) : null}
           </header>
           <AsyncBoundary state={publicStatsAsyncState(lang, state, children)} />
         </div>

@@ -23,16 +23,24 @@ const VOLUMES = ["empty", "few", "many", "limitReached"] as const;
 
 export const Success: Story = () => <PlayersList lang="en" players={PUBLIC_STATS.players} />;
 
-export const LoadingModel: Story = () => (
-  <PublicStatsStoryFrame lang="en">
+export const LoadingModel: Story<{ readonly lang: PublicStatsLang }> = ({ lang }) => (
+  <PublicStatsStoryFrame lang={lang}>
     <div className="grid gap-4 bg-bg-0 p-4 @5xl:grid-cols-2">
-      <PlayersList lang="en" players={PUBLIC_STATS.players} period="rotation" mode="ready" />
-      <PlayersList lang="en" players={PUBLIC_STATS.players} period="alltime" mode="ready" />
-      <PlayersList lang="en" players={PUBLIC_STATS.players} period="alltime" mode="cold" />
-      <PlayersList lang="en" players={PUBLIC_STATS.players} period="alltime" mode="inSession" />
+      <PlayersList lang={lang} players={PUBLIC_STATS.players} period="rotation" mode="ready" />
+      <PlayersList lang={lang} players={PUBLIC_STATS.players} period="alltime" mode="ready" />
+      <PlayersList lang={lang} players={PUBLIC_STATS.players} period="alltime" mode="cold" />
+      <PlayersList lang={lang} players={PUBLIC_STATS.players} period="alltime" mode="inSession" />
     </div>
   </PublicStatsStoryFrame>
 );
+
+LoadingModel.args = { lang: "en" };
+LoadingModel.argTypes = {
+  lang: {
+    options: ["ru", "en"],
+    control: { type: "inline-radio" },
+  },
+};
 
 export const ScenarioEndings: Story = () => (
   <PublicStatsStoryFrame lang="en">
@@ -55,7 +63,7 @@ export const DataVolumes: Story = () => (
     <div className="grid gap-4 bg-bg-0 p-4 @5xl:grid-cols-2">
       {VOLUMES.map((volume) => (
         <div key={volume} className="overflow-hidden rounded-md border border-border-1">
-          <PlayersList lang="en" players={PUBLIC_STATS_VOLUMES.players[volume]} />
+          <PlayersList lang="en" players={PUBLIC_STATS_VOLUMES.players[volume]} volume={volume} />
         </div>
       ))}
     </div>
@@ -74,6 +82,7 @@ export const Responsive: Story<ResponsiveArgs> = ({ lang, period }) => (
     players={
       period === "alltime" ? PUBLIC_STATS_VOLUMES.players.limitReached : PUBLIC_STATS.players
     }
+    volume={period === "alltime" ? "limitReached" : "few"}
   />
 );
 

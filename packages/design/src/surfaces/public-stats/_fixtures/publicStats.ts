@@ -1,11 +1,6 @@
 import type { CompactRowData } from "../../../shared/uikit/CompactRow";
 import type { TierCell } from "../../../shared/uikit/Table";
-import {
-  OVERVIEW_PLAYERS,
-  ROSTER,
-  kdOf,
-  scoreOf,
-} from "../../../shared/uikit/_fixtures/roster";
+import { OVERVIEW_PLAYERS, ROSTER } from "../../../shared/uikit/_fixtures/roster";
 import type { Player } from "../../../shared/uikit/_fixtures/roster";
 import { SS_BASELINE, tierFor } from "../../../shared/uikit/_fixtures/tiers";
 import type { Tier, TierMetric, TierPeriod } from "../../../shared/uikit/_fixtures/tiers";
@@ -95,7 +90,9 @@ export type PublicStatsFixture = {
 export type PublicStatsVolumes = Readonly<
   Record<
     "overview" | "players" | "profile",
-    Readonly<Record<PublicStatsVolumeKind, PublicStatsOverview | PublicStatsPlayers | PublicStatsProfile>>
+    Readonly<
+      Record<PublicStatsVolumeKind, PublicStatsOverview | PublicStatsPlayers | PublicStatsProfile>
+    >
   >
 >;
 
@@ -118,7 +115,10 @@ const ALLTIME_TOTAL = 2040;
 const LIMIT_REPLAY_TOTAL = 86;
 
 function playerId(name: string): string {
-  return name.toLowerCase().replaceAll(/[^a-zа-я0-9]+/giu, "-").replace(/^-|-$/gu, "");
+  return name
+    .toLowerCase()
+    .replaceAll(/[^a-zа-я0-9]+/giu, "-")
+    .replace(/^-|-$/gu, "");
 }
 
 export function toTierCell(
@@ -174,7 +174,11 @@ const overviewRows = OVERVIEW_PLAYERS.map((player) => {
   const canonicalIndex = ROSTER.findIndex((row) => row.name === player.name);
   return toPublicStatsPlayer(player, canonicalIndex);
 });
-const vasiliy = playersRows[0] ?? toPublicStatsPlayer(ROSTER[0], 0);
+const fallbackPlayer = ROSTER[0];
+if (fallbackPlayer === undefined) {
+  throw new Error("PUBLIC_STATS requires at least one roster player");
+}
+const vasiliy = playersRows[0] ?? toPublicStatsPlayer(fallbackPlayer, 0);
 
 const provenance: PublicStatsProvenance = {
   replayCount: PUBLIC_STATS_REPLAY_COUNT,

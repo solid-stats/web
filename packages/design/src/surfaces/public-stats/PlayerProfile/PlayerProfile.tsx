@@ -161,16 +161,18 @@ function Identity({
     );
   }
 
+  const label = freshnessLabel(lang, profile.provenance.freshness);
+
   return (
     <section
-      className="grid min-h-44 gap-3 rounded-md border border-border-1 bg-surface-1 p-4 @3xl:grid-cols-[1fr_auto]"
+      className="grid min-h-44 gap-3 rounded-md border border-border-1 bg-surface-1 p-4 @3xl:grid-cols-12"
       data-profile-identity
     >
-      <div className="min-w-0">
-        <p className="font-mono text-2xs font-medium uppercase tracking-caps text-text-muted">
+      <div className="min-w-0 @3xl:col-span-7">
+        <p className="font-mono text-xs font-semibold uppercase tracking-caps text-text-muted">
           #{profile.player.rank}
         </p>
-        <h1 className="truncate font-display text-3xl font-bold tracking-tight text-text-primary">
+        <h1 className="truncate font-display text-xl font-semibold tracking-tight text-text-primary">
           {profile.player.name}
         </h1>
         <div className="mt-3 flex flex-wrap gap-2 font-body text-sm text-text-muted">
@@ -178,8 +180,25 @@ function Identity({
           <span aria-hidden>·</span>
           <span>{PROFILE_STATUS[lang]}</span>
         </div>
+        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
+          <div data-profile-freshness>
+            <FreshnessPill state={freshnessState(profile.provenance.freshness)} label={label} />
+          </div>
+          <div data-profile-provenance>
+            <ProvenanceLine
+              replayCount={profile.provenance.replayCount}
+              freshnessLabel={label}
+              template={t(lang, "publicStatsProvenance", {
+                n: profile.provenance.replayCount,
+                freshness: label,
+              })}
+              locale={lang}
+              linkLabel={lang === "ru" ? "Как считается" : "How it's computed"}
+            />
+          </div>
+        </div>
       </div>
-      <div className="flex items-start">
+      <div className="flex items-start @3xl:col-span-5 @3xl:justify-end">
         <Link
           href={profile.player.href}
           variant="secondary"
@@ -233,35 +252,6 @@ function Hero({
   );
 }
 
-function TrustLayer({
-  lang,
-  profile,
-}: {
-  readonly lang: PublicStatsLang;
-  readonly profile: PublicStatsProfile;
-}): ReactNode {
-  const label = freshnessLabel(lang, profile.provenance.freshness);
-  return (
-    <div className="flex flex-col gap-2 rounded-md border border-border-1 bg-surface-1 p-3">
-      <div data-profile-freshness>
-        <FreshnessPill state={freshnessState(profile.provenance.freshness)} label={label} />
-      </div>
-      <div data-profile-provenance>
-        <ProvenanceLine
-          replayCount={profile.provenance.replayCount}
-          freshnessLabel={label}
-          template={t(lang, "publicStatsProvenance", {
-            n: profile.provenance.replayCount,
-            freshness: label,
-          })}
-          locale={lang}
-          linkLabel={lang === "ru" ? "Как считается" : "How it's computed"}
-        />
-      </div>
-    </div>
-  );
-}
-
 function NickHistory({
   lang,
   profile,
@@ -273,7 +263,7 @@ function NickHistory({
   return (
     <section className="grid gap-2 rounded-md border border-border-1 bg-surface-1 p-3">
       <div className="flex items-center gap-2">
-        <History className="size-4 text-primary" aria-hidden />
+        <History className="size-4 text-info" aria-hidden />
         <h2 className="font-display text-xl font-semibold text-text-primary">{caption}</h2>
       </div>
       {profile.nickHistory.length === 0 ? (
@@ -296,7 +286,7 @@ function NickHistory({
 
 function EmptyPanel({ lang }: { readonly lang: PublicStatsLang }): ReactNode {
   return (
-    <div className="flex min-h-48 flex-col justify-center gap-2 rounded-md border border-border-1 bg-surface-1 p-4">
+    <div className="flex flex-col justify-center gap-2 rounded-md border border-border-1 bg-surface-1 p-4">
       <h2 className="font-display text-xl font-semibold text-text-primary">
         {t(lang, "publicStatsEmptyHeading")}
       </h2>
@@ -343,13 +333,13 @@ function BountyPanel({
   return (
     <div className="grid gap-3 rounded-md border border-border-1 bg-surface-1 p-4">
       <div className="flex items-center gap-2">
-        <ShieldCheck className="size-4 text-primary" aria-hidden />
+        <ShieldCheck className="size-4 text-info" aria-hidden />
         <h2 className="font-display text-xl font-semibold text-text-primary">
           {t(lang, "statBounty")}
         </h2>
       </div>
-      <p className="font-body text-sm text-text-muted">{t(lang, "tooltipContent")}</p>
-      <p className="font-mono text-2xl font-semibold tabular-nums text-text-primary">
+      <p className="font-body text-sm text-text-muted">{t(lang, "publicStatsBountyExplanation")}</p>
+      <p className="font-mono text-xl font-semibold tabular-nums text-text-primary">
         {profile.player.bounty}
       </p>
     </div>
@@ -482,15 +472,25 @@ function PlayerProfileContent({
   return (
     <article className="@container grid gap-4" data-player-profile>
       <Identity lang={lang} profile={profile} loading={loading} />
-      <Hero lang={lang} profile={profile} loading={loading} />
-      <TrustLayer lang={lang} profile={profile} />
-      {loading ? (
-        <div className="min-h-40 rounded-md border border-border-1 bg-surface-1 p-4" aria-busy>
-          <Skeleton variant="text" widthClassName="w-48" />
+      <section className="grid gap-3 @5xl:grid-cols-12" data-profile-data-band>
+        <div className="@5xl:col-span-5">
+          <Hero lang={lang} profile={profile} loading={loading} />
         </div>
-      ) : (
-        <MiniStatGrid stats={profileStats(lang, profile)} emptyLabel={t(lang, "statEmpty")} />
-      )}
+        {loading ? (
+          <div
+            className="min-h-32 rounded-md border border-border-1 bg-surface-1 p-4 @5xl:col-span-7"
+            aria-busy
+          >
+            <Skeleton variant="text" widthClassName="w-48" />
+          </div>
+        ) : (
+          <MiniStatGrid
+            className="@5xl:col-span-7"
+            stats={profileStats(lang, profile)}
+            emptyLabel={t(lang, "statEmpty")}
+          />
+        )}
+      </section>
       <TabPanels lang={lang} profile={profile} activeTab={activeTab} loading={loading} />
     </article>
   );
@@ -511,6 +511,7 @@ export function PlayerProfile({
         activeKey="players"
         state={state}
         provenance={profile.provenance}
+        showHeaderTrust={false}
         title={t(lang, "publicStatsProfileTitle")}
       >
         <PlayerProfileContent lang={lang} profile={profile} mode={mode} activeTab={activeTab} />

@@ -291,7 +291,21 @@ export const STRINGS = {
   publicStatsPeriodLabel: { ru: "Период", en: "Period" },
   publicStatsPeriodRotation: { ru: "Активная ротация", en: "Active rotation" },
   publicStatsPeriodAllTime: { ru: "Всё время", en: "All time" },
+  publicStatsSearchLabel: { ru: "Поиск игроков", en: "Search players" },
+  publicStatsTierLabel: { ru: "Тир", en: "Tier" },
+  publicStatsTierAll: { ru: "Все тиры", en: "All tiers" },
+  publicStatsRotationReady: { ru: "Активная ротация готова", en: "Active rotation ready" },
+  publicStatsAllTimeWarmReady: { ru: "Всё время готово", en: "All-time warm ready" },
+  publicStatsAllTimeRecomputing: { ru: "Пересчитываем агрегат", en: "Recomputing aggregate" },
   publicStatsLoadingInSession: { ru: "Загружаем агрегат…", en: "Loading aggregate…" },
+  publicStatsBountyExplanation: {
+    ru: "Баунти — очки риска игрока по последним реплеям, отряду и ротации.",
+    en: "Bounty is the player's risk score from recent replays, squad, and rotation context.",
+  },
+  publicStatsTrendSummary: {
+    ru: "Лидер {name} · счёт {score} · базовая линия {baseline}",
+    en: "Leader {name} · score {score} · baseline {baseline}",
+  },
   publicStatsEmptyHeading: {
     ru: "Нет данных по этим условиям",
     en: "No data for these filters",

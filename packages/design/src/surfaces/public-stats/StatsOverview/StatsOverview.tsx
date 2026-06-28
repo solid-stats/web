@@ -62,6 +62,13 @@ function withCount(label: string, count: number): string {
   return label.replace("{n}", String(count));
 }
 
+function trendSummary(lang: PublicStatsLang, leader: PublicStatsPlayer, baseline: number): string {
+  return t(lang, "publicStatsTrendSummary")
+    .replace("{name}", leader.name)
+    .replace("{score}", leader.score.toFixed(2))
+    .replace("{baseline}", baseline.toFixed(2));
+}
+
 function entryItems(lang: PublicStatsLang, totalPlayers: number): readonly StatsOverviewEntry[] {
   return [
     {
@@ -199,14 +206,14 @@ function Leaders({
   return (
     <section className="flex flex-col gap-3" data-overview-leaders>
       <div className="flex items-center gap-2">
-        <Trophy className="size-5 shrink-0 text-primary" aria-hidden />
+        <Trophy className="size-5 shrink-0 text-info" aria-hidden />
         <h2 className="font-display text-xl font-semibold text-text-primary">
           {t(lang, "publicStatsPlayersTitle")}
         </h2>
       </div>
 
       {rows.length === 0 ? (
-        <div className="flex min-h-64 items-center rounded-md border border-border-1 bg-surface-1 p-4">
+        <div className="flex items-center rounded-md border border-border-1 bg-surface-1 p-4">
           <p className="font-body text-sm text-text-muted">{t(lang, "publicStatsEmptyHeading")}</p>
         </div>
       ) : (
@@ -270,11 +277,17 @@ function TrendStrip({
   readonly players: readonly PublicStatsPlayer[];
 }): ReactNode {
   const leader = players[0];
+  const baselineScore = SS_BASELINE.by.rotation.score.base;
   return (
     <figure className="rounded-md border border-border-1 bg-surface-1 p-4" data-overview-trend>
-      <figcaption className="mb-3 font-body text-xs font-semibold uppercase tracking-label text-text-muted">
+      <figcaption className="font-body text-xs font-semibold uppercase tracking-label text-text-muted">
         {t(lang, "statScore")}
       </figcaption>
+      <p className="mb-3 mt-1 font-body text-sm text-text-muted">
+        {leader === undefined
+          ? t(lang, "publicStatsEmptyHeading")
+          : trendSummary(lang, leader, baselineScore)}
+      </p>
       <Sparkline
         values={leader?.spark ?? []}
         baseline={SS_BASELINE}
@@ -298,14 +311,20 @@ function OverviewContent({
   readonly loading: boolean;
 }): ReactNode {
   return (
-    <div className="@container flex flex-col gap-4" data-stats-overview>
-      <Hero lang={lang} overview={overview} loading={loading} />
-      <MiniStatGrid
-        stats={metricStats(lang, overview)}
-        emptyLabel={t(lang, "publicStatsEmptyHeading")}
-      />
-      <TrendStrip lang={lang} players={overview.topPlayers} />
-      <Leaders lang={lang} overview={overview} loading={loading} />
+    <div className="@container grid gap-4" data-stats-overview>
+      <section className="grid gap-4 @5xl:grid-cols-12" data-overview-primary-band>
+        <div className="grid content-start gap-3 @5xl:col-span-5">
+          <Hero lang={lang} overview={overview} loading={loading} />
+          <MiniStatGrid
+            stats={metricStats(lang, overview)}
+            emptyLabel={t(lang, "publicStatsEmptyHeading")}
+          />
+          <TrendStrip lang={lang} players={overview.topPlayers} />
+        </div>
+        <div className="@5xl:col-span-7">
+          <Leaders lang={lang} overview={overview} loading={loading} />
+        </div>
+      </section>
       <EntryGrid lang={lang} overview={overview} />
     </div>
   );

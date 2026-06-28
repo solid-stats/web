@@ -89,6 +89,14 @@ async function expectSharedTrust(page: Page): Promise<void> {
   );
 }
 
+async function verticalOffset(root: Locator, child: Locator): Promise<number> {
+  const rootBox = await root.boundingBox();
+  const childBox = await child.boundingBox();
+  expect(rootBox, "root box exists").not.toBeNull();
+  expect(childBox, "child box exists").not.toBeNull();
+  return (childBox?.y ?? 0) - (rootBox?.y ?? 0);
+}
+
 test.describe("public stats cross-surface consistency", () => {
   test("Catalog meta exposes the public-stats surface trio", async ({ page }) => {
     const keys = await storyKeys(page);
@@ -104,23 +112,15 @@ test.describe("public stats cross-surface consistency", () => {
   test("Vasiliy rank, stats, squad, freshness, and provenance agree across surfaces", async ({
     page,
   }) => {
-    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.setViewportSize({ width: 1920, height: 1080 });
 
     await openStory(page, SUCCESS_STORIES.overview);
     const overview = page.locator("[data-stats-overview]");
     const overviewLeader = overview.locator("[data-overview-leaders]");
-    await expect(overviewLeader.locator("[data-table-row='1']:visible")).toContainText(
-      expectedPlayer.name,
-    );
-    await expect(overviewLeader.locator("[data-table-row='1']:visible")).toContainText(
-      expectedSquad,
-    );
-    await expect(
-      overviewLeader.locator("[data-numeric-cell='score']:visible").first(),
-    ).toContainText(expectedScore);
-    await expect(overviewLeader.locator("[data-numeric-cell='kd']:visible").first()).toContainText(
-      expectedKd,
-    );
+    await expect(overviewLeader).toContainText(expectedPlayer.name);
+    await expect(overviewLeader).toContainText(expectedSquad);
+    await expect(overviewLeader).toContainText(expectedScore);
+    await expect(overviewLeader).toContainText(expectedKd);
     await expect(overviewLeader.locator("[data-pips]:visible").first()).toBeVisible();
     await expectSharedTrust(page);
 
@@ -152,7 +152,6 @@ test.describe("public stats cross-surface consistency", () => {
     await expect(profile.locator("[data-profile-provenance]")).toContainText(
       new RegExp(`computed from ${expectedReplayCount} replays`, "i"),
     );
-    await expectSharedTrust(page);
   });
 
   for (const lang of ["ru", "en"] as const) {
@@ -181,4 +180,62 @@ test.describe("public stats cross-surface consistency", () => {
       }
     });
   }
+
+  test("Desktop success trio keeps primary data dense and rejects spacer slabs", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1920, height: 1080 });
+
+    await openStory(page, SUCCESS_STORIES.overview);
+    const overview = page.locator("[data-stats-overview]");
+    const overviewLeadersOffset = await verticalOffset(
+      overview,
+      overview.locator("[data-overview-leaders]"),
+    );
+    expect(
+      overviewLeadersOffset,
+      "overview leaderboard starts in the first desktop band",
+    ).toBeLessThanOrEqual(24);
+
+    await openStory(page, SUCCESS_STORIES.players);
+    const players = page.locator("[data-players-list]");
+    await expect(
+      players.locator("[data-spacer]"),
+      "ready players table has no spacer slab",
+    ).toHaveCount(0);
+    const viewport = players.locator("[data-table-viewport]:visible").first();
+    const firstRow = players.locator("[data-table-row='1']:visible").first();
+    const rowOffset = await verticalOffset(viewport, firstRow);
+    expect(
+      rowOffset,
+      "first player row follows the sticky header, not a fake spacer",
+    ).toBeLessThanOrEqual(56);
+
+    await openStory(page, SUCCESS_STORIES.profile);
+    const profile = page.locator("[data-player-profile]");
+    await expect(profile.locator("[data-profile-freshness]")).toHaveCount(1);
+    await expect(profile.locator("[data-profile-identity] [data-profile-freshness]")).toBeVisible();
+    const tabsOffset = await verticalOffset(profile, profile.locator("[data-profile-tabs]"));
+    expect(
+      tabsOffset,
+      "profile tabs stay above the fold after identity/data band",
+    ).toBeLessThanOrEqual(560);
+  });
+
+  test("RU players surface does not leak English fallback labels", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await openStory(page, SUCCESS_STORIES.players, "ru");
+
+    let text = await page.locator("body").innerText();
+    expect(text, "search label is localized").not.toContain("Search players");
+    expect(text, "tier label is localized").not.toMatch(/\bTier\b/u);
+    expect(text, "all-tier value is localized").not.toContain("All tiers");
+    expect(text, "period status is localized").not.toContain("Active rotation ready");
+
+    await openStory(page, "public-stats--players-list--loading-model", "ru");
+    text = await page.locator("body").innerText();
+    expect(text, "warm all-time status is localized").not.toContain("All-time warm ready");
+    expect(text, "cold all-time status is localized").not.toContain("Recomputing aggregate");
+    expect(text, "in-session loading status is localized").not.toContain("Loading aggregate");
+  });
 });

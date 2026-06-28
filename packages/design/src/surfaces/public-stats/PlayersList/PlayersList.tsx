@@ -40,7 +40,7 @@ const SORT: SortState = { key: "score", direction: "descending" };
 const VISIBLE_ROWS = 8;
 const MOBILE_TOP_N = 6;
 const TOP_SPACER = 88;
-const BOTTOM_SPACER = 352;
+const BOTTOM_SPACER = 260;
 
 function t(
   lang: PublicStatsLang,
@@ -95,11 +95,15 @@ function tableRow(player: PublicStatsPlayers["rows"][number], density: TableDens
   );
 }
 
-function periodCopy(period: PlayersListPeriod, mode: PlayersListMode): string {
-  if (period === "rotation") return "Active rotation ready";
-  if (mode === "ready") return "All-time warm ready";
-  if (mode === "cold") return "Recomputing aggregate";
-  return "Loading aggregate";
+function periodCopy(
+  lang: PublicStatsLang,
+  period: PlayersListPeriod,
+  mode: PlayersListMode,
+): string {
+  if (period === "rotation") return t(lang, "publicStatsRotationReady");
+  if (mode === "ready") return t(lang, "publicStatsAllTimeWarmReady");
+  if (mode === "cold") return t(lang, "publicStatsAllTimeRecomputing");
+  return t(lang, "publicStatsLoadingInSession");
 }
 
 function periodState(period: PlayersListPeriod, mode: PlayersListMode): string {
@@ -110,7 +114,7 @@ function periodState(period: PlayersListPeriod, mode: PlayersListMode): string {
 }
 
 function tierFilterLabel(lang: PublicStatsLang, filters: PlayersListFilters): string {
-  if (filters.tier === "all") return lang === "ru" ? "Все тиры" : "All tiers";
+  if (filters.tier === "all") return t(lang, "publicStatsTierAll");
   return filters.tier;
 }
 
@@ -125,11 +129,11 @@ function Controls({
 }): ReactNode {
   return (
     <section
-      className="grid gap-3 rounded-md border border-border-1 bg-surface-1 p-3 @4xl:grid-cols-[1fr_220px_160px_auto]"
+      className="grid gap-3 rounded-md border border-border-1 bg-surface-1 p-3 @4xl:grid-cols-12"
       data-players-controls
       aria-label={t(lang, "publicStatsPlayersTitle")}
     >
-      <Field label={lang === "ru" ? "Поиск игроков" : "Search players"}>
+      <Field label={t(lang, "publicStatsSearchLabel")} className="@4xl:col-span-6">
         <div className="relative">
           <Search
             className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-text-muted"
@@ -143,26 +147,26 @@ function Controls({
           />
         </div>
       </Field>
-      <Field label={t(lang, "publicStatsPeriodLabel")}>
+      <Field label={t(lang, "publicStatsPeriodLabel")} className="@4xl:col-span-2">
         <Select
           options={periodOptions(lang)}
           value={period}
           placeholder={t(lang, "publicStatsPeriodRotation")}
         />
       </Field>
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-1.5 @4xl:col-span-2">
         <span className="font-body text-xs font-semibold uppercase tracking-label text-text-muted">
-          Tier
+          {t(lang, "publicStatsTierLabel")}
         </span>
         <span
           className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-border-1 bg-surface-2 px-3 font-body text-sm text-text-primary"
           data-filter-tier
         >
-          <Filter className="size-4 shrink-0 text-primary" aria-hidden />
+          <Filter className="size-4 shrink-0 text-text-muted" aria-hidden />
           {tierFilterLabel(lang, filters)}
         </span>
       </div>
-      <div className="flex items-end">
+      <div className="flex items-end @4xl:col-span-2">
         <Button variant="secondary">{t(lang, "emptyRetry")}</Button>
       </div>
     </section>
@@ -216,10 +220,12 @@ function PlayersTable({
   lang,
   players,
   loading,
+  virtualized,
 }: {
   readonly lang: PublicStatsLang;
   readonly players: PublicStatsPlayers;
   readonly loading: boolean;
+  readonly virtualized: boolean;
 }): ReactNode {
   const caption = withCount(t(lang, "publicStatsPlayersCaption"), players.totalCount);
   const rows = players.rows;
@@ -256,8 +262,8 @@ function PlayersTable({
         sortLabels={sortLabels(lang)}
         visibleRows={VISIBLE_ROWS}
         loading={loading}
-        topSpacer={TOP_SPACER}
-        bottomSpacer={BOTTOM_SPACER}
+        topSpacer={virtualized ? TOP_SPACER : 0}
+        bottomSpacer={virtualized ? BOTTOM_SPACER : 0}
         rows={(density) => rows.map((row) => tableRow(row, density))}
       />
     </section>
@@ -270,14 +276,17 @@ function PlayersListContent({
   period,
   mode,
   filters,
+  volume,
 }: {
   readonly lang: PublicStatsLang;
   readonly players: PublicStatsPlayers;
   readonly period: PlayersListPeriod;
   readonly mode: PlayersListMode;
   readonly filters: PlayersListFilters;
+  readonly volume: PublicStatsVolumeKind;
 }): ReactNode {
   const loading = period === "alltime" && mode !== "ready";
+  const virtualized = volume === "many" || volume === "limitReached";
   return (
     <div
       className="@container flex flex-col gap-4"
@@ -286,12 +295,12 @@ function PlayersListContent({
     >
       <Controls lang={lang} period={period} filters={filters} />
       <div
-        className="rounded-md border border-border-1 bg-surface-1 px-3 py-2 font-body text-xs text-text-muted"
+        className="inline-flex w-fit rounded-md border border-border-1 bg-surface-1 px-3 py-2 font-body text-xs text-text-muted"
         data-period-status={periodState(period, mode)}
       >
-        {periodCopy(period, mode)}
+        {periodCopy(lang, period, mode)}
       </div>
-      <PlayersTable lang={lang} players={players} loading={loading} />
+      <PlayersTable lang={lang} players={players} loading={loading} virtualized={virtualized} />
     </div>
   );
 }
@@ -304,6 +313,7 @@ export function PlayersList({
   period = "rotation",
   mode = "ready",
   filters = DEFAULT_FILTERS,
+  volume = "few",
 }: PlayersListProps): ReactNode {
   return (
     <div className={className} data-players-list-frame>
@@ -320,6 +330,7 @@ export function PlayersList({
           period={period}
           mode={mode}
           filters={filters}
+          volume={volume}
         />
       </PublicStatsSurfaceHarness>
     </div>
