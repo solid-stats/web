@@ -3,22 +3,24 @@ status: testing
 phase: 04-public-stats-overview-players-player-profile
 source: [04-VERIFICATION.md]
 started: 2026-06-28T09:57:22Z
-updated: 2026-06-28T09:57:22Z
+updated: 2026-06-28T10:05:00Z
 ---
 
 ## Current Test
 
-number: 1
-name: Final Visual Hierarchy And Polish
+number: 2
+name: Russian Copy Quality And Clipping
 expected: |
-  Run the Ladle stories and inspect Overview, Players list, and Player Profile at 360, 768, 1280, 1920, 2560, and 3440 widths. The trio still matches 04-UI-SPEC.md priority after 04-06: dense high-signal first screens, useful stats high on the page, no recurrence of empty slabs/spacer air, no horizontal scroll, and no nested mobile list scroll.
+  Switch RU/EN variants and inspect controls, tables, tabs, state cells, provenance, profile status, and mobile top-N rows. Russian labels read naturally and do not clip or wrap awkwardly; the moved catalog-backed labels keep the intended wording.
 awaiting: user response
 
 ## Tests
 
 ### 1. Final Visual Hierarchy And Polish
 expected: Run the Ladle stories and inspect Overview, Players list, and Player Profile at 360, 768, 1280, 1920, 2560, and 3440 widths. The trio still matches 04-UI-SPEC.md priority after 04-06: dense high-signal first screens, useful stats high on the page, no recurrence of empty slabs/spacer air, no horizontal scroll, and no nested mobile list scroll.
-result: [pending]
+result: issue
+reported: "Ну это просто пиздец..."
+severity: blocker
 
 ### 2. Russian Copy Quality And Clipping
 expected: Switch RU/EN variants and inspect controls, tables, tabs, state cells, provenance, profile status, and mobile top-N rows. Russian labels read naturally and do not clip or wrap awkwardly; the moved catalog-backed labels keep the intended wording.
@@ -32,9 +34,19 @@ result: [pending]
 
 total: 3
 passed: 0
-issues: 0
-pending: 3
+issues: 1
+pending: 2
 skipped: 0
 blocked: 0
 
 ## Gaps
+
+- truth: "The public-stats trio matches the Phase 04 visual hierarchy and density contract after 04-06."
+  status: failed
+  reason: "User reported: Ну это просто пиздец..."
+  severity: blocker
+  test: 1
+  root_cause: ""
+  artifacts: []
+  missing: []
+  debug_session: ""
