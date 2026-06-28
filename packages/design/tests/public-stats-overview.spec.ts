@@ -23,10 +23,14 @@ test.describe("Stats Overview journey", () => {
     await openStory(page, SUCCESS_STORY);
 
     await expect(page.getByRole("heading", { level: 1, name: /stats overview/i })).toBeVisible();
-    await expect(page.getByText("Vasiliy", { exact: true })).toBeVisible();
+    await expect(
+      page.locator("[data-overview-leaders] [data-name-anchor]:visible", { hasText: "Vasiliy" }),
+    ).toBeVisible();
 
     for (const label of ENTRY_LABELS) {
-      const entry = page.getByRole("link", { name: new RegExp(label, "i") });
+      const entry = page.locator("[data-overview-entries]").getByRole("link", {
+        name: new RegExp(label, "i"),
+      });
       await expect(entry, `${label} entry exists`).toBeVisible();
       await expect(entry, `${label} entry is keyboard-focusable`).toBeEnabled();
     }
@@ -65,7 +69,9 @@ test.describe("Stats Overview journey", () => {
     await openStory(page, SUCCESS_STORY);
 
     for (const label of ENTRY_LABELS) {
-      const entry = page.getByRole("link", { name: new RegExp(label, "i") });
+      const entry = page.locator("[data-overview-entries]").getByRole("link", {
+        name: new RegExp(label, "i"),
+      });
       await entry.focus();
       await expect(entry, `${label} receives focus`).toBeFocused();
 
