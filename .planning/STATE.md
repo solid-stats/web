@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 04
 current_phase_name: Public Stats — Overview, Players & Player Profile
 status: verifying
-stopped_at: Completed 04-05-PLAN.md
-last_updated: "2026-06-28T09:03:43.883Z"
+stopped_at: Completed 04-06-PLAN.md
+last_updated: "2026-06-28T09:44:32.549Z"
 last_activity: 2026-06-28
 last_activity_desc: Completed 04-05-PLAN.md
 progress:
   total_phases: 9
   completed_phases: 4
-  total_plans: 36
-  completed_plans: 36
-  percent: 100
+  total_plans: 37
+  completed_plans: 37
+  percent: 44
 ---
 
 # Project State
@@ -76,6 +76,7 @@ Plans: [████████████████████] Phase 04: 
 | Phase 04 P03 | 24m | 2 tasks | 5 files |
 | Phase 04 P04 | 8m | 2 tasks | 4 files |
 | Phase 04-public-stats-overview-players-player-profile P05 | 4h 08m | 3 tasks | 13 files |
+| Phase 04 P06 | 4min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -117,6 +118,8 @@ Recent decisions affecting current work:
 - [Phase 04]: 04-05: Treat rejected public-stats checkpoint as concrete issue list from 04-UI-REVIEW.md, not as approval.
 - [Phase 04]: 04-05: Keep public-stats surfaces under an internal surface barrel; do not add Phase 04 surfaces to the package root barrel.
 - [Phase 04]: 04-05: Cover public-stats spacer slabs, density hierarchy, duplicated trust, and RU fallback labels with targeted Playwright gates.
+- [Phase 04]: Used the existing STRINGS plus t(lang, key) path for public-stats brand/status/provenance copy; no new i18n seam or root export was added. — The plan was a gap closure for copy ownership, so reusing the established catalog path closed the defect without introducing architecture.
+- [Phase 04]: Kept the regression guard source-level in Vitest instead of adding RTL/component rendering, matching the frontend test split. — The guard verifies static copy ownership and does not need DOM rendering; component behavior remains covered by Playwright.
 
 ### Pending Todos
 
@@ -147,7 +150,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-28T09:03:43.879Z
-Stopped at: Completed 04-05-PLAN.md
+Last session: 2026-06-28T09:44:18.800Z
+Stopped at: Completed 04-06-PLAN.md
 Resume file: None
 </content>

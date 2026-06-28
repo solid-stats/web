@@ -210,7 +210,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. All three surfaces share the same shell, tier system, freshness/provenance, and i18n; mock data is single-sourced and internally consistent with the Score / K/D formulas and population tiers (Vasiliy stays #1 everywhere).
   5. Each surface renders all ×5 scenario endings and ×4 data-volume states, is axe-clean and keyboard-operable, and reads naturally in RU + EN.
 
-**Plans**: 5/5 plans complete
+**Plans**: 6/6 plans complete
+
+- [x] 04-06-PLAN.md
+
 **Wave 1**
 
 - [x] 04-01-PLAN.md — Shared public-stats fixture graph, i18n keys, and surface harness (SURF-01, SURF-02, SURF-03, QUAL-01, QUAL-04, QUAL-05, QUAL-06)
@@ -319,7 +322,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 1. Workspace & Design-System Foundation | 5/5 | Complete    | 2026-06-20 |
 | 2. UIKIT — Structural & Data-Display Primitives | 11/11 | Complete    | 2026-06-24 |
 | 3. UIKIT — Interactive, i18n & Global-State Patterns | 15/15 | Complete    | 2026-06-26 |
-| 4. Public Stats — Overview, Players & Player Profile | 5/5 | Complete   | 2026-06-28 |
+| 4. Public Stats — Overview, Players & Player Profile | 6/6 | Complete   | 2026-06-28 |
 | 5. Public Stats — Squads | 0/TBD | Not started | - |
 | 6. Public Stats — Commander-side & Bounty | 0/TBD | Not started | - |
 | 7. Public Stats — Replay Detail | 0/TBD | Not started | - |
