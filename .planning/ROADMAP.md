@@ -27,7 +27,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Workspace & Design-System Foundation** - pnpm workspace, `DESIGN.md` → `@theme`, Ladle wired, toolchain green (verified — automated 5/5, UAT 1/1 pass, security 10/10 closed) (completed 2026-06-20)
 - [x] **Phase 2: UIKIT — Structural & Data-Display Primitives** - nav shell, data tables, stat primitives, data-trust, feedback (completed 2026-06-21)
 - [x] **Phase 3: UIKIT — Interactive, i18n & Global-State Patterns** - Ark UI forms/overlays, RU/EN harness, reusable loading/empty/error/offline patterns (completed 2026-06-25)
-- [ ] **Phase 4: Public Stats — Overview, Players & Player Profile** - the hi-fi-anchored core stats trio (loading model, tiers, provenance)
+- [x] **Phase 4: Public Stats — Overview, Players & Player Profile** - the hi-fi-anchored core stats trio (loading model, tiers, provenance) (completed 2026-06-28)
 - [ ] **Phase 5: Public Stats — Squads** - squads list + squad profile (membership timeline, explainable effectiveness)
 - [ ] **Phase 6: Public Stats — Commander-side & Bounty** - КС wins/losses with Unknown legacy outcomes, explainable bounty leaderboards
 - [ ] **Phase 7: Public Stats — Replay Detail** - summary/roster + progressive event timeline, event→request entrypoints
@@ -210,7 +210,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. All three surfaces share the same shell, tier system, freshness/provenance, and i18n; mock data is single-sourced and internally consistent with the Score / K/D formulas and population tiers (Vasiliy stays #1 everywhere).
   5. Each surface renders all ×5 scenario endings and ×4 data-volume states, is axe-clean and keyboard-operable, and reads naturally in RU + EN.
 
-**Plans**: 4/5 plans executed
+**Plans**: 5/5 plans complete
 **Wave 1**
 
 - [x] 04-01-PLAN.md — Shared public-stats fixture graph, i18n keys, and surface harness (SURF-01, SURF-02, SURF-03, QUAL-01, QUAL-04, QUAL-05, QUAL-06)
@@ -223,7 +223,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3** *(blocked on Wave 2)*
 
-- [ ] 04-05-PLAN.md — Cross-surface consistency, validation map, and human design-review checkpoint (SURF-01, SURF-02, SURF-03, QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, QUAL-06)
+- [x] 04-05-PLAN.md — Cross-surface consistency, validation map, and human design-review checkpoint (SURF-01, SURF-02, SURF-03, QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, QUAL-06)
 
 **UI hint**: yes
 
@@ -319,7 +319,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 1. Workspace & Design-System Foundation | 5/5 | Complete    | 2026-06-20 |
 | 2. UIKIT — Structural & Data-Display Primitives | 11/11 | Complete    | 2026-06-24 |
 | 3. UIKIT — Interactive, i18n & Global-State Patterns | 15/15 | Complete    | 2026-06-26 |
-| 4. Public Stats — Overview, Players & Player Profile | 4/5 | In Progress|  |
+| 4. Public Stats — Overview, Players & Player Profile | 5/5 | Complete   | 2026-06-28 |
 | 5. Public Stats — Squads | 0/TBD | Not started | - |
 | 6. Public Stats — Commander-side & Bounty | 0/TBD | Not started | - |
 | 7. Public Stats — Replay Detail | 0/TBD | Not started | - |

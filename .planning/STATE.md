@@ -4,17 +4,17 @@ milestone: v0.1
 milestone_name: milestone
 current_phase: 04
 current_phase_name: Public Stats — Overview, Players & Player Profile
-status: executing
-stopped_at: Completed 04-04-PLAN.md
-last_updated: "2026-06-28T04:41:18.667Z"
+status: verifying
+stopped_at: Completed 04-05-PLAN.md
+last_updated: "2026-06-28T09:03:43.883Z"
 last_activity: 2026-06-28
-last_activity_desc: Completed 04-04-PLAN.md
+last_activity_desc: Completed 04-05-PLAN.md
 progress:
   total_phases: 9
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 36
-  completed_plans: 35
-  percent: 97
+  completed_plans: 36
+  percent: 100
 ---
 
 # Project State
@@ -28,12 +28,12 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 
 ## Current Position
 
-Phase: 04 (Public Stats — Overview, Players & Player Profile) — EXECUTING
+Phase: 04 (Public Stats — Overview, Players & Player Profile) — VERIFYING
 Plan: 5 of 5
-Status: Ready to execute
-Last activity: 2026-06-28 — Completed 04-04-PLAN.md
+Status: Phase complete — ready for verification
+Last activity: 2026-06-28 — Completed 04-05-PLAN.md
 
-Plans: [████████████████████] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 9/11 complete (gap-closure 02-09 done) · Phase 03: 7/7 (03-01 i18n harness, 03-02 Field+Input, 03-03 Select+Stepper, 03-04 FileUpload — KIT-05 form family complete; 03-05 Dialog+Popover, 03-06 Menu+Tabs+Tooltip — KIT-06 overlay family complete; 03-07 AsyncBoundary + Toast manager — SURF-18 complete)
+Plans: [████████████████████] Phase 04: 5/5 complete; milestone planned work: 36/36 plans complete.
 
 ## Performance Metrics
 
@@ -75,6 +75,7 @@ Plans: [████████████████████] Phase 01: 
 | Phase 04 P02 | 15m | 2 tasks | 4 files |
 | Phase 04 P03 | 24m | 2 tasks | 5 files |
 | Phase 04 P04 | 8m | 2 tasks | 4 files |
+| Phase 04-public-stats-overview-players-player-profile P05 | 4h 08m | 3 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -113,6 +114,9 @@ Recent decisions affecting current work:
 - [Phase 04]: Players list remains a v0.1 Ladle surface: story-controlled visual controls only, no route/search-param/data engine.
 - [Phase 04]: AutoTable forwards optional spacer geometry to Table so public-stats surfaces can expose visual virtualization hooks without TanStack Table/Virtual.
 - [Phase 04]: Player Profile remains a v0.1 Ladle surface with no route/data engine; mobile profile tabs use contained horizontal overflow inside the tab root so the page never horizontally scrolls.
+- [Phase 04]: 04-05: Treat rejected public-stats checkpoint as concrete issue list from 04-UI-REVIEW.md, not as approval.
+- [Phase 04]: 04-05: Keep public-stats surfaces under an internal surface barrel; do not add Phase 04 surfaces to the package root barrel.
+- [Phase 04]: 04-05: Cover public-stats spacer slabs, density hierarchy, duplicated trust, and RU fallback labels with targeted Playwright gates.
 
 ### Pending Todos
 
@@ -143,7 +147,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-28T04:40:48.636Z
-Stopped at: Completed 04-04-PLAN.md
+Last session: 2026-06-28T09:03:43.879Z
+Stopped at: Completed 04-05-PLAN.md
 Resume file: None
 </content>
