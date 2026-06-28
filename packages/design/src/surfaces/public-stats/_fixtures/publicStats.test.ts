@@ -1,5 +1,6 @@
 // Phase 04 D-03/D-04 fixture contract: Overview, Players, and Profile must read
 // one canonical graph so formulas, ranks, tiers, data volumes, and copy cannot drift.
+import { readFileSync } from "node:fs";
 import { describe, expect, test } from "vitest";
 
 import { STRINGS } from "../../../shared/uikit/_fixtures";
@@ -20,6 +21,9 @@ const PUBLIC_STATS_STRING_KEYS = [
   "publicStatsOverviewTitle",
   "publicStatsPlayersTitle",
   "publicStatsProfileTitle",
+  "publicStatsBrand",
+  "publicStatsProfileStatusActive",
+  "publicStatsProvenanceLinkLabel",
   "publicStatsAllPlayersCta",
   "publicStatsOpenProfile",
   "publicStatsSgProfile",
@@ -47,6 +51,19 @@ const PUBLIC_STATS_STRING_KEYS = [
 ] as const;
 
 const VOLUME_KINDS = ["empty", "few", "many", "limitReached"] as const;
+const PUBLIC_STATS_SOURCE_FILES = [
+  {
+    label: "PlayerProfile.tsx",
+    url: new URL("../PlayerProfile/PlayerProfile.tsx", import.meta.url),
+  },
+  {
+    label: "PublicStatsSurfaceHarness.tsx",
+    url: new URL("../_harness/PublicStatsSurfaceHarness.tsx", import.meta.url),
+  },
+] as const;
+const LOCAL_BILINGUAL_COPY_MAP = /\b(?:[A-Z][A-Z0-9_]*|[a-z][A-Za-z0-9]*)\s*=\s*\{\s*ru\s*:/u;
+const PROVENANCE_LINK_LABEL_CONDITIONAL =
+  /<ProvenanceLine[\s\S]*?linkLabel=\{\s*lang\s*===\s*["']ru["'][\s\S]*?\}/u;
 
 function expectTopPlayer(player: PublicStatsPlayer | undefined, context: string): void {
   expect(player?.name, `${context} keeps Vasiliy as #1`).toBe("Vasiliy");
@@ -133,5 +150,19 @@ describe("public-stats RU + EN copy", () => {
     const entry = STRINGS[key];
     expect(entry?.ru, `STRINGS.${key}.ru`).toBeTruthy();
     expect(entry?.en, `STRINGS.${key}.en`).toBeTruthy();
+  });
+
+  test("keeps public-stats surface copy behind STRINGS/i18n instead of local maps", () => {
+    for (const source of PUBLIC_STATS_SOURCE_FILES) {
+      const text = readFileSync(source.url, "utf8");
+      expect(
+        text,
+        `${source.label} has local public-stats copy escaping the STRINGS/i18n path`,
+      ).not.toMatch(LOCAL_BILINGUAL_COPY_MAP);
+      expect(
+        text,
+        `${source.label} has a language-conditional ProvenanceLine link label escaping STRINGS/i18n`,
+      ).not.toMatch(PROVENANCE_LINK_LABEL_CONDITIONAL);
+    }
   });
 });
