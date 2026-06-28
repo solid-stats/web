@@ -2,18 +2,18 @@
 gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
-current_phase: 4
+current_phase: 04
 current_phase_name: Public Stats — Overview, Players & Player Profile
-status: ready_to_execute
+status: executing
 stopped_at: Phase 04 planned
-last_updated: "2026-06-28T03:00:31.174Z"
+last_updated: "2026-06-28T03:51:05.249Z"
 last_activity: 2026-06-28
-last_activity_desc: Phase 03 complete, transitioned to Phase 4
+last_activity_desc: Phase 04 execution started
 progress:
   total_phases: 9
   completed_phases: 3
-  total_plans: 31
-  completed_plans: 31
+  total_plans: 36
+  completed_plans: 32
   percent: 33
 ---
 
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-20)
 
 **Core value:** Make SolidGames statistics easy to inspect, filter, trust, and correct through a fast public website and clear request/moderation flows.
-**Current focus:** Phase 03 — UIKIT — Interactive, i18n & Global-State Patterns
+**Current focus:** Phase 04 — Public Stats — Overview, Players & Player Profile
 
 ## Current Position
 
-Phase: 4 — Public Stats — Overview, Players & Player Profile
-Plan: 5 plans ready
+Phase: 04 (Public Stats — Overview, Players & Player Profile) — EXECUTING
+Plan: 2 of 5
 Status: Ready to execute
-Last activity: 2026-06-28 — Phase 03 complete, transitioned to Phase 4
+Last activity: 2026-06-28 — Phase 04 execution started
 
 Plans: [████████████████████] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 9/11 complete (gap-closure 02-09 done) · Phase 03: 7/7 (03-01 i18n harness, 03-02 Field+Input, 03-03 Select+Stepper, 03-04 FileUpload — KIT-05 form family complete; 03-05 Dialog+Popover, 03-06 Menu+Tabs+Tooltip — KIT-06 overlay family complete; 03-07 AsyncBoundary + Toast manager — SURF-18 complete)
 
@@ -71,6 +71,7 @@ Plans: [████████████████████] Phase 01: 
 | Phase 03 P05 | 25min | 3 tasks | 11 files |
 | Phase 03 P06 | ~12min | 3 tasks | 17 files |
 | Phase 03 P07 | 10 | 3 tasks | 11 files |
+| Phase 04 P01 | 9min | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -102,6 +103,8 @@ Recent decisions affecting current work:
 - [Phase ?]: [Phase 03 / 03-03]: KIT-05 Select adopts Ark Select (generic Select<TValue>, tv()-per-part, cyan active option + ItemIndicator check, Ark-owned keyboard) and Stepper adopts Ark NumberInput (tabular-mono value via the mono face, ≥44px aria-labelled inc/dec triggers whose names the story injects). Select forced-open uses UNCONTROLLED defaultOpen — controlled open pinned every instance closed (Rule 1 bug fix). Live keyboard specs target the lone Playground story; the matrix's forced-open Ark portal renders a dismiss layer that intercepts events.
 - [Phase ?]: [Phase 03 / 03-05]: KIT-06 Dialog (modal — Ark-owned trap/return/Esc/inert/scrim) + Popover (non-modal — return/Esc/no-trap) adopt the tv()-per-Ark-part idiom; forced-open axe cell uses UNCONTROLLED defaultOpen (Select Rule-1 lesson), Playground stays controlled. Overlays animate the bare transition utility (not arbitrary transition-[opacity,transform]) for CLS=0. Destructive-confirm story (WCAG 3.3.6) defaults focus to safe cancel + loss/verb+noun. Overlay keyboard specs poll focus-settle + activeElement-hook to defeat the dismissable-arm/restoreFocus races.
 - [Phase ?]: KIT-06 overlay family COMPLETE (Menu/Tabs/Tooltip graduated); cyan-active always paired with a structural marker (never color-alone); Tabs focus ring unclipped under a sticky bar (2.4.12)
+- [Phase 04]: Public-stats player tiers stay pure tierFor results; toTierCell is the UI adapter for table/compact-row metadata.
+- [Phase 04]: Public-stats harness is internal to surfaces/public-stats and is not exported from the root design package barrel.
 
 ### Pending Todos
 
@@ -132,7 +135,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-28T03:00:31.170Z
+Last session: 2026-06-28T03:50:35.405Z
 Stopped at: Phase 04 UI-SPEC approved
 Resume file: .planning/phases/04-public-stats-overview-players-player-profile/04-UI-SPEC.md
 </content>

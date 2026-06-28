@@ -37,9 +37,9 @@ Each as a colocated Ladle story with component states (enabled / hover / pressed
 
 ### Surfaces — Public (designed in Ladle)
 
-- [ ] **SURF-01**: Stats Overview — tables/leaderboards/microcharts with entry points to players, squads, rotations, commander, bounty.
-- [ ] **SURF-02**: Players list — search/filter, tier-colored columns, period selector, loading model (instant vs aggregate skeleton), virtualized desktop / top-N mobile.
-- [ ] **SURF-03**: Player profile — identity + nick history, hero stats, squad/status, rotation/bounty/history/replay tabs, provenance.
+- [x] **SURF-01**: Stats Overview — tables/leaderboards/microcharts with entry points to players, squads, rotations, commander, bounty.
+- [x] **SURF-02**: Players list — search/filter, tier-colored columns, period selector, loading model (instant vs aggregate skeleton), virtualized desktop / top-N mobile.
+- [x] **SURF-03**: Player profile — identity + nick history, hero stats, squad/status, rotation/bounty/history/replay tabs, provenance.
 - [ ] **SURF-04**: Squads list — search/filter, row layouts.
 - [ ] **SURF-05**: Squad profile — identity, membership timeline, rotation stats, explainable squad effectiveness.
 - [ ] **SURF-06**: Commander-side stats — wins/losses, filterable Unknown legacy outcomes, rotation/player/side filters.
@@ -119,9 +119,9 @@ listed as "Phases 2–9 (gate)".
 | KIT-06 | Phase 3 | Complete |
 | KIT-08 | Phase 3 | Complete |
 | SURF-18 | Phase 3 | Complete |
-| SURF-01 | Phase 4 | Pending |
-| SURF-02 | Phase 4 | Pending |
-| SURF-03 | Phase 4 | Pending |
+| SURF-01 | Phase 4 | Complete |
+| SURF-02 | Phase 4 | Complete |
+| SURF-03 | Phase 4 | Complete |
 | SURF-04 | Phase 5 | Pending |
 | SURF-05 | Phase 5 | Pending |
 | SURF-06 | Phase 6 | Pending |
