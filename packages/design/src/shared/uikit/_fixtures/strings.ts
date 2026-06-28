@@ -276,6 +276,54 @@ export const STRINGS = {
   toastInfo: { ru: "Агрегат пересчитан", en: "Aggregate recomputed" },
   toastWarn: { ru: "Данные могут устаревать", en: "Data may be getting stale" },
   toastFailed: { ru: "Не удалось сохранить", en: "Could not save" },
+  // Phase 04 public-stats surface copy. These keys are consumed only by the
+  // public-stats surface/story layer; UIKIT primitives still receive plain strings.
+  publicStatsOverviewTitle: { ru: "Обзор статистики", en: "Stats Overview" },
+  publicStatsPlayersTitle: { ru: "Игроки", en: "Players" },
+  publicStatsProfileTitle: { ru: "Профиль игрока", en: "Player profile" },
+  publicStatsAllPlayersCta: { ru: "Все игроки", en: "All players" },
+  publicStatsSquadsEntry: { ru: "Отряды", en: "Squads" },
+  publicStatsRotationsEntry: { ru: "Ротации", en: "Rotations" },
+  publicStatsCommanderEntry: { ru: "КС", en: "Commander" },
+  publicStatsBountyEntry: { ru: "Баунти", en: "Bounty" },
+  publicStatsOpenProfile: { ru: "Открыть профиль", en: "Open profile" },
+  publicStatsSgProfile: { ru: "Профиль sg.zone", en: "sg.zone profile" },
+  publicStatsPeriodLabel: { ru: "Период", en: "Period" },
+  publicStatsPeriodRotation: { ru: "Активная ротация", en: "Active rotation" },
+  publicStatsPeriodAllTime: { ru: "Всё время", en: "All time" },
+  publicStatsLoadingInSession: { ru: "Загружаем агрегат…", en: "Loading aggregate…" },
+  publicStatsEmptyHeading: {
+    ru: "Нет данных по этим условиям",
+    en: "No data for these filters",
+  },
+  publicStatsEmptyBody: {
+    ru: "Сбросьте фильтры или выберите другой период.",
+    en: "Clear filters or choose another period.",
+  },
+  publicStatsSystemError: {
+    ru: "Не удалось загрузить статистику. Код: {id}. Повторите или сообщите нам, если повторяется.",
+    en: "Could not load stats. Ref: {id}. Try again or contact us if it persists.",
+  },
+  publicStatsSearchEmptyHeading: { ru: "Игроки не найдены", en: "No players found" },
+  publicStatsSearchEmptyBody: {
+    ru: "Измените запрос или сбросьте фильтры, чтобы увидеть всех игроков.",
+    en: "Change the search or clear filters to see all players.",
+  },
+  publicStatsShowMore: { ru: "Показать ещё · {n}", en: "Show more · {n}" },
+  publicStatsPlayersCaption: { ru: "Игроки · {n}", en: "Players · {n}" },
+  publicStatsNickHistoryCaption: { ru: "История ников · {n}", en: "Nick history · {n}" },
+  publicStatsReplaysCaption: { ru: "Реплеи · {n}", en: "Replays · {n}" },
+  publicStatsProvenance: {
+    ru: "Посчитано из {n} реплеев · {freshness} · Как считается",
+    en: "Computed from {n} replays · {freshness} · How it's computed",
+  },
+  publicStatsTrustKnown: { ru: "Известно", en: "Known" },
+  publicStatsTrustUnknown: { ru: "Неизвестно", en: "Unknown" },
+  publicStatsTrustConflict: { ru: "Конфликт", en: "Conflict" },
+  publicStatsProfileTabRotation: { ru: "Ротация", en: "Rotation" },
+  publicStatsProfileTabBounty: { ru: "Баунти", en: "Bounty" },
+  publicStatsProfileTabHistory: { ru: "История", en: "History" },
+  publicStatsProfileTabReplays: { ru: "Реплеи", en: "Replays" },
 } as const satisfies Readonly<Record<string, Bilingual>>;
 
 /** The set of copy-element keys (derived — never hand-maintained in parallel). */
