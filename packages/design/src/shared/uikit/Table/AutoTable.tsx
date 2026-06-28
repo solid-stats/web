@@ -29,6 +29,10 @@ type Props = {
   visibleRows: number;
   /** When true, swap the body for the Skeleton table variant (exact dims). */
   loading?: boolean;
+  /** Computed spacer height (px) above the visible window (virtualization-ready). */
+  topSpacer?: number;
+  /** Computed spacer height (px) below the visible window (virtualization-ready). */
+  bottomSpacer?: number;
   /**
    * The body rows for a resolved density — called once per branch so each `TableRow`
    * gets the correct `rowHeight` (ROW_H 52 comfortable / 44 compact). A render-prop
@@ -47,11 +51,23 @@ export function AutoTable({
   sortLabels,
   visibleRows,
   loading = false,
+  topSpacer = 0,
+  bottomSpacer = 0,
   rows,
   onSort,
 }: Props): ReactNode {
   // Shared props for both density branches (everything except `density` + the rows).
-  const shared = { columns, caption, sort, sortLabels, visibleRows, loading, onSort };
+  const shared = {
+    columns,
+    caption,
+    sort,
+    sortLabels,
+    visibleRows,
+    loading,
+    topSpacer,
+    bottomSpacer,
+    onSort,
+  };
   return (
     <div className={`@container ${className ?? ""}`} data-auto-table>
       {/* Comfortable — desktop-class container width (@5xl ≈ 1024px) and up. */}

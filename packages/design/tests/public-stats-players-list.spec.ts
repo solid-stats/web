@@ -45,8 +45,10 @@ test.describe("Players list journey", () => {
 
     await expect(page.getByRole("heading", { level: 1, name: /players/i })).toBeVisible();
     await expect(page.getByLabel(/search players/i)).toBeVisible();
-    await expect(page.getByLabel(/period/i)).toBeVisible();
-    await expect(page.getByRole("button", { name: /active rotation/i })).toBeVisible();
+    await expect(page.getByRole("combobox", { name: /period/i })).toBeVisible();
+    await expect(
+      page.locator("[data-players-controls]").getByText(/active rotation/i),
+    ).toBeVisible();
     await expect(page.getByRole("button", { name: /clear filters/i })).toBeVisible();
 
     const surface = page.locator("[data-players-list]");
@@ -114,12 +116,13 @@ test.describe("Players list journey", () => {
     await openStory(page, SUCCESS_STORY);
 
     const table = page.locator("[data-auto-table]:visible").first();
+    const comfortable = table.locator("[data-density-branch='comfortable']");
     await expect(table).toBeVisible();
-    await expect(table.locator("[data-table-viewport]")).toBeVisible();
-    await expect(table.locator("[data-spacer='top']")).toBeVisible();
-    await expect(table.locator("[data-spacer='bottom']")).toBeVisible();
+    await expect(comfortable.locator("[data-table-viewport]")).toBeVisible();
+    await expect(comfortable.locator("[data-spacer='top']")).toBeVisible();
+    await expect(comfortable.locator("[data-spacer='bottom']")).toBeVisible();
 
-    const viewportOverflow = await table
+    const viewportOverflow = await comfortable
       .locator("[data-table-viewport]")
       .evaluate((el) => el.scrollHeight - el.clientHeight);
     expect(viewportOverflow, "desktop table keeps the reserved viewport contract").toBeGreaterThan(
@@ -135,8 +138,8 @@ test.describe("Players list journey", () => {
       page.locator("[data-players-cls-table-ready] [data-table-card]").first(),
     );
     await expectSameBox(
-      page.locator("[data-players-cls-compact-loading]"),
-      page.locator("[data-players-cls-compact-ready]"),
+      page.locator("[data-players-cls-compact-loading] [data-compact-list]").first(),
+      page.locator("[data-players-cls-compact-ready] [data-compact-list]").first(),
     );
   });
 });
