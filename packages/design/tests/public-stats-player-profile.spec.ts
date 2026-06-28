@@ -75,7 +75,7 @@ test.describe("Player Profile journey", () => {
     await page.getByRole("tab", { name: "Rotation" }).focus();
     await page.keyboard.press("ArrowRight");
     await expect(page.getByRole("tab", { name: "Bounty" })).toHaveAttribute("data-selected", "");
-    await expect(page.getByRole("tabpanel")).toContainText(/weighted score/i);
+    await expect(page.getByRole("tabpanel", { name: "Bounty" })).toContainText(/weighted score/i);
   });
 
   for (const width of RESPONSIVE_WIDTHS) {
