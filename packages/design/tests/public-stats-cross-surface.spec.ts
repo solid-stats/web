@@ -1,22 +1,13 @@
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
 import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
 import { PUBLIC_STATS } from "../src/surfaces/public-stats/_fixtures";
 import type { PublicStatsLang } from "../src/surfaces/public-stats/_harness";
 
-const packageRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
-
-type LadleMeta = { readonly stories: Readonly<Record<string, unknown>> };
 type SurfaceStory = {
   readonly key: "overview" | "players" | "profile";
   readonly story: string;
   readonly root: string;
 };
-
-const meta = JSON.parse(readFileSync(join(packageRoot, "build", "meta.json"), "utf8")) as LadleMeta;
-const storyKeys = Object.keys(meta.stories);
 
 const SUCCESS_STORIES = {
   overview: "public-stats--stats-overview--success",
@@ -59,6 +50,24 @@ async function openStory(page: Page, story: string, lang?: PublicStatsLang): Pro
   await page.waitForSelector("[data-storyloaded]");
 }
 
+async function storyKeys(page: Page): Promise<readonly string[]> {
+  const response = await page.request.get("/meta.json");
+  expect(response.ok(), "Ladle meta.json is readable").toBe(true);
+
+  const payload: unknown = await response.json();
+  if (
+    typeof payload !== "object" ||
+    payload === null ||
+    !("stories" in payload) ||
+    typeof payload.stories !== "object" ||
+    payload.stories === null
+  ) {
+    return [];
+  }
+
+  return Object.keys(payload.stories);
+}
+
 async function noHorizontalScroll(locator: Locator): Promise<void> {
   const overflow = await locator.evaluate((el) => el.scrollWidth - el.clientWidth);
   expect(overflow, "no horizontal overflow").toBeLessThanOrEqual(0);
@@ -81,12 +90,14 @@ async function expectSharedTrust(page: Page): Promise<void> {
 }
 
 test.describe("public stats cross-surface consistency", () => {
-  test("Catalog meta exposes the public-stats surface trio", () => {
+  test("Catalog meta exposes the public-stats surface trio", async ({ page }) => {
+    const keys = await storyKeys(page);
+
     for (const story of Object.values(SUCCESS_STORIES)) {
-      expect(storyKeys, `${story} is present in Ladle meta`).toContain(story);
+      expect(keys, `${story} is present in Ladle meta`).toContain(story);
     }
     for (const { story } of RESPONSIVE_STORIES) {
-      expect(storyKeys, `${story} is present in Ladle meta`).toContain(story);
+      expect(keys, `${story} is present in Ladle meta`).toContain(story);
     }
   });
 
@@ -104,9 +115,9 @@ test.describe("public stats cross-surface consistency", () => {
     await expect(overviewLeader.locator("[data-table-row='1']:visible")).toContainText(
       expectedSquad,
     );
-    await expect(overviewLeader.locator("[data-numeric-cell='score']:visible").first()).toContainText(
-      expectedScore,
-    );
+    await expect(
+      overviewLeader.locator("[data-numeric-cell='score']:visible").first(),
+    ).toContainText(expectedScore);
     await expect(overviewLeader.locator("[data-numeric-cell='kd']:visible").first()).toContainText(
       expectedKd,
     );
@@ -115,7 +126,9 @@ test.describe("public stats cross-surface consistency", () => {
 
     await openStory(page, SUCCESS_STORIES.players);
     const players = page.locator("[data-players-list]");
-    await expect(players.locator("[data-table-row='1']:visible")).toContainText(expectedPlayer.name);
+    await expect(players.locator("[data-table-row='1']:visible")).toContainText(
+      expectedPlayer.name,
+    );
     await expect(players.locator("[data-table-row='1']:visible")).toContainText(expectedSquad);
     await expect(players.locator("[data-numeric-cell='score']:visible").first()).toContainText(
       expectedScore,
@@ -143,7 +156,9 @@ test.describe("public stats cross-surface consistency", () => {
   });
 
   for (const lang of ["ru", "en"] as const) {
-    test(`RU/EN responsive variants render without unresolved keys in ${lang}`, async ({ page }) => {
+    test(`RU/EN responsive variants render without unresolved keys in ${lang}`, async ({
+      page,
+    }) => {
       for (const { story, root } of RESPONSIVE_STORIES) {
         await openStory(page, story, lang);
         await expect(page.locator(root), `${story} ${lang} root renders`).toBeVisible();

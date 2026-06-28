@@ -58,6 +58,10 @@ function t(
   return values === undefined ? i18n._({ id }) : i18n._({ id, values });
 }
 
+function withCount(label: string, count: number): string {
+  return label.replace("{n}", String(count));
+}
+
 function entryItems(lang: PublicStatsLang, totalPlayers: number): readonly StatsOverviewEntry[] {
   return [
     {
@@ -103,7 +107,7 @@ function metricStats(lang: PublicStatsLang, overview: PublicStatsOverview): read
     },
     {
       key: "replays",
-      label: t(lang, "publicStatsReplaysCaption", { n: overview.provenance.replayCount }),
+      label: withCount(t(lang, "publicStatsReplaysCaption"), overview.provenance.replayCount),
       value: String(overview.provenance.replayCount),
     },
     {
@@ -189,7 +193,7 @@ function Leaders({
   readonly loading: boolean;
 }): ReactNode {
   const rows = overview.topPlayers;
-  const caption = t(lang, "publicStatsPlayersCaption", { n: overview.totalPlayers });
+  const caption = withCount(t(lang, "publicStatsPlayersCaption"), overview.totalPlayers);
   const remaining = Math.max(overview.totalPlayers - MOBILE_TOP_N, 0);
 
   return (
@@ -212,7 +216,7 @@ function Leaders({
             rows={rows.map(toPlayerCompactRow)}
             topN={MOBILE_TOP_N}
             metricLabels={{ score: t(lang, "statScore"), kd: t(lang, "statKd") }}
-            showMoreLabel={t(lang, "publicStatsShowMore", { n: remaining })}
+            showMoreLabel={withCount(t(lang, "publicStatsShowMore"), remaining)}
             caption={caption}
           />
           <AutoTable
