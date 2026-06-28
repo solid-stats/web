@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 04
 current_phase_name: Public Stats — Overview, Players & Player Profile
 status: executing
-stopped_at: Phase 04 planned
-last_updated: "2026-06-28T03:51:05.249Z"
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-06-28T04:12:02.197Z"
 last_activity: 2026-06-28
 last_activity_desc: Phase 04 execution started
 progress:
   total_phases: 9
   completed_phases: 3
   total_plans: 36
-  completed_plans: 32
+  completed_plans: 33
   percent: 33
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 ## Current Position
 
 Phase: 04 (Public Stats — Overview, Players & Player Profile) — EXECUTING
-Plan: 2 of 5
+Plan: 3 of 5
 Status: Ready to execute
 Last activity: 2026-06-28 — Phase 04 execution started
 
@@ -72,6 +72,7 @@ Plans: [████████████████████] Phase 01: 
 | Phase 03 P06 | ~12min | 3 tasks | 17 files |
 | Phase 03 P07 | 10 | 3 tasks | 11 files |
 | Phase 04 P01 | 9min | 3 tasks | 7 files |
+| Phase 04 P02 | 15m | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -105,6 +106,8 @@ Recent decisions affecting current work:
 - [Phase ?]: KIT-06 overlay family COMPLETE (Menu/Tabs/Tooltip graduated); cyan-active always paired with a structural marker (never color-alone); Tabs focus ring unclipped under a sticky bar (2.4.12)
 - [Phase 04]: Public-stats player tiers stay pure tierFor results; toTierCell is the UI adapter for table/compact-row metadata.
 - [Phase 04]: Public-stats harness is internal to surfaces/public-stats and is not exported from the root design package barrel.
+- [Phase 04]: Stats Overview entry affordances use known internal Ladle story hrefs until v1.0 routes exist. — Mitigates T-04-02-01 while keeping the design surface honest about route wiring.
+- [Phase 04]: Stats Overview keeps user-facing copy behind the existing Lingui/i18n harness; the story title uses slug wording only. — Keeps SURF-01 inspectable in RU and EN without hardcoded public-stats UI copy in the surface.
 
 ### Pending Todos
 
@@ -135,7 +138,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-28T03:50:35.405Z
-Stopped at: Phase 04 UI-SPEC approved
-Resume file: .planning/phases/04-public-stats-overview-players-player-profile/04-UI-SPEC.md
+Last session: 2026-06-28T04:12:02.193Z
+Stopped at: Completed 04-02-PLAN.md
+Resume file: None
 </content>
