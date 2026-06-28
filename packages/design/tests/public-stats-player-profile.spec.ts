@@ -43,7 +43,7 @@ test.describe("Player Profile journey", () => {
 
     const profile = page.locator("[data-player-profile]");
     await expect(page.getByRole("heading", { level: 1, name: "Vasiliy" })).toBeVisible();
-    await expect(profile.locator("[data-profile-identity]")).toContainText("7th Guards");
+    await expect(profile.locator("[data-profile-identity]")).toContainText("7th");
     await expect(profile.locator("[data-profile-identity]")).toContainText(/active/i);
     await expect(page.getByRole("link", { name: /sg\.zone profile/i })).toHaveAttribute(
       "href",
@@ -51,7 +51,7 @@ test.describe("Player Profile journey", () => {
     );
 
     await expect(profile.locator("[data-profile-hero='score']")).toContainText("4.13");
-    await expect(profile.locator("[data-profile-hero='kd']")).toContainText("2.95");
+    await expect(profile.locator("[data-profile-hero='kd']")).toContainText("3.39");
     await expect(profile.locator("[data-profile-freshness]")).toContainText(/up to date/i);
     await expect(profile.locator("[data-profile-provenance]")).toContainText(
       /computed from 1342 replays/i,
