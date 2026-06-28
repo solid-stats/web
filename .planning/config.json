@@ -37,7 +37,7 @@
     "research_before_questions": true,
     "discuss_mode": "assumptions",
     "skip_discuss": false,
-    "use_worktrees": true,
+    "use_worktrees": false,
     "subagent_timeout": 1200000,
     "inline_plan_threshold": 2,
     "code_review": true,
