@@ -46,7 +46,6 @@ export type PlayerProfileProps = {
 const PROFILE_VISIBLE_ROWS = 4;
 const MOBILE_TOP_N = 3;
 const SORT: SortState = { key: "score", direction: "descending" };
-const PROFILE_STATUS = { ru: "Активен", en: "Active" } as const;
 
 function t(
   lang: PublicStatsLang,
@@ -178,7 +177,7 @@ function Identity({
         <div className="mt-3 flex flex-wrap gap-2 font-body text-sm text-text-muted">
           <span>{profile.currentSquad ?? "—"}</span>
           <span aria-hidden>·</span>
-          <span>{PROFILE_STATUS[lang]}</span>
+          <span>{t(lang, "publicStatsProfileStatusActive")}</span>
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
           <div data-profile-freshness>
@@ -193,7 +192,7 @@ function Identity({
                 freshness: label,
               })}
               locale={lang}
-              linkLabel={lang === "ru" ? "Как считается" : "How it's computed"}
+              linkLabel={t(lang, "publicStatsProvenanceLinkLabel")}
             />
           </div>
         </div>

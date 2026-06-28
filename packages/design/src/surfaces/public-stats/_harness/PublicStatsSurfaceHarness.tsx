@@ -75,7 +75,7 @@ function Brand({ lang }: { readonly lang: PublicStatsLang }): ReactNode {
   return (
     <span className="inline-flex items-center gap-2 font-display font-semibold tracking-tight text-text-primary">
       <BarChart3 className="size-5 shrink-0 text-primary" aria-hidden />
-      {lang === "ru" ? "Солид Статс" : "Solid Stats"}
+      {t(lang, "publicStatsBrand")}
     </span>
   );
 }
@@ -180,7 +180,7 @@ function trustBar(lang: PublicStatsLang, provenance: PublicStatsProvenance): Rea
           freshness: label,
         })}
         locale={lang}
-        linkLabel={lang === "ru" ? "Как считается" : "How it's computed"}
+        linkLabel={t(lang, "publicStatsProvenanceLinkLabel")}
       />
     </div>
   );

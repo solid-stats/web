@@ -278,9 +278,12 @@ export const STRINGS = {
   toastFailed: { ru: "Не удалось сохранить", en: "Could not save" },
   // Phase 04 public-stats surface copy. These keys are consumed only by the
   // public-stats surface/story layer; UIKIT primitives still receive plain strings.
+  publicStatsBrand: { ru: "Солид Статс", en: "Solid Stats" },
   publicStatsOverviewTitle: { ru: "Обзор статистики", en: "Stats Overview" },
   publicStatsPlayersTitle: { ru: "Игроки", en: "Players" },
   publicStatsProfileTitle: { ru: "Профиль игрока", en: "Player profile" },
+  publicStatsProfileStatusActive: { ru: "Активен", en: "Active" },
+  publicStatsProvenanceLinkLabel: { ru: "Как считается", en: "How it's computed" },
   publicStatsAllPlayersCta: { ru: "Все игроки", en: "All players" },
   publicStatsSquadsEntry: { ru: "Отряды", en: "Squads" },
   publicStatsRotationsEntry: { ru: "Ротации", en: "Rotations" },
