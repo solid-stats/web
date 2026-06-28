@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 04
 current_phase_name: Public Stats — Overview, Players & Player Profile
 status: executing
-stopped_at: Completed 04-02-PLAN.md
-last_updated: "2026-06-28T04:12:02.197Z"
+stopped_at: Completed 04-03-PLAN.md
+last_updated: "2026-06-28T04:25:48.770Z"
 last_activity: 2026-06-28
-last_activity_desc: Phase 04 execution started
+last_activity_desc: Completed 04-03-PLAN.md
 progress:
   total_phases: 9
   completed_phases: 3
   total_plans: 36
-  completed_plans: 33
-  percent: 33
+  completed_plans: 34
+  percent: 94
 ---
 
 # Project State
@@ -29,9 +29,9 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 ## Current Position
 
 Phase: 04 (Public Stats — Overview, Players & Player Profile) — EXECUTING
-Plan: 3 of 5
+Plan: 4 of 5
 Status: Ready to execute
-Last activity: 2026-06-28 — Phase 04 execution started
+Last activity: 2026-06-28 — Completed 04-03-PLAN.md
 
 Plans: [████████████████████] Phase 01: 5/5 · verified + UAT-passed · Phase 02: 9/11 complete (gap-closure 02-09 done) · Phase 03: 7/7 (03-01 i18n harness, 03-02 Field+Input, 03-03 Select+Stepper, 03-04 FileUpload — KIT-05 form family complete; 03-05 Dialog+Popover, 03-06 Menu+Tabs+Tooltip — KIT-06 overlay family complete; 03-07 AsyncBoundary + Toast manager — SURF-18 complete)
 
@@ -73,6 +73,7 @@ Plans: [████████████████████] Phase 01: 
 | Phase 03 P07 | 10 | 3 tasks | 11 files |
 | Phase 04 P01 | 9min | 3 tasks | 7 files |
 | Phase 04 P02 | 15m | 2 tasks | 4 files |
+| Phase 04 P03 | 24m | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -108,6 +109,8 @@ Recent decisions affecting current work:
 - [Phase 04]: Public-stats harness is internal to surfaces/public-stats and is not exported from the root design package barrel.
 - [Phase 04]: Stats Overview entry affordances use known internal Ladle story hrefs until v1.0 routes exist. — Mitigates T-04-02-01 while keeping the design surface honest about route wiring.
 - [Phase 04]: Stats Overview keeps user-facing copy behind the existing Lingui/i18n harness; the story title uses slug wording only. — Keeps SURF-01 inspectable in RU and EN without hardcoded public-stats UI copy in the surface.
+- [Phase 04]: Players list remains a v0.1 Ladle surface: story-controlled visual controls only, no route/search-param/data engine.
+- [Phase 04]: AutoTable forwards optional spacer geometry to Table so public-stats surfaces can expose visual virtualization hooks without TanStack Table/Virtual.
 
 ### Pending Todos
 
@@ -138,7 +141,7 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-28T04:12:02.193Z
-Stopped at: Completed 04-02-PLAN.md
+Last session: 2026-06-28T04:25:48.766Z
+Stopped at: Completed 04-03-PLAN.md
 Resume file: None
 </content>
