@@ -2,13 +2,11 @@ node_modules/
 dist/
 coverage/
 
-# Ladle production build output (regenerable; `ladle build` per design package)
-packages/*/build/
-
-# Playwright catalog-harness output (regenerable per `playwright test` run)
-packages/*/test-results/
-packages/*/playwright-report/
-packages/*/.last-run.json
+# Archived Ladle output (regenerable; never commit legacy build/test artifacts)
+.legacy/**/build/
+.legacy/**/test-results/
+.legacy/**/playwright-report/
+.legacy/**/.last-run.json
 
 # Playwright MCP output (transient browser logs/snapshots)
 .playwright-mcp/

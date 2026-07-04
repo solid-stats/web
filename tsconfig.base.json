@@ -13,7 +13,7 @@
     "noUncheckedSideEffectImports": true,
     "forceConsistentCasingInFileNames": true,
 
-    // Module system — bundler stack (Vite / Ladle), web frontend override (§C)
+    // Module system — bundler stack (Vite / TanStack Start), web frontend override (§C)
     "target": "ES2023",
     "module": "ESNext",
     "moduleResolution": "bundler",

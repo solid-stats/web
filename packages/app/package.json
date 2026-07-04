@@ -1,9 +1,0 @@
-{
-  "name": "@solid-stats/app",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "dependencies": {
-    "@solid-stats/design": "workspace:*"
-  }
-}

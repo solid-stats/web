@@ -5,11 +5,10 @@
   "scripts": {
     "gen-theme": "node scripts/gen-theme.mjs",
     "lint:design": "design.md lint DESIGN.md",
-    "check": "pnpm gen-theme && git diff --exit-code HEAD -- packages/design/src/styles/theme.css && pnpm lint:design && vp check packages scripts"
+    "check": "pnpm gen-theme && git diff --exit-code -- src/styles/theme.css && pnpm lint:design && vp check scripts"
   },
   "devDependencies": {
     "@google/design.md": "0.3.0",
-    "@ladle/react": "5.1.1",
     "@tailwindcss/vite": "4.3.1",
     "fallow": "^2.101.0",
     "tailwindcss": "4.3.1",

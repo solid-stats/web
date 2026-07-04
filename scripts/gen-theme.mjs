@@ -7,7 +7,7 @@
 //
 // This is the SolidStats INTERIM token pipeline. It reads the YAML front matter of the
 // canonical root DESIGN.md and emits the Tailwind v4 `@theme` block to
-// packages/design/src/styles/theme.css (the @solid-stats/design ./theme.css export).
+// src/styles/theme.css (the active app stylesheet).
 // It deliberately does NOT shell out to `design.md export` — that exporter is currently
 // lossy (silently drops typography `lineHeight`), which is exactly the paired
 // `--text-<name>--line-height` form Tailwind v4 needs.
@@ -24,7 +24,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const DESIGN_PATH = join(ROOT, "DESIGN.md");
-const OUT_PATH = join(ROOT, "packages", "design", "src", "styles", "theme.css");
+const OUT_PATH = join(ROOT, "src", "styles", "theme.css");
 
 const HEADER = `/*
  * Generated from DESIGN.md by scripts/gen-theme.mjs — do NOT hand-edit theme.css

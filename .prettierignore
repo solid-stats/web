@@ -6,7 +6,9 @@
 node_modules/
 dist/
 coverage/
-packages/*/build/
+.legacy/**/build/
+.legacy/**/test-results/
+.legacy/**/playwright-report/
 
 # Vendored / third-party trees — not our source
 .agents/
@@ -15,10 +17,11 @@ packages/*/build/
 # Planning + design artifacts (docs/markdown, not formatted source)
 .planning/
 .design/
+.legacy/
 
 # Generated build output — single-sourced from DESIGN.md via scripts/gen-theme.mjs,
 # never hand-edited, so never format-gated.
-packages/design/src/styles/theme.css
+src/styles/theme.css
 
 # Lockfiles
 pnpm-lock.yaml
