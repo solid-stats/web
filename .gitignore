@@ -10,6 +10,9 @@ packages/*/test-results/
 packages/*/playwright-report/
 packages/*/.last-run.json
 
+# Playwright MCP output (transient browser logs/snapshots)
+.playwright-mcp/
+
 # GSD research web-fetch cache (transient; regenerated per research run)
 .planning/**/.cache/
 

@@ -53,27 +53,35 @@ Read these planning files before planning or implementing:
 
 All project documentation must be written in English only.
 
-## GSD UI Phase & Review
+## UI Prototype & Implementation
 
-The SolidStats design pipeline is two installed project skills; wire them into the GSD UI flow.
+The SolidStats UI workflow has two separate stages: prototype first, implementation second.
 
-- **UI phase / design** — when GSD runs the UI phase (`/gsd-ui-phase`, the `gsd-ui-researcher` /
-  `gsd-ui-checker` agents), `solidstats-frontend-react-design` is the project's design-creation
-  overlay. It owns the two-layer model (the root `DESIGN.md` token system → Tailwind v4 `@theme`, and
-  the per-surface spec) and the brief → spec → Ladle prototype → graduate pipeline. Author surface
-  specs into the GSD `UI-SPEC.md` / phase `CONTEXT` + `VALIDATION` docs; do not invent a parallel
-  spec format.
-- **UI review** — when GSD runs UI review (`/gsd-ui-review`, the `gsd-ui-auditor` agent, or re-review
-  inside fix loops), `solidstats-frontend-react-design-review` is the mandatory project UI-review
-  overlay. Follow its seven pillars, rubric, and checklist before reporting design findings; route
-  code-level defects to `solidstats-frontend-react-code-review`. If GSD requires its own `UI-REVIEW.md`
-  frontmatter or severity sections, preserve the GSD artifact format and map the design-review
-  findings into it.
+- **Prototype stage** — the global `design` skill owns discussion → non-GSD `BRIEF.md` →
+  `.visual-prototypes/` slices → `ITERATIONS.md` review notes → accepted `SUMMARY.md`, including
+  `checklist.design` and Selectel pre-handoff baseline coverage. GSD does not participate in this
+  stage. Prototype slices may be split by page, flow, role, breakpoint family, or hard layout
+  problem, but app implementation for that scope waits for the accepted `SUMMARY.md`.
+- **SolidStats overlay** — `solidstats-frontend-react-design` adds this repo's inputs and rules:
+  `DESIGN.md`, generated `theme.css`, Ladle UIKIT, `.design/CLAUDE.md`, `server-2` shapes, roles,
+  data trust, replay-derived numbers, and RU/EN copy fit.
+- **Implementation stage** — GSD may start here. Convert the accepted `SUMMARY.md` into the
+  global `design` implementation surface spec / phase `CONTEXT` + `VALIDATION`, add the SolidStats
+  overlay, build durable Ladle/UIKIT stories, run global production review plus the SolidStats
+  overlay, then graduate into routes.
+- **UI review** — use `solidstats-frontend-react-design-review` in prototype mode for
+  `.visual-prototypes/` artifacts (visual/layout only: composition, density, hierarchy, first
+  viewport, responsive layout, copy fit, whitespace, data readability). Use its production
+  overlay only for Ladle stories/routes, after the global `design` production-review baseline; route
+  code-level defects to `solidstats-frontend-react-code-review`. If GSD requires its own
+  `UI-REVIEW.md` frontmatter or severity sections during implementation, preserve the GSD artifact
+  format and map the production design-review findings into it.
 
 The design-system source of truth is the repo-root `DESIGN.md` (exported to `src/styles/theme.css`);
 the running per-surface companion notes live in `.design/CLAUDE.md`; components are catalogued as
-colocated Ladle stories in `src/shared/uikit/`. The `.design/` hi-fi is frozen visual reference (see
-`.design/MIGRATION.md`), not portable code.
+colocated Ladle stories in `src/shared/uikit/`. The `.design/` hi-fi is frozen legacy reference (see
+`.design/MIGRATION.md`), not portable code and not the active prototype workspace. Active prototype
+work lives in `.visual-prototypes/`.
 
 <!-- GSD:skills-start source:skills/ -->
 
