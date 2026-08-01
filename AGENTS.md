@@ -68,10 +68,11 @@ The SolidStats UI workflow has two separate stages: prototype first, implementat
   replay-derived numbers, and RU/EN copy fit.
 - **Implementation stage** — GSD may start here. Convert the accepted Claude Design surface into the
   global `design` implementation surface spec / phase `CONTEXT` + `VALIDATION`, add the SolidStats
-  overlay, build the surface in `src/`, run global production review plus the SolidStats overlay,
-  then graduate into routes. A Ladle component-isolation harness may return later for implementation
-  work, but it is not a required design stage (see `.legacy/ladle-design/` and
-  `.planning/PROJECT.md`).
+  overlay, then build the UIKit in Ladle: shared components are implemented, tested, and
+  catalogued as colocated Ladle stories before pages compose them into routes. Ladle is mandatory
+  for the UIKit — it is only the earlier whole-page design/prototyping stage that moved to Claude
+  Design (see `.legacy/ladle-design/` for the retired catalog and `.planning/PROJECT.md` for the
+  decision log).
 - **UI review** — use `solidstats-frontend-react-design-review`'s production overlay on the built
   surface, after the global `design` production-review baseline; route code-level defects to
   `solidstats-frontend-react-code-review`. If GSD requires its own `UI-REVIEW.md` frontmatter or
@@ -80,8 +81,9 @@ The SolidStats UI workflow has two separate stages: prototype first, implementat
 
 The design-system source of truth is the repo-root `DESIGN.md` (exported to `src/styles/theme.css`);
 the running per-surface companion notes live in `.design/CLAUDE.md`. `web` is a single-package repo
-(no `packages/design` workspace) — any future durable component catalog is colocated under
-`src/shared/uikit/`, but none exists yet. The `.design/` directory is a frozen archive of prior
+(no `packages/design` workspace) — the durable UIKit is colocated Ladle stories under
+`src/shared/uikit/`, rebuilt from scratch (none exists yet; the retired one is archived at
+`.legacy/ladle-design/` for reference only). The `.design/` directory is a frozen archive of prior
 Claude Design rounds (see `.design/README.md`), not portable code and not the active design source;
 the active design source is the live Claude Design project referenced in `.planning/PROJECT.md`.
 
