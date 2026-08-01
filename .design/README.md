@@ -1,54 +1,34 @@
-# `.design/` — FROZEN reference archive
+# `.design/` — frozen archive, not the active design source
 
-> **Status: frozen (D-11).** Everything in this directory is **visual / historical
-> reference only**, with two exceptions that stay **live and authoritative**:
-> `CLAUDE.md` and `MIGRATION.md` (see below). Nothing here is portable code.
->
-> **Active prototype work lives in [`../.visual-prototypes/`](../.visual-prototypes/).**
-> Do not use this legacy Claude Design archive as the new design lab.
+**Active design work happens in the live Claude Design project "Solid Stats — Design System"
+(`303268bd-e46e-48db-9185-eb09277b7cc1`), synced with `DesignSync`.** Everything in this directory
+is a point-in-time export or reference from *before* that live project, kept for history. See
+`.planning/PROJECT.md` for the current workflow and its decision log — this repo's design workflow
+has been rebuilt twice (2026-07-04, then 2026-08-01); treat any older instructions below the line as
+historical, not current.
 
 ## Canonical source of truth
 
-The design system's single source of truth is the **repo-root [`/DESIGN.md`](../DESIGN.md)**
-(token system, YAML front-matter). It is regenerated into the importable Tailwind v4
-`@theme` at `packages/design/src/styles/theme.css` by **[`scripts/gen-theme.mjs`](../scripts/gen-theme.mjs)**.
+- **Tokens**: repo-root [`/DESIGN.md`](../DESIGN.md), regenerated into `src/styles/theme.css` by
+  [`scripts/gen-theme.mjs`](../scripts/gen-theme.mjs). `theme.css` is a pure build output, never
+  hand-edited.
+- **Design/prototyping**: the live Claude Design project above. `.visual-prototypes/` (an in-repo
+  prototype workspace used 2026-07-04 to 2026-08-01) is also superseded — see its own README.
+- **Implementation**: `src/` (single-package repo; no `packages/design` workspace). A Ladle
+  component-isolation harness may return later but is not required — see `.legacy/ladle-design/`.
 
-- `theme.css` is a **pure build output** — never hand-edited. Any token change goes in
-  `/DESIGN.md`, then `pnpm gen-theme` regenerates it (the `pnpm check` gate fails on drift).
-- The durable component catalog (UIKIT, surfaces) is built natively on the real stack
-  inside `packages/design` as colocated Ladle stories — **not** from anything in here.
-- Prototype work happens in `.visual-prototypes/` before implementation. It can be split into
-  page/flow/role/breakpoint slices, follows the global `design` prototype structure
-  (`BRIEF.md`, `ITERATIONS.md`, `SUMMARY.md`), and remains visual/layout-only. A slice graduates by
-  accepted `SUMMARY.md` and screenshots, not by porting code. Implementation then uses the global
-  `design` implementation surface spec plus the SolidStats overlay before Ladle/routes.
-
-## What is frozen reference (never ported)
-
-These are the output of Claude Design (`@google/design.md`) on a **fake stack** (plain CSS
-on the `support.js` canvas harness — not TanStack / Tailwind / Ark). They are kept as
-**visual reference only**; every surface is rebuilt natively after an accepted prototype `SUMMARY.md`
-(global implementation spec + SolidStats overlay → Ladle → route). Do **not** copy any `*.jsx` or
-wireframe into `packages/`.
+## What's in this archive
 
 | Path | What it is |
 |------|------------|
-| `hifi/` | Hi-fi surface mockups (`*.jsx` + plain CSS): Overview, Players, Player, Squads, Trust sketches. Fake-stack reference. |
-| `wireframes/` | Low-fi wireframes (`*.jsx`). Reference. |
-| `_ds/` | The generated design-system seed bundle. Reference. |
-| `app/` | Canvas-harness app shell. Reference. |
-| `screenshots/`, `uploads/`, `export/` | Captured images / exports (gitignored heavy artifacts). Reference. |
-| `support.js` | The Claude Design canvas runtime (fake stack). Reference. |
+| `CLAUDE.md` | **Live, still authoritative.** Per-surface domain rules (Score/K-D formulas, population tiers, data-trust model). Keep it updated. |
+| `MIGRATION.md` | Historical only — the reverted 2026-06-20 pnpm-workspace migration. See the banner at its top. |
+| `_ds/` | Raw export from an **earlier, different** Claude Design project (UUID `b40cf4ce-...`, not the current live project `303268bd-...`). The one-time seed the original `DESIGN.md` was authored from. The live project has since grown a full `preview/` foundation layer (buttons, badges, inputs, spacing, type scale) that never existed here. |
+| `hifi/`, `wireframes/` | Visual output from that earlier Claude Design round (Overview, Player Profile, Players, Squads). Fake-stack plain CSS on the `support.js` canvas harness — reference only, never portable code. |
+| `app/` | An earlier, smaller Overview-only snapshot of the same files as `hifi/` (confirmed by diff: `hifi/ui.jsx` and `hifi/kit.css` are later, larger revisions of `app/`'s versions). Superseded by `hifi/`; kept only for history. |
+| `uploads/legacy-fnx-site/` | Snapshots of the pre-Solid-Stats fan stats site Solid Stats replaces. Feature/data-parity reference, not design output. |
+| `uploads/sketches/` | Pasted screenshots and hand-drawn sketches from design sessions. |
+| `support.js` | The Claude Design canvas rendering harness for `hifi/`/`wireframes/`/`app/`. Fake stack, not part of the real app. |
 
-The dead `--container: 1240` token survives **only** here (frozen) — `/DESIGN.md` supersedes
-it with the `--container` 1760 ceiling + `--container-prose` 720. Nothing live sources it.
-
-## What stays LIVE and authoritative
-
-- **`CLAUDE.md`** — the running per-surface companion notes and the domain-truth home
-  (Score / K-D formulas, `SS_BASELINE` population tiers, the list loading model, the
-  data-trust A/C-not-B model). Every downstream design phase inherits these rules; keep it
-  actively updated.
-- **`MIGRATION.md`** — the migration decision pack (`.design/` → real-stack workspace).
-
-These two files are the contract; do not freeze, move, or treat them as reference.
+The dead `--container: 1240` token survives only in this frozen archive — `/DESIGN.md` supersedes it
+with the `--container` 1760 ceiling + `--container-prose` 720. Nothing live sources it.

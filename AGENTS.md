@@ -57,31 +57,33 @@ All project documentation must be written in English only.
 
 The SolidStats UI workflow has two separate stages: prototype first, implementation second.
 
-- **Prototype stage** — the global `design` skill owns discussion → non-GSD `BRIEF.md` →
-  `.visual-prototypes/` slices → `ITERATIONS.md` review notes → accepted `SUMMARY.md`, including
-  `checklist.design` and Selectel pre-handoff baseline coverage. GSD does not participate in this
-  stage. Prototype slices may be split by page, flow, role, breakpoint family, or hard layout
-  problem, but app implementation for that scope waits for the accepted `SUMMARY.md`.
+- **Prototype stage (2026-08-01)** — surfaces are designed directly in the live Claude Design
+  project ("Solid Stats — Design System"), not as in-repo code. GSD does not participate in this
+  stage. Pull an accepted surface into the repo with `DesignSync` only once it is ready to spec.
+  `.visual-prototypes/` (an earlier, 2026-07-04 in-repo prototype workflow) and the package-based
+  Ladle prototyping before it are both superseded — both cost too much time and tokens for the
+  iteration this stage needs. See `.planning/PROJECT.md` for the decision log.
 - **SolidStats overlay** — `solidstats-frontend-react-design` adds this repo's inputs and rules:
-  `DESIGN.md`, generated `theme.css`, Ladle UIKIT, `.design/CLAUDE.md`, `server-2` shapes, roles,
-  data trust, replay-derived numbers, and RU/EN copy fit.
-- **Implementation stage** — GSD may start here. Convert the accepted `SUMMARY.md` into the
+  `DESIGN.md`, generated `theme.css`, `.design/CLAUDE.md`, `server-2` shapes, roles, data trust,
+  replay-derived numbers, and RU/EN copy fit.
+- **Implementation stage** — GSD may start here. Convert the accepted Claude Design surface into the
   global `design` implementation surface spec / phase `CONTEXT` + `VALIDATION`, add the SolidStats
-  overlay, build durable Ladle/UIKIT stories, run global production review plus the SolidStats
-  overlay, then graduate into routes.
-- **UI review** — use `solidstats-frontend-react-design-review` in prototype mode for
-  `.visual-prototypes/` artifacts (visual/layout only: composition, density, hierarchy, first
-  viewport, responsive layout, copy fit, whitespace, data readability). Use its production
-  overlay only for Ladle stories/routes, after the global `design` production-review baseline; route
-  code-level defects to `solidstats-frontend-react-code-review`. If GSD requires its own
-  `UI-REVIEW.md` frontmatter or severity sections during implementation, preserve the GSD artifact
-  format and map the production design-review findings into it.
+  overlay, build the surface in `src/`, run global production review plus the SolidStats overlay,
+  then graduate into routes. A Ladle component-isolation harness may return later for implementation
+  work, but it is not a required design stage (see `.legacy/ladle-design/` and
+  `.planning/PROJECT.md`).
+- **UI review** — use `solidstats-frontend-react-design-review`'s production overlay on the built
+  surface, after the global `design` production-review baseline; route code-level defects to
+  `solidstats-frontend-react-code-review`. If GSD requires its own `UI-REVIEW.md` frontmatter or
+  severity sections during implementation, preserve the GSD artifact format and map the production
+  design-review findings into it.
 
 The design-system source of truth is the repo-root `DESIGN.md` (exported to `src/styles/theme.css`);
-the running per-surface companion notes live in `.design/CLAUDE.md`; components are catalogued as
-colocated Ladle stories in `src/shared/uikit/`. The `.design/` hi-fi is frozen legacy reference (see
-`.design/MIGRATION.md`), not portable code and not the active prototype workspace. Active prototype
-work lives in `.visual-prototypes/`.
+the running per-surface companion notes live in `.design/CLAUDE.md`. `web` is a single-package repo
+(no `packages/design` workspace) — any future durable component catalog is colocated under
+`src/shared/uikit/`, but none exists yet. The `.design/` directory is a frozen archive of prior
+Claude Design rounds (see `.design/README.md`), not portable code and not the active design source;
+the active design source is the live Claude Design project referenced in `.planning/PROJECT.md`.
 
 <!-- GSD:skills-start source:skills/ -->
 

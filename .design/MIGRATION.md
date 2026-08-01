@@ -1,5 +1,12 @@
 # Design Migration — `.design/` (Claude Design) → real-stack workspace
 
+> **Superseded 2026-07-04.** The pnpm-workspace + `packages/design` + Ladle direction this document
+> locks in was reverted: prototyping through Ladle cost too much time and tokens. The repo went back
+> to a single-package layout, and design moved first to in-repo `.visual-prototypes/` slices
+> (2026-07-04), then to the live Claude Design project (2026-08-01). See `.planning/PROJECT.md` and
+> `.planning/v0.1-MILESTONE-AUDIT.md` for the current state. Kept below as a historical record only —
+> none of the decisions or paths in this file are current.
+
 Decision pack from the deep-brainstorm on 2026-06-20. Captures how the existing Claude Design output
 in `.design/` migrates into a properly structured design workspace inside `web`, so a fresh context
 can execute the foundation task without re-deriving the decisions.

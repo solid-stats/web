@@ -9,10 +9,18 @@ inspection, Steam-authenticated player correction flows, and moderator/admin scr
 
 The repo is now a single-package frontend repo. The active design workflow is:
 
-1. create disposable visual prototype slices in `.visual-prototypes/`;
-2. accept each slice with a `SUMMARY.md`;
-3. convert the accepted summary into an implementation surface spec;
+1. design the surface directly in the live **Claude Design** project ("Solid Stats — Design
+   System"), not as disposable in-repo prototype code;
+2. pull the accepted design locally via `DesignSync` when a surface is ready to build;
+3. convert the accepted design into an implementation surface spec;
 4. build the real TanStack Start app in root `src/`.
+
+This is the second design-workflow rebuild (2026-08-01). The first rebuild (2026-07-04) replaced the
+package-based Ladle prototyping with in-repo `.visual-prototypes/` slices; that stage is itself now
+superseded because iterating on prototypes as in-repo code (Ladle, and then hand-built
+`.visual-prototypes/` slices) cost too much time and tokens relative to designing directly in Claude
+Design. `.visual-prototypes/` is not deleted (nothing was ever built there) but is no longer the
+active workflow; see `.visual-prototypes/README.md`.
 
 The old package-based Ladle design milestone is superseded, not shipped. Its planning artifacts are
 archived under `.planning/milestones/v0.1-superseded-*`; its code is archived at
@@ -30,12 +38,16 @@ web/
   DESIGN.md                     design-token source of truth
   scripts/gen-theme.mjs         DESIGN.md -> src/styles/theme.css
   src/styles/theme.css          generated Tailwind v4 @theme output
-  .visual-prototypes/           active disposable visual prototype workspace
-  .design/                      frozen visual/historical design archive
+  .visual-prototypes/           superseded in-repo prototype workspace (unused, see README)
+  .design/                      frozen visual/historical design archive (prior Claude Design rounds)
   .legacy/ladle-design/         retired package-based Ladle code archive
   .planning/milestones/         superseded/completed milestone archives
   .planning/                    GSD planning state
 ```
+
+Active design work lives in the **Claude Design** project "Solid Stats — Design System"
+(`303268bd-e46e-48db-9185-eb09277b7cc1`), not in this repo. Pull a surface into the repo with
+`DesignSync` only once it is accepted and ready to spec.
 
 `src/` is the active app root. When implementation starts, use the SolidStats frontend conventions:
 `src/routes` for TanStack Router entries, `src/pages` for page implementations, and `src/shared` for
@@ -43,13 +55,13 @@ shared API, UIKIT, i18n, styles, types, and utilities.
 
 ## Requirements
 
-- **Design workflow** — new pages, surfaces, app flows, and major layout recompositions start as
-  `.visual-prototypes/<slice-id>/` slices following the global `design` workflow: `BRIEF.md`,
-  `ITERATIONS.md`, screenshots/evidence, and accepted `SUMMARY.md`.
-- **Implementation gate** — production implementation starts only after the relevant prototype slice
-  has an accepted `SUMMARY.md`; implementation specs must cover use cases, roles, data shape,
-  scenario endings, data volumes, component states, responsiveness, localization, cross-surface
-  impact, and acceptance.
+- **Design workflow** — new pages, surfaces, app flows, and major layout recompositions are designed
+  in the live Claude Design project, not as in-repo prototype code. `.visual-prototypes/` is
+  superseded; do not start new slices there.
+- **Implementation gate** — production implementation starts only after the relevant surface is
+  accepted in Claude Design and pulled locally via `DesignSync`; implementation specs must cover use
+  cases, roles, data shape, scenario endings, data volumes, component states, responsiveness,
+  localization, cross-surface impact, and acceptance.
 - **Design system** — `DESIGN.md` remains the token source of truth. `scripts/gen-theme.mjs`
   generates `src/styles/theme.css`; the generated CSS is never hand-edited.
 - **Legacy boundary** — `.legacy/ladle-design/` is not part of the active package manager workspace,
@@ -76,7 +88,8 @@ dimensions.
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
 | Single-package root app | The package split was only supporting the retired Ladle design milestone | Active |
-| `.visual-prototypes/` first | Disposable visual slices are cheaper than production-like surface prototypes | Active |
+| `.visual-prototypes/` first | Disposable visual slices are cheaper than production-like surface prototypes | Superseded 2026-08-01 |
+| Design in Claude Design | Iterating on prototypes as in-repo code (Ladle, then `.visual-prototypes/`) cost too much time and tokens; design directly in the live Claude Design project instead | Active |
 | `v0.1` superseded archive | Preserve the incomplete Ladle milestone without marking it shipped | Active |
 | `.legacy/ladle-design/` archive | Preserve useful UIKIT work without keeping it active | Active |
 | `DESIGN.md` at repo root | One token source across prototypes and implementation | Active |

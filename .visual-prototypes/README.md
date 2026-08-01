@@ -1,6 +1,13 @@
-# `.visual-prototypes/` — Active Visual Prototype Workspace
+# `.visual-prototypes/` — Superseded Visual Prototype Workspace
 
-This directory is the active prototype workspace for SolidStats web. It is the local override for
+> **Superseded 2026-08-01.** This in-repo prototype workflow is no longer active. Design now happens
+> directly in the live Claude Design project ("Solid Stats — Design System"), pulled locally via
+> `DesignSync` once accepted — see `.planning/PROJECT.md`. Nothing was ever built in this directory
+> under the workflow below; it is kept only as a record of the prior (2026-07-04) design-workflow
+> rebuild. Do not start new prototype slices here. The `packages/design` paths mentioned below are
+> also stale — the repo is a single-package app now (`src/`), from when this doc was written.
+
+This directory was the prototype workspace for SolidStats web. It was the local override for
 the global `design` skill's visual prototype workflow.
 
 Use it before implementing a new page/surface, app flow, or major layout recomposition in

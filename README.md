@@ -19,12 +19,15 @@ API-клиент, сгенерированный из OpenAPI-схемы `server
 
 ## Быстрый старт
 
+Приложение на TanStack Start ещё не развёрнуто — в репозитории пока только тулчейн токенов дизайна.
+
 ```sh
 pnpm install
-pnpm run dev
+pnpm run gen-theme
+pnpm run check
 ```
 
-Нужен запущенный `server-2`: web потребляет его HTTP-API, а типы клиента
+Когда начнётся разработка приложения, понадобится запущенный `server-2`: web потребляет его HTTP-API, а типы клиента
 генерируются из его OpenAPI-схемы (скрипт генерации обновляет типы при изменении
 контракта). Перед коммитом проходите гейт проверок репозитория.
 
@@ -38,6 +41,6 @@ pnpm run dev
 ## Стек
 
 TypeScript · React · TanStack Start (Router · Query · Table · Form) · Ark UI ·
-vanilla-extract · openapi-typescript · локализация `/ru` и `/en`
+Tailwind CSS v4 · openapi-typescript · локализация `/ru` и `/en`
 
 ## Лицензия — MIT
