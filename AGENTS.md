@@ -8,18 +8,15 @@
 > HTTP API are `server-2`'s; raw replay discovery is `replays-fetcher`'s; OCAP parsing is
 > `replay-parser-2`'s. See the cross-app boundary map (§D) in the standards below.
 >
-> **Shared standards.** Universal SolidStats project standards live in the `solid-stats/skills`
-> repo (`solidstats-shared-project-standards`); read them alongside this file.
+> **Shared standards.** Cross-repo rules (skills-first, git, security, docs language, MCP
+> lookup) live in `solid-stats/agent-instructions`, imported below. Stack-specific skills live
+> in `solid-stats/skills` (`solidstats-shared-project-standards` and this repo's own skills).
+
+@.agent-instructions/AGENTS.md
 
 ---
 
 # AGENTS instructions
-
-## Skills First
-
-Before acting on any user request in this repository, scan available skills by name and description. If any skill has even a small chance of helping any part of the task, use it and read only the relevant instructions before proceeding.
-
-When in doubt, prefer enabling the skill briefly and filtering it out over skipping it.
 
 ## Project
 
