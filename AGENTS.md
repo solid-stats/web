@@ -1,7 +1,7 @@
 <!-- markdownlint-disable MD013 MD041 -->
 
 > **What this repo is.** `web` is the SolidStats browser UI — a React / TanStack Start
-> frontend (public stats, Steam sign-in, authenticated-action UX, moderator/admin screens)
+> frontend (public stats, Discord-authenticated request UX, moderator/admin screens)
 > for the Solid Games community.
 >
 > **Boundary — what it owns / must NOT cross.** Owns: the frontend, UI state, and the typed

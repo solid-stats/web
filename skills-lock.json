@@ -59,7 +59,7 @@
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-process-skill-feedback/SKILL.md",
-      "computedHash": "b6bbb2059e2ebd0f8efca508e756b0dfa12f08ff438407b92e1434304976d4e0"
+      "computedHash": "ed03f097579840782fac3f21a6444045836c622c6dc681dd522409877dfd64ec"
     },
     "solidstats-shared-planning-standards": {
       "source": "solid-stats/skills",
@@ -71,7 +71,7 @@
       "source": "solid-stats/skills",
       "sourceType": "github",
       "skillPath": "solidstats-shared-project-standards/SKILL.md",
-      "computedHash": "08e5872032fe28eb21ccfb7274f2bacd72254912137b8f735ba7af0fa71e3435"
+      "computedHash": "ab0bee8422693afd10d1a1f7afb30d636a7a8b8c1872676b400ef225d5293f07"
     },
     "solidstats-shared-review-standards": {
       "source": "solid-stats/skills",

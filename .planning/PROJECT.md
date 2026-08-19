@@ -79,8 +79,8 @@ shared API, UIKIT, i18n, styles, types, and utilities.
 
 ## Context
 
-- `server-2` owns canonical business state, HTTP APIs, Steam auth, moderation, parse jobs, aggregate
-  stats, and bounty calculations.
+- `server-2` owns canonical business state, HTTP APIs, Discord auth,
+  moderation, parse jobs, aggregate stats, and bounty calculations.
 - `replays-fetcher` owns replay discovery and raw object storage.
 - `replay-parser-2` owns deterministic OCAP parsing.
 - `web` consumes the `server-2` typed API and must not cross those boundaries.
