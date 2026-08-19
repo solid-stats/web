@@ -20,9 +20,11 @@ superseded milestone:
 
 The repo is being rebuilt around a simpler two-stage UI workflow:
 
-1. Create visual prototype slices in `.visual-prototypes/` using the global `design` workflow.
-2. Promote accepted prototype summaries into implementation specs.
-3. Implement the real TanStack Start app in the root `src/` tree.
+1. Create slice documents in `.visual-prototypes/` and design the screens in Penpot `App Design`.
+2. Keep one Penpot page per application page and use connected `SolidStats UIKit` instances.
+3. Accept each slice in local `SUMMARY.md` and file its summary in SolidStats MemPalace.
+4. Promote accepted prototype summaries into implementation specs.
+5. Implement the real TanStack Start app in the root `src/` tree.
 
 The next GSD milestone should start after the new web brief and active implementation scope are
 confirmed. It should not resume the archived package-based Ladle milestone.

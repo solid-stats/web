@@ -40,9 +40,10 @@ The prior `v0.1` Ladle design milestone was archived early as superseded, not co
 
 ## Active Direction
 
-The repo is being rebuilt as a single-package TanStack Start app. New UI work starts as disposable
-visual prototype slices in `.visual-prototypes/`, then graduates into implementation specs and the
-root `src/` app.
+The repo is being rebuilt as a single-package TanStack Start app. New UI work starts with local
+prototype documents in `.visual-prototypes/` and visual design in Penpot `App Design`, then
+graduates through an accepted `SUMMARY.md` into implementation specs and the root `src/` app. The
+accepted summary is also filed in the SolidStats MemPalace `design` room.
 
 ## Next Actions
 
@@ -58,10 +59,10 @@ The archived `v0.1` phase artifacts are preserved because GSD milestone switchin
 
 ## Deferred Items
 
-| Category | Item | Status | Deferred At |
-|----------|------|--------|-------------|
-| milestone | `v0.1` phases 5-9 | Superseded, not executed | 2026-07-04 |
-| milestone | Phase 4 final human visual/copy acceptance | Superseded by workflow rebuild | 2026-07-04 |
+| Category  | Item                                        | Status                         | Deferred At |
+| --------- | ------------------------------------------- | ------------------------------ | ----------- |
+| milestone | `v0.1` phases 5-9                           | Superseded, not executed       | 2026-07-04  |
+| milestone | Phase 4 final human visual/copy acceptance  | Superseded by workflow rebuild | 2026-07-04  |
 
 ## Session Continuity
 

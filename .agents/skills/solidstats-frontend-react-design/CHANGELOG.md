@@ -1,5 +1,64 @@
 # Changelog — solidstats-frontend-react-design
 
+## 2026-08-19 — Prototype stage moves to Penpot
+
+- Restored the global local-document contract: each slice keeps `BRIEF.md`, `ITERATIONS.md`, and
+  the accepted `SUMMARY.md` under `web/.visual-prototypes/`.
+- Moved the visual artifact to Penpot `App Design`, with one Penpot page per application page and
+  screens composed from connected `SolidStats UIKit` instances and token references.
+- Added the SolidStats MemPalace `design` room as the cross-session recall copy for accepted
+  summaries. The local `SUMMARY.md` remains the complete implementation handoff.
+- Retired `DesignSync` and active `.design/CLAUDE.md` guidance. `web/.design/` remains a frozen
+  historical archive.
+
+## 2026-08-01b — Correction: Ladle is mandatory for the UIKit
+
+- The same-day update below wrongly softened Ladle from a required implementation stage to
+  optional. Only the whole-page design/prototyping stage moved away from Ladle (to Claude Design);
+  the UIKit itself — components implemented, tested, and catalogued as colocated Ladle stories — is
+  still mandatory. Fixed `SKILL.md`, `pipeline.md`, and `implementation-surface-overlay.md`
+  accordingly.
+
+## 2026-08-01 — Prototype stage moves to Claude Design
+
+- Replaced the in-repo `web/.visual-prototypes/` prototype workflow (2026-07-04) with the live
+  Claude Design project ("Solid Stats — Design System") as the prototype stage. Reason: iterating
+  on prototypes as in-repo code — first package-based Ladle, then `.visual-prototypes/` slices —
+  cost too much time and tokens both times. Accepted surfaces are pulled locally with `DesignSync`
+  once ready to spec.
+- Fixed stale `packages/design` paths throughout (`SKILL.md`, `pipeline.md`,
+  `implementation-surface-overlay.md`): `web` has been a single-package repo (`src/`) since the
+  2026-07-04 workspace rollback; this skill still described the retired `packages/design` layout.
+- Softened the Ladle/UIKIT catalog from a required implementation stage to optional: `web` has no
+  active Ladle catalog today (`.legacy/ladle-design/` holds the retired one); a catalog may return
+  later as a component isolation harness only.
+- See `web/.planning/PROJECT.md` and `web/.planning/v0.1-MILESTONE-AUDIT.md` for the full decision
+  history this skill now tracks (three prototyping-tool changes: Ladle -> `.visual-prototypes/` ->
+  Claude Design).
+
+## 2026-07-04 — Separate prototype stage from implementation
+
+- Added the active `web/.visual-prototypes/` stage as a standalone design stage before app
+  development. New pages/surfaces and large recompositions now go `discussion → brief → prototype
+  slices → accepted SUMMARY.md → implementation`.
+- Moved the generic prototype structure and checklist baseline to the global `design` skill:
+  `BRIEF.md`, `ITERATIONS.md`, `SUMMARY.md`, `checklist.design`, and Selectel pre-handoff coverage.
+  This skill is now the SolidStats overlay: `DESIGN.md`, generated `theme.css`, Ladle UIKIT,
+  `.design/CLAUDE.md`, `server-2` shapes, roles, data trust, replay-derived numbers, and RU/EN.
+- Moved the generic implementation surface spec to global
+  `design/references/implementation-surface-spec.md`. The local overlay is now
+  `implementation-surface-overlay.md` and contains only SolidStats additions: OpenAPI fields, replay
+  formulas, roles, data trust, RU/EN, and public stats continuity.
+- Clarified that GSD does not participate in prototyping. GSD may start after an accepted prototype
+  `SUMMARY.md`, when building the real app from the approved visual direction.
+- Clarified that prototype slices can be split by page, flow, role, breakpoint family, or hard
+  layout problem. They remain visual/layout-focused: composition, density, hierarchy, first-viewport
+  usefulness, responsive layout, copy fit, whitespace, and data readability.
+- Documented the graduation boundary: use `DESIGN.md`, `theme.css`, `.design/CLAUDE.md`, and the
+  existing UIKIT as visual inputs, but never import production components into prototypes and never
+  port prototype code into `packages/design`; implementation starts from `SUMMARY.md` and
+  screenshots.
+
 ## 2026-06-20 — Token-codegen reality + DRY de-dup (references/design-system.md)
 
 - Validated the `@google/design.md` toolchain (v0.3.0, Apache-2.0, healthy): its `export --format
@@ -22,7 +81,7 @@
   `references/design-system.md`.
 - Defines the pipeline: brief → spec → prototype in a durable Ladle component catalog on the real stack (Ark UI +
   Tailwind v4 + Lucide, dark-only) → visual gate → graduate into TanStack Start routes. Designed to
-  be the content the GSD UI phase (`gsd-ui-phase`) runs.
+  feed the GSD UI phase in the initial version; the 2026-07-04 update split prototyping from GSD.
 - References external tools rather than duplicating: `@google/design.md` (token system),
   `ui-ux-pro-max` (advisory UX/chart guidelines — palette/type ignored, our DS is locked), and the
   quality bundle (`web-design-guidelines`, `accessibility`, `core-web-vitals`, `seo`). Defers
@@ -31,8 +90,9 @@
   states, no nested scroll on mobile, data-trust as a designed layer, never-color-alone) learned on
   the Overview / Player / Players / Squads surfaces; the running companion notes stay in the web
   repo's `.design/CLAUDE.md`.
-- References: `design-system.md` (design.md adoption + `@theme` export), `spec-template.md` (the
-  surface contract), `pipeline.md` (the stages).
+- References: `design-system.md` (design.md adoption + `@theme` export),
+  `implementation-surface-overlay.md` (SolidStats implementation additions), `pipeline.md` (the
+  stages).
 - Hardened against a deep-research pass: noted `DESIGN.md` → **W3C DTCG** (token interchange
   standard, stable Oct 2025) as an explicit codegen step alongside the Tailwind `@theme` export;
   added an **LLM-hygiene** note (the spec template is the output schema; pin the model version;

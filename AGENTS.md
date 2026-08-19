@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD013 MD041 -->
+
 > **What this repo is.** `web` is the SolidStats browser UI — a React / TanStack Start
 > frontend (public stats, Steam sign-in, authenticated-action UX, moderator/admin screens)
 > for the Solid Games community.
@@ -54,22 +56,22 @@ All project documentation must be written in English only.
 
 The SolidStats UI workflow has two separate stages: prototype first, implementation second.
 
-- **Prototype stage (2026-08-01)** — surfaces are designed directly in the live Claude Design
-  project ("Solid Stats — Design System"), not as in-repo code. GSD does not participate in this
-  stage. Pull an accepted surface into the repo with `DesignSync` only once it is ready to spec.
-  `.visual-prototypes/` (an earlier, 2026-07-04 in-repo prototype workflow) and the package-based
-  Ladle prototyping before it are both superseded — both cost too much time and tokens for the
-  iteration this stage needs. See `.planning/PROJECT.md` for the decision log.
+- **Prototype stage (2026-08-19)** — create the short slice documents under
+  `.visual-prototypes/`, then design and review the surface in the Penpot `App Design` file. Use a
+  separate Penpot page for each application page and assemble screens from connected
+  `SolidStats UIKit` instances and token references. GSD does not participate in this stage. Once
+  accepted, keep the full `SUMMARY.md` locally and file its summary in the SolidStats MemPalace
+  `design` room. See `.planning/PROJECT.md` for the decision log and Penpot file IDs.
 - **SolidStats overlay** — `solidstats-frontend-react-design` adds this repo's inputs and rules:
-  `DESIGN.md`, generated `theme.css`, `.design/CLAUDE.md`, `server-2` shapes, roles, data trust,
-  replay-derived numbers, and RU/EN copy fit.
-- **Implementation stage** — GSD may start here. Convert the accepted Claude Design surface into the
+  `DESIGN.md`, generated `theme.css`, the connected Penpot UIKit, `server-2` shapes, roles, data
+  trust, replay-derived numbers, and RU/EN copy fit.
+- **Implementation stage** — GSD may start here. Convert the accepted Penpot surface and local
+  `SUMMARY.md` into the
   global `design` implementation surface spec / phase `CONTEXT` + `VALIDATION`, add the SolidStats
   overlay, then build the UIKit in Ladle: shared components are implemented, tested, and
   catalogued as colocated Ladle stories before pages compose them into routes. Ladle is mandatory
-  for the UIKit — it is only the earlier whole-page design/prototyping stage that moved to Claude
-  Design (see `.legacy/ladle-design/` for the retired catalog and `.planning/PROJECT.md` for the
-  decision log).
+  for the UIKit; Penpot owns the earlier whole-page design/prototyping stage (see
+  `.legacy/ladle-design/` for the retired catalog and `.planning/PROJECT.md` for the decision log).
 - **UI review** — use `solidstats-frontend-react-design-review`'s production overlay on the built
   surface, after the global `design` production-review baseline; route code-level defects to
   `solidstats-frontend-react-code-review`. If GSD requires its own `UI-REVIEW.md` frontmatter or
@@ -77,12 +79,12 @@ The SolidStats UI workflow has two separate stages: prototype first, implementat
   design-review findings into it.
 
 The design-system source of truth is the repo-root `DESIGN.md` (exported to `src/styles/theme.css`);
-the running per-surface companion notes live in `.design/CLAUDE.md`. `web` is a single-package repo
-(no `packages/design` workspace) — the durable UIKit is colocated Ladle stories under
+the visual prototype lives in Penpot `App Design`, while its brief, iteration log, and accepted
+summary live under `.visual-prototypes/`. `web` is a single-package repo (no `packages/design`
+workspace) — the durable UIKit is colocated Ladle stories under
 `src/shared/uikit/`, rebuilt from scratch (none exists yet; the retired one is archived at
-`.legacy/ladle-design/` for reference only). The `.design/` directory is a frozen archive of prior
-Claude Design rounds (see `.design/README.md`), not portable code and not the active design source;
-the active design source is the live Claude Design project referenced in `.planning/PROJECT.md`.
+`.legacy/ladle-design/` for reference only). The `.design/` directory is a frozen historical
+archive (see `.design/README.md`), not portable code and not an active design source.
 
 <!-- GSD:skills-start source:skills/ -->
 
