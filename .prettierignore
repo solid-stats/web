@@ -13,6 +13,7 @@ coverage/
 # Vendored / third-party trees — not our source
 .agents/
 .claude/
+.agent-instructions/
 
 # Planning + design artifacts (docs/markdown, not formatted source)
 .planning/
