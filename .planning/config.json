@@ -245,11 +245,16 @@
     "enabled": true
   },
   "mempalace": {
-    "enabled": true,
-    "capture_artifacts": true,
-    "mirror_kg": true,
-    "cross_project_tunnels": true,
-    "auto_capture_hooks": true
+    "enabled": false,
+    "capture_artifacts": false,
+    "mirror_kg": false,
+    "cross_project_tunnels": false,
+    "auto_capture_hooks": false,
+    "memory_mode": "augment",
+    "recall_on_discuss": false,
+    "recall_on_plan": false,
+    "diary_journal": false,
+    "wing": "frontend"
   },
   "code_quality": {
     "fallow": {
