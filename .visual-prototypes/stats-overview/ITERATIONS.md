@@ -84,3 +84,23 @@ used as the final persistence authority. Exports also rendered the new boards.
   it at the bottom of the document for review. No live behavior is claimed.
 - Only the newly created iteration log is committed in this pass; pre-existing
   untracked prototype and archive files remain untouched.
+
+## v2 — Review correction in progress
+
+The user rejected v1's simplified visual treatment, unchanged canvas background,
+arbitrary frame placement, and a service-report board mixed into the designs.
+
+- Set the actual Overview page canvas background to `#0A0D13`.
+- Removed `Overview / Review notes` and the four standalone `Note /` boards.
+  Their technical content stays in this log instead of the design canvas.
+- Organized primary screens as width columns (390, 834, 1440, 2560, 3440) and
+  RU/EN rows. Separate labeled bands contain compact states, ranking segments,
+  and edge specimens. Missing language/width combinations stay unpopulated.
+- Opened and visually inspected the actual archived Stats Overview HTML.
+  It uses a three-column desktop digest, integrated card headers with icons,
+  secondary identity lines, tier indicators, trends, and semantic badges.
+- Found a material mismatch: BRIEF.md describes a full-width player table with
+  squad/bounty siblings below, but the actual desktop reference places all three
+  rankings beside each other. Composition restoration awaits user clarification.
+- V1 is not accepted. Its prior geometry checks did not establish reference
+  fidelity or a readable organization of the design canvas.
