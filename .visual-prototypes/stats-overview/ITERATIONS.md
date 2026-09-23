@@ -99,8 +99,37 @@ arbitrary frame placement, and a service-report board mixed into the designs.
 - Opened and visually inspected the actual archived Stats Overview HTML.
   It uses a three-column desktop digest, integrated card headers with icons,
   secondary identity lines, tier indicators, trends, and semantic badges.
-- Found a material mismatch: BRIEF.md describes a full-width player table with
+- Found a material mismatch: BRIEF.md described a full-width player table with
   squad/bounty siblings below, but the actual desktop reference places all three
-  rankings beside each other. Composition restoration awaits user clarification.
+  rankings beside each other. The user chose the three-column composition.
 - V1 is not accepted. Its prior geometry checks did not establish reference
   fidelity or a readable organization of the design canvas.
+
+## v3 — 2026-09-23
+
+- Restored the desktop digest to aligned Players, Squads, and Bounty columns,
+  each with ten rows, an integrated icon header, secondary identity details,
+  tier or trend indicators, and a direct path to the full ranking. The five-row
+  replay table follows at full content width with mission, ID, map, parse
+  state, known or unknown outcome, kills, top player, and time.
+- Built the RU 1440 and EN 1440 screens, then centered the same composition in
+  the canonical 1760px content container on RU 2560 and RU 3440 screens. The
+  navigation bar spans each wide frame; its content aligns with the container.
+- Updated RU and EN 390 player screens and the RU 834 tablet screen with squad
+  context, tier coloring, and four-week trend marks. Separate RU 390 Squads and
+  Bounty segments now use the same two-line row detail. Bounty totals show two
+  decimal places.
+- Kept the current SG all-time scope, current-rotation context, replay-based
+  freshness, adjusted player Score, and connected UIKit instances. Fixture
+  trends and totals remain illustrative. The target Overview payload and
+  adjusted Score still need a production API contract.
+- Exported the rebuilt 390, 834, 1440, 2560, and 3440 boards and inspected
+  alignment, row density, text fit, semantic state labels, and clipped values.
+  The first player Score, EN sign-in label, and bounty rank rendering needed
+  specific corrections during this check.
+- Verified the Penpot server advanced beyond the stalled revision 30 and
+  contained the rebuilt ranking, replay, and mobile bounty shapes at revision
+  67. Later visual refinements were also rendered by the server exporter.
+- User review of the resulting design remains pending. The loading, empty,
+  offline, error, and edge-case boards were retained from v1 and need a final
+  content and reference-fidelity pass before acceptance or `SUMMARY.md`.
