@@ -13,11 +13,12 @@ evidence.
 - SG only. MACE and SM remain on their dedicated rating surfaces.
 - SG all-time is the default scope and includes the current rotation live. Past
   rotations remain available as secondary scopes.
-- RU and EN boards with long labels and localized dates.
+- RU and EN boards at every target width, with long labels and localized dates.
 - Prototype boards at 390px mobile, 834px tablet, 1440px desktop, 2560px wide
   desktop, and 3440px ultrawide. The content container remains capped by the
   canonical 1760px token.
 - Static boards for success, loading, empty, stale/offline, and system error.
+  Show the state set at both mobile and desktop widths in both locales.
   Interaction and accessibility mechanics are deferred to implementation.
 
 ## Priority
@@ -37,8 +38,9 @@ marketing hero or a row of decorative KPI cards.
 
 - Primary metric: `adjustedScore`, sorted by full-precision value descending
   and displayed to three decimal places.
-- Supporting columns: games, kills, and four-week trend where the selected
-  scope supports it.
+- Supporting columns: games, kills, and weekly trend where the selected scope
+  supports it. Show eight weeks at tablet and desktop widths and four weeks on
+  narrow mobile screens. Do not repeat the trend as Score-tier bars.
 - Raw score is secondary explanatory data for an implementation tooltip or
   popover; it is not a competing primary column.
 - Include a long nickname, no-squad player, tied rounded values, a negative
@@ -48,7 +50,9 @@ marketing hero or a row of decorative KPI cards.
 
 ### Squad leaderboard
 
-- Preserve the reference's ranked squad digest and side context.
+- Preserve the reference's ranked squad digest and side context. Put a small
+  circle in each squad row using its rotation-side color, alongside the written
+  side label; use a neutral color when the side is unknown.
 - Use the squad leaderboard's own score contract. Never label a squad value as
   player `adjustedScore`.
 - Include long squad names and tags, unknown side, one squad, ten squads, and
@@ -97,11 +101,13 @@ marketing hero or a row of decorative KPI cards.
 ### Reference traits to preserve
 
 - Mobile: segmented Players / Squads / Bounty leaderboard, followed by recent
-  replays.
+  replays. The shared brand header matches desktop, while the compact bottom
+  navigation has five aligned icon-and-label tabs including Bounty.
 - Desktop: a three-column top-player, squad, and bounty digest with aligned
   headers and ten rows per card, followed by a full-width replay table.
-- Card detail: integrated icon headers, secondary identity lines, score tiers,
-  four-week player trends, bounty targets, and labeled replay states.
+- Card detail: integrated icon headers, secondary identity lines, one weekly
+  player trend, side-color squad markers, bounty targets, and labeled replay
+  states. Use the English product term `Bounty` in both locales.
 - Dense operational scan path, compact table rows, restrained gunmetal
   surfaces, cyan interactive accent, tabular numeric typography, thin borders,
   and no decorative card elevation.

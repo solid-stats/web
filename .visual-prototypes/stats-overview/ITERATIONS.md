@@ -133,3 +133,50 @@ arbitrary frame placement, and a service-report board mixed into the designs.
 - User review of the resulting design remains pending. The loading, empty,
   offline, error, and edge-case boards were retained from v1 and need a final
   content and reference-fidelity pass before acceptance or `SUMMARY.md`.
+
+## v4 — 2026-09-23 review corrections
+
+- Unified the compact brand header with desktop's SOLID STATS icon, typography,
+  surface, and divider. Kept compact language and sign-in controls at the right.
+- Expanded player trends to eight weekly bars on the 834, 1440, 2560, and 3440
+  boards. The 390 boards retain four weeks. Removed the separate player Score
+  tier bars on desktop, leaving one trend and the numeric Score.
+- Changed every Russian borrowed bounty label to the product term `Bounty`.
+- Added a rotation-side color circle beside each squad identity, including a
+  neutral marker for an unknown side. The written side label remains visible.
+- Rebuilt the compact bottom navigation as five evenly spaced tabs. Each tab
+  has a Lucide icon and a label; Bounty is present, and the selected tab matches
+  the Players, Squads, or Bounty specimen shown.
+- Completed the EN success width matrix with 834, 2560, and 3440 boards. Both
+  languages now have success boards at 390, 834, 1440, 2560, and 3440.
+- Added RU and EN 1440 loading, empty, error, and offline boards and completed
+  the EN 390 state set. Offline retains cached rankings and replay evidence;
+  loading keeps card geometry stable; empty and page-level error explain the
+  absence of data within the same three-column composition.
+- Inspected server-rendered exports of the updated mobile, tablet, desktop,
+  wide, squad, and state boards. Penpot briefly rendered stale text after shape
+  edits; fixing text geometry and re-exporting confirmed the corrected copy.
+  The remaining hidden `Parsed` cell in a replay TableRow is an internal UIKit
+  placeholder and is not visible in the prototype export.
+- User acceptance and `SUMMARY.md` remain pending. The prototype is still a
+  static design, and its weekly values remain illustrative fixtures.
+
+### New board IDs
+
+| Board | Penpot shape ID |
+| --- | --- |
+| EN tablet, 834 | df7e9de9-3eae-8053-8008-aef9e10ce28c |
+| EN wide, 2560 | df7e9de9-3eae-8053-8008-aefa52314ce5 |
+| EN ultrawide, 3440 | df7e9de9-3eae-8053-8008-aefa552cb54a |
+| RU desktop loading | df7e9de9-3eae-8053-8008-aefae8d7d146 |
+| RU desktop empty | df7e9de9-3eae-8053-8008-aefb43422be2 |
+| RU desktop error | df7e9de9-3eae-8053-8008-aefb501c51f2 |
+| RU desktop offline | df7e9de9-3eae-8053-8008-aefb5e87e984 |
+| EN desktop loading | df7e9de9-3eae-8053-8008-aefb5fb4581d |
+| EN desktop empty | df7e9de9-3eae-8053-8008-aefb846840ec |
+| EN desktop error | df7e9de9-3eae-8053-8008-aefb96dc73e5 |
+| EN desktop offline | df7e9de9-3eae-8053-8008-aefbaa58983f |
+| EN mobile loading | df7e9de9-3eae-8053-8008-aefdb7e05a7b |
+| EN mobile empty | df7e9de9-3eae-8053-8008-aefdc0f272b5 |
+| EN mobile error | df7e9de9-3eae-8053-8008-aefdcb20273c |
+| EN mobile offline | df7e9de9-3eae-8053-8008-aefdd4ee3db0 |
