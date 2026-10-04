@@ -235,8 +235,11 @@ marketing hero or a row of decorative KPI cards.
 - `02 · States / RU | EN / 390 | 1440 / state`: Loading, Empty, Error, Offline
   in a consistent horizontal sequence.
 - `03 · Scenarios`: compact Squads, compact Bounty, and long-name/data limits.
-- Section and locale groups own their screens. No standalone Matrix labels
-  clutter the Overview root; screen IDs remain stable.
+- Section, locale, width, and state are ordered name prefixes. Every screen
+  stays at the canvas root; do not wrap the matrix in structural groups.
+  Penpot's SVG workspace uses its thumbnail rendering path for root boards.
+  See the [workspace renderer](https://github.com/penpot/penpot/blob/develop/frontend/src/app/main/ui/workspace/shapes.cljs).
+  No standalone Matrix labels clutter the root; screen IDs remain stable.
 - Loading, Empty, and Error retain only their visible state content rather
   than hidden copies of successful tables. Data-limit fixtures do not receive
   duplicate application chrome. Export one screen or region at a time.

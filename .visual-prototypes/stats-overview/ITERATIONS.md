@@ -225,3 +225,22 @@ arbitrary frame placement, and a service-report board mixed into the designs.
   confirmed the account name and integer score data, and confirmed that
   sampled removed table and fixture-chrome layers were absent.
 - Decision: iterate. User acceptance and SUMMARY.md remain pending.
+
+## v6 — 2026-10-04 canvas panning correction
+
+- The user reported that panning still lagged severely after the hidden-layer
+  cleanup, specifically while moving around the canvas. Export latency had
+  not measured that interaction.
+- Found that all 29 screen boards were nested in 11 structural groups.
+  Penpot's SVG [workspace renderer](https://github.com/penpot/penpot/blob/develop/frontend/src/app/main/ui/workspace/shapes.cljs)
+  selects the root-frame thumbnail wrapper for immediate root boards;
+  structural groups take a different rendering path.
+- Removed the 11 wrapper groups and restored all 29 boards to the canvas root.
+  Kept section, locale, width, and state in ordered board-name prefixes.
+  Verified that every board retained its ID, position, width, and height.
+  The reading matrix and shared component instances remain intact.
+- Rechecked the same Overview canvas. The user confirmed that panning became
+  smooth immediately after removing the groups. This confirms the practical
+  fix; the installed renderer implementation was not independently profiled.
+- Decision: keep the root-board structure. Overall design acceptance and
+  SUMMARY.md remain pending.
