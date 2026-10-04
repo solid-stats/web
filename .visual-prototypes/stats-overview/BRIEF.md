@@ -55,6 +55,10 @@ marketing hero or a row of decorative KPI cards.
   side label; use a neutral color when the side is unknown.
 - Use the squad leaderboard's own score contract. Never label a squad value as
   player `adjustedScore`.
+- The squad list uses `totalScore = kills - teamkills`, as defined in
+  `server-2/src/modules/statistics/parity-formulas.ts`. Show grouped integer
+  totals with the explicit `NET KILLS` / `УБ. − ТК` column label. Remove the
+  invented squad Score-tier bars. The prototype totals remain illustrative.
 - Include long squad names and tags, unknown side, one squad, ten squads, and
   200+ squads.
 
@@ -88,6 +92,10 @@ marketing hero or a row of decorative KPI cards.
   `src/styles/theme.css`.
 - Component source: connected Penpot `SolidStats UIKit`
   (`3be9e5e1-190f-8090-8008-724cff55ab11`).
+- Shared page-shell composites live on `App Design / Components`: Brand,
+  NavigationLink, Header, BottomTab, BottomNavigation, LocaleControl,
+  SessionControl, AccountMenu, and ScopeControl. Screens use bound instances;
+  these composites retain their connected UIKit buttons and Lucide icons.
 - Active prototype file: Penpot `App Design`
   (`5954a801-37cf-8094-8008-81f63a8ba3d3`), page `Overview`.
 - Structural reference: frozen
@@ -201,6 +209,9 @@ marketing hero or a row of decorative KPI cards.
 
 - Signed-out visitor, player, moderator, and admin see the same public data.
 - Role differences stay in shell/account navigation. No duplicate page boards.
+- Header variants cross Desktop / Compact with Guest / Authenticated. The
+  authenticated account name is `Afgan0r`; its menu exposes My requests and
+  Sign out. Discord account identity does not imply ownership of player stats.
 
 ### Component states
 
@@ -210,6 +221,25 @@ marketing hero or a row of decorative KPI cards.
 - Table/list rows use the whole row as detail target where nesting allows it.
 - Cards are fluid within the canonical grid. Data regions have bounded visible
   height only when content can exceed the Overview summary limit.
+- Header links hug their icon and localized label. A flexible spacer separates
+  public navigation from account actions. Wide header content aligns with the
+  same centered 1760px container as the rankings.
+- The bottom navigation has five equal fluid columns, content-sized tab
+  internals, and a compact cyan selected state. Its 60px height and the 56px
+  header height are canonical chrome density tokens, not arbitrary card sizes.
+
+### Canvas organization
+
+- `01 · Responsive / RU | EN / width`: success screens ordered from 390 to
+  3440, with matching width columns in both locale rows.
+- `02 · States / RU | EN / 390 | 1440 / state`: Loading, Empty, Error, Offline
+  in a consistent horizontal sequence.
+- `03 · Scenarios`: compact Squads, compact Bounty, and long-name/data limits.
+- Section and locale groups own their screens. No standalone Matrix labels
+  clutter the Overview root; screen IDs remain stable.
+- Loading, Empty, and Error retain only their visible state content rather
+  than hidden copies of successful tables. Data-limit fixtures do not receive
+  duplicate application chrome. Export one screen or region at a time.
 
 ### Responsive widths
 

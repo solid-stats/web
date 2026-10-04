@@ -180,3 +180,48 @@ arbitrary frame placement, and a service-report board mixed into the designs.
 | EN mobile empty | df7e9de9-3eae-8053-8008-aefdc0f272b5 |
 | EN mobile error | df7e9de9-3eae-8053-8008-aefdcb20273c |
 | EN mobile offline | df7e9de9-3eae-8053-8008-aefdd4ee3db0 |
+
+## v5 — 2026-10-04 shared components and review corrections
+
+- Replaced copied shell elements in 28 application frames with local bound Header,
+  BottomNavigation, and ScopeControl instances from App Design / Components.
+  Composites retain connected SolidStats UIKit buttons and Lucide instances.
+- Added Brand, NavigationLink, BottomTab, LocaleControl, SessionControl, and
+  AccountMenu as reusable dependencies. Header has Desktop / Compact and
+  Guest / Authenticated variants. Authenticated identity is `Afgan0r`.
+- Changed header links to content-driven flex widths. Header content shares
+  the ranking container's left and right edges and its 1760px wide-screen cap.
+- Replaced oversized bottom-tab tiles with five fluid columns, compact icon
+  and label stacks, and cyan selected content. Chrome heights follow DESIGN.md:
+  56px header and 60px bottom navigation.
+- Corrected squad fixtures from player-like fractional ratings to illustrative
+  net-kill totals. The source is `totalScore(kills, teamkills)` in server-2
+  `src/modules/statistics/parity-formulas.ts`, verified from fresh
+  `origin/master` at `02e5fdecdc43840db4403f0e65e10ce1382261dc`. Squad headings
+  now say NET KILLS / УБ. − ТК; invented squad Score-tier bars are hidden.
+  Player adjusted Score and Bounty retain their distinct contracts.
+- Organized Overview into Responsive, States, and Scenarios groups, with locale,
+  width, and state subgroups. Removed loose Matrix labels and retained all
+  existing screen IDs. Success and state rows share consistent positions.
+- Rendered desktop guest and compact authenticated headers, the RU mobile
+  bottom navigation, and the account menu. Inspected alignment, localized text
+  fit, content widths, icons, selected styling, and the account name.
+  Server revision 111 confirmed the new Overview grouping and v5 marker.
+- Checked whole-screen exports at RU 390 and 1440 and EN 834 and 3440.
+  The exports exposed stale rendered text despite updated persisted values.
+  Forced text layout refresh for 85 squad totals and compact EN player Scores;
+  the wide EN render confirmed integer squad totals and retained three columns.
+- Investigated reported Overview lag. Removed 7,572 hidden inherited table
+  layers from desktop states in bounded batches; retained visible state
+  content and shared component bindings. Removed redundant application chrome
+  from the data-limits fixture. Subsequent small operations completed in
+  5–8 seconds; smooth interactive panning remains unverified.
+- Stopped concurrent full-frame exports after their timeout. Subsequent single
+  screen exports completed in 9–13 seconds. Automatic structure checks found
+  bound headers on all 28 application screens and bound bottom navigation on
+  all 14 compact screens, with matching container edges at desktop widths.
+  No loose Matrix labels or temporary text-measurement layers remain.
+- Fresh server metadata reported App Design revision 126. A direct read
+  confirmed the account name and integer score data, and confirmed that
+  sampled removed table and fixture-chrome layers were absent.
+- Decision: iterate. User acceptance and SUMMARY.md remain pending.
