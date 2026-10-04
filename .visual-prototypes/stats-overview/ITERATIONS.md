@@ -381,7 +381,22 @@ arbitrary frame placement, and a service-report board mixed into the designs.
   A independently derived A1-A10 coverage before receiving the author ledger;
   reconciliation found no missing or unnecessary requirement. Both inspected
   all 14 primary renders and both detail crops and independently checked all
-  23 manifest digests. No candidate remains open, so no new verifier is needed.
+  23 manifest digests. No new candidate was retained.
+- A follow-up process audit found that the impacted Luna geometry check had
+  not been repeated after r4. Fresh GPT-6 Luna / medium verifier
+  `badge_geometry_verify_r4` closed this gap on the same unchanged snapshot.
+  It independently compared all 30 persisted root/skin/label records against
+  component proof and all ten current consumer records: zero mismatches.
+  Native RU/EN exports show complete labels without collisions; both repeat
+  export hashes match. Resolution: r3.1 fixed for the static geometry claim.
+- Fresh read-only receipts in `overview-v7-r4-closure` confirm the unchanged
+  SDK geometry and server revision 175. No design mutation followed the two
+  Sol approvals, so those whole-result reviews remain applicable. Earlier
+  Bounty punctuation and StateFeedback copy/token investigations are unchanged;
+  r4 Sol reviews rechecked their current pixels and bindings. The new Luna
+  pass covers the localized replay sizing affected by r4.
+  Closure receipt manifest SHA-256:
+  `50ad30972d3ca04b50a886d0599dfe27f6a8f8323b18ed76c6c39f47e7d80cff`.
 
 <!-- markdownlint-disable MD013 -->
 
@@ -390,6 +405,7 @@ arbitrary frame placement, and a service-report board mixed into the designs.
 | Intent and states | Do All-time Empty and local Error communicate truthful recovery while preserving healthy sections? Eight state renders and BRIEF. | A r4, B r4 | r4 / server 175 | Complete: pass |
 | Composition and continuity | Do 390/1440 preserve hierarchy, density, alignment, localized fitting, and the 56px/60px shell? Eight renders and frame geometry. | A r4, B r4 | r4 / server 175 | Complete: pass |
 | System and consumers | Are 18 StateFeedback and 14 ReplayBadge roots connected, token-bound, and content-sized? Component specimens and binding/geometry proof. | A r4, B r4 | r4 / server 175 | Complete: pass |
+| Localized replay sizing | Do all ten badge labels fit after persistence, with matching root/skin/text geometry? Native exports, component proof, and server records. | Luna r4 | r4 / server 175 | Complete: r3.1 fixed |
 | Data and copy | Are replay parse/outcome concepts distinct and five EN Bounty cards correctly formatted? Renders, detail crops, BRIEF, DESIGN.md. | A r4, B r4 | r4 / server 175 | Complete: pass |
 | Artifact integrity | Do 29 root boards avoid collisions, visible text stay contained, and persisted badge geometry/color bindings match? Geometry and direct server proof. | A r4, B r4 | r4 / server 175 | Complete: pass |
 | Evidence and handoff | Do hashes, unchanged-render reuse, repeat exports, and scoped acceptance claims agree? Manifest, checks, and iteration contract. | A r4, B r4 | r4 / server 175 | Complete: pass |
