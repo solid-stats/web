@@ -94,7 +94,9 @@ marketing hero or a row of decorative KPI cards.
   (`3be9e5e1-190f-8090-8008-724cff55ab11`).
 - Shared page-shell composites live on `App Design / Components`: Brand,
   NavigationLink, Header, BottomTab, BottomNavigation, LocaleControl,
-  SessionControl, AccountMenu, and ScopeControl. Screens use bound instances;
+  SessionControl, AccountMenu, ScopeControl, StateFeedback (Empty / Error), and
+  ReplayBadge (Win / Unknown / Counted / Processing).
+  Screens use bound instances;
   these composites retain their connected UIKit buttons and Lucide icons.
 - Active prototype file: Penpot `App Design`
   (`5954a801-37cf-8094-8008-81f63a8ba3d3`), page `Overview`.
@@ -192,9 +194,20 @@ marketing hero or a row of decorative KPI cards.
 
 - Success: all sections populated with fresh data.
 - Loading: stable skeleton geometry matching the final cards and rows.
-- Empty: no qualifying data, with a path to another scope or replays.
+- Empty: no qualifying data, with a recovery action appropriate to the scope.
 - Stale/offline: cached data remains visible with a persistent explanation.
 - System error: identify the failed section without replacing healthy sections.
+- Empty messages match the active scope. At All time, offer Refresh once in the
+  player section and explain that data will appear after replay processing.
+  A narrower period cannot recover data absent from All time. Change period
+  remains appropriate for a rotation-specific empty state; the scope selector
+  stays available. Do not repeat the recovery action in every empty card.
+- A player-ranking error exposes Try again while retaining healthy squads,
+  Bounty, and replay evidence. Mobile retains its recent replay cards.
+- StateFeedback combines an icon, message, explanation, and optional action.
+  Cards and text hug their content; a background never determines a state's
+  height or stretches against a parent that hugs the same content.
+  Visible state-icon strokes reference the semantic color tokens.
 - Onboarding is not applicable: Overview is public and useful without setup.
 
 ### Cross-surface intersections

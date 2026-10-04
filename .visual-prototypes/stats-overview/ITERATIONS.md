@@ -244,3 +244,160 @@ arbitrary frame placement, and a service-report board mixed into the designs.
   fix; the installed renderer implementation was not independently profiled.
 - Decision: keep the root-board structure. Overall design acceptance and
   SUMMARY.md remain pending.
+
+## v7 — 2026-10-04 empty and section-error states
+
+### Review contract
+
+- Boundary: the static Overview Empty and Error result at 390 and 1440 in RU
+  and EN, plus the new shared StateFeedback Empty / Error variants on Components.
+  Direct consumers are all eight state boards. The EN Bounty text-layout refresh
+  also affects Success at 1440, 2560, and 3440 and Offline at 1440; review those
+  four card crops alongside the EN desktop Error frame.
+- Baseline: v6 at web commit `ac8d4f755cfeecf3b976790e5cd1cbcaa005e1cb`.
+  Preserve its root-board reading matrix, shared shell, five icon-and-label
+  bottom tabs, and accepted three-column desktop composition.
+- Mandatory: use connected UIKit Cards, buttons, and icons plus bound local
+  StateFeedback instances; match SG all-time empty copy to the selected scope;
+  expose one suitable recovery action; keep healthy content visible during a local
+  player-ranking failure; retain localized copy, numeric contracts, and fluid
+  state-card sizing without clipping, collisions, or invalid geometry.
+- Snapshot: App Design file `5954a801-37cf-8094-8008-81f63a8ba3d3`, Overview
+  page `5954a801-37cf-8094-8008-81f63a8ba3d4`, Components page
+  `df7e9de9-3eae-8053-8008-aefacb91105e`. Server revision 161 was read directly
+  after the edits. Review evidence set `overview-v7-r1` contains 13 PNG exports,
+  `checks.json`, full `geometry-bindings.json`, and SHA-256 `manifest.json` in
+  the session's machine-local visualization directory.
+- Search depth: bounded whole-result review with two independent Sol/high
+  reviewers and independent candidate verification. This iteration does not
+  reopen the entire product or require every state at every success width.
+- Applicable checks: intent and state completeness; composition and responsive
+  continuity; copy and numeric formatting; component/consumer bindings;
+  geometry and server persistence; traceable evidence. Production keyboard,
+  API behavior, runtime accessibility, tests, SEO, and performance are deferred
+  to implementation. Authenticated shell variants were unchanged in v7.
+
+### Changes and recovery evidence
+
+- Rebuilt Empty panels around scope-consistent messages and one Refresh
+  action. Removed repeated recovery buttons and obsolete hidden replay rows.
+- Rebuilt Error as a player-ranking failure with Try again. Desktop retains
+  ten squad and Bounty rows and five replay rows; mobile retains three replay
+  cards and the All replays action.
+- Added bound StateFeedback Empty / Error variants. Their Components specimens
+  use an ordered vertical layout rather than overlapping at one position.
+- State panels hug content: mobile ranking 144px, empty replays 88px, desktop
+  player state 188px, and other desktop empty panels 132px. The persistent
+  shell density stays at the canonical 56px / 60px heights.
+- Removed the corrupted Card root and its hidden title/body descendants.
+  Their circular background sizing had produced out-of-range text geometry;
+  repairing client coordinates alone did not clear the rejected save queue.
+  After a reload, a clean connected Card with a top-constrained background
+  replaced it. The direct server read at revision 161 confirms all three old
+  IDs are absent and the replacement and StateFeedback are present.
+- Checked all Overview geometry: 29 boards remain at the canvas root, with no
+  out-of-range coordinates. EN Bounty SVG exports contain ten dot-decimal
+  targets and no comma-decimal targets at both Success 1440 and Error 1440.
+  Numeric formulas and fixture values did not change in this iteration.
+- Overall user acceptance and SUMMARY.md remain pending; this iteration does
+  not authorize frontend implementation.
+
+### Independent review and corrective round
+
+- Round 1: `overview_review_a` and `overview_review_b`, both requested
+  GPT-6.1 Sol / high / fresh context, reviewed all 13 renders and the full
+  bounded result. A independently derived coverage before reconciling the
+  author ledger. A approved; B raised three candidates.
+- r1.1 / B1: suspected EN comma-decimal Bounty glyphs. Fresh Luna/medium
+  `bounty_verify_r1` rejected the claim after inspecting the original pixels
+  and enlarged crops. All five affected cards use dots; fixture values did
+  not need another edit.
+- r1.2 / B2: raw semantic icon strokes despite existing color tokens. Fresh
+  Luna/medium `state_verify_r1` confirmed the missing hard bindings against
+  the Penpot sync rule; instance recoloring guidance does not waive that rule.
+  Applied `color.loss` and `color.text-muted` to 54 visible paths across both
+  StateFeedback mains and their 16 screen instances, preserving appearance.
+- r1.3 / B3: All-time Empty recommended another period as recovery. The same
+  independent verifier confirmed that a narrower period cannot contain data
+  absent from its All-time superset. Replaced period-specific explanations
+  with processing/arrival copy and used Refresh / Обновить once per screen.
+  This corrects the author's initial Change period choice; it does not change
+  the user's accepted composition. The brief now distinguishes All-time and
+  rotation-specific recovery.
+- The two desktop Error frames contain 40 off-frame inherited placeholder
+  texts. All have hidden cell ancestors and clipped row/card ancestry; none
+  appears in the exports. No unrelated UIKit cleanup was applied.
+- Round 2 evidence set `overview-v7-r2` refreshes all eight state renders and
+  Components; the four unaffected Bounty crops retain their original pixels.
+  Server revision 164 confirms the fixes. `overview_review_a_r2` and
+  `overview_review_b_r2`, both fresh Sol/high, completed the whole bounded
+  review. B approved; A found another mandatory badge-recipe omission.
+- r2.1: the six mobile Error replay badges had labels without Lucide icons.
+  r2.2: the first two replay cards exposed the outcome without an explicit
+  counted/parsed state. Fresh Luna/medium `processing_verify_r2` independently
+  confirmed both against the brief and canonical badge recipe, while noting
+  that the labels already conveyed meaning without color alone.
+- Added the shared ReplayBadge family on Components with Win, Unknown,
+  Counted, and Processing variants. Each combines a connected UIKit Badge and
+  a connected, token-bound Lucide icon. Penpot prevents adding children inside
+  a connected component copy, so the local composite owns this composition.
+  Its widths hug the localized labels; the specimen uses a canonical dark
+  surface to show the translucent badge fills clearly.
+- Both mobile Error boards use ten bound ReplayBadge instances in total.
+  Counted / Учтён appears beside replay metadata, with outcome on the date
+  row. Processing uses the same metadata position. The three replay cards,
+  their heights, All replays action, footer, and root-board matrix remain.
+- Round 3 evidence set `overview-v7-r3` adds the ReplayBadge specimen to the
+  bounded contract: 14 primary renders. Two mobile Error renders and the new
+  specimen are fresh; the other eleven retain their unaffected r2 pixels.
+  Server revision 172 confirms 217 semantic color bindings and valid geometry.
+  Both fresh Sol/high reviews found r3.1: the RU replay badge labels retained
+  their localized text but inherited smaller EN dimensions after main-instance
+  updates. A new native export showed clipping; fresh Luna/medium
+  `badge_geometry_verify_r3` confirmed it against current geometry and pixels.
+  The exact propagation mechanism remains a hypothesis.
+- Corrected all ten consumers using native SVG text metrics, then restored
+  auto-width labels and auto-sized badge skins/composites. RU text widths are
+  78, 34, 69, and 72px; each composite adds its existing 26px left and 8px
+  right padding. The right card inset is 12px. Adjacent metadata keeps an 8px
+  gap; replay card heights and the shell remain unchanged.
+- A controlled Win-main padding update preserved the localized text width.
+  Returning the main padding did not return consumer padding automatically;
+  explicitly restored both consumers to 26px before final evidence capture.
+  This checks the present result without promising future propagation safety.
+- Round 4 evidence set `overview-v7-r4` contains 14 primary renders plus two
+  detail crops, two repeat exports, and fresh geometry/binding/persistence
+  evidence. The two mobile Error renders and ReplayBadge specimen are fresh;
+  eleven unaffected primary renders and two detail crops match r3 byte for byte.
+  Server revision 175 confirms all ten badge geometries, 217 color bindings,
+  no invalid Overview geometry, and absence of the corrupted Card subtree.
+  Both mobile Error exports repeated after persistence are byte-identical.
+  Manifest SHA-256:
+  `068dd96fe81ec5c7cef8b2324df81e9d04795183bf498024c7d6b0c8ca20002e`.
+  All rounds defer production behavior, keyboard, API, SEO, performance, and
+  implementation tests.
+- Round 4: `overview_review_a_r4` and `overview_review_b_r4`, both fresh
+  GPT-6.1 Sol / high, approved the whole bounded result with no new candidates.
+  A independently derived A1-A10 coverage before receiving the author ledger;
+  reconciliation found no missing or unnecessary requirement. Both inspected
+  all 14 primary renders and both detail crops and independently checked all
+  23 manifest digests. No candidate remains open, so no new verifier is needed.
+
+<!-- markdownlint-disable MD013 -->
+
+| Coverage | Failure question and evidence | Owners | Snapshot | Outcome |
+| --- | --- | --- | --- | --- |
+| Intent and states | Do All-time Empty and local Error communicate truthful recovery while preserving healthy sections? Eight state renders and BRIEF. | A r4, B r4 | r4 / server 175 | Complete: pass |
+| Composition and continuity | Do 390/1440 preserve hierarchy, density, alignment, localized fitting, and the 56px/60px shell? Eight renders and frame geometry. | A r4, B r4 | r4 / server 175 | Complete: pass |
+| System and consumers | Are 18 StateFeedback and 14 ReplayBadge roots connected, token-bound, and content-sized? Component specimens and binding/geometry proof. | A r4, B r4 | r4 / server 175 | Complete: pass |
+| Data and copy | Are replay parse/outcome concepts distinct and five EN Bounty cards correctly formatted? Renders, detail crops, BRIEF, DESIGN.md. | A r4, B r4 | r4 / server 175 | Complete: pass |
+| Artifact integrity | Do 29 root boards avoid collisions, visible text stay contained, and persisted badge geometry/color bindings match? Geometry and direct server proof. | A r4, B r4 | r4 / server 175 | Complete: pass |
+| Evidence and handoff | Do hashes, unchanged-render reuse, repeat exports, and scoped acceptance claims agree? Manifest, checks, and iteration contract. | A r4, B r4 | r4 / server 175 | Complete: pass |
+
+<!-- markdownlint-enable MD013 -->
+
+- Aggregate decision: v7 is ready for the user's visual review. No supported
+  Blocker, Important, or mandatory Polish deviation remains in this boundary.
+  Overall Overview acceptance and SUMMARY.md remain pending. Server evidence
+  proves actual geometry; sizing modes are SDK evidence. Future component
+  propagation is not guaranteed by this static review.
