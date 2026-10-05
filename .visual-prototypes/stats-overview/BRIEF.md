@@ -112,6 +112,11 @@ marketing hero or a row of decorative KPI cards.
 
 ### Reference traits to preserve
 
+- Page header: compact period control aligned with the title; secondary
+  provenance and period context occupy the second desktop row. Keep the
+  selector label readable, its icon and chevron close to its content, and
+  narrow-screen labels beside the leading icon. The historical generic
+  freshness badge does not replace the current replay provenance contract.
 - Mobile: segmented Players / Squads / Bounty leaderboard, followed by recent
   replays. The shared brand header matches desktop, while the compact bottom
   navigation has five aligned icon-and-label tabs including Bounty.

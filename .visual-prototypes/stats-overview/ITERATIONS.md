@@ -1,5 +1,60 @@
 # Stats Overview Iterations
 
+## v9 — Page header reference polish
+
+- Request: improve the Overview page header using the archived Stats Overview
+  reference. The application top bar is explicitly outside the change.
+- Baseline: App Design revision 257; web and plans remote refs refreshed on
+  2026-10-05, both master checkouts equal their upstreams. Existing untracked
+  `.design/generated/` and `.design/token-aliases.json` are user-owned.
+- Bounded scope: the 28 page headers in the 29-board Overview inventory and
+  their shared ScopeControl composite. The chrome-free 834 data fixture has
+  no page header. Rankings, replay content, navigation,
+  account controls, fixtures, and canonical token values remain unchanged.
+- Reference relationships: title and compact period control share the first
+  row; provenance and period context share the second desktop row. The
+  selector's icon, label, and chevron form one readable control.
+- Direction: retain SG all-time and replay-based provenance; strengthen the
+  selected-period label, hug desktop control content, keep a full-width
+  narrow control with its label beside the leading icon, and improve small
+  provenance readability using existing typography tokens.
+- Coverage: RU/EN; 390, 834, 1440, 2560, and 3440; success and existing
+  loading/empty/error/offline boards; all current ScopeControl consumers.
+  Check reference fidelity, grouping, alignment, density, text fit, token and
+  component bindings, top-bar isolation, board collisions, and persistence.
+- Stage: static prototype polish. Production keyboard behavior, API wiring,
+  SEO, performance, and runtime accessibility remain deferred. Existing
+  component-state recipes remain linked; no new interaction is introduced.
+- Search depth: bounded local change. Two fresh whole-result reviews are
+  required; no exhaustive whole-page audit or saturation wave is implied.
+- Result: the desktop scope control hugs its content (RU 178 px, EN 143 px)
+  at 36 px high. Its primary 13 px semibold label is readable beside the
+  repeat icon. Narrow controls retain their full width and left-aligned
+  label; the chevron stays at the trailing edge. Provenance uses 13 px on
+  desktop and 12 px on narrow boards, with enough height for wrapped copy.
+- Binding corrections: the source label's missing size token was restored.
+  A later raw-data check found that consumer `fill-group` overrides blocked
+  source color inheritance under
+  [Penpot's synchronization rules](https://help.penpot.app/technical-guide/developer/data-guide/).
+  All 28 control roots and 28 labels now carry
+  their own canonical fill-token bindings; localized text, component links,
+  dimensions, colors, and other properties were preserved.
+- Evidence: logical artifact `solidstats-overview-header-v9`, with its local
+  locator at `~/.codex/visualizations/2026/10/05/01a10b39-1b21-7a80-a19e-8932f234fae2/overview-header-v9/locator.json`.
+  Final App Design revision 266; connected UIKit revision 137. The capsule
+  contains 28 full native renders, current raw source/consumer records,
+  geometry and token checks, and two post-fix renders that are pixel-identical
+  to the reviewed views. Top bars, other content, and board bounds are
+  unchanged across the 29-board inventory; no board collisions were found.
+- Review ledger: source-size binding and consumer-fill binding were each
+  independently verified and corrected. Fresh whole-result reviewers
+  `header_bound_a` and `header_bound_b` (GPT-6.1 Sol / high) cover the complete
+  bounded result; `header_bound_verify` (GPT-6 Luna / medium) independently
+  confirms the persisted binding correction. Both whole-result reviews
+  returned APPROVE for revision 266, with no retained findings or evidence
+  gaps in the bounded prototype scope.
+- Status: verified prototype update; user acceptance remains pending.
+
 ## v1 — 2026-09-21
 
 - Goal: assemble the first reviewable Overview in Penpot from the connected
