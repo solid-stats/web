@@ -55,10 +55,11 @@ marketing hero or a row of decorative KPI cards.
   side label; use a neutral color when the side is unknown.
 - Use the squad leaderboard's own score contract. Never label a squad value as
   player `adjustedScore`.
-- The squad list uses `totalScore = kills - teamkills`, as defined in
-  `server-2/src/modules/statistics/parity-formulas.ts`. Show grouped integer
-  totals with the explicit `NET KILLS` / `УБ. − ТК` column label. Remove the
-  invented squad Score-tier bars. The prototype totals remain illustrative.
+- Squad Score is average kills divided by average attendance, as confirmed
+  by the user on 2026-10-04. Display three decimals under `Score`; do not use
+  the obsolete backend net-kills total or infer an average of player Scores.
+  Both averages use the same selected replay scope. Prototype values remain
+  illustrative; production must supply the target calculation.
 - Include long squad names and tags, unknown side, one squad, ten squads, and
   200+ squads.
 
@@ -80,7 +81,8 @@ marketing hero or a row of decorative KPI cards.
 ### Trust and provenance
 
 - Replace the historical generic "Up to date" treatment with
-  `Last replay: <date/time>` and `Replays counted: <n>`.
+  `Last replay: <date/time>` and `Replays processed: <n>` on one compact
+  provenance line directly below the page title.
 - Stale/offline and parse states use icon plus label, never color alone.
 - The current `server-2` contract does not expose the complete target Overview
   payload or `adjustedScore`. This is a production contract dependency, not
@@ -95,7 +97,7 @@ marketing hero or a row of decorative KPI cards.
 - Shared page-shell composites live on `App Design / Components`: Brand,
   NavigationLink, Header, BottomTab, BottomNavigation, LocaleControl,
   SessionControl, AccountMenu, ScopeControl, StateFeedback (Empty / Error), and
-  ReplayBadge (Win / Unknown / Counted / Processing).
+  ReplayBadge (Win / Unknown / Processed / Processing).
   Screens use bound instances;
   these composites retain their connected UIKit buttons and Lucide icons.
 - Active prototype file: Penpot `App Design`
@@ -175,7 +177,7 @@ marketing hero or a row of decorative KPI cards.
 | Squad row | Rank, squad, tag, side, members, score | Open squad or full ranking |
 | Bounty row | Rank, player, total bounty | Open context or full ranking |
 | Replay row | ID, mission, map, state, outcome, time | Open replay or all replays |
-| Freshness | Last replay and counted replay total | Read status |
+| Freshness | Last replay and processed replay total | Read status |
 
 <!-- markdownlint-enable MD013 -->
 
@@ -193,18 +195,22 @@ marketing hero or a row of decorative KPI cards.
 ### Scenario endings
 
 - Success: all sections populated with fresh data.
-- Loading: stable skeleton geometry matching the final cards and rows.
+- Loading: skeleton slots derived from the Success components, matching both
+  horizontal and vertical geometry. Do not add redundant loading text.
 - Empty: no qualifying data, with a recovery action appropriate to the scope.
-- Stale/offline: cached data remains visible with a persistent explanation.
+- Stale/offline: exactly the same cached Success rows, values, order, columns,
+  supporting data, and formatting remain visible with a persistent explanation.
 - System error: identify the failed section without replacing healthy sections.
-- Empty messages match the active scope. At All time, offer Refresh once in the
-  player section and explain that data will appear after replay processing.
+- When no replays exist, replace all data sections with one centered feedback
+  region and one recovery action. At All time, offer Refresh and explain that
+  data will appear after replay processing.
   A narrower period cannot recover data absent from All time. Change period
   remains appropriate for a rotation-specific empty state; the scope selector
   stays available. Do not repeat the recovery action in every empty card.
 - A player-ranking error exposes Try again while retaining healthy squads,
   Bounty, and replay evidence. Mobile retains its recent replay cards.
-- StateFeedback combines an icon, message, explanation, and optional action.
+- StateFeedback centers its icon, message, explanation, and optional action
+  inside the containing region, visually distinguishing feedback from data.
   Cards and text hug their content; a background never determines a state's
   height or stretches against a parent that hugs the same content.
   Visible state-icon strokes reference the semantic color tokens.

@@ -417,3 +417,378 @@ arbitrary frame placement, and a service-report board mixed into the designs.
   Overall Overview acceptance and SUMMARY.md remain pending. Server evidence
   proves actual geometry; sizing modes are SDK evidence. Future component
   propagation is not guaranteed by this static review.
+
+## Iteration v8 — shared content and state parity
+
+- Boundary: all 29 Overview root boards and directly affected Components
+  composites. Prototype stage only; no application implementation or other
+  page design. Baseline: web `f86a2c7`, plans `7cf9851`, server revision 175.
+- Current user requirements supersede v7 approval: compact title/provenance;
+  Processed terminology; identical Success/Offline data; exact two-axis
+  Success/Loading geometry; one no-replay Empty message; centered feedback;
+  compact local Error composition; trailing right alignment; shared ranking
+  rows across responsive, scenario, and edge fixtures; squad side circle left
+  of identity; squad Score rather than obsolete net kills.
+- The user's supplied formula reference confirms squad Score as average kills
+  divided by average attendance. Primary plans define player adjusted Score
+  only. Do not substitute the player formula or old backend squad total.
+- Evidence: immutable machine-local `overview-v8/baseline.json`, current user
+  screenshots and copied-shape snapshots, fresh native renders and server
+  receipts to be collected after edits. Preserve prior round evidence.
+- Expected coverage: RU/EN Success at 390/834/1440/2560/3440; RU/EN Loading,
+  Empty, Error, Offline at 390/1440; compact Squads/Bounty; actual row reuse in
+  long-name, one-row, tied/negative Score and zero/tied Bounty fixtures;
+  connected shared composites and authenticated Afgan0r shell.
+- Checks: root-board collisions; finite geometry; visible containment; row and
+  column parity for Loading; value/format/order parity for Offline; token and
+  component bindings; persisted content identity. Static geometry is prototype
+  evidence, not a claim that production CLS has been measured.
+- Review depth: saturation, because shared rows and state transitions affect
+  several consumer families. Two fresh Sol/high whole-result reviews, an
+  independently derived coverage map, focused Luna checks and independent
+  candidate verification, and a fresh closing omission pass remain pending.
+- Production API calculation, runtime CLS, keyboard, accessibility, SEO, and
+  performance remain implementation-stage deferrals. Overview acceptance and
+  SUMMARY.md remain pending.
+- Initial independent source/render review used persisted revision 209,
+  `overview-v8/server-r3.json`, and all 29 native board exports recorded in
+  `renders-r1.json`. Geometry, candidate, and token investigations are retained
+  separately in the same machine-local evidence set. These are preliminary
+  reviews, not completion approval.
+- Confirmed candidates: v8.1 misplaced Edge Bounty header; v8.2 compact
+  scenario segments incorrectly changing global navigation; v8.3 account-menu
+  fixture drift; v8.4 stray root text artifact; v8.5 missing actual one-squad
+  and one-replay specimens; v8.6 stale text glyphs despite updated content;
+  v8.7 data-colored initial-loading indicators; v8.8 untranslated EN tablet
+  fields; v8.9 missing token bindings on new shared text slots.
+- Coordinated repair round 2 is in progress. Its current client changes are
+  not yet reconciled with server persistence or fresh native exports. Browser
+  suspension interrupted the token-binding operation; do not infer either
+  successful completion or lost edits from the timeout. Resume from the
+  existing client, inspect actual progress, and finish the remaining fixtures
+  before recording the immutable round-2 snapshot.
+- Fresh reviewers `overview_v8_r2_review_a` and
+  `overview_v8_r2_review_b` are deriving independent coverage before receiving
+  the author ledger. Both request GPT-6.1 Sol / high with fresh context. Final
+  whole-result review, impacted mechanical rechecks, candidate closure, and
+  the closing omission pass still remain pending.
+- A subsequent autosave report identifies a different concrete failure:
+  `main-instance-not-a-variant` and `invalid-variant-properties` in the existing
+  StateFeedback variant container. The new localized mains and text labels
+  had been appended as ordinary children of that container. Moving them into
+  a separate ordinary specimen board restores the client's expected variant
+  structure, but the rejected queue still prevents persistence; the server
+  receipt remains at revision 215.
+- Recovery artifact `overview-v8-r2-client-recovery-20261004` retains the four
+  corrected localized mains, eight consumer captures, shared text-slot
+  geometry/bindings, and reconstruction helpers. Its machine-local locator is
+  `$CODEX_HOME/visualizations/2026/09/16/01a0a9c5-1326-72d0-9e98-b540f2ee00e6/overview-v8/recovery/locator.json`.
+  All three retained payloads were re-read and their SHA-256 digests verified;
+  Windows ACLs restrict the recovery directory to the user and SYSTEM.
+  After clearing the rejected client queue, recreate the localized mains
+  outside the existing VariantContainer, register their new component IDs,
+  and remap the eight consumers. Do not replay the rejected container edits.
+- Recovery continued with four ordinary localized feedback components at the
+  Components canvas root. Direct server revision 217 confirms all four
+  registrations; revision 218 confirms their eight Overview consumers.
+- Server revision 219 retains the six EN tablet field additions, fresh RU
+  Diamond Dogs text slots, neutral token bindings on the fifteen initial
+  Loading indicators, and the shared text token updates. Scenario navigation
+  and the Edge Bounty header are already correct in this persisted snapshot.
+- Refreshing the five affected RU squad table copies timed out after the
+  browser suspended the plugin tab. The revision-219 server receipt contains
+  no replacement squad table heads. Do not replay the batch blindly: inspect
+  `storage.refreshedR2` and the existing client after the tab wakes, then
+  reconcile partial progress. The remaining table consumers, one-squad and
+  one-replay specimens, current renders, and final independent review remain
+  incomplete. Do not refresh the browser while this client work is pending.
+
+### Revision 247 review candidate
+
+- The interrupted five-table refresh completed and persisted at revision 220.
+  Subsequent repairs reached revision 236: remaining table consumers, actual
+  one-squad and one-replay Edge specimens, localized text, neutral Loading
+  markers, and visible text-slot token bindings. The stale plugin client was
+  refreshed only after server persistence was confirmed.
+- Independent candidate verification confirmed v8.10 missing desktop player
+  and squad population totals, v8.11 lost compact Offline rotation context,
+  and v8.12 invisible Error icon geometry. The half-pixel Bounty segment box
+  difference was rejected as a visible defect.
+- Desktop shared player/squad headers and consumers now retain their All
+  destination with localized totals. Compact Offline retains rotation context
+  and adds a separate notice below the header without moving cached tables.
+- Native rendering exposed v8.13: nested geometry replay left icon paths and
+  text glyphs offset from their centered Heading frames. Independent source
+  and pixel verification confirmed the clipping. Normalize all four localized
+  feedback sources, center the absolute action labels with constraints, and
+  instantiate all eight Empty/Error consumers directly from those sources;
+  do not replay nested geometry over a fresh instance.
+- Final candidate: server revision 247, source SHA-256
+  `f14d169b35bd37b3eacda65180dd9a687bc368b078bbf0468517db5c92287a5a`.
+  The machine-local `overview-v8/renders-r4.json` identifies all 29 native
+  screen renders and 15 shared-component specimens. Older native renders are
+  used only after exact persisted-subtree equality against revision 247.
+- Deterministic client checks: 29 root boards, zero board intersections, zero
+  invalid coordinates, and zero icon/glyph/action-center offsets in all eight
+  feedback consumers. Source and native evidence remain distinct checks.
+- Fresh reviewers `overview_v8_r4_review_a` and `overview_v8_r4_review_b`
+  independently derived the whole-result coverage before the author ledger;
+  requested routing is GPT-6.1 Sol / high / fresh context. Their final reviews,
+  impacted focused verification, and closing omission pass remain pending.
+  This candidate is not acceptance or permission to create SUMMARY.md.
+
+### Revision 248 review candidate
+
+- Round-4 Reviewer A blocked on v8.14 and v8.15; Reviewer B approved its
+  individual inspected scope with no supported new findings. The independent
+  focused verifier confirmed both remaining mandatory binding deviations.
+  Aggregate approval was therefore withheld.
+- v8.14: restore `color.text-muted` on both desktop Offline replay-provenance
+  slots. Cached Success styling now remains intact; the persistent Offline
+  notice keeps its separate semantic warning color.
+- v8.15: bind the existing `font.size.2xs` token to all five standalone RU
+  replay-provenance slots in mobile/tablet Success, mobile Error and the two
+  mobile segment scenarios. Their 11px size and layout remain unchanged.
+- Reviewer B independently inspected the half-pixel EN Offline Bounty-label
+  measurement/raster difference. It does not clip, change content, move the
+  segment frame, or alter data geometry; it remains a rejected consequential
+  defect, not a claim of mathematically identical text bounding boxes.
+- Server revision 248, source SHA-256
+  `ab7fd745fb6ba14220fc246dcea96707135eca712e8bc4e8848d6d274d258f7b`.
+  Machine-local `overview-v8/renders-r5.json` admits all 29 screen renders and
+  15 component specimens: seven fresh native exports, 22 board subtrees
+  proven exactly unchanged from revision 247, and an exactly unchanged
+  Components page. `preflight-r5.json` confirms all seven bindings, unchanged
+  text boxes, 29 roots, zero root intersections and zero invalid geometry
+  across 29,015 shapes. Existing feedback checks remain valid through exact
+  subtree equality, rather than assumption.
+- Fresh reviewers `overview_v8_r5_review_a` and `overview_v8_r5_review_b`
+  independently derived coverage from the raw requirements before receiving
+  this ledger; requested routing is GPT-6.1 Sol / high / fresh context.
+  Both whole-result reviews, fresh impacted provenance verification, and the
+  closing omission/boundary pass remain pending. No user acceptance or
+  SUMMARY.md is inferred.
+
+### Round-5 remaining corrections
+
+- Both whole-result reviewers completed the revision-248 review. They
+  retained v8.16, a mandatory typography-token binding gap in nine local
+  source or standalone text slots; Reviewer A also retained v8.17, the
+  missing paired icon in all four persistent Offline notices.
+- Fresh independent verification closed v8.14 and v8.15 and confirmed
+  v8.16 and v8.17. A broader token scan raised additional inheritance
+  candidates; those require checking the actual connected UIKit sources
+  before admitting or rejecting them. The UIKit snapshot is revision 137.
+- Server readback still confirms revision 248 and its exact recorded digest.
+  The currently connected MCP client is older: the latest provenance
+  bindings are absent and the compact Offline notice retains its earlier
+  size. Product edits are held until that client is refreshed; saved server
+  evidence remains valid. The completion and acceptance gates remain open.
+
+### Revision 253 coordinated corrections and review candidate
+
+- After the refreshed MCP client matched revision 248, apply v8.16 to the
+  independently verified App Design anchors. The verification examined 148
+  property groups across 840 consumer instances: 143 groups were confirmed;
+  five proposed fill changes were rejected because the connected UIKit
+  source already supplied the intended muted color. Bind 69 font-size,
+  72 font-weight, and two fill properties at 72 App Design anchors. The
+  connected UIKit remains at revision 137 and receives no edits.
+- v8.17: replace the four plain Offline labels with instances of two shared
+  RU/EN persistent notice sources. Each source pairs the connected Lucide
+  wifi-off icon with the cached-data explanation. The row is centered,
+  14px high, with a 14px icon on the left and an 8px gap; cached table and
+  rotation-context positions remain unchanged. Normalize the icon source
+  once, then instantiate it without replaying nested geometry.
+- The token application normalized redundant text metadata and constraints.
+  Do not claim byte-identical or metadata-only rendering equivalence.
+  Export all 29 screens and 19 affected component specimens freshly; no
+  revision-253 render is admitted through reuse of an older PNG.
+- Server revision 253, source SHA-256
+  `90af7a18705a986f27aa949847af3703e46f1c4b42d5934a63e76c7ea252c8b8`.
+  Machine-local `overview-v8/renders-r6.json` identifies all 48 native PNGs
+  with shape IDs, dimensions and digests. Its SHA-256 is
+  `ac0de54d4467105b1eee37b59aae3e8b1303d5d94e8d50801226dcc892df0080`.
+  `preflight-r6.json` confirms 29 root boards, zero root intersections,
+  zero invalid coordinates across 29,077 shapes, all 143 requested bindings,
+  and four notice rows with zero center offset and the intended icon order.
+- `change-r6.json` is an intermediate operation record: its captured source
+  geometry precedes the final icon-order correction. Use the persisted
+  revision-253 source, preflight and native exports for final geometry.
+- Fresh whole-result reviewers `overview_v8_r6_review_a` and
+  `overview_v8_r6_review_b` derived coverage before receiving this ledger;
+  requested routing is GPT-6.1 Sol / high / fresh context. Fresh focused
+  verifiers inspect binding inheritance and Offline parity. Both whole
+  reviews, focused closure, candidate adjudication and the closing
+  omission/boundary pass remain open. A suspected mobile Bounty count,
+  long replay-label evidence and Offline color applicability are being
+  independently checked. This record does not imply acceptance or SUMMARY.md.
+
+### Revision 253 review results and evidence reconciliation
+
+- Both whole-result reviews completed the 29-screen and 19-component scope,
+  after independently deriving coverage from the raw requirements. Aggregate
+  completion remains blocked while the mobile Bounty count, generic feedback
+  specimen, and long replay-label coverage are independently adjudicated.
+- The focused binding verifier traced all 840 consumer chains through 2,909
+  shapes. All 143 confirmed groups resolve to the intended token and effective
+  value; all five rejected fill groups trace their 210 consumers to the
+  connected UIKit's existing muted token. No consequential typography or
+  geometry drift was found. Report SHA-256:
+  `c21bad9ba14d6c115d6e4392c63ad54dba37e1db7c141781f21408786898f482`.
+- Fresh Offline verification completed all 28 required source reads, four
+  native Offline/Success comparisons and numeric pixel differences. Cached
+  content, order, formats, rotation context and table/card geometry pass.
+  The EN mobile Bounty tab has an inconsequential half-pixel label offset;
+  sparse residual pixels do not alter data. Report SHA-256:
+  `5a1623b12ab95fd358bf1818957183d23d42292f3f5143fd753bbb1114e0dc10`.
+- The Offline color candidate v8.18 is rejected: the live-connection freshness
+  pill recipe does not directly govern the separate persistent cached-data
+  warning. Canonical amber permits warning/stale content, and the notice
+  identifies the condition with both icon and copy.
+- The selected NavigationLink color suspicion is withdrawn after source and
+  pixel verification: its primary-weak fill has 13% opacity, and the native
+  PNG has alpha 33. The isolated transparent preview was misleading; actual
+  dark Header compositions retain legible cyan content.
+- `renders-r6-final.json` supersedes the intermediate manifest's legacy
+  digest fields. Its SHA-256 is
+  `569e9e3154d5d2115c2340beef7464980db1bb0a24dd24573f833ee6c3f1a5db`.
+  All 48 PNG bytes, IDs, dimensions and revision-253 source remain unchanged;
+  both reviewers independently checked the definitive PNG digests.
+- A scoped glyph-data preflight compares 3,040 visible text records, excluding
+  3,876 hidden records under the shared content slots. Only three visible
+  content/position-data mismatches remain, all in the old generic Empty
+  specimen. This source check supplements its native evidence; it is not
+  approval based on the text content field alone.
+
+### Revision 257 feedback and long replay-label corrections
+
+- Fresh candidate verification rejects the mobile Bounty count claim: the
+  plans permit a full player ranking sorted by Bounty, including zero values.
+  The fixture population is illustrative; no separate production eligibility
+  contract is asserted. The selected-navigation and Offline color candidates
+  are also rejected against their actual composition and recipe scope.
+- Confirmed required corrections are the generic StateFeedback specimen's
+  stale glyph data/left alignment and missing long mission/map coverage in
+  the existing Edge replay card. No other page or connected UIKit is edited.
+- Reflow the six generic feedback text nodes with centered alignment. Native
+  evidence now shows the current Empty/Error messages, centered explanations
+  and actions. The two component identities and main bounds are retained;
+  this generic specimen has no current Overview consumers.
+- Replace only the existing Edge mission/map fixture text with long stress
+  labels. A bounded nonzero width nudge triggers fixed-text measurement, then
+  restores the original 762px/657px widths. The native mission is 651.93px and
+  map label 590.40px; both fit their original rows without touching badges.
+- Server revision 257, source SHA-256
+  `cb80df9cadb8052dab2a77d2fe10fab21067763608e6821bcc52f664a4fd3275`.
+  `renders-r7-final.json` admits two fresh native exports and 46 earlier PNGs
+  only after exact persisted subtree equality and exclusion of dependencies
+  on the changed generic component. Tokens and connected UIKit revision 137
+  are unchanged. The 29 screens remain canvas-root boards.
+- Preflight retains all 143 bindings, finds no invalid coordinates, and compares
+  3,040 visible text records with zero glyph-data mismatches. Hidden legacy
+  content slots are excluded; no hidden text is deleted for this correction.
+- This is a coordinated fix round. Two fresh whole-result Sol/high reviews,
+  focused correction verification, candidate closure, and a fresh closing
+  omission/boundary pass remain required. Acceptance remains with the user;
+  no accepted SUMMARY.md or runtime verification is claimed.
+
+### Revision 257 completed coordinated reviews
+
+The bounded task remains the 29 Overview root boards and 19 directly affected
+Components specimens. Two fresh GPT-6.1 Sol/high reviewers derived coverage
+independently before the author ledger, inspected all 48 native images, then
+reconciled the completed checks. Both approve the static prototype with zero
+retained findings or unresolved required prototype checks. Their current
+source and render evidence is revision 257; user acceptance remains separate.
+
+<!-- markdownlint-disable MD013 -->
+
+| Check | Owner and evidence | Outcome |
+| --- | --- | --- |
+| Whole bounded result and omissions | Fresh `overview_v8_r7_review_a` and `overview_v8_r7_review_b`; independent coverage artifacts and native inspection | Complete; no retained findings |
+| Tokens and connected consumers | Fresh r6 binding verifier; 143 groups and 840 chains; r7 exact unchanged-source proof | Complete; bindings retained |
+| Cached Offline parity | Fresh r6 Offline verifier; four native/source pairs; r7 unchanged-source proof and whole reviews | Complete; content, order, formats and context retained |
+| Candidate adjudication | Fresh r6 candidate verifier; raw contract and refuting evidence | C1/C2/C4 rejected; C3/C5 corrected |
+| Feedback and long replay labels | Fresh `overview_v8_r7_focus`; source, native exports and digest audit | Complete; both corrections verified |
+| Artifact integrity | Lead preflight and independent A/B/focus checks; stable server readback, exact subtree admission | Complete; 29 root boards, zero collisions/invalid points/glyph mismatches |
+| Closing omission/boundary pass | Fresh `overview_v8_r7_closing`, GPT-6 Luna/medium; raw coverage before completed ledger | Complete; no new material direction |
+
+<!-- markdownlint-enable MD013 -->
+
+The focused report initially transcribed one Edge digest character incorrectly.
+Its author recomputed all 48 hashes into `digest-audit-r7.json`, corrected the
+report and re-read it; the lead and Reviewer B independently matched both fresh
+report digests to actual bytes. No source, PNG or reviewed revision changed.
+
+Applicable static checks include intent, composition, reference relationships,
+shared consumers, realistic content, responsive continuity, intended states,
+persistence and evidence integrity. Live keyboard/ARIA, API/auth behavior,
+production score delivery, runtime CLS/CWV, SSR/SEO and Ladle implementation
+remain implementation-stage obligations. No static missing width or state is
+excused through those deferrals. No accepted SUMMARY.md is manufactured.
+Definitive r7 evidence digests:
+
+- Manifest:
+  `e7e02b5ad2e499e716f55b0f52032fd226ad7d937e15dea06d52f93a84c9674b`
+- Review A:
+  `34efb8399ed207a749d9a61750a700a8ee4e80e9825dcd7189ce8dbb6baebfdc`
+- Review B:
+  `88aa7539cc9291ea0afa8c9244216aaf82f4c6facfb1731f8f04604659c69b83`
+- Focused verification:
+  `a8e229b1d88eb53d16d051e89b9354ad2709647f5e23deb6b507a06d1f416d55`
+
+### Revision 257 closing candidate adjudication
+
+- The closing pass surfaced C-r7-copy-1, a possible Russian-copy issue in the
+  one-player Edge explanation. Its initial independent verification was not
+  admitted because mandatory source reads had been truncated. The same
+  assignment then personally completed all 33 required files and reassessed
+  applicability against the native board and product terminology.
+- The verifier rejects a mandatory defect: this board explicitly identifies
+  itself as a demonstration rather than an application page, its fixture notes
+  are technical, and `raw score` is established product terminology. The
+  explanation remains comprehensible for that audience. A smoother phrasing
+  would be optional if later reused as customer-facing copy; no optional
+  refinement is applied automatically.
+- The final report preserves the provisional initial assessment and completed
+  read audit. Its SHA-256 is
+  `b5565f3eee25355475021c2a557b25bff9e134d8e1500eba638d8a1526a37d96`.
+  No source or PNG changed during this adjudication; the existing whole-result
+  reviews and focused checks still apply to revision 257.
+- The closing reviewer personally completed its 28-file chain, compared its
+  independently derived coverage with the completed ledger, and reconciled the
+  final candidate verification. No supported material direction remains in the
+  bounded static prototype. Earlier incomplete/provisional attempts remain
+  explicitly recorded; their conclusions are not used as approval.
+- The final server receipt exactly matches the reviewed revision-257 source.
+  Static review is complete. User acceptance and implementation remain separate;
+  neither an accepted SUMMARY.md nor runtime CLS verification is asserted.
+- This closure produces no new accepted durable product decision. Temporary
+  review status and raw evidence are retained locally rather than captured as
+  project memory. Session lessons remain outside this task at the user's request.
+- Closing report SHA-256:
+  `4a71a568466ff04dd58715dc02424ec6e3d789ad591fd96083a67723f5187d1b`.
+  The lead labelled one resolved boundary sentence as historical rationale;
+  the independent outcome and completed read audit are unchanged.
+
+### Retained evidence handoff
+
+Logical artifact: `overview-v8-reviewed-prototype-20261005`.
+
+<!-- markdownlint-disable MD013 -->
+
+Stable machine-local locator: `$CODEX_HOME/visualizations/2026/09/16/01a0a9c5-1326-72d0-9e98-b540f2ee00e6/overview-v8/evidence-locator.json`.
+
+<!-- markdownlint-enable MD013 -->
+
+The locator records revision 257, source/render identities, exact local paths
+and digests. All 262 retained files were re-read and digest-verified after
+applying private Windows ACLs: inheritance disabled, host user owns every item,
+and only the host user and SYSTEM have access. Locator SHA-256:
+`027813f55ee47224c68ccd1da16fec3c55d1930c6709dce21096c88890acb341`.
+
+Historical client recovery remains separately identified as superseded; never
+restore those snapshots or replay their obsolete geometry helper. One-off
+author/reviewer helper scripts were removed. No private source corpus, access
+token or raw review report is committed to Git.
