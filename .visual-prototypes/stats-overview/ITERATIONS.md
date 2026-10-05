@@ -1,5 +1,104 @@
 # Stats Overview Iterations
 
+## v10 — Freshness badge and opened scope selector
+
+- User correction: restore the compact freshness badge under the page title.
+  Last-replay information is unwanted; this supersedes v9's provenance row.
+  The application top bar and ranking/replay content remain outside the edit.
+- Baseline: App Design revision 266, web master `0f82c43`; fresh origin refs
+  show 0 ahead / 0 behind. User-owned untracked design exports are preserved.
+- Bounded result: all 28 existing page headers, new connected local freshness
+  composites, and representative opened scope menus. The chrome-free data
+  fixture has no header and remains untouched. Connected UIKit values do not
+  change.
+- Required coverage: existing RU/EN 390, 834, 1440, 2560, and 3440 headers;
+  existing Loading, Empty, Error, and Offline headers at 390 and 1440;
+  explicit stale and reconnecting intent in both locales; opened selectors at
+  390 and 1440 in both locales. Snapshot age is distinct from replay dates.
+- Check composition, copy fit, reference relationships, semantic colors plus
+  labels/icons, cached-content continuity, component and token links, bounds,
+  unchanged top bars/body, and server persistence. Static prototype intent is
+  in scope; runtime keyboard, ARIA, motion, API wiring, SEO, and performance
+  remain implementation work.
+- Search depth: bounded change with two fresh whole-result Sol/high reviews.
+  Reviewer A first derives an independent omission/boundary coverage map;
+  both then inspect the full bounded result. Candidate findings receive a
+  fresh independent verifier.
+- Result: 40 headers across 41 Overview boards. The 28 existing headers now
+  use connected freshness instances; 12 representative boards add Stale,
+  Reconnecting, and Scope-open views in RU/EN at 390 and 1440. Ten localized
+  freshness mains and two localized ScopeMenu mains live on Components.
+  Initial loading has a separate updating recipe and makes no age claim.
+- The opened selector contains selected SG All time and seven fictional
+  rotations. Rotation 14 is marked current; Sep 15 through Oct 12 includes
+  the Oct 5 fixture date. Date ranges remain illustrative prototype content.
+- Findings and corrections:
+  - `v10.bind`: restored 64 missing own paint-token records on freshness
+    sources and consumers. Existing colors, geometry, and links were retained.
+    `freshness_binding_verify` verified the candidate; `freshness_fix_verify`
+    independently verified the correction (GPT-6 Luna / medium).
+  - `v10.dates`: corrected seven menu date ranges on both localized mains
+    and their four consumers. The persisted delta contains 42 text changes
+    and 39 automatic text-width changes, with no position or paint change.
+    `freshness_dates_verify` verified the candidate; `freshness_fix_verify`
+    verified the correction (GPT-6 Luna / medium).
+  - `v10.dot`: the stale circle-dot center was invisible because a 1.4 px
+    inner stroke exceeded its 1.167 px diameter. `freshness_dot_verify`
+    independently confirmed the canonical-recipe deviation. Centered strokes
+    on two source ellipses and four consumer ellipses restore the dot without
+    changing UIKit/Lucide links, geometry, or `color.warn` bindings.
+  - `v10-A1`: optional tablet grouping refinement. RU/EN 834 headers leave
+    2 px between badge and selector versus 14 px at 390. The spacing is an
+    allowed token and causes no clipping. `freshness_spacing_verify`
+    confirmed the measurement but found no mandatory minimum; left unchanged
+    for user choice.
+  - `v10.future`: rejected by `freshness_spacing_verify`; an active period's
+    upcoming end date is coherent with its current label and as-of date.
+  - `v10.menu-recipe`: both revision-288 whole-result reviewers found the
+    floating selector shell used input/card paint instead of the canonical
+    popover recipe. `freshness_menu_verify` confirmed the surface and border
+    deviation, ruling out the brief's ranking-card elevation exception.
+    The correction applies `color.surface-1`, `color.border-2`, and
+    `shadow.md` to the two local mains and four consumers; radius and linked
+    Card primitives are retained. The prior raw schema omitted shadow data;
+    revision-288 SDK reads show empty shadow lists on all six shells.
+    `freshness_menu_clip_verify` separately confirmed that the outer menu
+    roots clipped the applied shadow. Disabling clipping on two mains and
+    four consumers preserves the rounded Card clip and page viewport clip.
+    `freshness_menu_fix_verify` independently confirms the final recipe,
+    unchanged geometry/content/links, and visible exterior shadows in all
+    four contexts (GPT-6 Luna / medium).
+- Evidence: logical artifact `solidstats-overview-header-v10`, with locator
+  `~/.codex/visualizations/2026/10/05/01a10b39-1b21-7a80-a19e-8932f234fae2/overview-header-v10/locator.json`.
+  Current App Design revision 291; UIKit 137 and Lucide-icons 464 unchanged.
+  The admitted manifest contains 40 current headers, four wide detail crops,
+  four Scope-open contexts over actual ranking content, and five recipes in
+  both locales. Native SVG exports and original Penpot markup groups are
+  rasterized locally; no browser is used. Raw 950-record persistence checks
+  reconcile tokens and finite geometry with the final snapshot. All 29
+  baseline board geometries and non-header subtrees remain unchanged; the
+  41-board root inventory has no collisions.
+- Dot correction delta: exactly six raw records change only stroke alignment;
+  four renders change only their 4-by-4 px center region. The other 36
+  admitted header hashes were unchanged by that correction. Menu paint
+  changes subsequently affect six shells only. Final overflow changes keep
+  menu interiors pixel-identical and add exterior shadows; the other 36
+  header hashes remain unchanged. Revision 291 expands the raw schema with
+  `showContent`; prior records omit that field. Before clipping is proven by
+  SDK reads and native SVG, rather than inferred from the schema expansion.
+  Previously recorded raw fields have no changes from revision 290 to 291.
+- Final gate: `freshness_pass_a` and `freshness_pass_b` (GPT-6.1 Sol / high)
+  independently approve revision 291 after inspecting all 40 headers and
+  contextual evidence. A first derives its own omission/boundary map.
+  Neither finds a new mandatory deviation or required evidence gap. Both
+  independently reconcile current hashes, raw records, recipes, bounds,
+  and all 29 unchanged baseline non-header subtrees.
+  `freshness_dot_fix_verify` (GPT-6 Luna / medium) confirms the isolated dot
+  correction, including amber center pixels in all four current renders.
+  The fresh whole-result round and independent menu fix verification pass.
+- User acceptance remains pending. No accepted `SUMMARY.md`, implementation
+  work, or accepted-design memory capture is created by this review.
+
 ## v9 — Page header reference polish
 
 - Request: improve the Overview page header using the archived Stats Overview

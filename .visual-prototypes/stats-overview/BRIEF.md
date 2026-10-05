@@ -80,9 +80,10 @@ marketing hero or a row of decorative KPI cards.
 
 ### Trust and provenance
 
-- Replace the historical generic "Up to date" treatment with
-  `Last replay: <date/time>` and `Replays processed: <n>` on one compact
-  provenance line directly below the page title.
+- Show the compact freshness badge directly below the page title:
+  Up to date, Data is going stale, Connection lost, or Reconnecting.
+  Its age describes the displayed data snapshot, not the last replay date.
+  Do not show last-replay timestamps or processed-replay totals in the header.
 - Stale/offline and parse states use icon plus label, never color alone.
 - The current `server-2` contract does not expose the complete target Overview
   payload or `adjustedScore`. This is a production contract dependency, not
@@ -113,10 +114,10 @@ marketing hero or a row of decorative KPI cards.
 ### Reference traits to preserve
 
 - Page header: compact period control aligned with the title; secondary
-  provenance and period context occupy the second desktop row. Keep the
+  freshness badge and period context occupy the second desktop row. Keep the
   selector label readable, its icon and chevron close to its content, and
-  narrow-screen labels beside the leading icon. The historical generic
-  freshness badge does not replace the current replay provenance contract.
+  narrow-screen labels beside the leading icon. Show the opened selector with
+  its selected all-time option and secondary rotation options.
 - Mobile: segmented Players / Squads / Bounty leaderboard, followed by recent
   replays. The shared brand header matches desktop, while the compact bottom
   navigation has five aligned icon-and-label tabs including Bounty.
@@ -136,7 +137,7 @@ marketing hero or a row of decorative KPI cards.
 - Historical Rotation 14 default becomes SG all-time, with rotations as
   secondary scopes.
 - Historical raw Score becomes sample-size-adjusted Score for players.
-- Historical generic freshness becomes replay-based provenance.
+- Freshness uses the canonical four-state badge recipe and snapshot age.
 - Current canonical tokens and connected UIKit replace archived ad hoc values.
 
 ## Direction
@@ -182,7 +183,7 @@ marketing hero or a row of decorative KPI cards.
 | Squad row | Rank, squad, tag, side, members, score | Open squad or full ranking |
 | Bounty row | Rank, player, total bounty | Open context or full ranking |
 | Replay row | ID, mission, map, state, outcome, time | Open replay or all replays |
-| Freshness | Last replay and processed replay total | Read status |
+| Freshness | Connection/freshness state and snapshot age | Read status |
 
 <!-- markdownlint-enable MD013 -->
 
