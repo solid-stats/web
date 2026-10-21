@@ -10,7 +10,8 @@ evidence.
 
 - One public, signed-out-first Overview page. Authentication changes only the
   surrounding account affordance; statistics content is the same for all roles.
-- SG only. MACE and SM remain on their dedicated rating surfaces.
+- SG only. MACE and SM are excluded from this design iteration and will be
+  designed separately. The period selector does not select a project.
 - SG all-time is the default scope and includes the current rotation live. Past
   rotations remain available as secondary scopes.
 - RU and EN boards at every target width, with long labels and localized dates.
@@ -37,7 +38,9 @@ marketing hero or a row of decorative KPI cards.
 ### Player leaderboard
 
 - Primary metric: `adjustedScore`, sorted by full-precision value descending
-  and displayed to three decimal places.
+  and displayed with a decimal point, at most two fractional digits, and no
+  trailing zero (for example `1.28`, `-2.93`, `5.4`). Score color follows its
+  level: red, white, green, or cyan; it is not a positive/negative delta.
 - Supporting columns: games, kills, and weekly trend where the selected scope
   supports it. Show eight weeks at tablet and desktop widths and four weeks on
   narrow mobile screens. Do not repeat the trend as Score-tier bars.
@@ -56,7 +59,8 @@ marketing hero or a row of decorative KPI cards.
 - Use the squad leaderboard's own score contract. Never label a squad value as
   player `adjustedScore`.
 - Squad Score is average kills divided by average attendance, as confirmed
-  by the user on 2026-10-04. Display three decimals under `Score`; do not use
+  by the user on 2026-10-04. Display at most two decimals under `Score`;
+  do not use
   the obsolete backend net-kills total or infer an average of player Scores.
   Both averages use the same selected replay scope. Prototype values remain
   illustrative; production must supply the target calculation.
@@ -65,15 +69,29 @@ marketing hero or a row of decorative KPI cards.
 
 ### Bounty leaderboard
 
-- SG-only, so it remains a stable third Overview segment/card.
-- Show total bounty values to two decimal places and link to the full bounty
-  surface.
-- Include zero bounty, tied rounded totals, and a long player name.
+- SG-only priority targets, sorted by reward for one enemy kill. The user
+  confirmed this replacement of the accumulated-points digest on 2026-10-06.
+- Reward is `clamp(targetAdjustedScore / rotationMean, 0, 3)`; no squad
+  multiplier. Show two fractional digits inside an amber reward block.
+- At All time, label this card as current-rotation targets. A historical
+  rotation uses its own targets. Accumulated earned points remain a separate
+  Bounty-page concern.
+- A non-positive or missing rotation mean cannot yield a trustworthy reward:
+  show reward unavailable, not a fabricated zero.
+- Use the same compact player identity as the player and replay sections.
+- Include zero reward, capped reward, tied rounded rewards, and a long name.
 
 ### Recent replays
 
 - Show a bounded recent slice with replay ID, mission, map, localized date/time,
-  parse state, and known/unknown outcome where available.
+  processing state, winner, top player, and top squad where available. Remove
+  the kills column. Top player and top squad use shared identity components.
+- Desktop and mobile use the same processing-state and winner components.
+  Winner labels have the winning side's data color, not generic success green,
+  and no decorative outcome icon. EAST red is paired with its side name and
+  win label; processing failures remain separately labelled errors.
+- Tablet uses dense flex rows; hide map and top identities before sacrificing
+  mission, processing state, outcome, or date. Mobile uses compact summaries.
 - Include parsed, parsing, failed, and unknown-outcome examples plus long
   mission and map names.
 - Volume boards: zero, one, five, and many replays.
@@ -181,7 +199,7 @@ marketing hero or a row of decorative KPI cards.
 | Scope | SG all-time or rotation, optional dates | Open selector; choose scope |
 | Player row | Rank, player, squad, Score, stats, trend | Open player or full ranking |
 | Squad row | Rank, squad, tag, side, members, score | Open squad or full ranking |
-| Bounty row | Rank, player, total bounty | Open context or full ranking |
+| Bounty row | Rank, target identity, per-kill reward | Open target or Bounty |
 | Replay row | ID, mission, map, state, outcome, time | Open replay or all replays |
 | Freshness | Connection/freshness state and snapshot age | Read status |
 
@@ -243,7 +261,8 @@ marketing hero or a row of decorative KPI cards.
 - Scope selector, mobile segments, row links, and "View all":
   enabled, hover, pressed, focused, selected where applicable, disabled, and
   loading.
-- Table/list rows use the whole row as detail target where nesting allows it.
+- Player nickname, squad name, and known side are independent links. Rows do
+  not become nested anchors. Known absence and metadata failures are text.
 - Cards are fluid within the canonical grid. Data regions have bounded visible
   height only when content can exceed the Overview summary limit.
 - Header links hug their icon and localized label. A flexible spacer separates
@@ -259,15 +278,19 @@ marketing hero or a row of decorative KPI cards.
   3440, with matching width columns in both locale rows.
 - `02 · States / RU | EN / 390 | 1440 / state`: Loading, Empty, Error, Offline
   in a consistent horizontal sequence.
-- `03 · Scenarios`: compact Squads, compact Bounty, and long-name/data limits.
+- `03 · Scenarios`: complete pages for each uneven one-versus-ten result,
+  excessive strings, historical side modes, and alternate compact segments.
+- `04 · Interactions`: period selection, data-freshness examples, and shared
+  identity/navigation states in a stable order after sections 01–03.
 - Section, locale, width, and state are ordered name prefixes. Every screen
   stays at the canvas root; do not wrap the matrix in structural groups.
   Penpot's SVG workspace uses its thumbnail rendering path for root boards.
   See the [workspace renderer](https://github.com/penpot/penpot/blob/develop/frontend/src/app/main/ui/workspace/shapes.cljs).
   No standalone Matrix labels clutter the root; screen IDs remain stable.
 - Loading, Empty, and Error retain only their visible state content rather
-  than hidden copies of successful tables. Data-limit fixtures do not receive
-  duplicate application chrome. Export one screen or region at a time.
+  than hidden copies of successful tables. Data-limit fixtures are complete
+  application pages so their effect on neighboring sections can be reviewed.
+  Export one screen or region at a time.
 
 ### Responsive widths
 
@@ -291,7 +314,7 @@ marketing hero or a row of decorative KPI cards.
 
 ## Non-Goals
 
-- Redesigning the accepted composition or inventing a new visual language.
+- Inventing a new visual language outside the canonical design system.
 - MACE/SM summaries or a mixed-game Overview.
 - Full player, squad, bounty, rotation, commander, or replay-detail design.
 - Production API wiring, framework behavior, accessibility implementation,

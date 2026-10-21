@@ -1,5 +1,138 @@
 # Stats Overview Iterations
 
+## Session closed by the user, 2026-10-21
+
+- Overview v11 remains unfinished and unaccepted. Stop its current authoring
+  effort; no automatic continuation or completion of its remaining matrix is
+  authorized by this closure.
+- User correction: the work took too long and attempted too many corrections
+  at once. Future SolidStats UI design should proceed in small, separately
+  reviewable stages. The Players page is the user's likely next starting point,
+  not a committed implementation scope or an instruction to start now.
+- Preserve the reference identity hierarchy, ratio-format requirements, SG-only
+  decision and per-kill Bounty target model in the brief. None of these makes
+  the current prototype an accepted design source.
+- The last retained server evidence is revision 434 from 2026-10-06; no claim
+  about the live Penpot file on 2026-10-21 is made. The recovery locator below
+  identifies the snapshot, authoring helpers and their limitations.
+- Six Bounty targets were an agent display choice used in new Loading pages;
+  the user did not explicitly approve that count. It is not a product rule.
+- Remaining Overview work is recorded for reference only: EN responsive
+  baselines; Error/Offline and stale/reconnecting/scope-open pages; whole-page
+  scarcity, excessive-text and historical-side examples; interaction-state
+  specimens; section ordering; transition-width evidence; and fresh reviews.
+  Do not turn this list into the next task without a new bounded user request.
+- The closure verified 23 retained private artifacts and their locator against
+  revision 434, including hashes, snapshot identity, partial build stage and
+  recovery limitations. Windows DACLs allow only the host user and SYSTEM.
+  Logical artifact: `solidstats-overview-v11-recovery-sources-2026-10-06`;
+  locator: `$CODEX_HOME/visualizations/2026/10/06/01a10f5d-d4c7-7353-a116-d35132e3290c/overview-recovery-locator.json`.
+  The workflow decision was captured once in SolidStats `frontend/decisions`,
+  drawer `drawer_frontend_decisions_74583403d31d2fc943d457f5`, then fully read
+  back and found by a scoped search. Product details stay in the existing brief;
+  no global instruction or skill patch is implied.
+
+## v11 — Overview as a coherent digest, 2026-10-06
+
+### Contract and direction
+
+- Rework the existing Overview and its shared composites in App Design;
+  preserve the dark token system and connected UIKit primitives.
+- Current user requirements supersede earlier review claims: ratio formatting,
+  score-level colors, reference identity hierarchy, actual independent links,
+  per-kill target rewards, side-aware outcomes, compact replay rows, varied
+  loading masks, honest missing-data semantics, and whole-page edge cases.
+- SG only; MACE/SM are excluded. Period selection changes SG replay scope.
+  All-time player/squad identity uses the current known affiliation snapshot;
+  historical rotation identity uses that rotation's recorded affiliation.
+  Missing historical metadata must never be reconstructed from today's sides.
+- Layout: title and period control share a row when they fit, including at
+  390px; freshness and scope context use the following row with explicit gaps.
+  Desktop digest cards hug their own row counts.
+  Empty rows and extra metrics are never added merely to equalize heights.
+- Identity: player link above side dot plus squad link; squad name plus tag
+  above linked side plus members. Absent squad means Solo; failed lookup is
+  an error; explicitly absent side is Unassigned; absent historical metadata
+  is Side unavailable. Older Blue/Red sides include their Server 1/2 identity.
+- Names and missions stay one line per slot and truncate with an ellipsis;
+  full text remains available through the linked detail and implementation
+  disclosure. Row geometry does not grow with the fixture text.
+- Links use the same default ink after a visit. Hover/press underline the
+  target, focus adds the canonical cyan ring without changing dimensions;
+  section navigation is an anchor with connected UIKit Ghost Button styling.
+
+### Coverage and evidence contract
+
+- Success: RU/EN mobile, tablet, desktop, wide and ultrawide. Check the 360px
+  floor and layout transitions at 768/1024/1280/1920 in addition to the
+  existing 390/834/1440/2560/3440 boards.
+- States: loading, empty, section error, offline, stale/reconnecting, opened
+  period selector; RU/EN representative mobile/desktop contexts.
+- Data: full pages with one player and ten squads, one squad, one target,
+  one replay; excessive nick/squad/mission; historical unknown sides and
+  two-server sides; four score levels including positive-low and negative.
+- Shared component specimens: default/hover/focus/pressed/visited links,
+  default/hover/focus UIKit navigation links, processing and winner states,
+  varied skeleton widths. Static intent only; runtime behavior is deferred.
+- Review: two independent GPT-6.1 Sol/high whole-result reviews, fresh
+  independent verification of retained candidates, and a closing omission
+  pass. Persistence and exports must identify the current Penpot revision.
+- Current baseline: web `d7752d6`, Penpot App Design revision 291; plans
+  `7cf9851`, server-2 remote tree `02e5fde` (target API dependency remains).
+- Status: redesign in progress; no acceptance or completed review claimed.
+
+### Persistence interruption and recovery checkpoint
+
+- Last verified server checkpoint on 2026-10-06: revision 434. The revision-351
+  interruption below is historical and does not describe the current baseline.
+- The tablet player source now has six correctly ordered full-width rows.
+  Eighteen connected card sources cover Empty, Error and Loading across the
+  six desktop/mobile digest templates; four message sources provide RU/EN copy.
+- All eight complete RU/EN Empty and Loading pages at 390/1440 are persisted.
+  Empty pages use minimum heights of 844/900px; Loading pages use 1352/1318px.
+  Skeleton primary and secondary lengths vary between rows and between cards.
+- Bounty uses an agent-chosen six-target limit in the new Loading pages only.
+  Success and cached-data pages have not been made consistent with that choice;
+  its count is unconfirmed and is not a backend eligibility policy.
+- Connected RU/EN partial-freshness sources are persisted. The RU 1440 Error
+  page is intentionally incomplete in server revision 434: its body contains
+  the Player Error card and Squad Success card, with build stage `rank 1`.
+  Bounty, replays, footer and final 1318px geometry were subsequently assembled
+  in the tab but are not present in the retained server snapshot. Inspect the
+  live page before retrying to avoid duplicate cards or discarding pending work.
+- A native export timed out after 120 seconds, followed by loss of the Penpot
+  MCP connection. Revision 434 was fetched directly, compressed, re-read and
+  structurally checked. The snapshot is server evidence, not a portable Penpot
+  restore package; linked UIKit/Lucide libraries and fonts remain dependencies.
+- The retained revision-431 helper restores definitions and an older EN Loading
+  authoring cursor. That cursor must not be used to resume the RU Error page.
+  New edge-case helper definitions are retained separately and have not been
+  applied or visually verified. Completed v8 reviews do not approve v11.
+
+#### Earlier interruption
+
+- The supplied Penpot error report identifies HTTP 524 on update-file at
+  2026-10-06T05:36:15Z. The backend did not answer within 120 seconds.
+- The tab refresh discarded unflushed work. Fresh server revision 350 retains
+  the revised RU responsive screens and shared v11 composites; later EN,
+  loading/error/empty/offline and whole-page scenario work was not retained.
+- A small file-metadata probe persisted as revision 351 at 06:20:20Z.
+  Rebuilding one EN 1440 body afterwards remained tab-local: direct RPC still
+  reports the old 1216px server board, while the tab reports 1346px.
+  Product mutations were stopped at that checkpoint until persistence recovered.
+- Recovery sources are retained as logical artifact
+  solidstats-overview-v11-recovery-sources-2026-10-06. Its locator is under
+  $CODEX_HOME/visualizations/2026/10/06/01a10f5d-d4c7-7353-a116-d35132e3290c/overview-recovery-locator.json.
+  Four source files were re-read and digest-verified, with a host-user-only
+  Windows ACL. These are helper/data sources, not a complete design backup.
+- Resume by verifying the save status and fresh server revision first. Reapply
+  one bounded part and confirm persistence before the next. Restore compact
+  bottom navigation, EN screens, full-page state/scarcity/history/overflow
+  scenarios, link state specimens and ordered canvas sections. Finish with
+  fresh native renders, binding/geometry checks and independent reviews.
+- No v11 acceptance, completed review, accepted SUMMARY or runtime proof is
+  asserted. Existing historical review claims do not approve this redesign.
+
 ## v10 — Freshness badge and opened scope selector
 
 - User correction: restore the compact freshness badge under the page title.
