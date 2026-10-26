@@ -270,3 +270,109 @@
   wireframe states; the replay-list live-update rules were not imported.
 - Per-change independent review remains waived during wireframing.
 - Decision: draft for continued wireframe discussion.
+
+## Wireframe v9 — Desktop And Width-Driven History
+
+- Date: 2026-10-26. Added two rough RU desktop specimens on the existing
+  Players page; the mobile board remains unchanged.
+- Boards:
+  - 1440px: 0df30c65-f663-8011-8008-d93dda2fe447,
+    WF v9 / Players / RU / Desktop 1440.
+  - 1024px: 0df30c65-f663-8011-8008-d93ec09a59db,
+    WF v9 / Players / RU / Desktop 1024.
+- Reused the ten mobile player identities, ranks, supporting statistics and
+  Score values. Desktop displays supporting statistics in separate columns.
+  A single grid shares tracks between headings and all data rows. Identity
+  and history use flexible tracks; other tracks hug their content.
+- Kept the rough grayscale exception. Desktop navigation sits in the top
+  application header. Title, period and freshness precede a single controls
+  row with search, SG/Mace/SM and sorting. No filters, legend or modal added.
+- Direct user clarification: history grows with available space, capped at
+  16 weeks. The specimens illustrate 16 at 1440px and 13 at 1024px; these are
+  layout examples, not accepted production breakpoints. Four weeks remain
+  the narrow-mobile case. Older bars are illustrative data, and the weekly
+  aggregation contract is still open.
+- Containers use Fill/Hug layout and content-driven heights. Chart bar heights
+  and a minimum graphic width are specimen geometry, not a product contract.
+  Both desktop boards are approximately 951px high.
+- Recorded intended scrolling outside the product UI: page-owned scrolling,
+  table headings sticky below the application header, no horizontal or nested
+  table viewport, and browser-owned anchoring during width changes.
+  No live scrolling behavior was implemented.
+- Verified native full-board PNG exports at both widths after the final content
+  reorder. Checked hierarchy, control order, column alignment, long nickname
+  fit, row density, history count, loading-status placement and clipping.
+- Geometry: no outside nodes, measured text overflow, absolute children or
+  top-level board collisions at either width. All numeric Score values share
+  the right edge within each board. Ten rows have 160 and 130 bars respectively.
+  The mobile board remains approximately 390 by 1402px.
+- Persistence: native final PNG exports confirm server-rendered contents.
+  Last successful project metadata read showed App Design revision 482 before
+  the final reorder; a later metadata request failed, so it is not cited as
+  the final revision. UIKit remained revision 137 on that successful read.
+- Per-change independent reviews remain waived by the user during wireframing.
+- Decision: draft desktop composition for user feedback; no hi-fi acceptance.
+
+## Wireframe v10 — Expanded Summary, Paused Checkpoint
+
+- Date: 2026-10-26. The user paused work and requested a push to master.
+  This checkpoint is incomplete and has no rendered-design acceptance.
+- Loaded the side brainstorm decisions from
+  codex://threads/01a177f3-743a-7fd2-9bf6-c0efa98a3122:
+  - drawer_frontend_decisions_b3f5802681e8959b3762be75: all five additional
+    metrics, the complete mobile core and the responsive removal priority.
+  - drawer_frontend_decisions_8683374ef10efafc4f8093a2: supported visible-only
+    sorting, with Score descending when the active sort becomes hidden.
+  - drawer_frontend_decisions_ab686de515f2c9f4b3b94e66: each bar is Score for
+    its individual week, not cumulative overall Score.
+- Full SG summary now adds Bounty, teamkills committed, kills from vehicles,
+  deaths caused by teamkills and vehicles destroyed. All values are fixtures;
+  no API completeness or scoring/aggregation formula is asserted.
+- Trial specimens in App Design / Players:
+
+  | Width | Board ID | Columns | Rows | Weeks currently drawn |
+  | --- | --- | --- | --- | --- |
+  | 1920px | 834ad548-30af-8018-8008-d94a01395c04 | 13 | 10 | 4 (pending) |
+  | 1440px | 0df30c65-f663-8011-8008-d93dda2fe447 | 13 | 10 | 13 |
+  | 1024px | 0df30c65-f663-8011-8008-d93ec09a59db | 11 | 10 | 4 |
+
+- Full board names are WF v10 / Players / RU / Desktop 1920 / Full,
+  WF v10 / Players / RU / Desktop 1440 / Full, and
+  WF v10 / Players / RU / Desktop 1024 / Reduced.
+- At 1024px, the trial omits vehicles destroyed and deaths from teamkills,
+  retaining Bounty, teamkills committed and kills from vehicles. This follows
+  the accepted removal order after reducing history to four weeks.
+  The number of breakpoint sets and their thresholds remain undecided.
+- Bounty is intended only for SG. Mace/SM variants that omit it are not drawn.
+  The mobile v8 board remains unchanged.
+- Desktop identity and history use flexible tracks. Other tracks hug content.
+  The 1920px specimen caps header/content width at 1760px. Header labels can
+  wrap into two lines; no global Score legend or modal was added.
+- An in-place edit of the occupied grid displaced cells. Rebuilt all three
+  desktop tables from clean grids in bounded batches and removed the damaged
+  tables. Rechecked header positions and row counts during reconstruction.
+  A lost plugin heartbeat interrupted the first repair; connection recovered
+  after the user confirmed that the active tab was responsive.
+- Before the latest history update, geometry reads confirmed 13 shared tracks,
+  header row 1, equal 54px header cells and no horizontal outside nodes on the
+  1440px and 1920px replacements. The 1024px grid was then rebuilt with 11
+  tracks and its flexible-track proportions adjusted; its final geometry has
+  not been checked.
+- Pause read-back confirms ten rows per board, approximately 948px board
+  heights and the week counts in the table above. Fresh metadata reports App
+  Design revision 501, modified 2026-10-26T12:15:43.631190Z.
+  UIKit remains revision 137; no Overview or shared-master edits were made.
+- Resume next:
+  1. Re-read current Penpot state before mutation.
+  2. Expand the 1920px history to the available count, expected to reach the
+     16-week cap; the user paused before that operation.
+  3. Check final geometry at all three widths: track/cell positions, text and
+     node bounds, Score right alignment, chart counts and board collisions.
+  4. Export and inspect native PNGs for all three final boards. No v10 final
+     render was exported or visually approved before the pause.
+  5. Review the trial column sets with the user; do not freeze breakpoint
+     thresholds or begin hi-fi.
+- Scrolling and sort-change rules are static annotations only. Live behavior,
+  missing-week handling, formula details and production integration remain open.
+- Per-change independent reviews remain waived during wireframing.
+- Decision: paused draft; continue from this checkpoint.

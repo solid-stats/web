@@ -12,21 +12,39 @@ dynamics before opening a profile.
 - Fidelity correction confirmed on 2026-10-23: use a rough grayscale wireframe
   with neutral rectangles and plain text. The previous styled pass was rejected
   as premature hi-fi. Assess structure before applying the product appearance.
-- One RU mobile success layout on App Design / Players. The outer board is
-  currently 390px wide; its height follows content.
+- RU populated wireframes on App Design / Players: the existing 390px mobile
+  layout plus desktop specimens at 1920px, 1440px and 1024px. Heights follow
+  content. The expanded desktop iteration is paused before final validation.
 - Reuse Overview's player identity and ranking-row information hierarchy.
   Its finished appearance is a later hi-fi input. Do not change its masters
   or the Overview page.
-- Data order for the eventual table: rank, player and squad, games, kills,
-  deaths, K/D, Score. Recent dynamics are an additional field.
-- Narrow screens show four weeks. The broader-screen range is not decided here.
+- The core remains rank, player and squad, games, kills, deaths, K/D, Score
+  and recent dynamics. The expanded desktop iteration adds the accepted
+  summary below; its trial column sets remain unaccepted.
+- Narrow screens show four weeks. On desktop, show as many recent weeks as
+  available chart width permits, capped at 16 (direct user instruction,
+  2026-10-26). The count is content-driven, not a fixed desktop range.
 - Build actual responsive Penpot layouts: Fill widths, Hug heights, intrinsic
   controls and content-sized grid tracks. Use normal layout flow for children;
   manual coordinates are only for positioning the outer board on the canvas.
 - Keep fixed dimensions only for intentional graphics, such as the weekly bars
-  and separator thickness. Verify resizing the same board at 360, 390 and 430px.
+  and separator thickness. Mobile geometry was checked at 360, 390 and 430px;
+  the expanded desktop pass still needs final checks at 1024px, 1440px and
+  1920px after the pause.
 - On mobile, keep the existing identity/Score row; place the four-week chart
   before Score and the four supporting statistics below it.
+
+## Responsive Scrolling Contract
+
+- The page owns vertical scrolling at every width. No horizontal table scroll
+  and no internal table scrolling viewport.
+- The table header sticks below the application header on mobile and desktop.
+  The wireframe annotates this intent; it does not implement runtime scrolling.
+- Reduce displayed content as width decreases. Weekly history adapts first;
+  the mobile layout retains its four-week chart and grouped supporting stats.
+- Leave anchoring during width changes and phone rotation entirely to the
+  browser. Do not add custom anchor tracking or scroll compensation.
+- Decision source: drawer_frontend_decisions_76ce9bb8504f9514125e3aed.
 
 ## Priority And Direction
 
@@ -41,13 +59,44 @@ This exception applies to the current wireframe only; no new UIKit family is
 being designed. Independent reviews on every wireframe change remain waived
 by the user during this exploration.
 
+## Expanded Summary And Responsive Priority
+
+The accepted expanded summary adds all five metrics:
+
+- total Bounty, for SG only; omit the column for Mace and SM;
+- teamkills committed;
+- deaths caused by teamkills;
+- kills from vehicles;
+- vehicles destroyed.
+
+Preserve the complete mobile core, including kills, deaths and K/D. When space
+decreases, shorten weekly history toward four weeks before removing secondary
+metrics. Remove secondary metrics in this order: vehicles destroyed; deaths
+caused by teamkills; kills from vehicles; teamkills committed; Bounty.
+
+Column visibility uses predetermined sets at breakpoints. The number of sets,
+their exact compositions and numeric thresholds remain open for wireframe
+inspection; do not adopt the side discussion's proposed four sets as a spec.
+The current viewport examples are trials, not accepted breakpoint boundaries.
+
+Sorting offers only visible metrics from the supported sort types. If a new
+breakpoint hides the active sort metric, switch to Score descending. The user
+accepted that the player order changes; browser-owned scroll anchoring still
+applies. Visibility does not make every metric sortable or add API sort types.
+
+Decision sources: drawer_frontend_decisions_b3f5802681e8959b3762be75 and
+drawer_frontend_decisions_8683374ef10efafc4f8093a2. These are product decisions;
+the wireframe uses illustrative values and does not assert API completeness.
+
 ## Data And Actions
 
 Ten illustrative rows include a long nickname, players without a squad,
 different weekly patterns, and descending Score. Supporting values are fixtures,
 not an assertion about the current API. K/D equals kills divided by deaths,
-rounded to two decimals. Weekly bars illustrate relative changes; the exact
-weekly aggregation contract remains open before hi-fi acceptance.
+rounded to two decimals. Each weekly bar represents Score for that individual
+week, not accumulated overall Score at the end of the week. The exact formula,
+weekly aggregation and missing-week treatment remain open before hi-fi
+acceptance. Meaning source: drawer_frontend_decisions_ab686de515f2c9f4b3b94e66.
 
 Visible action placeholders: search by player, choose game type and period,
 change sorting and open player/squad. Continue the list with infinite scroll,
@@ -110,7 +159,7 @@ no checklist body; no item-level checklist verification is claimed.
 ## Readiness And Later Passes
 
 This first wireframe tests composition and realistic populated rows only.
-Later wireframe passes must resolve 360px, EN, wider layouts, zero/few/many
+Later wireframe passes must resolve 360px, EN, remaining widths, zero/few/many
 results, long content, no weekly data, initial loading, next-batch errors,
 end of results,
 stale/offline/reconnecting, scope and sorting states. These remain prototype
