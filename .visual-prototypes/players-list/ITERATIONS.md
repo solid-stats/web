@@ -1,5 +1,22 @@
 # Players List Iterations
 
+## D2 — Roomier Full Summary At 1280px
+
+- Date: 2026-11-17. User said lgtm after the column-order changes and requested
+  the next size. Marked the 1024px structure accepted; exact breakpoint
+  thresholds, hi-fi and remaining states are still outside this acceptance.
+- [1280px proposal](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=34-565):
+  frame `34:565`, 1280 by 798px. New wide-row/header masters `34:10` / `34:44`.
+  Full metrics and sixteen-week charts are unchanged. Distribute extra width
+  into 12px column gaps, wider numeric tracks and a 260px identity column.
+- Compared all six rows against 1024: all text and bar heights match, each
+  row remains 77px high, and every header track aligns with its data cells.
+  Link underlines, plain no-squad labels and one-line ellipsis are preserved.
+- Inspected the native full-frame screenshot: no horizontal overflow or
+  flattened UI images; IBM Plex Sans/Mono retained. Smaller row masters and
+  frames were not changed, except the 1024 acceptance label.
+- Status: 1280 proposal awaiting user feedback.
+
 ## Metric Order And Vehicle Labels
 
 - Date: 2026-11-17. Applied the user's metric order and full vehicle labels.

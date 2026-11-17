@@ -21,10 +21,13 @@ dynamics before opening a profile.
   omitted in the accepted removal order. User said lgtm and requested the
   next size after the identity/link corrections. Exact switching thresholds
   remain undecided. Bounty values are illustrative.
-- Current proposal: [D1, 1024px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=29-299).
+- Accepted structure: [D1, 1024px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=29-299).
   Full SG summary including deaths from teamkills and vehicles destroyed,
   with sixteen weeks of history. Identity currently has 148px and retains
-  single-line ellipsis. This specimen awaits user feedback.
+  single-line ellipsis. User said lgtm and requested the next size.
+- Current proposal: [D2, 1280px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=34-565).
+  Same full summary and sixteen weeks, with wider numeric tracks, 12px
+  inter-column gaps and 260px for identity. This specimen awaits feedback.
 - Both review frames now retain visibly long names with and without spaces.
   Accepted overflow behavior: reserve exactly one line for nickname and one
   for squad; truncate either with an ellipsis. Do not wrap identity text or
