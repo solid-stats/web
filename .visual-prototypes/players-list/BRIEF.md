@@ -16,7 +16,8 @@ dynamics before opening a profile.
   needed by this draft, with linked instances, auto layout and scoped wireframe
   variables. Wireframe colors are not new production tokens or a light-theme decision.
 - Mobile alignment correction, 2026-11-17: K/D sits directly below Score in
-  the same right-aligned column. Games, kills and deaths remain left-aligned.
+  the same right-aligned column. All four supporting metric groups hug their
+  content, use space-between distribution, and right-align values and labels.
 - First-release scope excludes live updates and elaborate caching. Revisit the
   historical live-connection state vocabulary when designing page states.
 - Score values and chart heights are illustrative. Current backend parity
@@ -136,7 +137,8 @@ included" explanation is removed: game type and period are already visible.
 
 The numeric Score column is right-aligned, including its heading. K/D is
 right-aligned directly below Score, per the 2026-11-17 mobile correction.
-Supporting games, kills and deaths remain left-aligned within each player.
+All supporting metric values and labels are right-aligned within content-sized
+groups, distributed with space-between (2026-11-17 correction).
 Score is a persistently underlined text action. Remove the repeated
 "Ур. N/4" labels. The separate "Уровни Score" legend was removed in v7:
 four unlabeled samples add a row without explaining the levels. Keep the

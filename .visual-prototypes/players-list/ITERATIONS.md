@@ -1,5 +1,18 @@
 # Players List Iterations
 
+## Figma F1.2 — Intrinsic Metric Widths
+
+- Date: 2026-11-17. User rejected F1.1's oversized visible gap before K/D
+  and specified content-sized groups, space-between and right-aligned text.
+- Cause confirmed in the shared row: the first three metric instances used
+  Fill width with left-aligned text, while K/D had a fixed 48px width.
+- Changed all four groups to Hug width, right-aligned values and labels,
+  and SPACE_BETWEEN on their parent. K/D retains Score's right edge without
+  a fixed-width exception. The change propagates through the shared row.
+- Verified all six rows at 360 and 390px: intrinsic widths, right alignment,
+  equal inter-group gaps, and matching Score/K-D right edges. Inspected the
+  final native 390px screenshot. No new frames or components were needed.
+
 ## Figma F1.1 — K/D Beneath Score
 
 - Date: 2026-11-17. User requested that K/D visually sit below Score.
