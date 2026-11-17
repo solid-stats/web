@@ -21,10 +21,13 @@ dynamics before opening a profile.
   omitted in the accepted removal order. This column set and its switching
   threshold are not accepted. Bounty values are illustrative.
 - Both review frames now retain visibly long names with and without spaces.
-  Current proposal: wrap the complete name, breaking an unspaced nickname
-  when necessary, and grow the row in normal flow. No ellipsis or line limit
-  is applied. Overflow behavior awaits user review independently of the
-  earlier mobile composition acceptance.
+  Accepted overflow behavior: reserve exactly one line for nickname and one
+  for squad; truncate either with an ellipsis. Do not wrap identity text or
+  grow rows after skeleton replacement. A long squad fixture remains visible.
+  Skeleton and loaded rows must share the same geometry at each width.
+  Current row heights are 121px at mobile 360 and 77px at tablet 768; these
+  are wireframe measurements, not immutable production pixel tokens.
+  Runtime skeleton replacement and CLS have not yet been tested.
 - Reuse the product decisions below. UIKit page contains only the components
   needed by this draft, with linked instances, auto layout and scoped wireframe
   variables. Wireframe colors are not new production tokens or a light-theme decision.

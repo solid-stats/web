@@ -1,5 +1,24 @@
 # Players List Iterations
 
+## One-Line Identity And Stable Row Geometry
+
+- Date: 2026-11-17. User rejected growing identity text because loaded rows
+  would shift after replacing skeletons. The two-line nickname reservation
+  proposal was also rejected. Accepted: one nickname line, one squad line,
+  and ellipsis for overflow; the user explicitly confirmed truncation.
+- Updated nickname and squad text in both shared row components. Each has a
+  fixed 20px text box, flexible width and ending truncation. Full fixture text
+  remains in component properties; ellipsis is rendered, not manually typed.
+- Retained spaced and unspaced long nicknames and added a long squad in both
+  specimens. Native screenshots confirm ellipsis, no wrapping and intact
+  adjacent metrics. All six mobile rows measure 121px; all six tablet rows
+  measure 77px. Frames return to 360 by 1130 and 768 by 812px respectively.
+- Skeletons must match the loaded-row geometry at each width. No skeleton
+  variant or live loading transition was implemented in this pass; equal
+  static heights are not a measured runtime CLS result.
+- This supersedes the previous wrapping proposal while preserving the user's
+  accepted mobile composition and the unaccepted tablet proposal status.
+
 ## Visible Long-Name Examples — Mobile And Tablet
 
 - Date: 2026-11-17. User pointed out that the displayed nickname did not
