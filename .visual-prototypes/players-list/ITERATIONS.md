@@ -1,5 +1,16 @@
 # Players List Iterations
 
+## Figma F1.1 — K/D Beneath Score
+
+- Date: 2026-11-17. User requested that K/D visually sit below Score.
+- Updated the shared Player row `12:34`: K/D uses the same 48px column width
+  as Score, with its value and label right-aligned. Other metrics retain
+  left alignment and distribute the remaining width.
+- Verified all six linked rows at 360 and 390px: Score and K/D share the
+  same right edge and K/D sits below Score. Inspected the final 390px native
+  screenshot. The frame and component identities are unchanged.
+- This correction is user-directed; the overall page remains a draft.
+
 ## Figma F1 — Mobile Structure Trial
 
 - Date: 2026-11-17. User authorized Figma and then narrowed the first pass to
