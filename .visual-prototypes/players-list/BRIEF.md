@@ -20,6 +20,11 @@ dynamics before opening a profile.
   four weeks of history. Vehicles destroyed and deaths from teamkills are
   omitted in the accepted removal order. This column set and its switching
   threshold are not accepted. Bounty values are illustrative.
+- Both review frames now retain visibly long names with and without spaces.
+  Current proposal: wrap the complete name, breaking an unspaced nickname
+  when necessary, and grow the row in normal flow. No ellipsis or line limit
+  is applied. Overflow behavior awaits user review independently of the
+  earlier mobile composition acceptance.
 - Reuse the product decisions below. UIKit page contains only the components
   needed by this draft, with linked instances, auto layout and scoped wireframe
   variables. Wireframe colors are not new production tokens or a light-theme decision.

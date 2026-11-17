@@ -1,5 +1,20 @@
 # Players List Iterations
 
+## Visible Long-Name Examples — Mobile And Tablet
+
+- Date: 2026-11-17. User pointed out that the displayed nickname did not
+  demonstrate overflow behavior. Earlier stress tests were removed before
+  review, so they did not make that design choice visible to the user.
+- Kept two long-name fixtures in both frames: a multiword Russian name and
+  an unspaced Latin nickname. Both wrap to two lines at the current 188px
+  identity width. No truncation or ellipsis is applied; this is a proposal.
+- Native screenshots inspected for mobile 360 and tablet 768: names remain
+  visible, squad labels move below them and rows grow without overlapping
+  following rows. No nodes exceed either frame. Final heights are 1170px
+  mobile and 852px tablet; frame and component IDs remain unchanged.
+- The long examples remain in the deliverables for user review, rather than
+  being restored to shorter fixtures after validation.
+
 ## Mobile Acceptance And Tablet T1
 
 - Date: 2026-11-17. User explicitly accepted the 360px wireframe and requested
