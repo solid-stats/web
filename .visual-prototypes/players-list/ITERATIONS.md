@@ -1,5 +1,15 @@
 # Players List Iterations
 
+## Uniform Weekly Bar Gaps
+
+- Date: 2026-11-17. User specified 4px between weekly bars at every width.
+- Bound all five chart masters to the same 4px spacing variable. Desktop
+  chart width shrank from 312 to 252px; its header track matches, and identity
+  absorbs the released 60px. Bar widths and values remain unchanged.
+- Read-back verified actual 4px gaps in all 30 charts across 360, 768, 1024,
+  1280 and 1920px. Inspected the corrected desktop screenshot. This revises
+  D3's proposed 8px chart gap; other sizes already used 4px.
+
 ## D3 — Desktop At 1920px
 
 - Date: 2026-11-17. User accepted 1280 with lgtm and requested the next size.

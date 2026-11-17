@@ -30,7 +30,9 @@ dynamics before opening a profile.
   inter-column gaps and 260px for identity. User said lgtm and requested next.
 - Current proposal: [D3, 1920px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=35-783).
   Centered 1760px content with 80px side gutters, 16px column gaps, 408px
-  identity and sixteen bars in a 312px chart. Full metric order is unchanged.
+  identity and sixteen bars. Chart gaps are always 4px; the desktop chart
+  now measures 252px and the flexible identity column receives freed space.
+  Full metric order is unchanged.
 - Both review frames now retain visibly long names with and without spaces.
   Accepted overflow behavior: reserve exactly one line for nickname and one
   for squad; truncate either with an ellipsis. Do not wrap identity text or
@@ -114,6 +116,8 @@ being designed. Independent reviews on every wireframe change remain waived
 by the user during this exploration.
 
 ## Expanded Summary And Responsive Priority
+
+Weekly bar gaps are 4px at every width, per the user's 2026-11-17 correction.
 
 Accepted metric order after identity: Games, Kills, Vehicle kills, Vehicles
 destroyed, Teamkills, Deaths, Deaths from teamkills, Bounty, K/D, Weekly history,
