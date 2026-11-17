@@ -1,5 +1,23 @@
 # Players List Iterations
 
+## D3 — Desktop At 1920px
+
+- Date: 2026-11-17. User accepted 1280 with lgtm and requested the next size.
+  Proceeded to the next primary review width, 1920px; 1536 remains an
+  intermediate token breakpoint, not a separately approved specimen.
+- [1920px proposal](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=35-783):
+  frame `35:783`, 1920 by 798px. Header and content use Fill with maxWidth
+  1760 and centered parent alignment, producing equal 80px side gutters.
+- Desktop row/header masters: `35:10` / `35:44`. Full summary, 16px gaps,
+  wider numeric tracks, 408px identity and 312px history. Sixteen bars retain
+  their values, with 12px bar width and 8px gaps for the wider view.
+- Native full-frame screenshot and structure verified: all thirteen column
+  tracks align for six rows, no horizontal overflow, all rows remain 77px,
+  text and bar heights match 1280, link/no-squad styling and single-line
+  truncation persist. Fonts remain IBM Plex Sans/Mono; no rasterized UI.
+- Smaller components were not modified. The 1280 frame only received its
+  acceptance name. Status: 1920 is a proposal awaiting feedback.
+
 ## D2 — Roomier Full Summary At 1280px
 
 - Date: 2026-11-17. User said lgtm after the column-order changes and requested

@@ -25,9 +25,12 @@ dynamics before opening a profile.
   Full SG summary including deaths from teamkills and vehicles destroyed,
   with sixteen weeks of history. Identity currently has 148px and retains
   single-line ellipsis. User said lgtm and requested the next size.
-- Current proposal: [D2, 1280px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=34-565).
+- Accepted structure: [D2, 1280px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=34-565).
   Same full summary and sixteen weeks, with wider numeric tracks, 12px
-  inter-column gaps and 260px for identity. This specimen awaits feedback.
+  inter-column gaps and 260px for identity. User said lgtm and requested next.
+- Current proposal: [D3, 1920px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=35-783).
+  Centered 1760px content with 80px side gutters, 16px column gaps, 408px
+  identity and sixteen bars in a 312px chart. Full metric order is unchanged.
 - Both review frames now retain visibly long names with and without spaces.
   Accepted overflow behavior: reserve exactly one line for nickname and one
   for squad; truncate either with an ellipsis. Do not wrap identity text or
