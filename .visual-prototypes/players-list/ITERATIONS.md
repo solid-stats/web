@@ -1,5 +1,16 @@
 # Players List Iterations
 
+## Compact Title And Freshness Group
+
+- Date: 2026-11-17. User requested placing freshness below the title inside
+  the title/period container, removing its extra full-width row.
+- At 360, 768 and 1024px, grouped title and snapshot age vertically beside
+  the period selector. The heading shrank from 70 to 56px; following controls
+  moved upward by 14px through normal auto layout. Player rows are unchanged.
+- Inspected heading renders at all three widths and the complete 1024px
+  composition; no horizontal overflow. Frame heights are now 1116px for
+  mobile and 798px for both wider specimens.
+
 ## D1 — Full Summary At 1024px
 
 - Date: 2026-11-17. User said lgtm and requested the next size. Recorded
