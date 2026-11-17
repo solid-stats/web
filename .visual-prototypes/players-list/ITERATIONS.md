@@ -1,5 +1,36 @@
 # Players List Iterations
 
+## 2560px Viewport Trial
+
+- Date: 2026-11-17. Added a 2560px viewport using the same 1440px content
+  cap under review at 1920px, centered with 560px gutters. The table retains
+  16px column gaps, sixteen weekly bars, and the final numeric-limit row.
+- Inspected the native screenshot and checked the container and track widths.
+  This is a trial, not acceptance of a global maximum content width.
+
+## Mobile Rank Alignment
+
+- Date: 2026-11-17. Aligned the mobile rank header and values to the right,
+  matching wider tables. Verified all seven rows and the mobile screenshot;
+  the rank track remains 34px wide.
+
+## Truncation In Numeric Limit Row
+
+- Date: 2026-11-17. Extended both the player and squad names in the final
+  numeric-limit row so they truncate at every current viewport, including
+  the widest 1920px specimen. Both retain one fixed-height line.
+- Verified truncation settings in all five views and inspected the widest
+  row, where both ellipses are visible.
+
+## Numeric Limit Row In The List
+
+- Date: 2026-11-17. Moved the numeric-limit example after the six player
+  rows and before the loading continuation at all five viewport sizes.
+- Removed its background and applied the same player and squad link styles
+  as ordinary rows. The maximum-value examples remain intact.
+- Verified the row order and styles at every size and inspected the mobile
+  screenshot. The example remains synthetic, not a real player record.
+
 ## Mobile Column Gaps At 8px
 
 - Date: 2026-11-17. User requested 8px mobile column gaps. Updated the shared
