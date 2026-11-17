@@ -1,5 +1,34 @@
 # Players List Iterations
 
+## Mobile Acceptance And Tablet T1
+
+- Date: 2026-11-17. User explicitly accepted the 360px wireframe and requested
+  tablet next. Retained only the 360px mobile specimen, frame `13:10`, renamed
+  to mark accepted structure. Hi-fi, remaining states and the entire page are
+  not accepted by this checkpoint.
+- [Tablet T1](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=22-167):
+  Players page `0:1`, frame `22:167`, 768 by 812px. Six rows reuse the mobile
+  identities and core figures. Navigation and controls use horizontal flow.
+- Proposed table includes core metrics, Bounty, teamkills, kills from vehicles
+  and four weekly bars. Vehicles destroyed and deaths from teamkills are the
+  first omissions per the existing priority. This does not approve a column
+  breakpoint or its exact threshold. Bounty and Score figures remain mock data.
+- Added tablet row `21:10` and header `21:30` on UIKit. Identity fills available
+  width; numeric tracks have intentional widths shared with the header. Heights
+  follow content. The six rows stay connected to the tablet main component;
+  accepted mobile component `12:34` was not changed.
+- Corrected toolbar overflow after switching its direction: search fills the
+  remaining width, game-type/sort controls hug content, toolbar height hugs.
+- Final native screenshot inspected at 768px. No nodes outside the frame or
+  absolute-positioned children; all eleven header tracks match all six rows;
+  24 bars and six underlined Score actions. A long-name stress case grew its
+  row from 77 to 117px and moved the following row without collision; restored
+  the review fixture before final screenshot.
+- Mobile read-back confirms 360 by 1130px, six original linked rows and
+  preserved left alignment for Games. Only its outer width and frame name
+  changed for the acceptance checkpoint.
+- Status: mobile structure accepted; tablet proposal awaits user feedback.
+
 ## Figma F1.3 — Identity And Games Share A Left Edge
 
 - Date: 2026-11-17. User accepted trying the first proposed alternative:

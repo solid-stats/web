@@ -8,16 +8,24 @@ dynamics before opening a profile.
 ## Current Pass — Figma Mobile Trial
 
 - On 2026-11-17 the user authorized a bounded, human-guided Figma trial and
-  explicitly limited the first iteration to mobile. Production work remains
+  explicitly limited the first iteration to mobile, then requested tablet.
+  Production work remains
   excluded. The earlier Penpot process is historical for this trial.
 - Target: [Web App / Players](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=13-10).
-  F1 is a rough grayscale RU draft at 390px, checked at 360px. It is not accepted.
+  The user accepted the 360px mobile wireframe structure and requested keeping
+  only that mobile specimen. Frame `13:10` is now 360px wide; no 390px specimen
+  remains. This is not acceptance of hi-fi, states or the whole page.
+- Current proposal: [Tablet T1, 768px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=22-167).
+  It adds Bounty, teamkills and kills from vehicles to the core columns with
+  four weeks of history. Vehicles destroyed and deaths from teamkills are
+  omitted in the accepted removal order. This column set and its switching
+  threshold are not accepted. Bounty values are illustrative.
 - Reuse the product decisions below. UIKit page contains only the components
   needed by this draft, with linked instances, auto layout and scoped wireframe
   variables. Wireframe colors are not new production tokens or a light-theme decision.
 - Mobile alignment correction, 2026-11-17: K/D sits directly below Score in
   the same right-aligned column. All four supporting metric groups hug their
-  content and use space-between distribution. In the current F1.3 trial,
+  content and use space-between distribution. In accepted mobile F1.3,
   Games is left-aligned with player identity; the other groups align right.
 - First-release scope excludes live updates and elaborate caching. Revisit the
   historical live-connection state vocabulary when designing page states.
@@ -139,8 +147,9 @@ included" explanation is removed: game type and period are already visible.
 The numeric Score column is right-aligned, including its heading. K/D is
 right-aligned directly below Score, per the 2026-11-17 mobile correction.
 Supporting metric groups are content-sized and distributed with space-between.
-The F1.3 trial left-aligns Games with player identity and right-aligns kills,
-deaths and K/D. The user authorized trying this alternative, not final acceptance.
+Mobile F1.3 left-aligns Games with player identity and right-aligns kills,
+deaths and K/D. The user accepted this 360px wireframe structure on 2026-11-17.
+Tablet T1 proposes a single table row with right-aligned numeric columns.
 Score is a persistently underlined text action. Remove the repeated
 "Ур. N/4" labels. The separate "Уровни Score" legend was removed in v7:
 four unlabeled samples add a row without explaining the levels. Keep the
