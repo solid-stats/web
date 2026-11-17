@@ -627,8 +627,9 @@ that remainder. Weekly Score charts keep intrinsic bar geometry, **4px gaps**
 and at most **16 weeks**, reducing the week count when space is constrained.
 Preserve the page's accepted responsive metric-removal priority.
 
-The Players mobile supporting-stat row is the explicit exception: its four
-groups hug content and use space-between to retain the identity/Games left
+Players mobile uses **8px column gaps** in its identity/history/Score row
+and matching header. Its supporting-stat row is another explicit exception:
+its four groups hug content and use space-between to retain the identity/Games left
 anchor and Score/K-D right anchor. Other table tracks retain 16px gaps.
 
 The 1440px content cap currently being tried on Players is a local prototype

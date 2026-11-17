@@ -1,5 +1,16 @@
 # Players List Iterations
 
+## Mobile Column Gaps At 8px
+
+- Date: 2026-11-17. User requested 8px mobile column gaps. Updated the shared
+  identity/history/Score row and its header; wider tables retain 16px.
+- Preserved the approved space-between supporting-stat row. Adjusted its
+  left inset to follow the nickname, retaining both identity/Games and
+  Score/K-D edge anchors.
+- Inspected the native 360px screenshot and verified actual 8px gaps and
+  both anchors in all seven rows, including the numeric-limit test. Row
+  heights remain 121px. Weekly bar gaps stay 4px.
+
 ## Header-Based Widths And Visible Numeric Limits
 
 - Date: 2026-11-17. User refined the sizing rule: keep each fixed numeric

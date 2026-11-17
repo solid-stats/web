@@ -27,7 +27,8 @@ dynamics before opening a profile.
 - The user accepted earlier 360/768/1024/1280 structures, then explicitly
   applied common sizing rules to all tables. The revised specimens above
   implement that correction; their updated density/visibility awaits review.
-  Column gaps are 16px except the explicit mobile supporting-stat exception.
+  Column gaps are 16px; mobile identity/history/Score and its header use 8px,
+  while the mobile supporting-stat row retains space-between.
   Numeric width is max(header width, expected value width), with no blanket
   allowance; identity fills the remainder and weekly gaps are 4px.
   Exact switching thresholds and production numeric range coverage remain open.
