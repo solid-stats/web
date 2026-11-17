@@ -1,5 +1,22 @@
 # Players List Iterations
 
+## Metric Order And Vehicle Labels
+
+- Date: 2026-11-17. Applied the user's metric order and full vehicle labels.
+  After clarification, Teamkills stays immediately after Vehicles destroyed.
+- Full order: Games, Kills, Vehicle kills, Vehicles destroyed, Teamkills,
+  Deaths, Deaths from teamkills, Bounty, K/D, Weekly history, Score.
+  The tablet uses the same relative order for its visible columns. Mobile's
+  core order already agrees and was not changed.
+- Renamed headers to "Убийств из техники" and "Уничтожено техники". Expanded
+  their tracks to 64 and 80px so labels fit in two lines. Identity remains
+  flexible: 180px on tablet, 148px at 1024. Weekly charts retain 4/16 bars.
+- Updated shared row/header masters together. Native screenshots and read-back
+  confirm matching columns in all twelve rows, preserved data, no horizontal
+  overflow and unchanged 77px row heights.
+- The initial label request failed at the transport layer. A successful read
+  confirmed unchanged labels before the combined update was applied.
+
 ## Compact Title And Freshness Group
 
 - Date: 2026-11-17. User requested placing freshness below the title inside

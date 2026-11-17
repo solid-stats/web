@@ -23,7 +23,7 @@ dynamics before opening a profile.
   remain undecided. Bounty values are illustrative.
 - Current proposal: [D1, 1024px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=29-299).
   Full SG summary including deaths from teamkills and vehicles destroyed,
-  with sixteen weeks of history. Identity has 180px available and retains
+  with sixteen weeks of history. Identity currently has 148px and retains
   single-line ellipsis. This specimen awaits user feedback.
 - Both review frames now retain visibly long names with and without spaces.
   Accepted overflow behavior: reserve exactly one line for nickname and one
@@ -108,6 +108,12 @@ being designed. Independent reviews on every wireframe change remain waived
 by the user during this exploration.
 
 ## Expanded Summary And Responsive Priority
+
+Accepted metric order after identity: Games, Kills, Vehicle kills, Vehicles
+destroyed, Teamkills, Deaths, Deaths from teamkills, Bounty, K/D, Weekly history,
+Score. Omitted columns retain this relative order at narrower widths.
+RU headings: "Убийств из техники" and "Уничтожено техники". The user explicitly
+placed "ТК" after vehicles destroyed on 2026-11-17.
 
 The accepted expanded summary adds all five metrics:
 
