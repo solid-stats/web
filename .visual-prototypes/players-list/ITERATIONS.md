@@ -1,5 +1,17 @@
 # Players List Iterations
 
+## Player And Squad Link Affordances
+
+- Date: 2026-11-17. User approved the truncation result and requested
+  underlining player/squad links, excluding the no-squad label.
+- Added shared Player-link and Squad-link text styles to both row masters.
+  The four "Без отряда" instances retain the plain label style.
+- Inspected native screenshots and identity-node read-back for both frames:
+  all 12 player names and eight squad names are underlined; four absence
+  labels are not. Identity text remains 20px high with ending truncation.
+  Frame sizes remain 360 by 1130 and 768 by 812px. These are visual link
+  affordances; destination navigation is not implemented in the wireframe.
+
 ## One-Line Identity And Stable Row Geometry
 
 - Date: 2026-11-17. User rejected growing identity text because loaded rows

@@ -28,6 +28,9 @@ dynamics before opening a profile.
   Current row heights are 121px at mobile 360 and 77px at tablet 768; these
   are wireframe measurements, not immutable production pixel tokens.
   Runtime skeleton replacement and CLS have not yet been tested.
+- Nicknames and existing squad names are underlined links in both specimens.
+  "Без отряда" is plain non-link text. Underlines preserve one-line truncation
+  and stable identity geometry.
 - Reuse the product decisions below. UIKit page contains only the components
   needed by this draft, with linked instances, auto layout and scoped wireframe
   variables. Wireframe colors are not new production tokens or a light-theme decision.
