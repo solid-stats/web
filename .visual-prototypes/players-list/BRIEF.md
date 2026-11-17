@@ -5,7 +5,24 @@
 Help a public visitor find a player, scan the ranking, and notice recent Score
 dynamics before opening a profile.
 
-## Current Pass
+## Current Pass — Figma Mobile Trial
+
+- On 2026-11-17 the user authorized a bounded, human-guided Figma trial and
+  explicitly limited the first iteration to mobile. Production work remains
+  excluded. The earlier Penpot process is historical for this trial.
+- Target: [Web App / Players](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=13-10).
+  F1 is a rough grayscale RU draft at 390px, checked at 360px. It is not accepted.
+- Reuse the product decisions below. UIKit page contains only the components
+  needed by this draft, with linked instances, auto layout and scoped wireframe
+  variables. Wireframe colors are not new production tokens or a light-theme decision.
+- First-release scope excludes live updates and elaborate caching. Revisit the
+  historical live-connection state vocabulary when designing page states.
+- Score values and chart heights are illustrative. Current backend parity
+  formulas confirm K/D and weekly Score, but do not establish the old brief's
+  adjustedScore model or approved four-level thresholds. Resolve that mapping
+  before accepting numerical examples or the explanation surface.
+
+## Previous Penpot Checkpoint
 
 - Low-fidelity structure first, explicitly requested by the user on 2026-10-21.
   Hi-fi starts only after the structure is broadly agreed.

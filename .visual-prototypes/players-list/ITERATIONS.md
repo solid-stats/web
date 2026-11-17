@@ -1,5 +1,40 @@
 # Players List Iterations
 
+## Figma F1 — Mobile Structure Trial
+
+- Date: 2026-11-17. User authorized Figma and then narrowed the first pass to
+  mobile only. Existing UIKit and Players pages were empty on inspection.
+- Artifact: [Players F1](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=13-10),
+  page `0:1`, frame `13:10`, final 390 by 1130px. No desktop frame was created.
+- Rough grayscale composition: title and period, snapshot age, player search,
+  SG/Mace/SM and sorting, six sample rows, continuation status and navigation.
+  Weekly history precedes Score; games, kills, deaths and K/D sit below identity.
+  No extra filters, global Score legend or explanation modal.
+- UIKit page `10:2`: Control `12:25`, Segment `12:27`, selected Segment `12:29`,
+  Metric `12:31`, Player row `12:34`. All six player rows remain instances of
+  the same main component. Text properties expose identity, rank and Score;
+  nested Metric instances expose their labels and values.
+- Collection `VariableCollectionId:12:2` contains scoped grayscale wireframe
+  colors and spacing, separate from production DESIGN.md. Shared text styles
+  use IBM Plex Sans and IBM Plex Mono. No flattened UI images were imported.
+- Verified the same frame at 390 and 360px by changing only its outer width:
+  native screenshots inspected, no horizontal frame overflow, 24 weekly bars,
+  and no absolute-positioned descendants. A long-name stress case at 360px
+  grew the name from 20 to 60px and its row from 121 to 161px; following rows
+  moved in flow without collision. Restored the review name and 390px width.
+- Corrected Score underline loss using a dedicated shared Score-action text
+  style; final read-back confirms all six Score values are underlined.
+- K/D fixture arithmetic agrees with current server-2 parity-formulas.ts.
+  Read-only source check used server-2 origin/master after fetch, commit
+  4951b7d. Weekly Score is (kills - teamkills) / games in that source;
+  totalScore is kills - teamkills. Neither establishes the old adjustedScore
+  contract. Mock Score values and bar heights are explicitly illustrative;
+  four-level classification was not applied.
+- Page scrolling, sticky header and infinite scroll remain design intent;
+  this is not a working interaction prototype. Six rows do not define a batch.
+  EN, missing history, loading/error/empty variants and detailed interaction
+  states remain later passes. User acceptance is pending.
+
 ## Wireframe v1 — Mobile Structure
 
 - Scope: one RU 390 by 844 populated screen; four player rows.
