@@ -1,5 +1,19 @@
 # Players List Iterations
 
+## Figma F1.3 — Identity And Games Share A Left Edge
+
+- Date: 2026-11-17. User accepted trying the first proposed alternative:
+  Games aligned left with nickname/squad, remaining metrics aligned right.
+- Changed only alignment inside the first metric group in shared row `12:34`.
+  Content-sized groups and space-between remain. Score and K/D retain their
+  shared right edge.
+- Verified both anchors, intrinsic widths and remaining right alignment in
+  all six rows at 360 and 390px; inspected the final 390px native screenshot.
+- Two initial transport failures prevented editing and reading. Account access
+  recovered; a successful read confirmed the old alignment before the edit
+  was retried. Final read-back and screenshot confirm the applied result.
+- Status: visual alternative for user feedback, not final page acceptance.
+
 ## Figma F1.2 — Intrinsic Metric Widths
 
 - Date: 2026-11-17. User rejected F1.1's oversized visible gap before K/D
