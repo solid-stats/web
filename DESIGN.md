@@ -615,6 +615,27 @@ tables, signed for deltas (`+12`, `−3`), with explicit units.
 
 ## Layout
 
+### Table column sizing
+
+All tables use **16px gaps between columns**. A numeric track is as wide as
+its header unless the expected value format is wider; only then reserve the
+additional width. Do not pad every numeric column or stretch numeric tracks
+to consume a wider screen. Keep headers and body cells on identical tracks.
+Flexible identity/text
+columns share the remaining space. On Players, the player column receives
+that remainder. Weekly Score charts keep intrinsic bar geometry, **4px gaps**
+and at most **16 weeks**, reducing the week count when space is constrained.
+Preserve the page's accepted responsive metric-removal priority.
+
+The Players mobile supporting-stat row is the explicit exception: its four
+groups hug content and use space-between to retain the identity/Games left
+anchor and Score/K-D right anchor. Other table tracks retain 16px gaps.
+
+The 1440px content cap currently being tried on Players is a local prototype
+experiment; it does not change the global 1760px container token.
+
+### Page layout
+
 - **Spacing** uses **Tailwind's stock 4px scale** — no custom keys. `p-0.5`=2px, `p-1`=4px, `p-2`=8px,
   `p-4`=16px, `p-6`=24px, `p-8`=32px. Dense defaults: 8/12/16 dominate; 24/32 separate major regions.
 - **Two containers.** `container` (data/page) = **1760px ceiling, fluid below** then centers — tables,

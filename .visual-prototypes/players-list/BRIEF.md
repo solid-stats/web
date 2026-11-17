@@ -5,7 +5,7 @@
 Help a public visitor find a player, scan the ranking, and notice recent Score
 dynamics before opening a profile.
 
-## Current Pass — Figma Mobile Trial
+## Current Pass — Figma Responsive Trial
 
 - On 2026-11-17 the user authorized a bounded, human-guided Figma trial and
   explicitly limited the first iteration to mobile, then requested tablet.
@@ -15,24 +15,22 @@ dynamics before opening a profile.
   The user accepted the 360px mobile wireframe structure and requested keeping
   only that mobile specimen. Frame `13:10` is now 360px wide; no 390px specimen
   remains. This is not acceptance of hi-fi, states or the whole page.
-- Accepted tablet structure: [T1, 768px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=22-167).
-  It adds Bounty, teamkills and kills from vehicles to the core columns with
-  four weeks of history. Vehicles destroyed and deaths from teamkills are
-  omitted in the accepted removal order. User said lgtm and requested the
-  next size after the identity/link corrections. Exact switching thresholds
-  remain undecided. Bounty values are illustrative.
-- Accepted structure: [D1, 1024px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=29-299).
-  Full SG summary including deaths from teamkills and vehicles destroyed,
-  with sixteen weeks of history. Identity currently has 148px and retains
-  single-line ellipsis. User said lgtm and requested the next size.
-- Accepted structure: [D2, 1280px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=34-565).
-  Same full summary and sixteen weeks, with wider numeric tracks, 12px
-  inter-column gaps and 260px for identity. User said lgtm and requested next.
+- [T1, 768px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=22-167):
+  core plus Bounty, teamkills and vehicle kills, four weeks and 130px identity.
+- [D1, 1024px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=29-299):
+  full summary, thirteen weeks and 135px identity.
+- [D2, 1280px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=34-565):
+  full summary, sixteen weeks and 355px identity.
 - Current proposal: [D3, 1920px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=35-783).
-  Centered 1760px content with 80px side gutters, 16px column gaps, 408px
-  identity and sixteen bars. Chart gaps are always 4px; the desktop chart
-  now measures 252px and the flexible identity column receives freed space.
-  Full metric order is unchanged.
+  Local 1440px content-cap trial with 240px side gutters, 499px identity
+  and sixteen bars in 252px. Global DESIGN.md container remains 1760px.
+- The user accepted earlier 360/768/1024/1280 structures, then explicitly
+  applied common sizing rules to all tables. The revised specimens above
+  implement that correction; their updated density/visibility awaits review.
+  Column gaps are 16px except the explicit mobile supporting-stat exception.
+  Numeric width is max(header width, expected value width), with no blanket
+  allowance; identity fills the remainder and weekly gaps are 4px.
+  Exact switching thresholds and production numeric range coverage remain open.
 - Both review frames now retain visibly long names with and without spaces.
   Accepted overflow behavior: reserve exactly one line for nickname and one
   for squad; truncate either with an ellipsis. Do not wrap identity text or
@@ -51,9 +49,9 @@ dynamics before opening a profile.
   needed by this draft, with linked instances, auto layout and scoped wireframe
   variables. Wireframe colors are not new production tokens or a light-theme decision.
 - Mobile alignment correction, 2026-11-17: K/D sits directly below Score in
-  the same right-aligned column. All four supporting metric groups hug their
-  content and use space-between distribution. In accepted mobile F1.3,
-  Games is left-aligned with player identity; the other groups align right.
+  the same right-aligned column. The user explicitly retained Hug and
+  space-between for mobile supporting metrics as an exception to the 16px
+  table rule. Games aligns left with identity; the other groups align right.
 - First-release scope excludes live updates and elaborate caching. Revisit the
   historical live-connection state vocabulary when designing page states.
 - Score values and chart heights are illustrative. Current backend parity
@@ -181,7 +179,7 @@ included" explanation is removed: game type and period are already visible.
 
 The numeric Score column is right-aligned, including its heading. K/D is
 right-aligned directly below Score, per the 2026-11-17 mobile correction.
-Supporting metric groups are content-sized and distributed with space-between.
+Mobile supporting metric groups hug content and use space-between.
 Mobile F1.3 left-aligns Games with player identity and right-aligns kills,
 deaths and K/D. The user accepted this 360px wireframe structure on 2026-11-17.
 Tablet T1 proposes a single table row with right-aligned numeric columns.

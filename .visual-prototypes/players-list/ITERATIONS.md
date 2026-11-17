@@ -1,5 +1,55 @@
 # Players List Iterations
 
+## Header-Based Widths And Visible Numeric Limits
+
+- Date: 2026-11-17. User refined the sizing rule: keep each fixed numeric
+  column at its header width unless the expected value is wider. The same
+  width governs header and body cells. No blanket spare width.
+- User explicitly retained content-sized groups with space-between only in
+  the mobile supporting-stat row, preserving both established edge anchors.
+- Measured header text and numeric specimens in the actual wireframe fonts.
+  Deaths stays 42px, its header width; Score and K/D are 42px to fit 99,99.
+  Vehicle headers use intentional two-line copy. All tabular gaps remain 16px.
+- User requested visible maximum-value examples and specified 99,99 for
+  Score/K-D. Added a shaded "Проверка ширины / Тестовые максимумы" row to
+  each table, not a real player or a statistically coherent record.
+- Other maxima are agent proposals, not accepted data limits: rank/games
+  9999; kills/deaths/vehicle kills 99999; vehicles destroyed 9999; teamkills
+  and deaths from teamkills 999; Bounty 999999. They remain visible for review.
+- Measured every visible numeric test value against its actual cell width;
+  all fit. Native screenshots inspected at all five sizes. Test rows retain
+  the same height as real rows: 121px mobile, 77px otherwise.
+- Current views have four weeks at 360/768, thirteen at 1024, sixteen at
+  1280/1920. Tablet again includes vehicle kills and teamkills; 1024 again
+  shows the full summary. Ellipsis handles flexible identity widths.
+- The 1440px cap remains a local 1920 trial. Common sizing rules live in
+  DESIGN.md; no production token or generated CSS was changed.
+
+## Shared Table Sizing And A 1440px Cap Trial
+
+- Date: 2026-11-17. User required 16px column gaps and numeric tracks sized
+  to expected values plus a small allowance, with flexible text columns
+  taking remaining space. Explicit follow-up: this applies to all tables.
+  Recorded the product-wide rule in DESIGN.md without changing token values.
+- User separately approved trying a 1440px content cap on the 1920 specimen.
+  Header/content are centered with 240px gutters. The global 1760px token is
+  unchanged; the cap remains a local experiment awaiting visual acceptance.
+- Applied one fixed numeric-track scheme to tablet/laptop/desktop masters.
+  Mobile also uses 16px gaps and fixed metric tracks, retaining the left
+  identity/Games and right Score/K-D anchors. Weekly gaps remain 4px.
+- Following the existing removal priority, current specimens show: 360 core
+  with four weeks; 768 core plus Bounty with four weeks; 1024 all except
+  vehicles destroyed with four weeks; 1280 and 1920 full summary with sixteen
+  weeks. Hidden component fields and older bars remain available for wider
+  variants; no fixture values were deleted.
+- All five native screenshots inspected. Read-back checks across thirty rows
+  confirm actual 16px column gaps, 4px weekly gaps, no horizontal overflow and
+  unchanged row heights (121px mobile, 77px others). Header/data tracks agree
+  in the desktop cap trial. Production numeric ranges remain to be checked
+  against real data; these widths are design choices, not a data-limit claim.
+- Earlier per-size approvals predate this global correction. Revised density
+  and visibility are presented for review; the whole page is not accepted.
+
 ## Uniform Weekly Bar Gaps
 
 - Date: 2026-11-17. User specified 4px between weekly bars at every width.
