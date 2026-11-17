@@ -15,11 +15,16 @@ dynamics before opening a profile.
   The user accepted the 360px mobile wireframe structure and requested keeping
   only that mobile specimen. Frame `13:10` is now 360px wide; no 390px specimen
   remains. This is not acceptance of hi-fi, states or the whole page.
-- Current proposal: [Tablet T1, 768px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=22-167).
+- Accepted tablet structure: [T1, 768px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=22-167).
   It adds Bounty, teamkills and kills from vehicles to the core columns with
   four weeks of history. Vehicles destroyed and deaths from teamkills are
-  omitted in the accepted removal order. This column set and its switching
-  threshold are not accepted. Bounty values are illustrative.
+  omitted in the accepted removal order. User said lgtm and requested the
+  next size after the identity/link corrections. Exact switching thresholds
+  remain undecided. Bounty values are illustrative.
+- Current proposal: [D1, 1024px](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=29-299).
+  Full SG summary including deaths from teamkills and vehicles destroyed,
+  with sixteen weeks of history. Identity has 180px available and retains
+  single-line ellipsis. This specimen awaits user feedback.
 - Both review frames now retain visibly long names with and without spaces.
   Accepted overflow behavior: reserve exactly one line for nickname and one
   for squad; truncate either with an ellipsis. Do not wrap identity text or

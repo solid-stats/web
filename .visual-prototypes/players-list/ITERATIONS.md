@@ -1,5 +1,27 @@
 # Players List Iterations
 
+## D1 — Full Summary At 1024px
+
+- Date: 2026-11-17. User said lgtm and requested the next size. Recorded
+  acceptance of the current smaller wireframe structures, not hi-fi, all
+  states, runtime behavior or exact breakpoint thresholds.
+- [1024px proposal](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=29-299):
+  frame `29:299`, 1024 by 812px. Full SG summary adds deaths from teamkills
+  and vehicles destroyed; history reaches sixteen individual weeks.
+- New full-row main `28:10` and header `28:44` derive from the tablet family.
+  All six rows are linked instances; thirteen header tracks match every row.
+  Content width is 976px, with 180px for identity and 188px for history.
+- Preserved visible long-name and long-squad fixtures, one-line ellipsis,
+  underlined links and plain no-squad labels. All rows remain 77px high.
+  Older weekly bars and additional summary figures are illustrative;
+  the latest four bars and existing figures match the smaller specimens.
+- Native 1024px screenshot inspected: no frame overflow, 96 bars, matching
+  columns, correct identity decorations and no flattened UI images.
+  IBM Plex Sans/Mono fonts verified. Mobile and tablet retain their previous
+  dimensions and equal row heights; their row masters were not changed.
+- Status: D1 is a proposal awaiting visual acceptance. No production code,
+  skeleton transition or runtime CLS verification was added.
+
 ## Player And Squad Link Affordances
 
 - Date: 2026-11-17. User approved the truncation result and requested
