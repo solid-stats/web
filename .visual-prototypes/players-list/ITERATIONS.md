@@ -28,9 +28,10 @@
 - Input v1 follow-up: applied `text-muted` to enabled placeholders, including
   the nested Input in Search field. Added `border-control` and
   `border-control-hover` from `DESIGN.md` to the Figma palette and applied
-  them to the enabled Input. Invalid uses a `loss` border. Invalid + Focus
-  adds the same offset ring geometry in `loss`. The Input matrix now has
-  twelve specimens and retains the implementation annotation.
+  them to the enabled Input. Invalid and Invalid + Focus use the 1 px
+  `border-control-invalid` (`#B84A59`) border. Invalid + Focus adds the 2 px
+  `loss` offset ring with a 2 px gap. The Input matrix has twelve specimens
+  and retains the implementation annotation.
 - Added [Field](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=97-40)
   with a sentence-case label, required marker, replaceable control, helper
   text and a separate error message. The panel starts with one labeled Input
