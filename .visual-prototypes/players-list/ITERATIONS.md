@@ -1,6 +1,6 @@
 # Players List Iterations
 
-## Figma UIKit Select Draft
+## Figma UIKit Select V1
 
 - Date: 2026-11-18. [Select](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=121-160)
   contains a Select state matrix and an Option matrix. Select variants use
@@ -10,6 +10,20 @@
   trigger at the same width. The Option matrix uses the same menu surface.
   Triggers and options use content-based height with a 44 px minimum.
   Period labels illustrate the composition.
+- The matrix reflects the accepted
+  [Select v1 specification](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=136-224).
+  It shows initial loading, same-context refresh with available options,
+  a new context, and status-only empty and error menus. The 20 px Lucide
+  loader occupies the trailing chevron slot.
+- Clear is a separate 44 × 44 px Secondary Button in the filled state.
+  The empty state reserves the same area. The period control has Clear off.
+- Invalid uses the Input border token and adds the loss outline on keyboard
+  focus. Invalid + Open keeps a neutral popup, a cyan keyboard highlight
+  and a separate check mark. The Field specimen keeps the helper and error
+  visible with the popup above the trigger.
+- The Wrap + Scroll specimen shows a wider menu, multiline trigger and
+  option labels, and an internally scrollable prototype viewport. Interaction
+  and assistive-technology acceptance belong to implementation.
 
 ## Figma UIKit Foundations And Player Search
 
