@@ -33,9 +33,9 @@
   twelve specimens and retains the implementation annotation.
 - Added [Field](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=97-40)
   with a sentence-case label, required marker, replaceable control, helper
-  text and a separate error message. The before-validation and error-with-
-  focus examples retain the same value and helper. The existing Input and
-  Field decisions are recorded in SolidStats memory.
+  text and a separate error message. The before-validation example and the
+  error examples with and without focus retain the same value and helper.
+  The existing Input and Field decisions are recorded in SolidStats memory.
 
 ## 2560px Viewport Trial
 
