@@ -28,6 +28,9 @@
   --color-overlay: rgba(6, 9, 14, 0.66);
   --color-border-1: #262E3D;
   --color-border-2: #36415A;
+  --color-border-control: #6A758B;
+  --color-border-control-hover: #7C879E;
+  --color-border-control-invalid: #B84A59;
   --color-text-primary: #EAEEF6;
   --color-text-muted: #98A2B6;
   --color-text-subtle: #616B80;

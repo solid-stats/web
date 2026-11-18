@@ -16,11 +16,14 @@ colors:
   # ---- Borders (hairline separators — the primary structural device) ----
   border-1: "#262E3D" # hairline separators
   border-2: "#36415A" # stronger frame / focus-within / emphasized panels
+  border-control: "#6A758B" # enabled text input boundary
+  border-control-hover: "#7C879E" # enabled text input boundary on hover
+  border-control-invalid: "#B84A59" # invalid text input boundary
 
   # ---- Text ----
   text-primary: "#EAEEF6" # primary copy, stat readouts        (AA on every surface)
-  text-muted: "#98A2B6" # secondary / labels / column headers (AA on every surface)
-  text-subtle: "#616B80" # tertiary / placeholder / disabled   (3:1 — large/UI/disabled only)
+  text-muted: "#98A2B6" # secondary / labels / column headers / enabled-field placeholders
+  text-subtle: "#616B80" # disabled controls / decorative captions
   fg-on-accent: "#04141A" # text on any saturated fill (cyan / win / loss / warn / info)
 
   # ---- Primary — single signal cyan (interactive / active / brand) ----
@@ -210,7 +213,7 @@ elevation:
   md: "0 6px 18px rgba(0, 0, 0, 0.45)"
   lg: "0 18px 48px rgba(0, 0, 0, 0.55)"
   ring: "0 0 0 2px {colors.bg-0}, 0 0 0 4px {colors.primary}" # focus ring (2px offset)
-  ring-glow: "0 0 0 1px {colors.primary-border}, 0 0 12px rgba(54, 197, 224, 0.25)" # input focus
+  ring-glow: "0 0 0 1px {colors.primary-border}, 0 0 12px rgba(54, 197, 224, 0.25)" # optional glow effect
   selected: "inset 2px 0 0 {colors.primary}" # GAP-09 table-row left-edge marker (inset box-shadow value)
   # GAP-09 fix: the marker consumed via Tailwind's `inset-shadow-(--var)` utility, which
   # PREPENDS its own `inset` keyword (`--tw-inset-shadow: inset var(--…)`). So the value here
@@ -449,14 +452,19 @@ components:
   input:
     backgroundColor: "{colors.surface-2}"
     textColor: "{colors.text-primary}"
-    placeholderColor: "{colors.text-subtle}"
-    border: "1px solid {colors.border-1}"
+    placeholderColor: "{colors.text-muted}"
+    border: "1px solid {colors.border-control}"
     rounded: "{rounded.sm}"
     hover:
-      border: "1px solid {colors.border-2}"
-    focusVisible:
-      border: "1px solid {colors.primary-border}"
-      boxShadow: "{elevation.ring-glow}"
+      border: "1px solid {colors.border-control-hover}"
+    focus:
+      outline: "2px solid {colors.primary}"
+      outlineOffset: "2px"
+    invalid:
+      border: "1px solid {colors.border-control-invalid}"
+      focus:
+        outline: "2px solid {colors.loss}"
+        outlineOffset: "2px"
     disabled:
       backgroundColor: "{colors.surface-1}"
       textColor: "{colors.text-subtle}"
@@ -540,28 +548,38 @@ emphasized panels.
 | `border-1` | `#262E3D` | hairline separators           |
 | `border-2` | `#36415A` | stronger frame / focus-within |
 
+Enabled text inputs use `border-control` (`#6A758B`) at rest and
+`border-control-hover` (`#7C879E`) on hover. Their contrast against
+`surface-2` is 3.47:1 and 4.46:1, respectively. Both also clear 3:1 against
+`bg-0` and `surface-1`. [WCAG 2.2 — Non-text Contrast][wcag-control-contrast]
+
+Invalid inputs use `border-control-invalid` (`#B84A59`) for the 1 px
+boundary. It provides 3.19:1 against `surface-2`. The brighter `loss`
+color identifies the outer focus ring.
+
+[wcag-control-contrast]: https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html
+
 ### Text
 
 | Token          | Hex       | Role                                | Contrast                                    |
 | -------------- | --------- | ----------------------------------- | ------------------------------------------- |
 | `text-primary` | `#EAEEF6` | primary copy, stat readouts         | 13.8–16.7:1 — **AA** everywhere             |
-| `text-muted`   | `#98A2B6` | secondary / labels / column headers | 6.3–7.6:1 — **AA** everywhere               |
-| `text-subtle`  | `#616B80` | tertiary / placeholder / disabled   | 3.25–3.63:1 — **AA-large/UI/disabled only** |
+| `text-muted`   | `#98A2B6` | secondary text and placeholders     | 6.3–7.6:1 — **AA** everywhere               |
+| `text-subtle`  | `#616B80` | disabled text, decorative captions  | 3.25–3.63:1 on `surface-1` and darker       |
 | `fg-on-accent` | `#04141A` | text on any saturated fill          | 9.1–9.5:1 on cyan / win — **AA**            |
 
-> **`text-subtle` is NOT for body text.** At 3.25:1 on `surface-1` it passes WCAG 2.2 for large text
-> (≥18.66px / ≥14px bold), UI-component boundaries, and the _disabled_ state (exempt from contrast),
-> but **fails** the 4.5:1 normal-text rule. Use `text-muted` for any meaningful sentence; reserve
-> `text-subtle` for placeholders, disabled controls, and decorative captions only.
-
+> Use `text-muted` for readable secondary text, including placeholders in
+> enabled fields. On `surface-2`, it provides 6.27:1 against the
+> [WCAG 2.2 AA minimum of 4.5:1 for normal text][wcag-text-contrast].
+> Reserve `text-subtle` for disabled controls and purely decorative captions.
+>
 > **Form helper/caption text shares the label's `text-muted` — intentional (GAP-14).** A `Field`'s
 > helper text is _meaningful_ secondary copy, so it takes `text-muted` (AA everywhere), **not** the
 > decorative `caption` role's `text-subtle`. It deliberately shares the label's ink: the label↔caption
-> hierarchy is carried by **type**, not a second gray — the label is uppercase / 600 / `tracking-label`,
-> the caption is sentence-case / 400 / untracked. No new between-`muted`-and-`subtle` caption ink is
-> introduced: it would breach the deliberately tight 3-rung text ramp, risk the 4.5:1 normal-text floor
-> on the darker input surfaces (the rule that already bars `text-subtle` for this copy), and serve a
-> single slot. The accepted separation is the type treatment, not the color.
+> hierarchy comes from type. Field labels use sentence case and weight 600.
+> Helper text uses sentence case and weight 400.
+
+[wcag-text-contrast]: https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum
 
 ### Primary — signal cyan
 
@@ -575,7 +593,7 @@ clears AA on every surface (7.8–9.5:1).
 | `primary-hover`  | `#2FB9D4`              | hover                      |
 | `primary-active` | `#27A8C2`              | press                      |
 | `primary-weak`   | `rgba(54,197,224,.13)` | selected-row / badge tint  |
-| `primary-border` | `rgba(54,197,224,.40)` | tinted frame / input focus |
+| `primary-border` | `rgba(54,197,224,.40)` | tinted accent border       |
 
 ### Semantics
 
@@ -661,8 +679,8 @@ Depth is communicated by the **surface step + hairline border first**, shadow se
 - **Cards on dark use `border-1` + a surface step — no drop shadow.**
 - **Shadows are reserved for things that truly float:** menus, popovers (`elevation.md`), dialogs and
   toasts (`elevation.lg`). `elevation.sm` is a barely-there lift for sticky bars.
-- **Focus** is always visible: `elevation.ring` (2px offset ring in cyan) on every interactive
-  control; `elevation.ring-glow` for inputs.
+- **Focus** uses a visible 2 px ring with a 2 px gap. Input shows the ring on
+  pointer and keyboard focus. Its ring is `primary` or `loss` when invalid.
 - **Transparency** is purposeful only: `-weak` tints (13–15% alpha) for badge/row fills, the
   `overlay` scrim behind dialogs, and an optional subtle backdrop-blur on the sticky top nav / bottom
   tab bar. **Never blur content regions.**
@@ -706,10 +724,35 @@ All recipes live under `components.*` and reference base tokens via `{colors.*}`
   - `inline-review-row`: a pending SteamID merge is a **workflow footnote** — a quiet inline amber
     row (`на проверке` + request link) _inside_ the SteamID list it describes, **never** a filled
     banner pinned to the bottom of a stretched column.
-- **Inputs** — `surface-2` fill, hairline border that brightens on hover and goes `primary-border` +
-  `ring-glow` on focus.
+- **Input and Field** — a native one-line control and its composable form wrapper.
 - **Floating UI** — `dialog` (`rounded.xl` + `elevation.lg` + `overlay` scrim), `popover`
   (`rounded.lg` + `elevation.md`).
+
+### Input and Field v1
+
+- **Input** uses Ark `Field.Input` and forwards its ref and native input props,
+  including `type`. Support both React value modes. A standalone caller supplies
+  the accessible name. Input is 44 px high with 12 px inline padding and a
+  4 px radius. Available width comes from the parent.
+- **Field** uses Ark `Field.Root` with a nested UIKit control. Stack the visible
+  sentence-case label, control, optional helper, and optional error. Required
+  fields get a visible asterisk and the native `required` attribute. Placeholder
+  text supplements the persistent label or instructions.
+- **Validation** belongs to the form. A nonempty `errorText` drives the invalid
+  state, the visible error message, and `aria-invalid`. Keep the entered value
+  and helper in place. Associate helper and error with the control using
+  `aria-describedby` when present. The error explains what to correct.
+- **Acceptance** includes empty and filled examples, Default, Hover, Focus,
+  Disabled, Invalid, and Invalid + Focus. Verify keyboard focus visibility,
+  associated labels and descriptions, readable contrast, and that an error
+  appearing while focus stays in place is announced by a screen reader. If a
+  separate live region is needed, mount it before inserting the message.
+  The dedicated Read-only visual state is deferred.
+
+[Ark UI Field](https://ark-ui.com/docs/components/field) ·
+[Checklist Design — Input Field](https://www.checklist.design/design-system/input-field) ·
+[W3C — Labeling Controls](https://www.w3.org/WAI/tutorials/forms/labels/) ·
+[W3C — ARIA19](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA19)
 
 ## Do's and Don'ts
 
