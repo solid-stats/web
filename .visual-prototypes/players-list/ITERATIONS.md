@@ -25,10 +25,17 @@
   focus-visible specimens all measure 44 px and derive their height through
   Auto Layout. The user accepted the divider treatment and requested removal
   of the comparison board. This is component-level acceptance.
-- Follow-up from the separate Input specification: the accepted enabled
-  placeholder token is `text-muted` in `DESIGN.md`. A live Figma read found
-  `text-subtle` still bound to the enabled placeholders of Input and Search
-  field. Synchronize those layers when applying the specification to Figma.
+- Input v1 follow-up: applied `text-muted` to enabled placeholders, including
+  the nested Input in Search field. Added `border-control` and
+  `border-control-hover` from `DESIGN.md` to the Figma palette and applied
+  them to the enabled Input. Invalid uses a `loss` border. Invalid + Focus
+  adds the same offset ring geometry in `loss`. The Input matrix now has
+  twelve specimens and retains the implementation annotation.
+- Added [Field](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=97-40)
+  with a sentence-case label, required marker, replaceable control, helper
+  text and a separate error message. The before-validation and error-with-
+  focus examples retain the same value and helper. The existing Input and
+  Field decisions are recorded in SolidStats memory.
 
 ## 2560px Viewport Trial
 
