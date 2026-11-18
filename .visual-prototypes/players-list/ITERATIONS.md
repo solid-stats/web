@@ -4,8 +4,8 @@
 
 - Date: 2026-11-18. [Select](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=121-160)
   contains reusable Trigger and Option component sets. Trigger variants
-  use linked Secondary Button instances, with the value and trailing
-  chevron in the Button slot. The period example
+  use linked Secondary Button instances with the native label and a
+  chevron in the Trailing icon slot. The period example
   shows closed and open states with the same trigger width, a Lucide chevron
   and a checked selected option. Triggers and options use content-based
   height with a 44 px minimum. Period labels illustrate the composition.
@@ -20,10 +20,11 @@
 - [Button](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=60-2)
   has Primary, Secondary and Ghost across five states. It hugs content, with
   a 44 × 44 px minimum target and 16 px horizontal padding. The matrix and
-  layout examples share one content-sized panel. The optional Icon slot
-  defaults to empty. An explicitly inserted Lucide icon is 20 × 20 px, and
-  the Button's Auto Layout owns the 8 px gap. The implementation specification
-  is attached to the component as a native Figma annotation.
+  layout examples share one content-sized panel. The Leading icon and
+  Trailing icon slots are independently optional and empty by default.
+  Each accepts one 20 × 20 px Lucide icon. Button Auto Layout owns the
+  8 px gap. The panel shows leading only, trailing only and both.
+  The existing implementation annotation predates the two-slot design.
 - [Input](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=64-2)
   hugs its contents with a 44 px minimum. Its Focus state shares Button's
   cyan 2 px outline with a 2 px offset. Input uses that treatment for focus
