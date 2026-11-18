@@ -1,5 +1,35 @@
 # Players List Iterations
 
+## Figma UIKit Foundations And Player Search
+
+- Date: 2026-11-18. The [UIKit page](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=10-2)
+  has the SolidStats token collections, typography and effect styles. Lucide
+  is a connected external library. Wireframe controls and player-specific
+  row, metric and header masters live in
+  [Players / Local components](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=56-2692).
+- [Button](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=60-2)
+  has Primary, Secondary and Ghost across five states. It hugs content, with
+  a 44 × 44 px minimum target and 16 px horizontal padding. The matrix and
+  layout examples share one content-sized panel. The optional Icon slot
+  defaults to empty. An explicitly inserted Lucide icon is 20 × 20 px, and
+  the Button's Auto Layout owns the 8 px gap. The implementation specification
+  is attached to the component as a native Figma annotation.
+- [Input](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=64-2)
+  hugs its contents with a 44 px minimum. Its Focus state shares Button's
+  cyan 2 px outline with a 2 px offset. Input uses that treatment for focus
+  of any origin. Button shows it for Focus visible.
+- [Search field](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=88-53)
+  uses a leading Lucide search icon and a full-height Secondary submit
+  button. The button's left border forms the divider. A filled field shows
+  a clear icon before submit. Empty and filled, input focus and submit
+  focus-visible specimens all measure 44 px and derive their height through
+  Auto Layout. The user accepted the divider treatment and requested removal
+  of the comparison board. This is component-level acceptance.
+- Follow-up from the separate Input specification: the accepted enabled
+  placeholder token is `text-muted` in `DESIGN.md`. A live Figma read found
+  `text-subtle` still bound to the enabled placeholders of Input and Search
+  field. Synchronize those layers when applying the specification to Figma.
+
 ## 2560px Viewport Trial
 
 - Date: 2026-11-17. Added a 2560px viewport using the same 1440px content
