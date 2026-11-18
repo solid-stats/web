@@ -3,7 +3,9 @@
 ## Figma UIKit Select Draft
 
 - Date: 2026-11-18. [Select](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=121-160)
-  contains reusable Trigger and Option component sets. The period example
+  contains reusable Trigger and Option component sets. Trigger variants
+  use linked Secondary Button instances, with the value and trailing
+  chevron in the Button slot. The period example
   shows closed and open states with the same trigger width, a Lucide chevron
   and a checked selected option. Triggers and options use content-based
   height with a 44 px minimum. Period labels illustrate the composition.
