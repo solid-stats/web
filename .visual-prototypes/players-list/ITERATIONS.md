@@ -3,12 +3,13 @@
 ## Figma UIKit Select Draft
 
 - Date: 2026-11-18. [Select](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=121-160)
-  contains reusable Trigger and Option component sets. Trigger variants
-  use linked Secondary Button instances with the native label and a
-  chevron in the Trailing icon slot. The period example
-  shows closed and open states with the same trigger width, a Lucide chevron
-  and a checked selected option. Triggers and options use content-based
-  height with a 44 px minimum. Period labels illustrate the composition.
+  contains a Select state matrix and an Option matrix. Select variants use
+  linked Secondary Button instances with the native label and a Lucide
+  chevron in the Trailing icon slot. Open shows the period menu directly in
+  the matrix, with a checked selected option. The menu floats below the
+  trigger at the same width. The Option matrix uses the same menu surface.
+  Triggers and options use content-based height with a 44 px minimum.
+  Period labels illustrate the composition.
 
 ## Figma UIKit Foundations And Player Search
 
