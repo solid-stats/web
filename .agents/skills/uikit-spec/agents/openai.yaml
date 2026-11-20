@@ -1,0 +1,7 @@
+interface:
+  display_name: "UI Kit Spec"
+  short_description: "Write SolidStats UI kit specifications"
+  default_prompt: "Use $uikit-spec to specify Select."
+
+policy:
+  allow_implicit_invocation: false
