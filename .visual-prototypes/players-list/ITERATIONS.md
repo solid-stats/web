@@ -11,7 +11,7 @@
   Triggers and options use content-based height with a 44 px minimum.
   Period labels illustrate the composition.
 - The matrix reflects the accepted
-  [Select v1 specification](https://www.figma.com/design/WVIdd6Mz4aSU1IhuZAx5c6/Web-App?node-id=136-224).
+  [Select v1 specification](../../docs/ui-kit/select.md).
   It shows initial loading, same-context refresh with available options,
   a new context, and status-only empty and error menus. The 20 px Lucide
   loader occupies the trailing chevron slot.
